@@ -17,5 +17,5 @@ FORMS += \
         MainWindow.ui
 
 DISTFILES += \
-    README.md \
-    .gitignore
+    ../README.md \
+    ../.gitignore
