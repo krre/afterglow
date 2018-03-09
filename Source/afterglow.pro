@@ -11,7 +11,8 @@ SOURCES += \
     UI/MainWindow.cpp
 
 HEADERS += \
-    UI/MainWindow.h
+    UI/MainWindow.h \
+    Constants.h
 
 FORMS += \
     UI/MainWindow.ui
