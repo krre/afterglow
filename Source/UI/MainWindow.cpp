@@ -25,6 +25,22 @@ void MainWindow::on_actionExit_triggered() {
     QApplication::quit();
 }
 
+void MainWindow::on_actionShowSidebar_toggled(bool checked) {
+    if (checked) {
+        ui->tabWidgetSide->show();
+    } else {
+        ui->tabWidgetSide->hide();
+    }
+}
+
+void MainWindow::on_actionShowOutput_toggled(bool checked) {
+    if (checked) {
+        ui->tabWidgetOutput->show();
+    } else {
+        ui->tabWidgetOutput->hide();
+    }
+}
+
 void MainWindow::on_actionAbout_triggered() {
     QMessageBox::about(this, tr("About %1").arg(APP_NAME),
         tr("<h3>%1 %2</h3> \
@@ -60,6 +76,9 @@ void MainWindow::readSettings() {
         ui->splitterSide->restoreState(splitterSideSize.toByteArray());
     }
 
+    ui->actionShowSidebar->setChecked(settings.value("showSidebar", true).toBool());
+    ui->actionShowOutput->setChecked(settings.value("showOutput", true).toBool());
+
     settings.endGroup();
 }
 
@@ -68,7 +87,12 @@ void MainWindow::writeSettings() {
 
     settings.beginGroup("MainWindow");
     settings.setValue("geometry", saveGeometry());
+
     settings.setValue("splitterMain", ui->splitterMain->saveState());
     settings.setValue("splitterSide", ui->splitterSide->saveState());
+
+    settings.setValue("showSidebar", ui->actionShowSidebar->isChecked());
+    settings.setValue("showOutput", ui->actionShowOutput->isChecked());
+
     settings.endGroup();
 }
