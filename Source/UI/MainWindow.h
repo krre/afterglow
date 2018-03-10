@@ -15,6 +15,10 @@ public:
 protected:
     void closeEvent(QCloseEvent* event) override;
 
+private slots:
+    // Help
+    void on_actionAbout_triggered();
+
 private:
     void readSettings();
     void writeSettings();
