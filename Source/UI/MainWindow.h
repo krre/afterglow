@@ -12,6 +12,12 @@ public:
     explicit MainWindow();
     ~MainWindow();
 
+protected:
+    void closeEvent(QCloseEvent* event) override;
+
 private:
+    void readSettings();
+    void writeSettings();
+
     Ui::MainWindow* ui;
 };
