@@ -32,6 +32,20 @@ void MainWindow::readSettings() {
         move((availableGeometry.width() - width()) / 2, (availableGeometry.height() - height()) / 2);
     }
 
+    QVariant splitterMainSize = settings.value("splitterMain");
+    if (splitterMainSize == QVariant()) {
+        ui->splitterMain->setSizes({ 100, 500 });
+    } else {
+        ui->splitterMain->restoreState(splitterMainSize.toByteArray());
+    }
+
+    QVariant splitterSideSize = settings.value("splitterSide");
+    if (splitterSideSize == QVariant()) {
+        ui->splitterSide->setSizes({ 500, 100 });
+    } else {
+        ui->splitterSide->restoreState(splitterSideSize.toByteArray());
+    }
+
     settings.endGroup();
 }
 
@@ -40,5 +54,7 @@ void MainWindow::writeSettings() {
 
     settings.beginGroup("MainWindow");
     settings.setValue("geometry", saveGeometry());
+    settings.setValue("splitterMain", ui->splitterMain->saveState());
+    settings.setValue("splitterSide", ui->splitterSide->saveState());
     settings.endGroup();
 }
