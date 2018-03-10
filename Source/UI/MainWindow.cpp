@@ -21,6 +21,10 @@ void MainWindow::closeEvent(QCloseEvent* event) {
     QMainWindow::closeEvent(event);
 }
 
+void MainWindow::on_actionExit_triggered() {
+    QApplication::quit();
+}
+
 void MainWindow::on_actionAbout_triggered() {
     QMessageBox::about(this, tr("About %1").arg(APP_NAME),
         tr("<h3>%1 %2</h3> \
