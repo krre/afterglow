@@ -135,8 +135,8 @@
      <property name="title">
       <string>New</string>
      </property>
-     <addaction name="actionCrate"/>
-     <addaction name="actionRustFile"/>
+     <addaction name="actionNewCrate"/>
+     <addaction name="actionNewRustFile"/>
     </widget>
     <addaction name="menuNew"/>
     <addaction name="actionOpen"/>
@@ -204,12 +204,12 @@
     <string>About...</string>
    </property>
   </action>
-  <action name="actionCrate">
+  <action name="actionNewCrate">
    <property name="text">
     <string>Crate...</string>
    </property>
   </action>
-  <action name="actionRustFile">
+  <action name="actionNewRustFile">
    <property name="text">
     <string>Rust File...</string>
    </property>
