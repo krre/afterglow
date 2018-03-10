@@ -8,11 +8,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    UI/MainWindow.cpp
+    UI/MainWindow.cpp \
+    Core/Global.cpp
 
 HEADERS += \
     UI/MainWindow.h \
-    Constants.h
+    Core/Global.h \
+    Core/Constants.h
 
 FORMS += \
     UI/MainWindow.ui
