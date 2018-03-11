@@ -135,7 +135,7 @@
      <property name="title">
       <string>New</string>
      </property>
-     <addaction name="actionNewCrate"/>
+     <addaction name="actionNewCargoProject"/>
      <addaction name="actionNewRustFile"/>
     </widget>
     <addaction name="menuNew"/>
@@ -204,9 +204,9 @@
     <string>About...</string>
    </property>
   </action>
-  <action name="actionNewCrate">
+  <action name="actionNewCargoProject">
    <property name="text">
-    <string>Crate...</string>
+    <string>Cargo Project...</string>
    </property>
   </action>
   <action name="actionNewRustFile">

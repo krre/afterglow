@@ -21,8 +21,8 @@ void MainWindow::closeEvent(QCloseEvent* event) {
     QMainWindow::closeEvent(event);
 }
 
-void MainWindow::on_actionNewCrate_triggered() {
-    qDebug() << "new crate";
+void MainWindow::on_actionNewCargoProject_triggered() {
+    qDebug() << "new cargo project";
 }
 
 void MainWindow::on_actionNewRustFile_triggered() {

@@ -18,7 +18,7 @@ protected:
 private slots:
     // File
     // File
-    void on_actionNewCrate_triggered();
+    void on_actionNewCargoProject_triggered();
     void on_actionNewRustFile_triggered();
     void on_actionExit_triggered();
 
