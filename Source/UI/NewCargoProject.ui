@@ -45,7 +45,7 @@
         <widget class="QLineEdit" name="lineEditDirectory"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButtonBrowse">
+        <widget class="QPushButton" name="pushButtonDirectory">
          <property name="text">
           <string>Browse...</string>
          </property>
