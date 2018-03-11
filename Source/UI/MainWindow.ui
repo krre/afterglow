@@ -332,5 +332,38 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionShowOutput</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>tabWidgetOutput</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>604</x>
+     <y>375</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShowSidebar</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>tabWidgetSide</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>82</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

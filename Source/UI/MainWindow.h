@@ -24,10 +24,6 @@ private slots:
     // Tools
     void on_actionOptions_triggered();
 
-    // View
-    void on_actionShowSidebar_toggled(bool checked=false);
-    void on_actionShowOutput_toggled(bool checked=false);
-
     // Help
     void on_actionAbout_triggered();
 

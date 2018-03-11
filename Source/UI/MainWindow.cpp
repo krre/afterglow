@@ -41,22 +41,6 @@ void MainWindow::on_actionOptions_triggered() {
     options.exec();
 }
 
-void MainWindow::on_actionShowSidebar_toggled(bool checked) {
-    if (checked) {
-        ui->tabWidgetSide->show();
-    } else {
-        ui->tabWidgetSide->hide();
-    }
-}
-
-void MainWindow::on_actionShowOutput_toggled(bool checked) {
-    if (checked) {
-        ui->tabWidgetOutput->show();
-    } else {
-        ui->tabWidgetOutput->hide();
-    }
-}
-
 void MainWindow::on_actionAbout_triggered() {
     QMessageBox::about(this, tr("About %1").arg(APP_NAME),
         tr("<h3>%1 %2</h3> \
