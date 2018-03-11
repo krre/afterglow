@@ -31,8 +31,17 @@ void NewCargoProject::on_pushButtonDirectory_clicked() {
 }
 
 void NewCargoProject::on_buttonBox_accepted() {
+    QString command = "cargo new --";
+    Template templ = static_cast<Template>(ui->comboBoxTemplate->currentIndex());
+    if (templ == Template::Binary) {
+        command += "bin";
+    } else if (templ == Template::Library) {
+        command += "lib";
+    }
+
     QString projectPath = ui->lineEditDirectory->text() + "/" + ui->lineEditName->text();
-    qDebug() << projectPath;
+    command += " " + projectPath;
+    qDebug() << command;
 }
 
 void NewCargoProject::adjustAcceptedButton() {
