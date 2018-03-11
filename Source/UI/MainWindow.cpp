@@ -4,12 +4,14 @@
 #include "Core/Constants.h"
 #include "NewCargoProject.h"
 #include "Options.h"
+#include "Cargo/CargoProcessor.h"
 #include <QtCore>
 #include <QtWidgets>
 
 MainWindow::MainWindow() :
         ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    cargoProcessor = new CargoProcessor(this);
 
     readSettings();
 }
@@ -24,7 +26,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 }
 
 void MainWindow::on_actionNewCargoProject_triggered() {
-    NewCargoProject newCargoProject(this);
+    NewCargoProject newCargoProject(cargoProcessor, this);
     newCargoProject.exec();
 }
 

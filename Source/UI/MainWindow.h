@@ -1,6 +1,8 @@
 #pragma once
 #include <QMainWindow>
 
+class CargoProcessor;
+
 namespace Ui {
     class MainWindow;
 }
@@ -32,4 +34,5 @@ private:
     void writeSettings();
 
     Ui::MainWindow* ui;
+    CargoProcessor* cargoProcessor;
 };

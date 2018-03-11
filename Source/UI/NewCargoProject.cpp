@@ -1,12 +1,14 @@
 #include "NewCargoProject.h"
 #include "ui_NewCargoProject.h"
 #include "Core/Global.h"
+#include "Cargo/CargoProcessor.h"
 #include <QtCore>
 #include <QtWidgets>
 
-NewCargoProject::NewCargoProject(QWidget* parent) :
+NewCargoProject::NewCargoProject(CargoProcessor* cargoProcessor, QWidget* parent) :
         QDialog(parent),
-        ui(new Ui::NewCargoProject) {
+        ui(new Ui::NewCargoProject),
+        cargoProcessor(cargoProcessor) {
     ui->setupUi(this);
     setFixedHeight(height());
 
@@ -41,7 +43,8 @@ void NewCargoProject::on_buttonBox_accepted() {
 
     QString projectPath = ui->lineEditDirectory->text() + "/" + ui->lineEditName->text();
     command += " " + projectPath;
-    qDebug() << command;
+
+    cargoProcessor->createProject(command);
 }
 
 void NewCargoProject::adjustAcceptedButton() {

@@ -5,11 +5,13 @@ namespace Ui {
     class NewCargoProject;
 }
 
+class CargoProcessor;
+
 class NewCargoProject : public QDialog {
     Q_OBJECT
 
 public:
-    explicit NewCargoProject(QWidget* parent = 0);
+    explicit NewCargoProject(CargoProcessor* cargoProcessor, QWidget* parent = 0);
     ~NewCargoProject();
 
 private slots:
@@ -25,4 +27,5 @@ private:
     };
 
     Ui::NewCargoProject* ui;
+    CargoProcessor* cargoProcessor;
 };
