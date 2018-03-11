@@ -4,7 +4,7 @@
 #include "Core/Global.h"
 #include <QtWidgets>
 
-SelectWorkspace::SelectWorkspace(QWidget *parent) :
+SelectWorkspace::SelectWorkspace(QWidget* parent) :
         QDialog(parent),
         ui(new Ui::SelectWorkspace) {
     ui->setupUi(this);
