@@ -5,15 +5,10 @@
 namespace Global {
 
 namespace {
-    QString portableSettingsPath;
-}
-
-void init() {
-    portableSettingsPath = QCoreApplication::applicationDirPath() + "/" + APP_SETTINGS_NAME;
 }
 
 QString getPortableSettingsPath() {
-    return portableSettingsPath;
+    return QCoreApplication::applicationDirPath() + "/" + APP_SETTINGS_NAME;
 }
 
 QString getDefaultWorkspacePath() {

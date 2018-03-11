@@ -11,8 +11,6 @@ int main(int argc, char *argv[]) {
     app.setApplicationName(APP_NAME);
     app.setApplicationVersion(APP_VERSION);
 
-    Global::init();
-
     MainWindow window;
     window.show();
 
