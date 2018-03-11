@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 #include "Core/Global.h"
 #include "Core/Constants.h"
+#include "NewCargoProject.h"
 #include <QtCore>
 #include <QtWidgets>
 
@@ -22,7 +23,8 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 }
 
 void MainWindow::on_actionNewCargoProject_triggered() {
-    qDebug() << "new cargo project";
+    NewCargoProject newCargoProject(this);
+    newCargoProject.exec();
 }
 
 void MainWindow::on_actionNewRustFile_triggered() {
