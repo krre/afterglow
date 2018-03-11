@@ -5,4 +5,4 @@ IDE for Rust language
 - Qt 5.10
 
 ## Status
-Now under initial development stage
+Initial development stage
