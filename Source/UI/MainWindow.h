@@ -17,10 +17,12 @@ protected:
 
 private slots:
     // File
-    // File
     void on_actionNewCargoProject_triggered();
     void on_actionNewRustFile_triggered();
     void on_actionExit_triggered();
+
+    // Tools
+    void on_actionOptions_triggered();
 
     // View
     void on_actionShowSidebar_toggled(bool checked=false);

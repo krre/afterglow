@@ -3,6 +3,7 @@
 #include "Core/Global.h"
 #include "Core/Constants.h"
 #include "NewCargoProject.h"
+#include "Options.h"
 #include <QtCore>
 #include <QtWidgets>
 
@@ -33,6 +34,11 @@ void MainWindow::on_actionNewRustFile_triggered() {
 
 void MainWindow::on_actionExit_triggered() {
     QApplication::quit();
+}
+
+void MainWindow::on_actionOptions_triggered() {
+    Options options(this);
+    options.exec();
 }
 
 void MainWindow::on_actionShowSidebar_toggled(bool checked) {
