@@ -11,7 +11,6 @@ class SelectWorkspace : public QDialog {
 public:
     explicit SelectWorkspace(QWidget* parent = 0);
     ~SelectWorkspace();
-    bool getIsRejected() const;
 
 private slots:
     void on_pushButtonBrowse_clicked();
