@@ -16,10 +16,6 @@ SelectWorkspace::~SelectWorkspace() {
     delete ui;
 }
 
-bool SelectWorkspace::getIsRejected() const {
-    return isRejected;
-}
-
 void SelectWorkspace::on_pushButtonBrowse_clicked() {
     QString dirPath = QFileDialog::getExistingDirectory(this);
     if (!dirPath.isEmpty()) {
@@ -30,10 +26,6 @@ void SelectWorkspace::on_pushButtonBrowse_clicked() {
 void SelectWorkspace::on_buttonBox_accepted() {
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
     settings.setValue("Path/workspace", ui->lineEdit->text());
-}
-
-void SelectWorkspace::on_buttonBox_rejected() {
-    isRejected = true;
 }
 
 void SelectWorkspace::on_lineEdit_textChanged(const QString& text) {
