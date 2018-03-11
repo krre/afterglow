@@ -57,9 +57,9 @@
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="tabCrate">
+       <widget class="QWidget" name="tabProject">
         <attribute name="title">
-         <string>Crate</string>
+         <string>Project</string>
         </attribute>
        </widget>
        <widget class="QWidget" name="tabProperties">
@@ -102,9 +102,9 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="QWidget" name="tabCompile">
+        <widget class="QWidget" name="tabCargo">
          <attribute name="title">
-          <string>Compile</string>
+          <string>Cargo</string>
          </attribute>
         </widget>
         <widget class="QWidget" name="tabApplication">
