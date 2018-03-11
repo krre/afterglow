@@ -20,12 +20,6 @@ private slots:
     void adjustAcceptedButton();
 
 private:
-
-    enum class Template {
-        Binary,
-        Library
-    };
-
     Ui::NewCargoProject* ui;
     CargoProcessor* cargoProcessor;
 };
