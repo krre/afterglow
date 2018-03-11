@@ -9,7 +9,7 @@ SelectWorkspace::SelectWorkspace(QWidget *parent) :
         ui(new Ui::SelectWorkspace) {
     ui->setupUi(this);
     setFixedHeight(height());
-    ui->lineEdit->setText(QDir::homePath() + "/" + WORKSPACE_DIRECTORY);
+    ui->lineEdit->setText(Global::getDefaultWorkspacePath());
 }
 
 SelectWorkspace::~SelectWorkspace() {

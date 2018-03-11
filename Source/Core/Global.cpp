@@ -16,4 +16,8 @@ QString getPortableSettingsPath() {
     return portableSettingsPath;
 }
 
+QString getDefaultWorkspacePath() {
+    return QDir::homePath() + "/" + WORKSPACE_DIRECTORY;
+}
+
 } // Global
