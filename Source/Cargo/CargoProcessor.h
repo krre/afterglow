@@ -17,14 +17,23 @@ public:
 
 signals:
     void outputMessage(const QString& message);
+    void projectCreated(const QString& path);
 
 private slots:
     void onReadyRead();
     void onFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
+
+    enum class CommandStatus {
+        New,
+        Build,
+        Run
+    };
+
     void timedOutputMessage(const QString& message);
 
     QProcess* process;
     QTime measureTime;
+    CommandStatus commandStatus;
 };

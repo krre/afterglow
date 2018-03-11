@@ -25,6 +25,7 @@ void CargoProcessor::createProject(Template projectTemplate, const QString& path
     arguments << path;
     process->setArguments(arguments);
     process->start();
+    commandStatus = CommandStatus::New;
 }
 
 void CargoProcessor::onReadyRead() {
@@ -38,6 +39,18 @@ void CargoProcessor::onReadyRead() {
 void CargoProcessor::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     Q_UNUSED(exitCode)
     qDebug() << exitCode << exitStatus;
+
+    if (exitCode) {
+        return;
+    }
+
+    switch (commandStatus) {
+    case CommandStatus::New:
+        emit projectCreated(process->arguments().last());
+        break;
+    default:
+        break;
+    }
 //    QString finishedMessage = "The process " + process->program() +
 //        (exitStatus == QProcess::NormalExit ? " finished normally" : " crashed");
 //    timedOutputMessage(finishedMessage);

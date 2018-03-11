@@ -29,6 +29,9 @@ private slots:
     // Help
     void on_actionAbout_triggered();
 
+    // CargoProcessor
+    void onProjectCreated(const QString& path);
+
 private:
     void readSettings();
     void writeSettings();
