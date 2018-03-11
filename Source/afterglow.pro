@@ -10,17 +10,20 @@ SOURCES += \
         main.cpp \
     UI/MainWindow.cpp \
     Core/Global.cpp \
-    UI/NewCargoProject.cpp
+    UI/NewCargoProject.cpp \
+    UI/SelectWorkspace.cpp
 
 HEADERS += \
     UI/MainWindow.h \
     Core/Global.h \
     Core/Constants.h \
-    UI/NewCargoProject.h
+    UI/NewCargoProject.h \
+    UI/SelectWorkspace.h
 
 FORMS += \
     UI/MainWindow.ui \
-    UI/NewCargoProject.ui
+    UI/NewCargoProject.ui \
+    UI/SelectWorkspace.ui
 
 DISTFILES += \
     ../README.md \
