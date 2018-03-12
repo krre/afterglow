@@ -1,7 +1,7 @@
 #pragma once
 #include <QMainWindow>
 
-class CargoProcessor;
+class CargoManager;
 
 namespace Ui {
     class MainWindow;
@@ -29,7 +29,7 @@ private slots:
     // Help
     void on_actionAbout_triggered();
 
-    // CargoProcessor
+    // CargoManager
     void onProjectCreated(const QString& path);
     void onOutputMessage(const QString& message);
 
@@ -45,5 +45,5 @@ private:
     void writeSettings();
 
     Ui::MainWindow* ui;
-    CargoProcessor* cargoProcessor;
+    CargoManager* cargoManager;
 };

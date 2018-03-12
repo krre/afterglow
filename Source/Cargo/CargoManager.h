@@ -4,7 +4,7 @@
 #include <QTime>
 #include <QTextCodec>
 
-class CargoProcessor : public QObject {
+class CargoManager : public QObject {
     Q_OBJECT
 public:
     enum class ProjectTemplate {
@@ -12,8 +12,8 @@ public:
         Library
     };
 
-    explicit CargoProcessor(QObject* parent = nullptr);
-    ~CargoProcessor();
+    explicit CargoManager(QObject* parent = nullptr);
+    ~CargoManager();
     void createProject(ProjectTemplate projectTemplate, const QString& path);
 
 signals:

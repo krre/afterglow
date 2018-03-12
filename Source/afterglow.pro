@@ -13,7 +13,7 @@ SOURCES += \
     UI/NewCargoProject.cpp \
     UI/SelectWorkspace.cpp \
     UI/Options.cpp \
-    Cargo/CargoProcessor.cpp
+    Cargo/CargoManager.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -22,7 +22,7 @@ HEADERS += \
     UI/NewCargoProject.h \
     UI/SelectWorkspace.h \
     UI/Options.h \
-    Cargo/CargoProcessor.h
+    Cargo/CargoManager.h
 
 FORMS += \
     UI/MainWindow.ui \

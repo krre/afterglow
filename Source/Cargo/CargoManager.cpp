@@ -1,20 +1,20 @@
-#include "CargoProcessor.h"
+#include "CargoManager.h"
 #include <QtCore>
 
-CargoProcessor::CargoProcessor(QObject* parent) : QObject(parent) {
+CargoManager::CargoManager(QObject* parent) : QObject(parent) {
     process = new QProcess(this);
     process->setProgram("cargo");
-    connect(process, &QProcess::readyReadStandardOutput, this, &CargoProcessor::onReadyReadStandardOutput);
-    connect(process, &QProcess::readyReadStandardError, this, &CargoProcessor::onReadyReadStandardError);
+    connect(process, &QProcess::readyReadStandardOutput, this, &CargoManager::onReadyReadStandardOutput);
+    connect(process, &QProcess::readyReadStandardError, this, &CargoManager::onReadyReadStandardError);
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
         [=](int exitCode, QProcess::ExitStatus exitStatus) { onFinished(exitCode, exitStatus); });
 }
 
-CargoProcessor::~CargoProcessor() {
+CargoManager::~CargoManager() {
 
 }
 
-void CargoProcessor::createProject(ProjectTemplate projectTemplate, const QString& path) {
+void CargoManager::createProject(ProjectTemplate projectTemplate, const QString& path) {
     QStringList arguments;
     arguments << "new";
     if (projectTemplate == ProjectTemplate::Binary) {
@@ -37,19 +37,19 @@ void CargoProcessor::createProject(ProjectTemplate projectTemplate, const QStrin
     commandStatus = CommandStatus::New;
 }
 
-void CargoProcessor::onReadyReadStandardOutput() {
+void CargoManager::onReadyReadStandardOutput() {
     QByteArray data = process->readAllStandardOutput();
     QString output = outputCodec->toUnicode(data.constData(), data.length(), &outputCodecState);
     outputMessage(output);
 }
 
-void CargoProcessor::onReadyReadStandardError() {
+void CargoManager::onReadyReadStandardError() {
     QByteArray data = process->readAllStandardError();
     QString output = outputCodec->toUnicode(data.constData(), data.length(), &errorCodecState);
     outputMessage(output);
 }
 
-void CargoProcessor::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     Q_UNUSED(exitCode)
 
     if (exitCode) {
@@ -69,7 +69,7 @@ void CargoProcessor::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     timedOutputMessage(QString("Elapsed time: %1 ms").arg(measureTime.elapsed()));
 }
 
-void CargoProcessor::timedOutputMessage(const QString& message) {
+void CargoManager::timedOutputMessage(const QString& message) {
     QString timedMessage = QTime::currentTime().toString("hh:mm:ss: ") + message;
     outputMessage(timedMessage);
 }

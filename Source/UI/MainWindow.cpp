@@ -4,15 +4,15 @@
 #include "Core/Constants.h"
 #include "NewCargoProject.h"
 #include "Options.h"
-#include "Cargo/CargoProcessor.h"
+#include "Cargo/CargoManager.h"
 #include <QtWidgets>
 
 MainWindow::MainWindow() :
         ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    cargoProcessor = new CargoProcessor(this);
-    connect(cargoProcessor, &CargoProcessor::projectCreated, this, &MainWindow::onProjectCreated);
-    connect(cargoProcessor, &CargoProcessor::outputMessage, this, &MainWindow::onOutputMessage);
+    cargoManager = new CargoManager(this);
+    connect(cargoManager, &CargoManager::projectCreated, this, &MainWindow::onProjectCreated);
+    connect(cargoManager, &CargoManager::outputMessage, this, &MainWindow::onOutputMessage);
 
     readSettings();
 }
@@ -27,7 +27,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 }
 
 void MainWindow::on_actionNewCargoProject_triggered() {
-    NewCargoProject newCargoProject(cargoProcessor, this);
+    NewCargoProject newCargoProject(cargoManager, this);
     newCargoProject.exec();
 }
 
