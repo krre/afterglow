@@ -5,14 +5,23 @@
 #include "NewCargoProject.h"
 #include "Options.h"
 #include "Cargo/CargoManager.h"
+#include "ProjectTreeView.h"
 #include <QtWidgets>
 
 MainWindow::MainWindow() :
         ui(new Ui::MainWindow) {
     ui->setupUi(this);
+
     cargoManager = new CargoManager(this);
     connect(cargoManager, &CargoManager::projectCreated, this, &MainWindow::onProjectCreated);
     connect(cargoManager, &CargoManager::outputMessage, this, &MainWindow::onOutputMessage);
+
+    projectTreeView = new ProjectTreeView;
+    connect(projectTreeView, &ProjectTreeView::openActivated, this, &MainWindow::addSourceTab);
+    connect(projectTreeView, &ProjectTreeView::removeActivated, this, &MainWindow::onFileRemoved);
+
+    ui->tabWidgetSide->addTab(projectTreeView, tr("Project"));
+    ui->tabWidgetSide->addTab(new QWidget, tr("Properties"));
 
     readSettings();
 }
@@ -55,13 +64,21 @@ void MainWindow::on_actionAbout_triggered() {
 }
 
 void MainWindow::onProjectCreated(const QString& path) {
-    qDebug() << path;
+    projectTreeView->setRootPath(path);
 }
 
 void MainWindow::onOutputMessage(const QString& message) {
     int cargoTabIndex = static_cast<int>(OutputPane::Cargo);
     ui->tabWidgetOutput->setCurrentIndex(cargoTabIndex);
     ui->textEditCargo->append(message);
+}
+
+void MainWindow::onFileRemoved(const QString& filePath) {
+
+}
+
+void MainWindow::addSourceTab(const QString& filePath) {
+
 }
 
 void MainWindow::readSettings() {

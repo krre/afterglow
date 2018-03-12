@@ -55,18 +55,8 @@
         <enum>QTabWidget::West</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>-1</number>
        </property>
-       <widget class="QWidget" name="tabProject">
-        <attribute name="title">
-         <string>Project</string>
-        </attribute>
-       </widget>
-       <widget class="QWidget" name="tabProperties">
-        <attribute name="title">
-         <string>Properties</string>
-        </attribute>
-       </widget>
       </widget>
       <widget class="QSplitter" name="splitterSide">
        <property name="orientation">

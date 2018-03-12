@@ -2,6 +2,7 @@
 #include <QMainWindow>
 
 class CargoManager;
+class ProjectTreeView;
 
 namespace Ui {
     class MainWindow;
@@ -33,6 +34,9 @@ private slots:
     void onProjectCreated(const QString& path);
     void onOutputMessage(const QString& message);
 
+    void onFileRemoved(const QString& filePath);
+    void addSourceTab(const QString& filePath);
+
 private:
 
     enum class OutputPane {
@@ -46,4 +50,5 @@ private:
 
     Ui::MainWindow* ui;
     CargoManager* cargoManager;
+    ProjectTreeView* projectTreeView;
 };
