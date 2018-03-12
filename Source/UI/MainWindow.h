@@ -31,8 +31,16 @@ private slots:
 
     // CargoProcessor
     void onProjectCreated(const QString& path);
+    void onOutputMessage(const QString& message);
 
 private:
+
+    enum class OutputPane {
+        Cargo,
+        Application,
+        Search
+    };
+
     void readSettings();
     void writeSettings();
 

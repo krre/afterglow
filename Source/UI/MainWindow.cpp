@@ -12,6 +12,7 @@ MainWindow::MainWindow() :
     ui->setupUi(this);
     cargoProcessor = new CargoProcessor(this);
     connect(cargoProcessor, &CargoProcessor::projectCreated, this, &MainWindow::onProjectCreated);
+    connect(cargoProcessor, &CargoProcessor::outputMessage, this, &MainWindow::onOutputMessage);
 
     readSettings();
 }
@@ -55,6 +56,12 @@ void MainWindow::on_actionAbout_triggered() {
 
 void MainWindow::onProjectCreated(const QString& path) {
     qDebug() << path;
+}
+
+void MainWindow::onOutputMessage(const QString& message) {
+    int cargoTabIndex = static_cast<int>(OutputPane::Cargo);
+    ui->tabWidgetOutput->setCurrentIndex(cargoTabIndex);
+    ui->textEditCargo->append(message);
 }
 
 void MainWindow::readSettings() {

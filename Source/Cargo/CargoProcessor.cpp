@@ -32,17 +32,13 @@ void CargoProcessor::createProject(ProjectTemplate projectTemplate, const QStrin
 void CargoProcessor::onReadyReadStandardOutput() {
     QByteArray data = process->readAllStandardOutput();
     QString output = outputCodec->toUnicode(data.constData(), data.length(), &outputCodecState);
-
-    qDebug() << "readAllStandardOutput";
-    qDebug() << output;
+    outputMessage(output);
 }
 
 void CargoProcessor::onReadyReadStandardError() {
     QByteArray data = process->readAllStandardError();
     QString output = outputCodec->toUnicode(data.constData(), data.length(), &errorCodecState);
-
-    qDebug() << "readAllStandardError";
-    qDebug() << output;
+    outputMessage(output);
 }
 
 void CargoProcessor::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
