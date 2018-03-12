@@ -37,7 +37,7 @@ void Options::on_buttonBox_accepted() {
 void Options::readSettings() {
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
     ui->lineEditCargo->setText(settings.value("Path/Cargo").toString());
-    ui->lineEditWorkspace->setText(settings.value("Path/Workspace", Global::getDefaultWorkspacePath()).toString());
+    ui->lineEditWorkspace->setText(settings.value("Path/workspace", Global::getDefaultWorkspacePath()).toString());
     ui->checkBoxSession->setChecked(settings.value("MainWindow/restoreSession", true).toBool());
 }
 

@@ -12,7 +12,7 @@ NewCargoProject::NewCargoProject(CargoProcessor* cargoProcessor, QWidget* parent
     setFixedHeight(height());
 
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-    ui->lineEditDirectory->setText(settings.value("Path/Workspace", Global::getDefaultWorkspacePath()).toString());
+    ui->lineEditDirectory->setText(settings.value("Path/workspace", Global::getDefaultWorkspacePath()).toString());
 
     connect(ui->lineEditName, &QLineEdit::textChanged, this, &NewCargoProject::adjustAcceptedButton);
     connect(ui->lineEditDirectory, &QLineEdit::textChanged, this, &NewCargoProject::adjustAcceptedButton);
