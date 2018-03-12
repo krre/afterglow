@@ -5,6 +5,7 @@ CargoProcessor::CargoProcessor(QObject* parent) : QObject(parent) {
     process = new QProcess(this);
     process->setProgram("cargo");
     connect(process, &QProcess::readyReadStandardOutput, this, &CargoProcessor::onReadyReadStandardOutput);
+    connect(process, &QProcess::readyReadStandardError, this, &CargoProcessor::onReadyReadStandardError);
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
         [=](int exitCode, QProcess::ExitStatus exitStatus) { onFinished(exitCode, exitStatus); });
 }
@@ -34,6 +35,10 @@ void CargoProcessor::onReadyReadStandardOutput() {
         emit outputMessage(in.readLine());
         qDebug() << in.readLine();
     }
+}
+
+void CargoProcessor::onReadyReadStandardError() {
+    qDebug() << process->readAllStandardError();
 }
 
 void CargoProcessor::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
