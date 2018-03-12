@@ -13,12 +13,12 @@ CargoProcessor::~CargoProcessor() {
 
 }
 
-void CargoProcessor::createProject(Template projectTemplate, const QString& path) {
+void CargoProcessor::createProject(ProjectTemplate projectTemplate, const QString& path) {
     QStringList arguments;
     arguments << "new";
-    if (projectTemplate == Template::Binary) {
+    if (projectTemplate == ProjectTemplate::Binary) {
         arguments << "--bin";
-    } else if (projectTemplate == Template::Library) {
+    } else if (projectTemplate == ProjectTemplate::Library) {
         arguments << "--lib";
     }
 

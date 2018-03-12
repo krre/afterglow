@@ -33,7 +33,7 @@ void NewCargoProject::on_pushButtonDirectory_clicked() {
 }
 
 void NewCargoProject::on_buttonBox_accepted() {
-    CargoProcessor::Template projectTemplate = static_cast<CargoProcessor::Template>(ui->comboBoxTemplate->currentIndex());
+    CargoProcessor::ProjectTemplate projectTemplate = static_cast<CargoProcessor::ProjectTemplate>(ui->comboBoxTemplate->currentIndex());
     QString projectPath = ui->lineEditDirectory->text() + "/" + ui->lineEditName->text();
     cargoProcessor->createProject(projectTemplate, projectPath);
 }

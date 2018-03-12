@@ -6,14 +6,14 @@
 class CargoProcessor : public QObject {
     Q_OBJECT
 public:
-    enum class Template {
+    enum class ProjectTemplate {
         Binary,
         Library
     };
 
     explicit CargoProcessor(QObject* parent = nullptr);
     ~CargoProcessor();
-    void createProject(Template projectTemplate, const QString& path);
+    void createProject(ProjectTemplate projectTemplate, const QString& path);
 
 signals:
     void outputMessage(const QString& message);
