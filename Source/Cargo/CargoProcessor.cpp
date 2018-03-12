@@ -30,15 +30,19 @@ void CargoProcessor::createProject(ProjectTemplate projectTemplate, const QStrin
 }
 
 void CargoProcessor::onReadyReadStandardOutput() {
-    QTextStream in(process->readAllStandardOutput());
-    while (!in.atEnd()) {
-        emit outputMessage(in.readLine());
-        qDebug() << in.readLine();
-    }
+    QByteArray data = process->readAllStandardOutput();
+    QString output = outputCodec->toUnicode(data.constData(), data.length(), &outputCodecState);
+
+    qDebug() << "readAllStandardOutput";
+    qDebug() << output;
 }
 
 void CargoProcessor::onReadyReadStandardError() {
-    qDebug() << process->readAllStandardError();
+    QByteArray data = process->readAllStandardError();
+    QString output = outputCodec->toUnicode(data.constData(), data.length(), &errorCodecState);
+
+    qDebug() << "readAllStandardError";
+    qDebug() << output;
 }
 
 void CargoProcessor::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {

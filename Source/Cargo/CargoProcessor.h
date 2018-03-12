@@ -2,6 +2,7 @@
 #include <QObject>
 #include <QProcess>
 #include <QTime>
+#include <QTextCodec>
 
 class CargoProcessor : public QObject {
     Q_OBJECT
@@ -37,4 +38,7 @@ private:
     QProcess* process;
     QTime measureTime;
     CommandStatus commandStatus;
+    QTextCodec* outputCodec = QTextCodec::codecForLocale();
+    QTextCodec::ConverterState outputCodecState;
+    QTextCodec::ConverterState errorCodecState;
 };
