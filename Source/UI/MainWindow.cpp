@@ -35,12 +35,25 @@ void MainWindow::closeEvent(QCloseEvent* event) {
     QMainWindow::closeEvent(event);
 }
 
-void MainWindow::on_actionNewCargoProject_triggered() {
+void MainWindow::on_actionNewProject_triggered() {
     NewCargoProject newCargoProject(cargoManager, this);
     newCargoProject.exec();
 }
 
-void MainWindow::on_actionNewRustFile_triggered() {
+void MainWindow::on_actionOpenProject_triggered() {
+    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
+    QString workspace = settings.value("Path/workspace", Global::getDefaultWorkspacePath()).toString();
+    QString dirPath = QFileDialog::getExistingDirectory(this, QString(), workspace);
+    if (!dirPath.isEmpty()) {
+        openProject(dirPath);
+    }
+}
+
+void MainWindow::on_actionCloseProject_triggered() {
+    closeProject();
+}
+
+void MainWindow::on_actionNewFile_triggered() {
     qDebug() << "new rust";
 }
 
@@ -64,7 +77,7 @@ void MainWindow::on_actionAbout_triggered() {
 }
 
 void MainWindow::onProjectCreated(const QString& path) {
-    projectTreeView->setRootPath(path);
+    openProject(path);
 }
 
 void MainWindow::onOutputMessage(const QString& message) {
@@ -125,4 +138,13 @@ void MainWindow::writeSettings() {
     settings.setValue("showOutput", ui->actionShowOutput->isChecked());
 
     settings.endGroup();
+}
+
+void MainWindow::openProject(const QString& path) {
+    closeProject();
+    projectTreeView->setRootPath(path);
+}
+
+void MainWindow::closeProject() {
+    projectTreeView->setRootPath(QString());
 }

@@ -23,11 +23,16 @@ ProjectTreeView::~ProjectTreeView() {
 }
 
 void ProjectTreeView::setRootPath(const QString& path) {
-    setModel(fsModel);
-    setRootIndex(fsModel->setRootPath(path));
+    if (path.isNull()) {
+        setModel(nullptr);
+    } else {
+        setModel(fsModel);
+        setRootIndex(fsModel->setRootPath(path));
 
-    for (int i = 1; i < fsModel->columnCount(); ++i) {
-        hideColumn(i);
+        // Hide columns exclude first
+        for (int i = 1; i < fsModel->columnCount(); ++i) {
+            hideColumn(i);
+        }
     }
 }
 

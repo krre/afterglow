@@ -20,8 +20,12 @@ protected:
 
 private slots:
     // File
-    void on_actionNewCargoProject_triggered();
-    void on_actionNewRustFile_triggered();
+    void on_actionNewProject_triggered();
+    void on_actionOpenProject_triggered();
+    void on_actionCloseProject_triggered();
+
+
+    void on_actionNewFile_triggered();
     void on_actionExit_triggered();
 
     // Tools
@@ -47,6 +51,9 @@ private:
 
     void readSettings();
     void writeSettings();
+
+    void openProject(const QString& path);
+    void closeProject();
 
     Ui::MainWindow* ui;
     CargoManager* cargoManager;
