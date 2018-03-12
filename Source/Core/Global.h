@@ -1,8 +1,13 @@
 #pragma once
+#include <QObject>
 #include <QString>
 
-namespace Global {
-    QString getPortableSettingsPath();
-    QString getDefaultWorkspacePath();
+class Global : public QObject {
+    Q_OBJECT
 
-} // Global
+public:
+    Global(QObject* parent = nullptr);
+
+    static QString getPortableSettingsPath();
+    static QString getDefaultWorkspacePath();
+};

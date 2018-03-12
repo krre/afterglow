@@ -2,17 +2,10 @@
 #include "Constants.h"
 #include <QtCore>
 
-namespace Global {
-
-namespace {
-}
-
-QString getPortableSettingsPath() {
+QString Global::getPortableSettingsPath() {
     return QCoreApplication::applicationDirPath() + "/" + APP_SETTINGS_NAME;
 }
 
-QString getDefaultWorkspacePath() {
+QString Global::getDefaultWorkspacePath() {
     return QDir::homePath() + "/" + WORKSPACE_DIRECTORY;
 }
-
-} // Global
