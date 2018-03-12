@@ -4,7 +4,7 @@
 CargoProcessor::CargoProcessor(QObject* parent) : QObject(parent) {
     process = new QProcess(this);
     process->setProgram("cargo");
-    connect(process, &QProcess::readyRead, this, &CargoProcessor::onReadyRead);
+    connect(process, &QProcess::readyReadStandardOutput, this, &CargoProcessor::onReadyReadStandardOutput);
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
         [=](int exitCode, QProcess::ExitStatus exitStatus) { onFinished(exitCode, exitStatus); });
 }
@@ -28,8 +28,8 @@ void CargoProcessor::createProject(Template projectTemplate, const QString& path
     commandStatus = CommandStatus::New;
 }
 
-void CargoProcessor::onReadyRead() {
-    QTextStream in(process->readAll());
+void CargoProcessor::onReadyReadStandardOutput() {
+    QTextStream in(process->readAllStandardOutput());
     while (!in.atEnd()) {
         emit outputMessage(in.readLine());
         qDebug() << in.readLine();

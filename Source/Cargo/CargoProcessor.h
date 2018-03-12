@@ -20,7 +20,7 @@ signals:
     void projectCreated(const QString& path);
 
 private slots:
-    void onReadyRead();
+    void onReadyReadStandardOutput();
     void onFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
