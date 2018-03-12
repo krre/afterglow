@@ -5,7 +5,6 @@
 #include "NewCargoProject.h"
 #include "Options.h"
 #include "Cargo/CargoProcessor.h"
-#include <QtCore>
 #include <QtWidgets>
 
 MainWindow::MainWindow() :

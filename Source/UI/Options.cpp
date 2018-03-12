@@ -1,7 +1,6 @@
 #include "Options.h"
 #include "ui_Options.h"
 #include "Core/Global.h"
-#include <QtCore>
 #include <QtWidgets>
 
 Options::Options(QWidget* parent) :

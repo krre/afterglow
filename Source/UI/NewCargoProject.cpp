@@ -2,7 +2,6 @@
 #include "ui_NewCargoProject.h"
 #include "Core/Global.h"
 #include "Cargo/CargoProcessor.h"
-#include <QtCore>
 #include <QtWidgets>
 
 NewCargoProject::NewCargoProject(CargoProcessor* cargoProcessor, QWidget* parent) :
