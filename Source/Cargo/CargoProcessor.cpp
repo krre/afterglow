@@ -25,6 +25,14 @@ void CargoProcessor::createProject(ProjectTemplate projectTemplate, const QStrin
 
     arguments << path;
     process->setArguments(arguments);
+
+    QString message = "Starting: cargo";
+    for (const auto& argument : arguments) {
+        message += " " + argument;
+    }
+
+    timedOutputMessage(message);
+    measureTime.start();
     process->start();
     commandStatus = CommandStatus::New;
 }
@@ -43,7 +51,6 @@ void CargoProcessor::onReadyReadStandardError() {
 
 void CargoProcessor::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     Q_UNUSED(exitCode)
-    qDebug() << exitCode << exitStatus;
 
     if (exitCode) {
         return;
@@ -56,10 +63,10 @@ void CargoProcessor::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     default:
         break;
     }
-//    QString finishedMessage = "The process " + process->program() +
-//        (exitStatus == QProcess::NormalExit ? " finished normally" : " crashed");
-//    timedOutputMessage(finishedMessage);
-//    timedOutputMessage(QString("Elapsed time: %1 ms").arg(measureTime.elapsed()));
+    QString finishedMessage = "The process " + process->program() +
+        (exitStatus == QProcess::NormalExit ? " finished normally" : " crashed");
+    timedOutputMessage(finishedMessage);
+    timedOutputMessage(QString("Elapsed time: %1 ms").arg(measureTime.elapsed()));
 }
 
 void CargoProcessor::timedOutputMessage(const QString& message) {
