@@ -8,6 +8,9 @@
 #include "ProjectTreeView.h"
 #include "Editor/Editor.h"
 #include "NewFile.h"
+#ifdef Q_OS_WIN
+    #include <windows.h>
+#endif
 #include <QtWidgets>
 
 MainWindow::MainWindow() :
@@ -242,7 +245,21 @@ void MainWindow::saveSession() {
     }
 
     QDir dir(projectPath);
-    dir.mkdir(PROJECT_DATA_DIRECTORY);
+    bool result = dir.mkdir(PROJECT_DATA_DIRECTORY);
+#ifdef Q_OS_WIN
+    // Set hidden attribute on created directory (need only for Windows).
+    if (result) {
+        QString directory = projectPath + "/" + PROJECT_DATA_DIRECTORY;
+        wchar_t* charText = new wchar_t[directory.length() + 1];
+        directory.toWCharArray(charText);
+        charText[directory.length()] = 0; // append null terminator
+        int attr = GetFileAttributes(charText);
+        if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0) {
+            SetFileAttributes(charText, attr | FILE_ATTRIBUTE_HIDDEN);
+         }
+#endif
+    }
+
 
     QString sessionPath = projectPath + "/" + PROJECT_DATA_DIRECTORY + "/" + PROJECT_SESSION_FILE;
     QFile saveFile(sessionPath);
