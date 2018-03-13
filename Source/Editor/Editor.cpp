@@ -9,11 +9,9 @@ Editor::Editor(QString filePath, QWidget* parent) :
 
 void Editor::readFile() {
     QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
+    if (file.open(QFile::ReadOnly | QFile::Text)) {
+        setPlainText(file.readAll());
+    } else {
         qWarning() << "Failed to open file" << filePath;
-        return;
     }
-
-    QTextStream in(&file);
-    append(in.readAll());
 }
