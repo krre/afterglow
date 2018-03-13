@@ -118,7 +118,9 @@ void MainWindow::onOutputMessage(const QString& message) {
 }
 
 void MainWindow::onFileRemoved(const QString& filePath) {
-
+    on_tabWidgetSource_tabCloseRequested(findSource(filePath));
+    QDir dir;
+    dir.remove(filePath);
 }
 
 void MainWindow::addSourceTab(const QString& filePath) {
