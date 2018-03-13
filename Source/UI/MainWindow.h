@@ -24,8 +24,8 @@ private slots:
     void on_actionOpenProject_triggered();
     void on_actionCloseProject_triggered();
 
-
     void on_actionNewFile_triggered();
+    void on_actionOpenFile_triggered();
     void on_actionExit_triggered();
 
     // Tools
@@ -56,6 +56,7 @@ private:
     void closeProject();
 
     void changeWindowTitle(const QString& filePath = QString());
+    int findSource(const QString& filePath);
 
     Ui::MainWindow* ui;
     CargoManager* cargoManager;

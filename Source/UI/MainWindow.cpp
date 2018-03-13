@@ -6,6 +6,7 @@
 #include "Options.h"
 #include "Cargo/CargoManager.h"
 #include "ProjectTreeView.h"
+#include "Editor/Editor.h"
 #include <QtWidgets>
 
 MainWindow::MainWindow() :
@@ -57,6 +58,13 @@ void MainWindow::on_actionNewFile_triggered() {
     qDebug() << "new rust";
 }
 
+void MainWindow::on_actionOpenFile_triggered() {
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), currentProjectPath, "Rust (*.rs);;All Files(*.*)");
+    if (!filePath.isEmpty()) {
+        addSourceTab(filePath);
+    }
+}
+
 void MainWindow::on_actionExit_triggered() {
     QApplication::quit();
 }
@@ -91,7 +99,16 @@ void MainWindow::onFileRemoved(const QString& filePath) {
 }
 
 void MainWindow::addSourceTab(const QString& filePath) {
-
+    int tabIndex = findSource(filePath);
+    if (tabIndex != -1) {
+        ui->tabWidgetSource->setCurrentIndex(tabIndex);
+    } else {
+        QFileInfo fi(filePath);
+        Editor* editor = new Editor(filePath);
+        int index = ui->tabWidgetSource->addTab(editor, fi.fileName());
+        ui->tabWidgetSource->setTabToolTip(index, filePath);
+        ui->tabWidgetSource->setCurrentIndex(index);
+    }
 }
 
 void MainWindow::readSettings() {
@@ -177,4 +194,15 @@ void MainWindow::changeWindowTitle(const QString& filePath) {
     }
 
     setWindowTitle(title);
+}
+
+int MainWindow::findSource(const QString& filePath) {
+    for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
+        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(i));
+        if (editor->getFilePath() == filePath) {
+            return i;
+        }
+    }
+
+    return -1;
 }

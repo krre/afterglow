@@ -14,7 +14,8 @@ SOURCES += \
     UI/SelectWorkspace.cpp \
     UI/Options.cpp \
     Cargo/CargoManager.cpp \
-    UI/ProjectTreeView.cpp
+    UI/ProjectTreeView.cpp \
+    Editor/Editor.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -24,7 +25,8 @@ HEADERS += \
     UI/SelectWorkspace.h \
     UI/Options.h \
     Cargo/CargoManager.h \
-    UI/ProjectTreeView.h
+    UI/ProjectTreeView.h \
+    Editor/Editor.h
 
 FORMS += \
     UI/MainWindow.ui \
