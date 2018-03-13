@@ -8,5 +8,7 @@ public:
     QString getFilePath() const { return filePath; }
 
 private:
+    void readFile();
+
     QString filePath;
 };
