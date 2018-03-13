@@ -55,6 +55,8 @@ private:
     void openProject(const QString& path);
     void closeProject();
 
+    void changeWindowTitle(const QString& filePath = QString());
+
     Ui::MainWindow* ui;
     CargoManager* cargoManager;
     ProjectTreeView* projectTreeView;

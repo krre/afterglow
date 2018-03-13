@@ -151,9 +151,30 @@ void MainWindow::openProject(const QString& path) {
     closeProject();
     projectTreeView->setRootPath(path);
     currentProjectPath = path;
+
+    if (!ui->tabWidgetSource->count()) {
+        changeWindowTitle();
+    }
 }
 
 void MainWindow::closeProject() {
     projectTreeView->setRootPath(QString());
     currentProjectPath = QString();
+    changeWindowTitle();
+}
+
+void MainWindow::changeWindowTitle(const QString& filePath) {
+    QString title = QApplication::applicationName();
+
+    if (!currentProjectPath.isEmpty()) {
+        QFileInfo fi(currentProjectPath);
+        title = fi.baseName() + " - " + title;
+    }
+
+    if (!filePath.isEmpty()) {
+        QFileInfo fi(filePath);
+        title = fi.fileName() + " - " + title;
+    }
+
+    setWindowTitle(title);
 }
