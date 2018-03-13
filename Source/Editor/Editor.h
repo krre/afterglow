@@ -6,6 +6,7 @@ class Editor : public QTextEdit {
 public:
     explicit Editor(QString filePath, QWidget* parent = nullptr);
     QString getFilePath() const { return filePath; }
+    void saveFile();
 
 private:
     void readFile();

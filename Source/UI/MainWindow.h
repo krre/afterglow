@@ -24,14 +24,15 @@ private slots:
     void on_actionOpenProject_triggered();
     void on_actionCloseProject_triggered();
 
+    void on_actionNewFile_triggered();
+    void on_actionOpenFile_triggered();
+    void on_actionSave_triggered();
     void on_actionSaveAs_triggered();
 
     void on_actionClose_triggered();
     void on_actionCloseAll_triggered();
     void on_actionCloseOther_triggered();
 
-    void on_actionNewFile_triggered();
-    void on_actionOpenFile_triggered();
     void on_actionExit_triggered();
 
     // Tools

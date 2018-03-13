@@ -105,6 +105,11 @@ void MainWindow::on_actionOpenFile_triggered() {
     }
 }
 
+void MainWindow::on_actionSave_triggered() {
+    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
+    editor->saveFile();
+}
+
 void MainWindow::on_actionExit_triggered() {
     QApplication::quit();
 }
