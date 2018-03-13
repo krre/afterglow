@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>NewCargoProject</class>
- <widget class="QDialog" name="NewCargoProject">
+ <class>NewProject</class>
+ <widget class="QDialog" name="NewProject">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>126</height>
+    <height>140</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>New Cargo Project</string>
+   <string>New Project</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -93,7 +93,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>NewCargoProject</receiver>
+   <receiver>NewProject</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -109,7 +109,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>NewCargoProject</receiver>
+   <receiver>NewProject</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

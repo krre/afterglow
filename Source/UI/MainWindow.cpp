@@ -2,7 +2,7 @@
 #include "ui_MainWindow.h"
 #include "Core/Global.h"
 #include "Core/Constants.h"
-#include "NewCargoProject.h"
+#include "NewProject.h"
 #include "Options.h"
 #include "Cargo/CargoManager.h"
 #include "ProjectTreeView.h"
@@ -38,7 +38,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 }
 
 void MainWindow::on_actionNewProject_triggered() {
-    NewCargoProject newCargoProject(this);
+    NewProject newCargoProject(this);
     newCargoProject.exec();
 
     if (!newCargoProject.getProjectPath().isEmpty()) {

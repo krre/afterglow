@@ -10,32 +10,32 @@ SOURCES += \
         main.cpp \
     UI/MainWindow.cpp \
     Core/Global.cpp \
-    UI/NewCargoProject.cpp \
     UI/SelectWorkspace.cpp \
     UI/Options.cpp \
     Cargo/CargoManager.cpp \
     UI/ProjectTreeView.cpp \
     Editor/Editor.cpp \
-    UI/NewFile.cpp
+    UI/NewFile.cpp \
+    UI/NewProject.cpp
 
 HEADERS += \
     UI/MainWindow.h \
     Core/Global.h \
     Core/Constants.h \
-    UI/NewCargoProject.h \
     UI/SelectWorkspace.h \
     UI/Options.h \
     Cargo/CargoManager.h \
     UI/ProjectTreeView.h \
     Editor/Editor.h \
-    UI/NewFile.h
+    UI/NewFile.h \
+    UI/NewProject.h
 
 FORMS += \
     UI/MainWindow.ui \
-    UI/NewCargoProject.ui \
     UI/SelectWorkspace.ui \
     UI/Options.ui \
-    UI/NewFile.ui
+    UI/NewFile.ui \
+    UI/NewProject.ui
 
 DISTFILES += \
     ../README.md \

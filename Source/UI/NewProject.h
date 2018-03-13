@@ -3,17 +3,17 @@
 #include <QDialog>
 
 namespace Ui {
-    class NewCargoProject;
+    class NewProject;
 }
 
 class CargoManager;
 
-class NewCargoProject : public QDialog {
+class NewProject : public QDialog {
     Q_OBJECT
 
 public:
-    explicit NewCargoProject(QWidget* parent = 0);
-    ~NewCargoProject();
+    explicit NewProject(QWidget* parent = 0);
+    ~NewProject();
     QString getProjectPath() const { return projectPath; }
     CargoManager::ProjectTemplate getProjectTemplate() const { return projectTemplate; }
 
@@ -23,7 +23,7 @@ private slots:
     void adjustAcceptedButton();
 
 private:
-    Ui::NewCargoProject* ui;
+    Ui::NewProject* ui;
     QString projectPath;
     CargoManager::ProjectTemplate projectTemplate;
 };
