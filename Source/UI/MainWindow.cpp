@@ -122,6 +122,11 @@ void MainWindow::readSettings() {
     ui->actionShowSidebar->setChecked(settings.value("showSidebar", true).toBool());
     ui->actionShowOutput->setChecked(settings.value("showOutput", true).toBool());
 
+    QString lastProject = settings.value("lastProject", "").toString();
+    if (!lastProject.isEmpty()) {
+        openProject(lastProject);
+    }
+
     settings.endGroup();
 }
 
@@ -137,14 +142,18 @@ void MainWindow::writeSettings() {
     settings.setValue("showSidebar", ui->actionShowSidebar->isChecked());
     settings.setValue("showOutput", ui->actionShowOutput->isChecked());
 
+    settings.setValue("lastProject", currentProjectPath);
+
     settings.endGroup();
 }
 
 void MainWindow::openProject(const QString& path) {
     closeProject();
     projectTreeView->setRootPath(path);
+    currentProjectPath = path;
 }
 
 void MainWindow::closeProject() {
     projectTreeView->setRootPath(QString());
+    currentProjectPath = QString();
 }
