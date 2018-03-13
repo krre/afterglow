@@ -315,6 +315,8 @@ void MainWindow::openProject(const QString& path) {
 }
 
 void MainWindow::closeProject() {
+    saveSession();
+    on_actionCloseAll_triggered();
     projectTreeView->setRootPath(QString());
     projectPath = QString();
     changeWindowTitle();
