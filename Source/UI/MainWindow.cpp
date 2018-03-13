@@ -56,7 +56,7 @@ void MainWindow::on_actionCloseProject_triggered() {
 }
 
 void MainWindow::on_actionSaveAs_triggered() {
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Save File"), currentProjectPath, "Rust (*.rs);;All Files(*.*)");
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Save File"), projectPath, "Rust (*.rs);;All Files(*.*)");
     if (!filePath.isEmpty()) {
         // TODO: Duplicate file
         addSourceTab(filePath);
@@ -85,7 +85,7 @@ void MainWindow::on_actionCloseOther_triggered() {
 }
 
 void MainWindow::on_actionNewFile_triggered() {
-    NewFile newFile(currentProjectPath);
+    NewFile newFile(projectPath);
     newFile.exec();
     if (!newFile.getFilePath().isEmpty()) {
         // TODO: Create new file
@@ -94,7 +94,7 @@ void MainWindow::on_actionNewFile_triggered() {
 }
 
 void MainWindow::on_actionOpenFile_triggered() {
-    QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), currentProjectPath, "Rust (*.rs);;All Files(*.*)");
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), projectPath, "Rust (*.rs);;All Files(*.*)");
     if (!filePath.isEmpty()) {
         addSourceTab(filePath);
     }
@@ -219,7 +219,7 @@ void MainWindow::writeSettings() {
     settings.setValue("showSidebar", ui->actionShowSidebar->isChecked());
     settings.setValue("showOutput", ui->actionShowOutput->isChecked());
 
-    settings.setValue("lastProject", currentProjectPath);
+    settings.setValue("lastProject", projectPath);
 
     settings.endGroup();
 }
@@ -227,7 +227,7 @@ void MainWindow::writeSettings() {
 void MainWindow::openProject(const QString& path) {
     closeProject();
     projectTreeView->setRootPath(path);
-    currentProjectPath = path;
+    projectPath = path;
 
     if (!ui->tabWidgetSource->count()) {
         changeWindowTitle();
@@ -236,15 +236,15 @@ void MainWindow::openProject(const QString& path) {
 
 void MainWindow::closeProject() {
     projectTreeView->setRootPath(QString());
-    currentProjectPath = QString();
+    projectPath = QString();
     changeWindowTitle();
 }
 
 void MainWindow::changeWindowTitle(const QString& filePath) {
     QString title = QApplication::applicationName();
 
-    if (!currentProjectPath.isEmpty()) {
-        QFileInfo fi(currentProjectPath);
+    if (!projectPath.isEmpty()) {
+        QFileInfo fi(projectPath);
         title = fi.baseName() + " - " + title;
     }
 

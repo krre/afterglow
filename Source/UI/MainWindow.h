@@ -71,5 +71,5 @@ private:
     Ui::MainWindow* ui;
     CargoManager* cargoManager;
     ProjectTreeView* projectTreeView;
-    QString currentProjectPath;
+    QString projectPath;
 };
