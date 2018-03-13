@@ -34,6 +34,9 @@ private slots:
     // Help
     void on_actionAbout_triggered();
 
+    // TabWidet
+    void on_tabWidgetSource_tabCloseRequested(int index);
+
     // CargoManager
     void onProjectCreated(const QString& path);
     void onOutputMessage(const QString& message);

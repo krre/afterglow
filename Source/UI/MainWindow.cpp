@@ -84,6 +84,12 @@ void MainWindow::on_actionAbout_triggered() {
             .arg(__DATE__).arg(APP_URL).arg(APP_COPYRIGHT));
 }
 
+void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {
+    QWidget* widget = ui->tabWidgetSource->widget(index);
+    ui->tabWidgetSource->removeTab(index);
+    delete widget;
+}
+
 void MainWindow::onProjectCreated(const QString& path) {
     openProject(path);
 }
