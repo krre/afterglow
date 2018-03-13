@@ -15,7 +15,8 @@ SOURCES += \
     UI/Options.cpp \
     Cargo/CargoManager.cpp \
     UI/ProjectTreeView.cpp \
-    Editor/Editor.cpp
+    Editor/Editor.cpp \
+    UI/NewFile.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -26,13 +27,15 @@ HEADERS += \
     UI/Options.h \
     Cargo/CargoManager.h \
     UI/ProjectTreeView.h \
-    Editor/Editor.h
+    Editor/Editor.h \
+    UI/NewFile.h
 
 FORMS += \
     UI/MainWindow.ui \
     UI/NewCargoProject.ui \
     UI/SelectWorkspace.ui \
-    UI/Options.ui
+    UI/Options.ui \
+    UI/NewFile.ui
 
 DISTFILES += \
     ../README.md \

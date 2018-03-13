@@ -7,6 +7,7 @@
 #include "Cargo/CargoManager.h"
 #include "ProjectTreeView.h"
 #include "Editor/Editor.h"
+#include "NewFile.h"
 #include <QtWidgets>
 
 MainWindow::MainWindow() :
@@ -84,7 +85,12 @@ void MainWindow::on_actionCloseOther_triggered() {
 }
 
 void MainWindow::on_actionNewFile_triggered() {
-    qDebug() << "new rust";
+    NewFile newFile(currentProjectPath);
+    newFile.exec();
+    if (!newFile.getFilePath().isEmpty()) {
+        // TODO: Create new file
+        addSourceTab(newFile.getFilePath());
+    }
 }
 
 void MainWindow::on_actionOpenFile_triggered() {
