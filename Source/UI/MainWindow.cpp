@@ -38,8 +38,12 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 }
 
 void MainWindow::on_actionNewProject_triggered() {
-    NewCargoProject newCargoProject(cargoManager, this);
+    NewCargoProject newCargoProject(this);
     newCargoProject.exec();
+
+    if (!newCargoProject.getProjectPath().isEmpty()) {
+        cargoManager->createProject(newCargoProject.getProjectTemplate(), newCargoProject.getProjectPath());
+    }
 }
 
 void MainWindow::on_actionOpenProject_triggered() {

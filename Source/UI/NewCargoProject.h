@@ -1,4 +1,5 @@
 #pragma once
+#include "Cargo/CargoManager.h"
 #include <QDialog>
 
 namespace Ui {
@@ -11,8 +12,10 @@ class NewCargoProject : public QDialog {
     Q_OBJECT
 
 public:
-    explicit NewCargoProject(CargoManager* cargoManager, QWidget* parent = 0);
+    explicit NewCargoProject(QWidget* parent = 0);
     ~NewCargoProject();
+    QString getProjectPath() const { return projectPath; }
+    CargoManager::ProjectTemplate getProjectTemplate() const { return projectTemplate; }
 
 private slots:
     void on_pushButtonDirectory_clicked();
@@ -21,5 +24,6 @@ private slots:
 
 private:
     Ui::NewCargoProject* ui;
-    CargoManager* cargoManager;
+    QString projectPath;
+    CargoManager::ProjectTemplate projectTemplate;
 };
