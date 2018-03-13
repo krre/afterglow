@@ -12,6 +12,7 @@ public:
     ~ProjectTreeView();
 
     void setRootPath(const QString& path);
+    QFileSystemModel* getFsModel() const { return fsModel; }
 
 signals:
     void openActivated(const QString& filePath);

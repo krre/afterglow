@@ -36,6 +36,7 @@ private slots:
 
     // TabWidet
     void on_tabWidgetSource_tabCloseRequested(int index);
+    void on_tabWidgetSource_currentChanged(int index);
 
     // CargoManager
     void onProjectCreated(const QString& path);

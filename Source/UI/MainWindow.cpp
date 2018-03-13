@@ -90,6 +90,23 @@ void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {
     delete widget;
 }
 
+void MainWindow::on_tabWidgetSource_currentChanged(int index) {
+    if (index >= 0) {
+        QString filePath = static_cast<Editor*>(ui->tabWidgetSource->widget(index))->getFilePath();
+        QModelIndex modelIndex = projectTreeView->getFsModel()->index(filePath);
+        projectTreeView->setCurrentIndex(modelIndex);
+        changeWindowTitle(filePath);
+    } else {
+        projectTreeView->setCurrentIndex(QModelIndex());
+        changeWindowTitle();
+    }
+
+    ui->actionSaveAs->setEnabled(index >= 0);
+    ui->actionClose->setEnabled(index >= 0);
+    ui->actionCloseOther->setEnabled(index >= 0);
+    ui->actionCloseAll->setEnabled(index >= 0);
+}
+
 void MainWindow::onProjectCreated(const QString& path) {
     openProject(path);
 }
