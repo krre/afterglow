@@ -54,6 +54,27 @@ void MainWindow::on_actionCloseProject_triggered() {
     closeProject();
 }
 
+void MainWindow::on_actionClose_triggered() {
+    on_tabWidgetSource_tabCloseRequested(ui->tabWidgetSource->currentIndex());
+}
+
+void MainWindow::on_actionCloseAll_triggered() {
+    while (ui->tabWidgetSource->count()) {
+        on_tabWidgetSource_tabCloseRequested(0);
+    }
+}
+
+void MainWindow::on_actionCloseOther_triggered() {
+    int i = 0;
+    while (ui->tabWidgetSource->count() > 1) {
+        if (i != ui->tabWidgetSource->currentIndex()) {
+            on_tabWidgetSource_tabCloseRequested(i);
+        } else {
+            i++;
+        }
+    }
+}
+
 void MainWindow::on_actionNewFile_triggered() {
     qDebug() << "new rust";
 }
