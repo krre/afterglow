@@ -48,7 +48,7 @@ void ProjectTreeView::onMousePressed(const QModelIndex& index) {
 
 void ProjectTreeView::onDoubleClicked(const QModelIndex& index) {
     QFileInfo fi = qobject_cast<QFileSystemModel*>(model())->fileInfo(index);
-    if (!fi.isDir() && fi.suffix() == "irbis") {
+    if (!fi.isDir()) {
         emit openActivated(fi.absoluteFilePath());
     }
 }
