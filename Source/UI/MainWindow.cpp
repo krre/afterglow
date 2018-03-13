@@ -54,6 +54,14 @@ void MainWindow::on_actionCloseProject_triggered() {
     closeProject();
 }
 
+void MainWindow::on_actionSaveAs_triggered() {
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Save File"), currentProjectPath, "Rust (*.rs);;All Files(*.*)");
+    if (!filePath.isEmpty()) {
+        // TODO: Duplicate file
+        addSourceTab(filePath);
+    }
+}
+
 void MainWindow::on_actionClose_triggered() {
     on_tabWidgetSource_tabCloseRequested(ui->tabWidgetSource->currentIndex());
 }
