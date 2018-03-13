@@ -62,6 +62,9 @@ private:
     void readSettings();
     void writeSettings();
 
+    void saveSession();
+    void restoreSession();
+
     void openProject(const QString& path);
     void closeProject();
 

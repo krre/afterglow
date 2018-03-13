@@ -34,6 +34,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::closeEvent(QCloseEvent* event) {
     writeSettings();
+    saveSession();
     QMainWindow::closeEvent(event);
 }
 
@@ -228,10 +229,80 @@ void MainWindow::writeSettings() {
     settings.endGroup();
 }
 
+void MainWindow::saveSession() {
+    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
+
+    if (!settings.value("MainWindow/restoreSession").toBool() || projectPath.isEmpty()) {
+        return;
+    }
+
+    QDir dir(projectPath);
+    dir.mkdir(PROJECT_DATA_DIRECTORY);
+
+    QString sessionPath = projectPath + "/" + PROJECT_DATA_DIRECTORY + "/" + PROJECT_SESSION_FILE;
+    QFile saveFile(sessionPath);
+    if (!saveFile.open(QIODevice::WriteOnly)) {
+        qWarning() << "Failed to open session file for writing" << sessionPath;
+        return;
+    }
+
+    QJsonArray openFiles;
+    for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
+        Editor* cave = static_cast<Editor*>(ui->tabWidgetSource->widget(i));
+        openFiles.append(QJsonValue(cave->getFilePath()));
+    }
+
+    QJsonObject obj;
+    obj["openFiles"] = openFiles;
+    obj["selectedTab"] = ui->tabWidgetSource->currentIndex();
+
+    QJsonDocument saveDoc(obj);
+    saveFile.write(saveDoc.toJson());
+}
+
+void MainWindow::restoreSession() {
+    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
+
+    if (!settings.value("MainWindow/restoreSession").toBool() || projectPath.isEmpty()) {
+        return;
+    }
+
+    QString sessionPath = projectPath + "/" + PROJECT_DATA_DIRECTORY + "/" + PROJECT_SESSION_FILE;
+    QFileInfo fi(sessionPath);
+    if (!fi.exists()) {
+        return;
+    }
+
+    QFile loadFile(sessionPath);
+    if (!loadFile.open(QIODevice::ReadOnly)) {
+        qWarning() << "Failed to open session file for reading" << sessionPath;
+        return;
+    }
+
+    QByteArray saveData = loadFile.readAll();
+    QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
+    QJsonArray array = loadDoc.object()["openFiles"].toArray();
+    int selectedTab = loadDoc.object()["selectedTab"].toInt();
+    QString selectedFilePath = array.at(selectedTab).toString();
+
+    for (int i = 0; i < array.count(); i++) {
+        QString filePath = array.at(i).toString();
+        QFileInfo fi(filePath);
+        if (fi.exists()) {
+            addSourceTab(filePath);
+        }
+    }
+
+    int index = findSource(selectedFilePath);
+    ui->tabWidgetSource->setCurrentIndex(index);
+}
+
 void MainWindow::openProject(const QString& path) {
     closeProject();
     projectTreeView->setRootPath(path);
     projectPath = path;
+
+    restoreSession();
 
     if (!ui->tabWidgetSource->count()) {
         changeWindowTitle();
