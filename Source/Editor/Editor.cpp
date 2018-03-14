@@ -30,7 +30,23 @@ QString Editor::getModifiedName() const {
 
 void Editor::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Tab) {
-        insertPlainText("    ");
+        insertPlainText(QString(4, ' '));
+    } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+        QTextEdit::keyPressEvent(event);
+        QTextCursor cursor = textCursor();
+        int row = cursor.blockNumber();
+//        int column = cursor.positionInBlock();
+        if (row > 0) {
+            QTextBlock block = document()->findBlockByLineNumber(row - 1);
+            int count = 0;
+            while (block.text().at(count) == ' ') {
+                count++;
+            }
+
+            if (count > 0) {
+                insertPlainText(QString(count, ' '));
+            }
+        }
     } else {
         QTextEdit::keyPressEvent(event);
     }
