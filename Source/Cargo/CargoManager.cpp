@@ -37,7 +37,10 @@ void CargoManager::build() {
 }
 
 void CargoManager::run() {
-
+    QStringList arguments;
+    arguments << "run";
+    prepareAndStart(arguments);
+    commandStatus = CommandStatus::Run;
 }
 
 void CargoManager::setProjectPath(const QString& path) {
