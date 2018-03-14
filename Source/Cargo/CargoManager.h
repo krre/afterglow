@@ -14,10 +14,15 @@ public:
 
     explicit CargoManager(QObject* parent = nullptr);
     ~CargoManager();
+
     void createProject(ProjectTemplate projectTemplate, const QString& path);
+    void build();
+    void run();
+
+    void setProjectPath(const QString& path);
 
 signals:
-    void outputMessage(const QString& message);
+    void outputMessage(const QString& message = QString());
     void projectCreated(const QString& path);
 
 private slots:
@@ -41,4 +46,5 @@ private:
     QTextCodec* outputCodec = QTextCodec::codecForLocale();
     QTextCodec::ConverterState outputCodecState;
     QTextCodec::ConverterState errorCodecState;
+    QString projectPath;
 };

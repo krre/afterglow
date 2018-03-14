@@ -118,11 +118,11 @@ void MainWindow::on_actionExit_triggered() {
 }
 
 void MainWindow::on_actionBuild_triggered() {
-    qDebug() << "build";
+    cargoManager->build();
 }
 
 void MainWindow::on_actionRun_triggered() {
-    qDebug() << "run";
+    cargoManager->run();
 }
 
 void MainWindow::on_actionOptions_triggered() {
@@ -337,6 +337,7 @@ void MainWindow::openProject(const QString& path) {
     closeProject();
     projectTreeView->setRootPath(path);
     projectPath = path;
+    cargoManager->setProjectPath(path);
 
     restoreSession();
 

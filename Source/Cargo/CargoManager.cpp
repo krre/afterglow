@@ -35,18 +35,44 @@ void CargoManager::createProject(ProjectTemplate projectTemplate, const QString&
     measureTime.start();
     process->start();
     commandStatus = CommandStatus::New;
+    setProjectPath(path);
+}
+
+void CargoManager::build() {
+    QStringList arguments;
+    arguments << "build";
+    process->setArguments(arguments);
+
+    QString message = "Starting: cargo";
+    for (const auto& argument : arguments) {
+        message += " " + argument;
+    }
+
+    timedOutputMessage(message);
+    measureTime.start();
+    process->start();
+    commandStatus = CommandStatus::Build;
+}
+
+void CargoManager::run() {
+
+}
+
+void CargoManager::setProjectPath(const QString& path) {
+    projectPath = path;
+    process->setWorkingDirectory(path);
 }
 
 void CargoManager::onReadyReadStandardOutput() {
     QByteArray data = process->readAllStandardOutput();
     QString output = outputCodec->toUnicode(data.constData(), data.length(), &outputCodecState);
-    outputMessage(output);
+    emit outputMessage(output);
 }
 
 void CargoManager::onReadyReadStandardError() {
     QByteArray data = process->readAllStandardError();
     QString output = outputCodec->toUnicode(data.constData(), data.length(), &errorCodecState);
-    outputMessage(output);
+    emit outputMessage(output);
 }
 
 void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
@@ -67,9 +93,10 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
         (exitStatus == QProcess::NormalExit ? " finished normally" : " crashed");
     timedOutputMessage(finishedMessage);
     timedOutputMessage(QString("Elapsed time: %1 ms").arg(measureTime.elapsed()));
+    emit outputMessage();
 }
 
 void CargoManager::timedOutputMessage(const QString& message) {
     QString timedMessage = QTime::currentTime().toString("hh:mm:ss: ") + message;
-    outputMessage(timedMessage);
+    emit outputMessage(timedMessage);
 }
