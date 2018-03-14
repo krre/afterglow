@@ -24,16 +24,7 @@ void CargoManager::createProject(ProjectTemplate projectTemplate, const QString&
     }
 
     arguments << path;
-    process->setArguments(arguments);
-
-    QString message = "Starting: cargo";
-    for (const auto& argument : arguments) {
-        message += " " + argument;
-    }
-
-    timedOutputMessage(message);
-    measureTime.start();
-    process->start();
+    prepareAndStart(arguments);
     commandStatus = CommandStatus::New;
     setProjectPath(path);
 }
@@ -41,16 +32,7 @@ void CargoManager::createProject(ProjectTemplate projectTemplate, const QString&
 void CargoManager::build() {
     QStringList arguments;
     arguments << "build";
-    process->setArguments(arguments);
-
-    QString message = "Starting: cargo";
-    for (const auto& argument : arguments) {
-        message += " " + argument;
-    }
-
-    timedOutputMessage(message);
-    measureTime.start();
-    process->start();
+    prepareAndStart(arguments);
     commandStatus = CommandStatus::Build;
 }
 
@@ -94,6 +76,19 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     timedOutputMessage(finishedMessage);
     timedOutputMessage(QString("Elapsed time: %1 ms").arg(measureTime.elapsed()));
     emit outputMessage();
+}
+
+void CargoManager::prepareAndStart(const QStringList& arguments) {
+    process->setArguments(arguments);
+
+    QString message = "Starting: cargo";
+    for (const auto& argument : arguments) {
+        message += " " + argument;
+    }
+
+    timedOutputMessage(message);
+    measureTime.start();
+    process->start();
 }
 
 void CargoManager::timedOutputMessage(const QString& message) {

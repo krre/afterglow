@@ -31,6 +31,7 @@ private slots:
     void onFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
+    void prepareAndStart(const QStringList& arguments);
 
     enum class CommandStatus {
         New,
