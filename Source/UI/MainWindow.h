@@ -81,6 +81,7 @@ private:
 
     void changeWindowTitle(const QString& filePath = QString());
     int findSource(const QString& filePath);
+    void updateMenuState();
 
     Ui::MainWindow* ui;
     CargoManager* cargoManager;

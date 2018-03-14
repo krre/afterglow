@@ -29,6 +29,7 @@ MainWindow::MainWindow() :
     ui->tabWidgetSide->addTab(new QWidget, tr("Properties"));
 
     readSettings();
+    updateMenuState();
 }
 
 MainWindow::~MainWindow() {
@@ -358,6 +359,8 @@ void MainWindow::openProject(const QString& path) {
     if (!ui->tabWidgetSource->count()) {
         changeWindowTitle();
     }
+
+    updateMenuState();
 }
 
 void MainWindow::closeProject() {
@@ -366,6 +369,7 @@ void MainWindow::closeProject() {
     projectTreeView->setRootPath(QString());
     projectPath = QString();
     changeWindowTitle();
+    updateMenuState();
 }
 
 void MainWindow::changeWindowTitle(const QString& filePath) {
@@ -393,4 +397,9 @@ int MainWindow::findSource(const QString& filePath) {
     }
 
     return -1;
+}
+
+void MainWindow::updateMenuState() {
+    ui->menuEdit->menuAction()->setVisible(!projectPath.isNull());
+    ui->menuCargo->menuAction()->setVisible(!projectPath.isNull());
 }
