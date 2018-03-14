@@ -178,10 +178,15 @@ void MainWindow::addSourceTab(const QString& filePath) {
     } else {
         QFileInfo fi(filePath);
         Editor* editor = new Editor(filePath);
+        connect(editor, &Editor::documentModified, this, &MainWindow::onDocumentModified);
         int index = ui->tabWidgetSource->addTab(editor, fi.fileName());
         ui->tabWidgetSource->setTabToolTip(index, filePath);
         ui->tabWidgetSource->setCurrentIndex(index);
     }
+}
+
+void MainWindow::onDocumentModified(Editor* editor) {
+    ui->tabWidgetSource->setTabText(ui->tabWidgetSource->indexOf(editor), editor->getModifiedName());
 }
 
 void MainWindow::readSettings() {

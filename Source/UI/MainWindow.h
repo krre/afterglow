@@ -3,6 +3,7 @@
 
 class CargoManager;
 class ProjectTreeView;
+class Editor;
 
 namespace Ui {
     class MainWindow;
@@ -51,6 +52,9 @@ private slots:
 
     void onFileRemoved(const QString& filePath);
     void addSourceTab(const QString& filePath);
+
+    // Editor
+    void onDocumentModified(Editor* editor);
 
 private:
 
