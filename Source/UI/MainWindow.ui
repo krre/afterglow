@@ -272,7 +272,7 @@
      <x>0</x>
      <y>0</y>
      <width>1043</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -327,8 +327,16 @@
     <addaction name="actionShowSidebar"/>
     <addaction name="actionShowOutput"/>
    </widget>
+   <widget class="QMenu" name="menuCargo">
+    <property name="title">
+     <string>Cargo</string>
+    </property>
+    <addaction name="actionBuild"/>
+    <addaction name="actionRun"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuCargo"/>
    <addaction name="menuTools"/>
    <addaction name="menuView"/>
    <addaction name="menuHelp"/>
@@ -507,6 +515,22 @@
   <action name="actionRecentFiles">
    <property name="text">
     <string>Recent Files</string>
+   </property>
+  </action>
+  <action name="actionBuild">
+   <property name="text">
+    <string>Build</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionRun">
+   <property name="text">
+    <string>Run</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>

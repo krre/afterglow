@@ -36,6 +36,10 @@ private slots:
 
     void on_actionExit_triggered();
 
+    // Cargo
+    void on_actionBuild_triggered();
+    void on_actionRun_triggered();
+
     // Tools
     void on_actionOptions_triggered();
 

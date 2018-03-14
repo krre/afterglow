@@ -117,6 +117,14 @@ void MainWindow::on_actionExit_triggered() {
     QApplication::quit();
 }
 
+void MainWindow::on_actionBuild_triggered() {
+    qDebug() << "build";
+}
+
+void MainWindow::on_actionRun_triggered() {
+    qDebug() << "run";
+}
+
 void MainWindow::on_actionOptions_triggered() {
     Options options(this);
     options.exec();
