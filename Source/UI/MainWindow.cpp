@@ -257,9 +257,10 @@ void MainWindow::saveSession() {
         if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0) {
             SetFileAttributes(charText, attr | FILE_ATTRIBUTE_HIDDEN);
          }
-#endif
     }
-
+#else
+    Q_UNUSED(result)
+#endif
 
     QString sessionPath = projectPath + "/" + PROJECT_DATA_DIRECTORY + "/" + PROJECT_SESSION_FILE;
     QFile saveFile(sessionPath);
