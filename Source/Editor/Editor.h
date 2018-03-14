@@ -12,6 +12,9 @@ public:
 signals:
     void documentModified(Editor* editor);
 
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
+
 private:
     void readFile();
 

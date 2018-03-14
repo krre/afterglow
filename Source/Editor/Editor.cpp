@@ -1,5 +1,5 @@
 #include "Editor.h"
-#include <QtCore>
+#include <QtGui>
 
 Editor::Editor(QString filePath, QWidget* parent) :
         QTextEdit(parent),
@@ -26,6 +26,14 @@ void Editor::saveFile() {
 QString Editor::getModifiedName() const {
     QFileInfo fi(filePath);
     return fi.fileName() + (document()->isModified() ? "*" : "");
+}
+
+void Editor::keyPressEvent(QKeyEvent* event) {
+    if (event->key() == Qt::Key_Tab) {
+        insertPlainText("    ");
+    } else {
+        QTextEdit::keyPressEvent(event);
+    }
 }
 
 void Editor::readFile() {
