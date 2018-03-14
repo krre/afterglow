@@ -95,8 +95,14 @@ void MainWindow::on_actionCloseOther_triggered() {
 void MainWindow::on_actionNewFile_triggered() {
     NewFile newFile(projectPath);
     newFile.exec();
-    if (!newFile.getFilePath().isEmpty()) {
-        // TODO: Create new file
+    QString filePath = newFile.getFilePath();
+    if (!filePath.isEmpty()) {
+        QFile file(filePath);
+        if (!file.open(QIODevice::WriteOnly)) {
+            qWarning() << "Failed to open session file for writing" << filePath;
+            return;
+        }
+        file.write("");
         addSourceTab(newFile.getFilePath());
     }
 }
