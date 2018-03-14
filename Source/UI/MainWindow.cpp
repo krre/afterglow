@@ -163,6 +163,14 @@ void MainWindow::on_tabWidgetSource_currentChanged(int index) {
     ui->actionCloseAll->setEnabled(index >= 0);
 }
 
+void MainWindow::on_toolButtonCargoClear_clicked() {
+    ui->textEditCargo->clear();
+}
+
+void MainWindow::on_toolButtonAppClear_clicked() {
+    ui->textEditApplication->clear();
+}
+
 void MainWindow::onProjectCreated(const QString& path) {
     openProject(path);
 }
