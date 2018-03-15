@@ -22,10 +22,13 @@ protected:
 private slots:
     // File
     void on_actionNewProject_triggered();
+    void on_actionNewRustFile_triggered();
+    void on_actionNewFile_triggered();
+    void on_actionNewDirectory_triggered();
+
     void on_actionOpenProject_triggered();
     void on_actionCloseProject_triggered();
 
-    void on_actionNewFile_triggered();
     void on_actionOpenFile_triggered();
     void on_actionSave_triggered();
     void on_actionSaveAs_triggered();

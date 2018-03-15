@@ -52,6 +52,10 @@ void MainWindow::on_actionNewProject_triggered() {
     }
 }
 
+void MainWindow::on_actionNewRustFile_triggered() {
+    projectTreeView->onNewRustFile();
+}
+
 void MainWindow::on_actionOpenProject_triggered() {
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
     QString workspace = settings.value("Path/workspace", Global::getDefaultWorkspacePath()).toString();
@@ -102,7 +106,11 @@ void MainWindow::on_actionCloseOther_triggered() {
 }
 
 void MainWindow::on_actionNewFile_triggered() {
-    projectTreeView->onNewRustFile();
+    projectTreeView->onNewFile();
+}
+
+void MainWindow::on_actionNewDirectory_triggered() {
+    projectTreeView->onNewDirectory();
 }
 
 void MainWindow::on_actionOpenFile_triggered() {
