@@ -157,10 +157,12 @@ void MainWindow::on_actionPaste_triggered() {
 }
 
 void MainWindow::on_actionBuild_triggered() {
+    on_actionSaveAll_triggered();
     cargoManager->build();
 }
 
 void MainWindow::on_actionRun_triggered() {
+    on_actionSaveAll_triggered();
     cargoManager->run();
 }
 
