@@ -100,7 +100,8 @@ void ProjectTreeView::onNewDirectory() {
     newName.exec();
     QString name = newName.getName();
     if (!name.isEmpty()) {
-        QModelIndex index = fsModel->mkdir(selectedIndexes().first(), name);
+        QModelIndex selectedIndex = selectedIndexes().first();
+        QModelIndex index = fsModel->mkdir(fsModel->isDir(selectedIndex) ? selectedIndex : fsModel->parent(selectedIndex), name);
         setCurrentIndex(index);
     }
 }
