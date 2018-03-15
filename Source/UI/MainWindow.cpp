@@ -180,7 +180,9 @@ void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {
 
 void MainWindow::on_tabWidgetSource_currentChanged(int index) {
     if (index >= 0) {
-        QString filePath = static_cast<Editor*>(ui->tabWidgetSource->widget(index))->getFilePath();
+        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(index));
+        editor->setFocus();
+        QString filePath = editor->getFilePath();
         QModelIndex modelIndex = projectTreeView->getFsModel()->index(filePath);
         projectTreeView->setCurrentIndex(modelIndex);
         changeWindowTitle(filePath);
