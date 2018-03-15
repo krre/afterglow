@@ -36,6 +36,13 @@ private slots:
 
     void on_actionExit_triggered();
 
+    // Edit
+    void on_actionUndo_triggered();
+    void on_actionRedo_triggered();
+    void on_actionCut_triggered();
+    void on_actionCopy_triggered();
+    void on_actionPaste_triggered();
+
     // Cargo
     void on_actionBuild_triggered();
     void on_actionRun_triggered();

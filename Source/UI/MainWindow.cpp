@@ -124,6 +124,31 @@ void MainWindow::on_actionExit_triggered() {
     QApplication::quit();
 }
 
+void MainWindow::on_actionUndo_triggered() {
+    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
+    editor->undo();
+}
+
+void MainWindow::on_actionRedo_triggered() {
+    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
+    editor->redo();
+}
+
+void MainWindow::on_actionCut_triggered() {
+    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
+    editor->cut();
+}
+
+void MainWindow::on_actionCopy_triggered() {
+    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
+    editor->copy();
+}
+
+void MainWindow::on_actionPaste_triggered() {
+    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
+    editor->paste();
+}
+
 void MainWindow::on_actionBuild_triggered() {
     cargoManager->build();
 }
