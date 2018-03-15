@@ -6,6 +6,7 @@
 Editor::Editor(QString filePath, QWidget* parent) :
         QPlainTextEdit(parent),
         filePath(filePath) {
+    setFrameShape(QFrame::NoFrame);
     lineNumberArea = new LineNumberArea(this);
     highlighter = new Highlighter(document());
 
