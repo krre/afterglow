@@ -189,10 +189,7 @@ void MainWindow::on_tabWidgetSource_currentChanged(int index) {
         changeWindowTitle();
     }
 
-    ui->actionSaveAs->setEnabled(index >= 0);
-    ui->actionClose->setEnabled(index >= 0);
-    ui->actionCloseOther->setEnabled(index >= 0);
-    ui->actionCloseAll->setEnabled(index >= 0);
+    updateMenuState();
 }
 
 void MainWindow::on_toolButtonCargoClear_clicked() {
@@ -427,4 +424,16 @@ int MainWindow::findSource(const QString& filePath) {
 void MainWindow::updateMenuState() {
     ui->menuEdit->menuAction()->setVisible(!projectPath.isNull());
     ui->menuCargo->menuAction()->setVisible(!projectPath.isNull());
+
+    int index = ui->tabWidgetSource->currentIndex();
+
+    ui->actionSave->setEnabled(index >= 0);
+    ui->actionSaveAs->setEnabled(index >= 0);
+    ui->actionSaveAll->setEnabled(index >= 0);
+
+    ui->actionClose->setEnabled(index >= 0);
+    ui->actionCloseOther->setEnabled(index >= 0);
+    ui->actionCloseAll->setEnabled(index >= 0);
+
+    ui->menuEdit->menuAction()->setEnabled(index >= 0);
 }
