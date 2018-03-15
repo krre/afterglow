@@ -23,6 +23,7 @@ MainWindow::MainWindow() :
 
     projectTreeView = new ProjectTreeView;
     connect(projectTreeView, &ProjectTreeView::openActivated, this, &MainWindow::addSourceTab);
+    connect(projectTreeView, &ProjectTreeView::newFileActivated, this, &MainWindow::onFileCreated);
     connect(projectTreeView, &ProjectTreeView::removeActivated, this, &MainWindow::onFileRemoved);
 
     ui->tabWidgetSide->addTab(projectTreeView, tr("Project"));
@@ -104,15 +105,7 @@ void MainWindow::on_actionNewFile_triggered() {
     NewFile newFile(projectPath);
     newFile.exec();
     QString filePath = newFile.getFilePath();
-    if (!filePath.isEmpty()) {
-        QFile file(filePath);
-        if (!file.open(QIODevice::WriteOnly)) {
-            qWarning() << "Failed to open session file for writing" << filePath;
-            return;
-        }
-        file.write("");
-        addSourceTab(newFile.getFilePath());
-    }
+    addNewFile(filePath);
 }
 
 void MainWindow::on_actionOpenFile_triggered() {
@@ -221,6 +214,10 @@ void MainWindow::onOutputMessage(const QString& message) {
     ui->textEditCargo->append(message);
 }
 
+void MainWindow::onFileCreated(const QString& filePath) {
+    addNewFile(filePath);
+}
+
 void MainWindow::onFileRemoved(const QString& filePath) {
     on_tabWidgetSource_tabCloseRequested(findSource(filePath));
     QDir dir;
@@ -238,6 +235,18 @@ void MainWindow::addSourceTab(const QString& filePath) {
         int index = ui->tabWidgetSource->addTab(editor, fi.fileName());
         ui->tabWidgetSource->setTabToolTip(index, filePath);
         ui->tabWidgetSource->setCurrentIndex(index);
+    }
+}
+
+void MainWindow::addNewFile(const QString& filePath) {
+    if (!filePath.isEmpty()) {
+        QFile file(filePath);
+        if (!file.open(QIODevice::WriteOnly)) {
+            qWarning() << "Failed to open session file for writing" << filePath;
+            return;
+        }
+        file.write("");
+        addSourceTab(filePath);
     }
 }
 

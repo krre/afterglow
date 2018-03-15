@@ -1,4 +1,5 @@
 #include "ProjectTreeView.h"
+#include "NewFile.h"
 #include <QtWidgets>
 
 ProjectTreeView::ProjectTreeView(QWidget* parent) : QTreeView(parent) {
@@ -9,6 +10,20 @@ ProjectTreeView::ProjectTreeView(QWidget* parent) : QTreeView(parent) {
     fsModel = new QFileSystemModel(this);
 
     contextMenu = new QMenu(this);
+
+    QMenu* newMenu = new QMenu(tr("New"), this);
+
+    QAction* newRustFileAction = newMenu->addAction(tr("Rust File..."));
+    connect(newRustFileAction, &QAction::triggered, this, &ProjectTreeView::onNewRustFile);
+
+    QAction* newFileAction = newMenu->addAction(tr("File..."));
+    connect(newFileAction, &QAction::triggered, this, &ProjectTreeView::onNewFile);
+
+    QAction* newDirectoryAction = newMenu->addAction(tr("Directory..."));
+    connect(newDirectoryAction, &QAction::triggered, this, &ProjectTreeView::onNewDirectory);
+
+    contextMenu->addMenu(newMenu);
+
     QAction* openAction = contextMenu->addAction(tr("Open"));
     connect(openAction, &QAction::triggered, [=]() {
         QModelIndex index = selectedIndexes().first();
@@ -18,8 +33,10 @@ ProjectTreeView::ProjectTreeView(QWidget* parent) : QTreeView(parent) {
             openActivated(fsModel->filePath(index));
         }
     });
+
     QAction* removeAction = contextMenu->addAction(tr("Remove..."));
     connect(removeAction, &QAction::triggered, this, &ProjectTreeView::onFileRemove);
+
     QAction* renameAction = contextMenu->addAction(tr("Rename..."));
     connect(renameAction, &QAction::triggered, this, &ProjectTreeView::onFileRename);
 
@@ -56,6 +73,38 @@ void ProjectTreeView::onDoubleClicked(const QModelIndex& index) {
     if (!fi.isDir()) {
         emit openActivated(fi.absoluteFilePath());
     }
+}
+
+// TODO: Split with ProjectTreeView::onNewFile()
+void ProjectTreeView::onNewRustFile() {
+    QModelIndex index = selectedIndexes().first();
+    QString directoryPath = fsModel->isDir(index) ?
+                fsModel->filePath(index) : fsModel->fileInfo(index).absolutePath();
+    NewFile newFile(directoryPath);
+    newFile.exec();
+    QString filePath = newFile.getFilePath();
+    if (!filePath.isEmpty()) {
+        QFileInfo fi(filePath);
+        QString newFilePath = directoryPath + "/" + fi.baseName() + ".rs";
+        newFileActivated(newFilePath);
+    }
+}
+
+// TODO: Split with ProjectTreeView::onNewRustFile()
+void ProjectTreeView::onNewFile() {
+    QModelIndex index = selectedIndexes().first();
+    QString directoryPath = fsModel->isDir(index) ?
+                fsModel->filePath(index) : fsModel->fileInfo(index).absolutePath();
+    NewFile newFile(directoryPath);
+    newFile.exec();
+    QString filePath = newFile.getFilePath();
+    if (!filePath.isEmpty()) {
+        newFileActivated(filePath);
+    }
+}
+
+void ProjectTreeView::onNewDirectory() {
+
 }
 
 void ProjectTreeView::onFileRemove() {

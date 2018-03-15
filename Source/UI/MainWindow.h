@@ -64,8 +64,12 @@ private slots:
     void onProjectCreated(const QString& path);
     void onOutputMessage(const QString& message);
 
+    // ProjectTreeView
+    void onFileCreated(const QString& filePath);
     void onFileRemoved(const QString& filePath);
+
     void addSourceTab(const QString& filePath);
+    void addNewFile(const QString& filePath);
 
     // Editor
     void onDocumentModified(Editor* editor);

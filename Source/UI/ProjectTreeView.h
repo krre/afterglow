@@ -18,10 +18,16 @@ signals:
     void openActivated(const QString& filePath);
     void removeActivated(const QString& filePath);
     void renameActivated(const QString& filePath);
+    void newFileActivated(const QString& filePath);
 
 private slots:
     void onCustomContextMenu(const QPoint& point);
     void onDoubleClicked(const QModelIndex& index);
+
+    void onNewRustFile();
+    void onNewFile();
+    void onNewDirectory();
+
     void onFileRemove();
     void onFileRename();
 
