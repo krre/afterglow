@@ -89,8 +89,10 @@ void Editor::keyPressEvent(QKeyEvent* event) {
         if (row > 0) {
             QTextBlock block = document()->findBlockByLineNumber(row - 1);
             int count = 0;
-            while (block.text().size() && block.text().at(count) == ' ') {
-                count++;
+            for (; count < block.text().size(); count++) {
+                if (block.text().at(count) != ' ') {
+                    break;
+                }
             }
 
             if (count > 0) {
