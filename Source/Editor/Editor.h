@@ -1,7 +1,7 @@
 #pragma once
-#include <QTextEdit>
+#include <QPlainTextEdit>
 
-class Editor : public QTextEdit {
+class Editor : public QPlainTextEdit {
     Q_OBJECT
 public:
     explicit Editor(QString filePath, QWidget* parent = nullptr);

@@ -2,7 +2,7 @@
 #include <QtGui>
 
 Editor::Editor(QString filePath, QWidget* parent) :
-        QTextEdit(parent),
+        QPlainTextEdit(parent),
         filePath(filePath) {
     connect(this, &Editor::textChanged, [=](){
         emit documentModified(this);
@@ -32,7 +32,7 @@ void Editor::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Tab) {
         insertPlainText(QString(4, ' '));
     } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-        QTextEdit::keyPressEvent(event);
+        QPlainTextEdit::keyPressEvent(event);
         QTextCursor cursor = textCursor();
         int row = cursor.blockNumber();
 //        int column = cursor.positionInBlock();
@@ -48,7 +48,7 @@ void Editor::keyPressEvent(QKeyEvent* event) {
             }
         }
     } else {
-        QTextEdit::keyPressEvent(event);
+        QPlainTextEdit::keyPressEvent(event);
     }
 }
 
