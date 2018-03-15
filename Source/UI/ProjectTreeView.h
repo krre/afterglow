@@ -17,9 +17,10 @@ public:
 signals:
     void openActivated(const QString& filePath);
     void removeActivated(const QString& filePath);
+    void renameActivated(const QString& filePath);
 
 private slots:
-    void onMousePressed(const QModelIndex& index);
+    void onCustomContextMenu(const QPoint& point);
     void onDoubleClicked(const QModelIndex& index);
     void onFileRemove();
     void onFileRename();
@@ -27,6 +28,4 @@ private slots:
 private:
     QFileSystemModel* fsModel;
     QMenu* contextMenu;
-    QString selectedFile;
-
 };

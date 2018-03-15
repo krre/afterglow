@@ -2,14 +2,22 @@
 #include <QtWidgets>
 
 ProjectTreeView::ProjectTreeView(QWidget* parent) : QTreeView(parent) {
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, &QTreeView::customContextMenuRequested, this, &ProjectTreeView::onCustomContextMenu);
     connect(this, &QTreeView::doubleClicked, this, &ProjectTreeView::onDoubleClicked);
-    connect(this, &QTreeView::pressed, this, &ProjectTreeView::onMousePressed);
 
     fsModel = new QFileSystemModel(this);
 
     contextMenu = new QMenu(this);
     QAction* openAction = contextMenu->addAction(tr("Open"));
-    connect(openAction, &QAction::triggered, [=]() { openActivated(selectedFile); });
+    connect(openAction, &QAction::triggered, [=]() {
+        QModelIndex index = selectedIndexes().first();
+        if (fsModel->isDir(index)) {
+            setExpanded(index, true);
+        } else {
+            openActivated(fsModel->filePath(index));
+        }
+    });
     QAction* removeAction = contextMenu->addAction(tr("Remove..."));
     connect(removeAction, &QAction::triggered, this, &ProjectTreeView::onFileRemove);
     QAction* renameAction = contextMenu->addAction(tr("Rename..."));
@@ -36,13 +44,10 @@ void ProjectTreeView::setRootPath(const QString& path) {
     }
 }
 
-void ProjectTreeView::onMousePressed(const QModelIndex& index) {
-    if (QApplication::mouseButtons() == Qt::RightButton) {
-        QFileInfo fi = qobject_cast<QFileSystemModel*>(model())->fileInfo(index);
-        if (!fi.isDir()) {
-            selectedFile = fi.absoluteFilePath();
-            contextMenu->exec(QCursor::pos());
-        }
+void ProjectTreeView::onCustomContextMenu(const QPoint& point) {
+    QModelIndex index = indexAt(point);
+    if (index.isValid()) {
+        contextMenu->exec(mapToGlobal(point));
     }
 }
 
@@ -54,13 +59,18 @@ void ProjectTreeView::onDoubleClicked(const QModelIndex& index) {
 }
 
 void ProjectTreeView::onFileRemove() {
-    int result = QMessageBox::question(this, tr("Remove File"), tr("Are you sure?"));
+    QModelIndex index = selectedIndexes().first();
+    QString text = QString("Remove %1 \"%2\"?")
+            .arg(fsModel->isDir(index) ? tr("directory") : tr("file"))
+            .arg(fsModel->fileName(index));
+    int result = QMessageBox::question(this, tr("Remove"), text);
     if (result == QMessageBox::Yes) {
-        emit removeActivated(selectedFile);
+        emit removeActivated(fsModel->filePath(index));
     }
 }
 
 void ProjectTreeView::onFileRename() {
-    qDebug() << "Rename" << selectedFile;
+    QModelIndex index = selectedIndexes().first();
+    emit renameActivated(fsModel->filePath(index));
 }
 
