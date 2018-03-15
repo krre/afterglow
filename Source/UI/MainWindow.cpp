@@ -72,6 +72,13 @@ void MainWindow::on_actionSaveAs_triggered() {
     }
 }
 
+void MainWindow::on_actionSaveAll_triggered() {
+    for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
+        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(i));
+        editor->saveFile();
+    }
+}
+
 void MainWindow::on_actionClose_triggered() {
     on_tabWidgetSource_tabCloseRequested(ui->tabWidgetSource->currentIndex());
 }

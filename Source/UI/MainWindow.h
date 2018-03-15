@@ -29,6 +29,7 @@ private slots:
     void on_actionOpenFile_triggered();
     void on_actionSave_triggered();
     void on_actionSaveAs_triggered();
+    void on_actionSaveAll_triggered();
 
     void on_actionClose_triggered();
     void on_actionCloseAll_triggered();
