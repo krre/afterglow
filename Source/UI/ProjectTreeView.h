@@ -32,6 +32,8 @@ private slots:
     void onFileRename();
 
 private:
+    QString getCurrentDirectory() const;
+
     QFileSystemModel* fsModel;
     QMenu* contextMenu;
 };

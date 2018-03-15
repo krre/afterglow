@@ -77,25 +77,19 @@ void ProjectTreeView::onDoubleClicked(const QModelIndex& index) {
 
 // TODO: Split with ProjectTreeView::onNewFile()
 void ProjectTreeView::onNewRustFile() {
-    QModelIndex index = selectedIndexes().first();
-    QString directoryPath = fsModel->isDir(index) ?
-                fsModel->filePath(index) : fsModel->fileInfo(index).absolutePath();
-    NewFile newFile(directoryPath);
+    NewFile newFile(getCurrentDirectory());
     newFile.exec();
     QString filePath = newFile.getFilePath();
     if (!filePath.isEmpty()) {
         QFileInfo fi(filePath);
-        QString newFilePath = directoryPath + "/" + fi.baseName() + ".rs";
+        QString newFilePath = getCurrentDirectory() + "/" + fi.baseName() + ".rs";
         newFileActivated(newFilePath);
     }
 }
 
 // TODO: Split with ProjectTreeView::onNewRustFile()
 void ProjectTreeView::onNewFile() {
-    QModelIndex index = selectedIndexes().first();
-    QString directoryPath = fsModel->isDir(index) ?
-                fsModel->filePath(index) : fsModel->fileInfo(index).absolutePath();
-    NewFile newFile(directoryPath);
+    NewFile newFile(getCurrentDirectory());
     newFile.exec();
     QString filePath = newFile.getFilePath();
     if (!filePath.isEmpty()) {
@@ -123,3 +117,8 @@ void ProjectTreeView::onFileRename() {
     emit renameActivated(fsModel->filePath(index));
 }
 
+QString ProjectTreeView::getCurrentDirectory() const {
+    QModelIndex index = selectedIndexes().first();
+    return fsModel->isDir(index) ? fsModel->filePath(index)
+                                 : fsModel->fileInfo(index).absolutePath();
+}
