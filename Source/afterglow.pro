@@ -17,7 +17,8 @@ SOURCES += \
     Editor/Editor.cpp \
     UI/NewFile.cpp \
     UI/NewProject.cpp \
-    Editor/LineNumberArea.cpp
+    Editor/LineNumberArea.cpp \
+    Editor/Highlighter.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -30,7 +31,8 @@ HEADERS += \
     Editor/Editor.h \
     UI/NewFile.h \
     UI/NewProject.h \
-    Editor/LineNumberArea.h
+    Editor/LineNumberArea.h \
+    Editor/Highlighter.h
 
 FORMS += \
     UI/MainWindow.ui \

@@ -1,6 +1,8 @@
 #pragma once
 #include <QPlainTextEdit>
 
+class Highlighter;
+
 class Editor : public QPlainTextEdit {
     Q_OBJECT
 public:
@@ -28,5 +30,6 @@ private:
     void readFile();
 
     QWidget* lineNumberArea;
+    Highlighter* highlighter;
     QString filePath;
 };

@@ -1,11 +1,13 @@
 #include "Editor.h"
 #include "LineNumberArea.h"
+#include "Highlighter.h"
 #include <QtGui>
 
 Editor::Editor(QString filePath, QWidget* parent) :
         QPlainTextEdit(parent),
         filePath(filePath) {
     lineNumberArea = new LineNumberArea(this);
+    highlighter = new Highlighter(document());
 
     connect(this, &Editor::blockCountChanged, this, &Editor::updateLineNumberAreaWidth);
     connect(this, &Editor::updateRequest, this, &Editor::updateLineNumberArea);
