@@ -16,7 +16,8 @@ SOURCES += \
     UI/ProjectTreeView.cpp \
     Editor/Editor.cpp \
     UI/NewFile.cpp \
-    UI/NewProject.cpp
+    UI/NewProject.cpp \
+    Editor/LineNumberArea.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -28,7 +29,8 @@ HEADERS += \
     UI/ProjectTreeView.h \
     Editor/Editor.h \
     UI/NewFile.h \
-    UI/NewProject.h
+    UI/NewProject.h \
+    Editor/LineNumberArea.h
 
 FORMS += \
     UI/MainWindow.ui \
