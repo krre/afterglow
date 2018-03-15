@@ -2,27 +2,22 @@
 #include <QDialog>
 
 namespace Ui {
-    class NewFile;
+    class NewName;
 }
 
-class NewFile : public QDialog {
+class NewName : public QDialog {
     Q_OBJECT
 
 public:
-    explicit NewFile(const QString& projectPath, QWidget* parent = 0);
-    ~NewFile();
-    QString getFilePath() const;
+    explicit NewName(const QString& title, QWidget* parent = 0);
+    ~NewName();
+    QString getName() const;
 
 private slots:
-    void on_pushButtonBrowse_clicked();
     void on_buttonBox_accepted();
     void on_lineEditName_textChanged(const QString& text);
-    void on_lineEditDirectory_textChanged(const QString& text);
 
 private:
-    void changeOkButtonState();
-
-private:
-    Ui::NewFile* ui;
-    QString filePath;
+    Ui::NewName* ui;
+    QString name;
 };

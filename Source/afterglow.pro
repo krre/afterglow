@@ -38,8 +38,8 @@ FORMS += \
     UI/MainWindow.ui \
     UI/SelectWorkspace.ui \
     UI/Options.ui \
-    UI/NewFile.ui \
-    UI/NewProject.ui
+    UI/NewProject.ui \
+    UI/NewName.ui
 
 DISTFILES += \
     ../README.md \

@@ -20,13 +20,14 @@ signals:
     void renameActivated(const QString& filePath);
     void newFileActivated(const QString& filePath);
 
-private slots:
-    void onCustomContextMenu(const QPoint& point);
-    void onDoubleClicked(const QModelIndex& index);
-
+public slots:
     void onNewRustFile();
     void onNewFile();
     void onNewDirectory();
+
+private slots:
+    void onCustomContextMenu(const QPoint& point);
+    void onDoubleClicked(const QModelIndex& index);
 
     void onFileRemove();
     void onFileRename();

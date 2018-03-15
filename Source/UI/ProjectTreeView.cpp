@@ -77,11 +77,11 @@ void ProjectTreeView::onDoubleClicked(const QModelIndex& index) {
 
 // TODO: Split with ProjectTreeView::onNewFile()
 void ProjectTreeView::onNewRustFile() {
-    NewFile newFile(getCurrentDirectory());
-    newFile.exec();
-    QString filePath = newFile.getFilePath();
-    if (!filePath.isEmpty()) {
-        QFileInfo fi(filePath);
+    NewName newName(tr("New Rust File"), this);
+    newName.exec();
+    QString name = newName.getName();
+    if (!name.isEmpty()) {
+        QFileInfo fi(name);
         QString newFilePath = getCurrentDirectory() + "/" + fi.baseName() + ".rs";
         newFileActivated(newFilePath);
     }
@@ -89,16 +89,22 @@ void ProjectTreeView::onNewRustFile() {
 
 // TODO: Split with ProjectTreeView::onNewRustFile()
 void ProjectTreeView::onNewFile() {
-    NewFile newFile(getCurrentDirectory());
-    newFile.exec();
-    QString filePath = newFile.getFilePath();
-    if (!filePath.isEmpty()) {
-        newFileActivated(filePath);
+    NewName newName(tr("New File"), this);
+    newName.exec();
+    QString name = newName.getName();
+    if (!name.isEmpty()) {
+        newFileActivated(getCurrentDirectory() + "/" + name);
     }
 }
 
 void ProjectTreeView::onNewDirectory() {
-
+    NewName newName(tr("New Directory"), this);
+    newName.exec();
+    QString name = newName.getName();
+    if (!name.isEmpty()) {
+        QModelIndex index = fsModel->mkdir(selectedIndexes().first(), name);
+        setCurrentIndex(index);
+    }
 }
 
 void ProjectTreeView::onFileRemove() {

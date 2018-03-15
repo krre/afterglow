@@ -102,10 +102,7 @@ void MainWindow::on_actionCloseOther_triggered() {
 }
 
 void MainWindow::on_actionNewFile_triggered() {
-    NewFile newFile(projectPath);
-    newFile.exec();
-    QString filePath = newFile.getFilePath();
-    addNewFile(filePath);
+    projectTreeView->onNewRustFile();
 }
 
 void MainWindow::on_actionOpenFile_triggered() {
