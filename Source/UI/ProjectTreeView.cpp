@@ -75,7 +75,6 @@ void ProjectTreeView::onDoubleClicked(const QModelIndex& index) {
     }
 }
 
-// TODO: Split with ProjectTreeView::onNewFile()
 void ProjectTreeView::onNewRustFile() {
     NewName newName(tr("New Rust File"), this);
     newName.exec();
@@ -87,7 +86,6 @@ void ProjectTreeView::onNewRustFile() {
     }
 }
 
-// TODO: Split with ProjectTreeView::onNewRustFile()
 void ProjectTreeView::onNewFile() {
     NewName newName(tr("New File"), this);
     newName.exec();
@@ -109,11 +107,15 @@ void ProjectTreeView::onNewDirectory() {
 
 void ProjectTreeView::onFileRemove() {
     QModelIndex index = selectedIndexes().first();
+    bool isDir = fsModel->isDir(index);
     QString text = QString("Remove %1 \"%2\"?")
-            .arg(fsModel->isDir(index) ? tr("directory") : tr("file"))
+            .arg(isDir ? tr("directory") : tr("file"))
             .arg(fsModel->fileName(index));
     int result = QMessageBox::question(this, tr("Remove"), text);
     if (result == QMessageBox::Yes) {
+        if (isDir) {
+            fsModel->rmdir(index);
+        }
         emit removeActivated(fsModel->filePath(index));
     }
 }
