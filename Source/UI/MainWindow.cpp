@@ -154,6 +154,11 @@ void MainWindow::on_actionPaste_triggered() {
     editor->paste();
 }
 
+void MainWindow::on_actionSelectAll_triggered() {
+    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
+    editor->selectAll();
+}
+
 void MainWindow::on_actionBuild_triggered() {
     on_actionSaveAll_triggered();
     cargoManager->build();
