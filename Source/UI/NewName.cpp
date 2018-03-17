@@ -1,4 +1,4 @@
-#include "NewFile.h"
+#include "NewName.h"
 #include "ui_NewName.h"
 #include <QtWidgets>
 
@@ -8,6 +8,7 @@ NewName::NewName(const QString& title, QWidget* parent) :
     setWindowTitle(title);
     ui->setupUi(this);
     ui->lineEditName->setFocus();
+    ui->buttonBox->buttons().at(0)->setEnabled(false);
     setFixedHeight(height());
 }
 

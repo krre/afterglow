@@ -1,5 +1,5 @@
 #include "ProjectTreeView.h"
-#include "NewFile.h"
+#include "NewName.h"
 #include <QtWidgets>
 
 ProjectTreeView::ProjectTreeView(QWidget* parent) : QTreeView(parent) {

@@ -15,10 +15,10 @@ SOURCES += \
     Cargo/CargoManager.cpp \
     UI/ProjectTreeView.cpp \
     Editor/Editor.cpp \
-    UI/NewFile.cpp \
     UI/NewProject.cpp \
     Editor/LineNumberArea.cpp \
-    Editor/Highlighter.cpp
+    Editor/Highlighter.cpp \
+    UI/NewName.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -29,10 +29,10 @@ HEADERS += \
     Cargo/CargoManager.h \
     UI/ProjectTreeView.h \
     Editor/Editor.h \
-    UI/NewFile.h \
     UI/NewProject.h \
     Editor/LineNumberArea.h \
-    Editor/Highlighter.h
+    Editor/Highlighter.h \
+    UI/NewName.h
 
 FORMS += \
     UI/MainWindow.ui \

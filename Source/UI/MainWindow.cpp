@@ -7,7 +7,7 @@
 #include "Cargo/CargoManager.h"
 #include "ProjectTreeView.h"
 #include "Editor/Editor.h"
-#include "NewFile.h"
+#include "NewName.h"
 #ifdef Q_OS_WIN
     #include <windows.h>
 #endif
