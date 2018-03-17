@@ -42,7 +42,7 @@
             "use",
             "virtual",
             "where",
-            "while",
+            "while"
         ],
         "traits": [
             "AsSlice",
@@ -79,7 +79,7 @@
             "Str",
             "StrExt",
             "Sync",
-            "ToString",
+            "ToString"
         ],
         "types": [
             "bool",
@@ -105,7 +105,7 @@
             "Self",
             "Box",
             "Vec",
-            "String",
+            "String"
         ],
             "ctypes": [
             "c_float",
@@ -137,7 +137,7 @@
             "ino_t",
             "pid_t",
             "mode_t",
-            "ssize_t",
+            "ssize_t"
         ],
         "self": [
             "self"
@@ -152,7 +152,7 @@
             "Success",
             "Failure",
             "Cons",
-            "Nil",
+            "Nil"
         ],
         "cconstants": [
             "EXIT_FAILURE",
@@ -196,7 +196,7 @@
             "X_OK",
             "STDIN_FILENO",
             "STDOUT_FILENO",
-            "STDERR_FILENO",
+            "STDERR_FILENO"
         ]
     }
 }

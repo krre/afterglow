@@ -15,6 +15,8 @@ protected:
     void highlightBlock(const QString& text) override;
 
 private:
+    void loadRules();
+
     struct HighlightingRule {
         QRegularExpression pattern;
         QTextCharFormat format;
