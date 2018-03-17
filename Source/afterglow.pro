@@ -44,7 +44,6 @@ FORMS += \
 DISTFILES += \
     ../README.md \
     ../.gitignore \
-    Resources/Highlighting.json
 
 RESOURCES += \
     Resources.qrc
