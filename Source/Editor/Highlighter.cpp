@@ -63,7 +63,7 @@ void Highlighter::loadRules() {
         keywordPatterns << QString("\\b%1\\b").arg(keyword.toString());
     }
 
-    foreach (const QString &pattern, keywordPatterns) {
+    for (const QString &pattern: keywordPatterns) {
         rule.pattern = QRegularExpression(pattern);
         rule.format = keywordFormat;
         highlightingRules.append(rule);
