@@ -378,6 +378,8 @@ void MainWindow::readSettings() {
     ui->actionShowSidebar->setChecked(settings.value("showSidebar", true).toBool());
     ui->actionShowOutput->setChecked(settings.value("showOutput", true).toBool());
 
+    ui->tabWidgetSide->setCurrentIndex(settings.value("sidebar", 0).toInt());
+
     QString lastProject = settings.value("lastProject", "").toString();
     if (!lastProject.isEmpty()) {
         openProject(lastProject);
@@ -414,6 +416,8 @@ void MainWindow::writeSettings() {
 
     settings.setValue("showSidebar", ui->actionShowSidebar->isChecked());
     settings.setValue("showOutput", ui->actionShowOutput->isChecked());
+
+    settings.setValue("sidebar", ui->tabWidgetSide->currentIndex());
 
     settings.setValue("lastProject", projectPath);
 
