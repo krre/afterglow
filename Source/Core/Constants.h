@@ -11,6 +11,7 @@ const char APP_COPYRIGHT[] = "Copyright © 2018, Vladimir Zarypov";
 const char WORKSPACE_DIRECTORY[] = "RustProjects";
 const char PROJECT_DATA_DIRECTORY[] = ".afterglow";
 const char PROJECT_SESSION_FILE[] = "session.json";
+const char PROJECT_PROPERTIES_FILE[] = "properties.json";
 
 const int WINDOW_WIDTH = 1200;
 const int WINDOW_HEIGHT = 800;

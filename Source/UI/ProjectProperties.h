@@ -16,6 +16,8 @@ public:
     CargoManager::BuildTarget getTarget() const;
     void setTarget(CargoManager::BuildTarget target);
 
+    void reset();
+
 private:
     Ui::ProjectProperties* ui;
 };

@@ -86,6 +86,9 @@ private:
     void addRecentProject(const QString& projectPath);
     void addRecentFileOrProject(QMenu* menu, const QString& filePath, const std::function<void()>& callback);
 
+    void saveProjectProperties();
+    void loadProjectProperties();
+
     enum class OutputPane {
         Cargo,
         Application,

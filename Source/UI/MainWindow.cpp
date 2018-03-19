@@ -42,6 +42,7 @@ MainWindow::~MainWindow() {
 void MainWindow::closeEvent(QCloseEvent* event) {
     writeSettings();
     saveSession();
+    saveProjectProperties();
     QMainWindow::closeEvent(event);
 }
 
@@ -316,6 +317,40 @@ void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, co
     updateMenuState();
 }
 
+void MainWindow::saveProjectProperties() {
+    QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_PROPERTIES_FILE;
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qWarning() << "Failed to open project properties file for writing" << path;
+        return;
+    }
+
+    QJsonObject obj;
+    obj["target"] = static_cast<int>(projectProperties->getTarget());
+
+    QJsonDocument doc(obj);
+    file.write(doc.toJson());
+}
+
+void MainWindow::loadProjectProperties() {
+    QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_PROPERTIES_FILE;
+    QFileInfo fi(path);
+    if (!fi.exists()) {
+        return;
+    }
+
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qWarning() << "Failed to open project properties file for reading" << path;
+        return;
+    }
+
+    QByteArray data = file.readAll();
+    QJsonDocument doc(QJsonDocument::fromJson(data));
+    CargoManager::BuildTarget target = static_cast<CargoManager::BuildTarget>(doc.object()["target"].toInt());
+    projectProperties->setTarget(target);
+}
+
 void MainWindow::readSettings() {
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
 
@@ -489,6 +524,7 @@ void MainWindow::openProject(const QString& path) {
     projectTreeView->setRootPath(path);
     cargoManager->setProjectPath(path);
 
+    loadProjectProperties();
     restoreSession();
 
     if (!ui->tabWidgetSource->count()) {
@@ -499,7 +535,12 @@ void MainWindow::openProject(const QString& path) {
 }
 
 void MainWindow::closeProject() {
+    if (projectPath.isNull()) return;
+
     saveSession();
+    saveProjectProperties();
+    projectProperties->reset();
+
     on_actionCloseAll_triggered();
     projectTreeView->setRootPath(QString());
     projectPath = QString();
