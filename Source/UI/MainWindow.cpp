@@ -328,7 +328,7 @@ void MainWindow::readSettings() {
     }
 
     int size = settings.beginReadArray("recentFiles");
-    for (int i = 0; i < size; ++i) {
+    for (int i = size - 1; i >= 0; --i) {
         settings.setArrayIndex(i);
         QString filePath = settings.value("path").toString();
         addRecentFile(filePath);
