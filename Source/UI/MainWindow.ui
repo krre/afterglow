@@ -295,11 +295,18 @@
      <addaction name="separator"/>
      <addaction name="actionClearMenuRecentFiles"/>
     </widget>
+    <widget class="QMenu" name="menuRecentProjects">
+     <property name="title">
+      <string>Recent Projects</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionClearMenuRecentProjects"/>
+    </widget>
     <addaction name="menuNew"/>
     <addaction name="actionOpenFileProject"/>
     <addaction name="actionCloseProject"/>
     <addaction name="menuRecentFiles"/>
-    <addaction name="actionRecentProjects"/>
+    <addaction name="menuRecentProjects"/>
     <addaction name="separator"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
@@ -492,11 +499,6 @@
     <string>Close Project</string>
    </property>
   </action>
-  <action name="actionRecentProjects">
-   <property name="text">
-    <string>Recent Projects</string>
-   </property>
-  </action>
   <action name="actionOpenFile">
    <property name="text">
     <string>Open File...</string>
@@ -553,6 +555,11 @@
    </property>
   </action>
   <action name="actionClearMenuRecentFiles">
+   <property name="text">
+    <string>Clear Menu</string>
+   </property>
+  </action>
+  <action name="actionClearMenuRecentProjects">
    <property name="text">
     <string>Clear Menu</string>
    </property>

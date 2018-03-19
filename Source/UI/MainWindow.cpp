@@ -83,6 +83,14 @@ void MainWindow::on_actionClearMenuRecentFiles_triggered() {
     updateMenuState();
 }
 
+void MainWindow::on_actionClearMenuRecentProjects_triggered() {
+    for (int i = ui->menuRecentProjects->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT - 1; i >= 0; i--) {
+        ui->menuRecentProjects->removeAction(ui->menuRecentProjects->actions().at(i));
+    }
+
+    updateMenuState();
+}
+
 void MainWindow::on_actionClose_triggered() {
     on_tabWidgetSource_tabCloseRequested(ui->tabWidgetSource->currentIndex());
 }
@@ -510,6 +518,7 @@ void MainWindow::updateMenuState() {
     ui->actionCloseOther->setEnabled(index >= 0);
     ui->actionCloseAll->setEnabled(index >= 0);
 
+    ui->menuRecentProjects->menuAction()->setEnabled(ui->menuRecentProjects->actions().size() > Constants::SEPARATOR_AND_MENU_CLEAR_COUNT);
     ui->menuRecentFiles->menuAction()->setEnabled(ui->menuRecentFiles->actions().size() > Constants::SEPARATOR_AND_MENU_CLEAR_COUNT);
 
     ui->menuEdit->menuAction()->setEnabled(index >= 0);
