@@ -56,15 +56,6 @@ void MainWindow::on_actionNewRustFile_triggered() {
     projectTreeView->onNewRustFile();
 }
 
-void MainWindow::on_actionOpenProject_triggered() {
-    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-    QString workspace = settings.value("Path/workspace", Global::getDefaultWorkspacePath()).toString();
-    QString dirPath = QFileDialog::getExistingDirectory(this, QString(), workspace);
-    if (!dirPath.isEmpty()) {
-        openProject(dirPath);
-    }
-}
-
 void MainWindow::on_actionCloseProject_triggered() {
     closeProject();
 }
@@ -121,9 +112,18 @@ void MainWindow::on_actionNewDirectory_triggered() {
     projectTreeView->onNewDirectory();
 }
 
-void MainWindow::on_actionOpenFile_triggered() {
-    QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), projectPath, "Rust (*.rs);;All Files(*.*)");
-    if (!filePath.isEmpty()) {
+void MainWindow::on_actionOpenFileProject_triggered() {
+    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
+    QString workspace = settings.value("Path/workspace", Global::getDefaultWorkspacePath()).toString();
+    QString dirPath = projectPath.isEmpty() ? workspace : projectPath;
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), dirPath, "All Files(*.*)");
+    if (filePath.isEmpty()) return;
+
+    QFileInfo fi(filePath);
+    if (fi.fileName() == "Cargo.toml") {
+        QFileInfo fi(filePath);
+        openProject(fi.absolutePath());
+    } else {
         addSourceTab(filePath);
     }
 }
@@ -447,8 +447,8 @@ void MainWindow::restoreSession() {
 
 void MainWindow::openProject(const QString& path) {
     closeProject();
-    projectTreeView->setRootPath(path);
     projectPath = path;
+    projectTreeView->setRootPath(path);
     cargoManager->setProjectPath(path);
 
     restoreSession();

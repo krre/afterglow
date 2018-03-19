@@ -296,12 +296,11 @@
      <addaction name="actionClearMenuRecentFiles"/>
     </widget>
     <addaction name="menuNew"/>
-    <addaction name="actionOpenProject"/>
+    <addaction name="actionOpenFileProject"/>
     <addaction name="actionCloseProject"/>
     <addaction name="menuRecentFiles"/>
     <addaction name="actionRecentProjects"/>
     <addaction name="separator"/>
-    <addaction name="actionOpenFile"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
     <addaction name="actionSaveAll"/>
@@ -416,9 +415,12 @@
     <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="actionOpenProject">
+  <action name="actionOpenFileProject">
    <property name="text">
-    <string>Open Project...</string>
+    <string>Open File or Project...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionSave">

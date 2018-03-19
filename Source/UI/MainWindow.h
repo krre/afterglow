@@ -26,10 +26,9 @@ private slots:
     void on_actionNewFile_triggered();
     void on_actionNewDirectory_triggered();
 
-    void on_actionOpenProject_triggered();
+    void on_actionOpenFileProject_triggered();
     void on_actionCloseProject_triggered();
 
-    void on_actionOpenFile_triggered();
     void on_actionSave_triggered();
     void on_actionSaveAs_triggered();
     void on_actionSaveAll_triggered();
