@@ -4,6 +4,7 @@
 
 class CargoManager;
 class ProjectTreeView;
+class ProjectProperties;
 class Editor;
 
 namespace Ui {
@@ -107,6 +108,7 @@ private:
     Ui::MainWindow* ui;
     CargoManager* cargoManager;
     ProjectTreeView* projectTreeView;
+    ProjectProperties* projectProperties;
     QString projectPath;
 
 };

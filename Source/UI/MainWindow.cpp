@@ -6,6 +6,7 @@
 #include "Options.h"
 #include "Cargo/CargoManager.h"
 #include "ProjectTreeView.h"
+#include "ProjectProperties.h"
 #include "Editor/Editor.h"
 #include "NewName.h"
 #ifdef Q_OS_WIN
@@ -25,9 +26,10 @@ MainWindow::MainWindow() :
     connect(projectTreeView, &ProjectTreeView::openActivated, this, &MainWindow::addSourceTab);
     connect(projectTreeView, &ProjectTreeView::newFileActivated, this, &MainWindow::onFileCreated);
     connect(projectTreeView, &ProjectTreeView::removeActivated, this, &MainWindow::onFileRemoved);
-
     ui->tabWidgetSide->addTab(projectTreeView, tr("Project"));
-    ui->tabWidgetSide->addTab(new QWidget, tr("Properties"));
+
+    projectProperties = new ProjectProperties;
+    ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
     readSettings();
     updateMenuState();
