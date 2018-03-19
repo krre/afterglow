@@ -131,6 +131,7 @@ void MainWindow::on_actionOpenFileProject_triggered() {
     if (fi.fileName() == "Cargo.toml") {
         QFileInfo fi(filePath);
         openProject(fi.absolutePath());
+        addRecentProject(fi.absolutePath());
     } else {
         addSourceTab(filePath);
     }
@@ -232,6 +233,7 @@ void MainWindow::on_toolButtonAppClear_clicked() {
 
 void MainWindow::onProjectCreated(const QString& path) {
     openProject(path);
+    addRecentProject(path);
 }
 
 void MainWindow::onOutputMessage(const QString& message) {
@@ -283,20 +285,30 @@ void MainWindow::onDocumentModified(Editor* editor) {
 }
 
 void MainWindow::addRecentFile(const QString& filePath) {
-    for (QAction* action : ui->menuRecentFiles->actions()) {
+    addRecentFileOrProject(ui->menuRecentFiles, filePath, [=] {
+        addSourceTab(filePath);
+    });
+}
+
+void MainWindow::addRecentProject(const QString& projectPath) {
+    addRecentFileOrProject(ui->menuRecentProjects, projectPath, [=] {
+        openProject(projectPath);
+    });
+}
+
+void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, const std::function<void()>& callback) {
+    for (QAction* action : menu->actions()) {
         if (action->text() == filePath) {
-            ui->menuRecentFiles->removeAction(action);
+            menu->removeAction(action);
         }
     }
 
     QAction* fileAction = new QAction(filePath);
-    connect(fileAction, &QAction::triggered, [=] {
-        addSourceTab(filePath);
-    });
-    ui->menuRecentFiles->insertAction(ui->menuRecentFiles->actions().first(), fileAction);
+    connect(fileAction, &QAction::triggered, callback);
+    menu->insertAction(menu->actions().first(), fileAction);
 
-    if (ui->menuRecentFiles->actions().size() > Constants::MAX_RECENT_FILES + Constants::SEPARATOR_AND_MENU_CLEAR_COUNT) {
-        ui->menuRecentFiles->removeAction(ui->menuRecentFiles->actions().at(ui->menuRecentFiles->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT - 1));
+    if (menu->actions().size() > Constants::MAX_RECENT_FILES + Constants::SEPARATOR_AND_MENU_CLEAR_COUNT) {
+        menu->removeAction(menu->actions().at(menu->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT - 1));
     }
 
     updateMenuState();
@@ -333,6 +345,7 @@ void MainWindow::readSettings() {
     QString lastProject = settings.value("lastProject", "").toString();
     if (!lastProject.isEmpty()) {
         openProject(lastProject);
+        addRecentProject(lastProject);
     }
 
     int size = settings.beginReadArray("recentFiles");

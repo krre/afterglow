@@ -1,5 +1,6 @@
 #pragma once
 #include <QMainWindow>
+#include <functional>
 
 class CargoManager;
 class ProjectTreeView;
@@ -81,6 +82,8 @@ private slots:
 
 private:
     void addRecentFile(const QString& filePath);
+    void addRecentProject(const QString& projectPath);
+    void addRecentFileOrProject(QMenu* menu, const QString& filePath, const std::function<void()>& callback);
 
     enum class OutputPane {
         Cargo,
