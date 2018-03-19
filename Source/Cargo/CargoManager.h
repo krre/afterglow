@@ -12,12 +12,17 @@ public:
         Library
     };
 
+    enum class BuildTarget {
+        Debug,
+        Release
+    };
+
     explicit CargoManager(QObject* parent = nullptr);
     ~CargoManager();
 
     void createProject(ProjectTemplate projectTemplate, const QString& path);
-    void build();
-    void run();
+    void build(BuildTarget target);
+    void run(BuildTarget target);
 
     void setProjectPath(const QString& path);
 

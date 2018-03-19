@@ -180,12 +180,12 @@ void MainWindow::on_actionSelectAll_triggered() {
 
 void MainWindow::on_actionBuild_triggered() {
     on_actionSaveAll_triggered();
-    cargoManager->build();
+    cargoManager->build(projectProperties->getTarget());
 }
 
 void MainWindow::on_actionRun_triggered() {
     on_actionSaveAll_triggered();
-    cargoManager->run();
+    cargoManager->run(projectProperties->getTarget());
 }
 
 void MainWindow::on_actionOptions_triggered() {

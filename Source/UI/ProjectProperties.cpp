@@ -10,3 +10,11 @@ ProjectProperties::ProjectProperties(QWidget* parent) :
 ProjectProperties::~ProjectProperties() {
     delete ui;
 }
+
+CargoManager::BuildTarget ProjectProperties::getTarget() const {
+    return static_cast<CargoManager::BuildTarget>(ui->comboBoxTarget->currentIndex());
+}
+
+void ProjectProperties::setTarget(CargoManager::BuildTarget target) {
+    ui->comboBoxTarget->setCurrentIndex(static_cast<int>(target));
+}

@@ -29,16 +29,22 @@ void CargoManager::createProject(ProjectTemplate projectTemplate, const QString&
     setProjectPath(path);
 }
 
-void CargoManager::build() {
+void CargoManager::build(BuildTarget target) {
     QStringList arguments;
     arguments << "build";
+    if (target == BuildTarget::Release) {
+        arguments << "--release";
+    }
     prepareAndStart(arguments);
     commandStatus = CommandStatus::Build;
 }
 
-void CargoManager::run() {
+void CargoManager::run(BuildTarget target) {
     QStringList arguments;
     arguments << "run";
+    if (target == BuildTarget::Release) {
+        arguments << "--release";
+    }
     prepareAndStart(arguments);
     commandStatus = CommandStatus::Run;
 }
