@@ -303,7 +303,7 @@
      <addaction name="actionClearMenuRecentProjects"/>
     </widget>
     <addaction name="menuNew"/>
-    <addaction name="actionOpenFileProject"/>
+    <addaction name="actionOpen"/>
     <addaction name="actionCloseProject"/>
     <addaction name="menuRecentFiles"/>
     <addaction name="menuRecentProjects"/>
@@ -422,9 +422,9 @@
     <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="actionOpenFileProject">
+  <action name="actionOpen">
    <property name="text">
-    <string>Open File or Project...</string>
+    <string>Open...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>

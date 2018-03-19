@@ -120,11 +120,11 @@ void MainWindow::on_actionNewDirectory_triggered() {
     projectTreeView->onNewDirectory();
 }
 
-void MainWindow::on_actionOpenFileProject_triggered() {
+void MainWindow::on_actionOpen_triggered() {
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
     QString workspace = settings.value("Path/workspace", Global::getDefaultWorkspacePath()).toString();
     QString dirPath = projectPath.isEmpty() ? workspace : projectPath;
-    QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), dirPath, "All Files(*.*)");
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Open File or Project"), dirPath, "All Files(*.*)");
     if (filePath.isEmpty()) return;
 
     QFileInfo fi(filePath);
