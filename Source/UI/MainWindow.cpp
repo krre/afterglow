@@ -356,6 +356,14 @@ void MainWindow::readSettings() {
     }
     settings.endArray();
 
+    size = settings.beginReadArray("recentProjects");
+    for (int i = size - 1; i >= 0; --i) {
+        settings.setArrayIndex(i);
+        QString projectPath = settings.value("path").toString();
+        addRecentProject(projectPath);
+    }
+    settings.endArray();
+
     settings.endGroup();
 }
 
@@ -377,6 +385,13 @@ void MainWindow::writeSettings() {
     for (int i = 0; i < ui->menuRecentFiles->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
         settings.setArrayIndex(i);
         settings.setValue("path", ui->menuRecentFiles->actions().at(i)->text());
+    }
+    settings.endArray();
+
+    settings.beginWriteArray("recentProjects");
+    for (int i = 0; i < ui->menuRecentProjects->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
+        settings.setArrayIndex(i);
+        settings.setValue("path", ui->menuRecentProjects->actions().at(i)->text());
     }
     settings.endArray();
 
