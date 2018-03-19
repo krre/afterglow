@@ -345,8 +345,7 @@ void MainWindow::loadProjectProperties() {
         return;
     }
 
-    QByteArray data = file.readAll();
-    QJsonDocument doc(QJsonDocument::fromJson(data));
+    QJsonDocument doc(QJsonDocument::fromJson(file.readAll()));
     CargoManager::BuildTarget target = static_cast<CargoManager::BuildTarget>(doc.object()["target"].toInt());
     projectProperties->setTarget(target);
 }
@@ -460,10 +459,10 @@ void MainWindow::saveSession() {
     Q_UNUSED(result)
 #endif
 
-    QString sessionPath = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_SESSION_FILE;
-    QFile saveFile(sessionPath);
-    if (!saveFile.open(QIODevice::WriteOnly)) {
-        qWarning() << "Failed to open session file for writing" << sessionPath;
+    QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_SESSION_FILE;
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qWarning() << "Failed to open session file for writing" << path;
         return;
     }
 
@@ -477,8 +476,8 @@ void MainWindow::saveSession() {
     obj["openFiles"] = openFiles;
     obj["selectedTab"] = ui->tabWidgetSource->currentIndex();
 
-    QJsonDocument saveDoc(obj);
-    saveFile.write(saveDoc.toJson());
+    QJsonDocument doc(obj);
+    file.write(doc.toJson());
 }
 
 void MainWindow::restoreSession() {
@@ -488,22 +487,21 @@ void MainWindow::restoreSession() {
         return;
     }
 
-    QString sessionPath = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_SESSION_FILE;
-    QFileInfo fi(sessionPath);
+    QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_SESSION_FILE;
+    QFileInfo fi(path);
     if (!fi.exists()) {
         return;
     }
 
-    QFile loadFile(sessionPath);
-    if (!loadFile.open(QIODevice::ReadOnly)) {
-        qWarning() << "Failed to open session file for reading" << sessionPath;
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qWarning() << "Failed to open session file for reading" << path;
         return;
     }
 
-    QByteArray saveData = loadFile.readAll();
-    QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
-    QJsonArray array = loadDoc.object()["openFiles"].toArray();
-    int selectedTab = loadDoc.object()["selectedTab"].toInt();
+    QJsonDocument doc(QJsonDocument::fromJson(file.readAll()));
+    QJsonArray array = doc.object()["openFiles"].toArray();
+    int selectedTab = doc.object()["selectedTab"].toInt();
     QString selectedFilePath = array.at(selectedTab).toString();
 
     for (int i = 0; i < array.count(); i++) {
