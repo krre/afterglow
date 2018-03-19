@@ -8,8 +8,8 @@
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    app.setApplicationName(APP_NAME);
-    app.setApplicationVersion(APP_VERSION);
+    app.setApplicationName(Constants::APP_NAME);
+    app.setApplicationVersion(Constants::APP_VERSION);
 
     MainWindow window;
     window.show();

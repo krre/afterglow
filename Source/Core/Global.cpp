@@ -3,9 +3,9 @@
 #include <QtCore>
 
 QString Global::getPortableSettingsPath() {
-    return QCoreApplication::applicationDirPath() + "/" + APP_SETTINGS_NAME;
+    return QCoreApplication::applicationDirPath() + "/" + Constants::APP_SETTINGS_NAME;
 }
 
 QString Global::getDefaultWorkspacePath() {
-    return QDir::homePath() + "/" + WORKSPACE_DIRECTORY;
+    return QDir::homePath() + "/" + Constants::WORKSPACE_DIRECTORY;
 }

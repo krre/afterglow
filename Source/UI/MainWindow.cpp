@@ -175,13 +175,13 @@ void MainWindow::on_actionOptions_triggered() {
 }
 
 void MainWindow::on_actionAbout_triggered() {
-    QMessageBox::about(this, tr("About %1").arg(APP_NAME),
+    QMessageBox::about(this, tr("About %1").arg(Constants::APP_NAME),
         tr("<h3>%1 %2</h3> \
            Based on Qt %3<br> \
            Build on %4<br><br> \
            <a href=%5>%5</a><br><br>%6")
-            .arg(APP_NAME).arg(APP_VERSION).arg(QT_VERSION_STR)
-            .arg(__DATE__).arg(APP_URL).arg(APP_COPYRIGHT));
+            .arg(Constants::APP_NAME).arg(Constants::APP_VERSION).arg(QT_VERSION_STR)
+            .arg(__DATE__).arg(Constants::APP_URL).arg(Constants::APP_COPYRIGHT));
 }
 
 void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {
@@ -270,7 +270,7 @@ void MainWindow::readSettings() {
     settings.beginGroup("MainWindow");
 
     if (!restoreGeometry(settings.value("geometry").toByteArray())) {
-        resize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        resize(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
         const QRect availableGeometry = QApplication::desktop()->availableGeometry(this);
         move((availableGeometry.width() - width()) / 2, (availableGeometry.height() - height()) / 2);
     }
@@ -325,7 +325,7 @@ void MainWindow::saveSession() {
     }
 
     QDir dir(projectPath);
-    bool result = dir.mkdir(PROJECT_DATA_DIRECTORY);
+    bool result = dir.mkdir(Constants::PROJECT_DATA_DIRECTORY);
 #ifdef Q_OS_WIN
     // Set hidden attribute on created directory (need only for Windows).
     if (result) {
@@ -342,7 +342,7 @@ void MainWindow::saveSession() {
     Q_UNUSED(result)
 #endif
 
-    QString sessionPath = projectPath + "/" + PROJECT_DATA_DIRECTORY + "/" + PROJECT_SESSION_FILE;
+    QString sessionPath = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_SESSION_FILE;
     QFile saveFile(sessionPath);
     if (!saveFile.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open session file for writing" << sessionPath;
@@ -370,7 +370,7 @@ void MainWindow::restoreSession() {
         return;
     }
 
-    QString sessionPath = projectPath + "/" + PROJECT_DATA_DIRECTORY + "/" + PROJECT_SESSION_FILE;
+    QString sessionPath = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_SESSION_FILE;
     QFileInfo fi(sessionPath);
     if (!fi.exists()) {
         return;
