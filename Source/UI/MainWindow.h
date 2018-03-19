@@ -33,6 +33,7 @@ private slots:
     void on_actionSave_triggered();
     void on_actionSaveAs_triggered();
     void on_actionSaveAll_triggered();
+    void on_actionClearMenuRecentFiles_triggered();
 
     void on_actionClose_triggered();
     void on_actionCloseAll_triggered();

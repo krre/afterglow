@@ -293,7 +293,7 @@
       <string>Recent Files</string>
      </property>
      <addaction name="separator"/>
-     <addaction name="actionClearMenu"/>
+     <addaction name="actionClearMenuRecentFiles"/>
     </widget>
     <addaction name="menuNew"/>
     <addaction name="actionOpenProject"/>
@@ -550,7 +550,7 @@
     <string>Ctrl+A</string>
    </property>
   </action>
-  <action name="actionClearMenu">
+  <action name="actionClearMenuRecentFiles">
    <property name="text">
     <string>Clear Menu</string>
    </property>

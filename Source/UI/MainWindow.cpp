@@ -84,6 +84,14 @@ void MainWindow::on_actionSaveAll_triggered() {
     }
 }
 
+void MainWindow::on_actionClearMenuRecentFiles_triggered() {
+    for (int i = ui->menuRecentFiles->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT - 1; i >= 0; i--) {
+        ui->menuRecentFiles->removeAction(ui->menuRecentFiles->actions().at(i));
+    }
+
+    updateMenuState();
+}
+
 void MainWindow::on_actionClose_triggered() {
     on_tabWidgetSource_tabCloseRequested(ui->tabWidgetSource->currentIndex());
 }
@@ -282,6 +290,8 @@ void MainWindow::addRecentFile(const QString& filePath) {
     if (ui->menuRecentFiles->actions().size() > Constants::MAX_RECENT_FILES + Constants::SEPARATOR_AND_MENU_CLEAR_COUNT) {
         ui->menuRecentFiles->removeAction(ui->menuRecentFiles->actions().at(ui->menuRecentFiles->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT - 1));
     }
+
+    updateMenuState();
 }
 
 void MainWindow::readSettings() {
@@ -499,6 +509,8 @@ void MainWindow::updateMenuState() {
     ui->actionClose->setEnabled(index >= 0);
     ui->actionCloseOther->setEnabled(index >= 0);
     ui->actionCloseAll->setEnabled(index >= 0);
+
+    ui->menuRecentFiles->menuAction()->setEnabled(ui->menuRecentFiles->actions().size() > Constants::SEPARATOR_AND_MENU_CLEAR_COUNT);
 
     ui->menuEdit->menuAction()->setEnabled(index >= 0);
 }
