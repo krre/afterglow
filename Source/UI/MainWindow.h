@@ -103,4 +103,5 @@ private:
     CargoManager* cargoManager;
     ProjectTreeView* projectTreeView;
     QString projectPath;
+
 };
