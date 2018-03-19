@@ -288,6 +288,13 @@
      <addaction name="actionNewFile"/>
      <addaction name="actionNewDirectory"/>
     </widget>
+    <widget class="QMenu" name="menuRecentFiles">
+     <property name="title">
+      <string>Recent Files</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionClearMenu"/>
+    </widget>
     <addaction name="menuNew"/>
     <addaction name="actionOpenProject"/>
     <addaction name="actionCloseProject"/>
@@ -297,7 +304,7 @@
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
     <addaction name="actionSaveAll"/>
-    <addaction name="actionRecentFiles"/>
+    <addaction name="menuRecentFiles"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
     <addaction name="actionCloseAll"/>
@@ -496,11 +503,6 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionRecentFiles">
-   <property name="text">
-    <string>Recent Files</string>
-   </property>
-  </action>
   <action name="actionBuild">
    <property name="text">
     <string>Build</string>
@@ -546,6 +548,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionClearMenu">
+   <property name="text">
+    <string>Clear Menu</string>
    </property>
   </action>
  </widget>

@@ -79,6 +79,7 @@ private slots:
     void onDocumentModified(Editor* editor);
 
 private:
+    void addRecentFile(const QString& filePath);
 
     enum class OutputPane {
         Cargo,

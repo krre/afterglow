@@ -245,6 +245,8 @@ void MainWindow::addSourceTab(const QString& filePath) {
         int index = ui->tabWidgetSource->addTab(editor, fi.fileName());
         ui->tabWidgetSource->setTabToolTip(index, filePath);
         ui->tabWidgetSource->setCurrentIndex(index);
+
+        addRecentFile(filePath);
     }
 }
 
@@ -262,6 +264,24 @@ void MainWindow::addNewFile(const QString& filePath) {
 
 void MainWindow::onDocumentModified(Editor* editor) {
     ui->tabWidgetSource->setTabText(ui->tabWidgetSource->indexOf(editor), editor->getModifiedName());
+}
+
+void MainWindow::addRecentFile(const QString& filePath) {
+    for (QAction* action : ui->menuRecentFiles->actions()) {
+        if (action->text() == filePath) {
+            ui->menuRecentFiles->removeAction(action);
+        }
+    }
+
+    QAction* fileAction = new QAction(filePath);
+    connect(fileAction, &QAction::triggered, [=] {
+        addSourceTab(filePath);
+    });
+    ui->menuRecentFiles->insertAction(ui->menuRecentFiles->actions().first(), fileAction);
+
+    if (ui->menuRecentFiles->actions().size() > Constants::MAX_RECENT_FILES + Constants::SEPARATOR_AND_MENU_CLEAR_COUNT) {
+        ui->menuRecentFiles->removeAction(ui->menuRecentFiles->actions().at(ui->menuRecentFiles->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT - 1));
+    }
 }
 
 void MainWindow::readSettings() {
