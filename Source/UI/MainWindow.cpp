@@ -450,7 +450,7 @@ void MainWindow::saveSession() {
 #ifdef Q_OS_WIN
     // Set hidden attribute on created directory (need only for Windows).
     if (result) {
-        QString directory = projectPath + "/" + PROJECT_DATA_DIRECTORY;
+        QString directory = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY;
         wchar_t* charText = new wchar_t[directory.length() + 1];
         directory.toWCharArray(charText);
         charText[directory.length()] = 0; // append null terminator
