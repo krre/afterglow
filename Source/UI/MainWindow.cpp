@@ -251,7 +251,18 @@ void MainWindow::onFileCreated(const QString& filePath) {
 }
 
 void MainWindow::onFileRemoved(const QString& filePath) {
-    on_tabWidgetSource_tabCloseRequested(findSource(filePath));
+    QVector<int> indices;
+    for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
+        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(i));
+        if (editor->getFilePath().contains(filePath)) {
+            indices.append(i);
+        }
+    }
+
+    // Remove tabs in reverse order
+    for (int i = indices.count() - 1; i >= 0; i--) {
+        on_tabWidgetSource_tabCloseRequested(indices.at(i));
+    }
 }
 
 void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
