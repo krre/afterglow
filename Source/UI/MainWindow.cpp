@@ -26,6 +26,7 @@ MainWindow::MainWindow() :
     connect(projectTreeView, &ProjectTreeView::openActivated, this, &MainWindow::addSourceTab);
     connect(projectTreeView, &ProjectTreeView::newFileActivated, this, &MainWindow::onFileCreated);
     connect(projectTreeView, &ProjectTreeView::removeActivated, this, &MainWindow::onFileRemoved);
+    connect(projectTreeView, &ProjectTreeView::renameActivated, this, &MainWindow::onFileRenamed);
     ui->tabWidgetSide->addTab(projectTreeView, tr("Project"));
 
     projectProperties = new ProjectProperties;
@@ -253,6 +254,10 @@ void MainWindow::onFileRemoved(const QString& filePath) {
     on_tabWidgetSource_tabCloseRequested(findSource(filePath));
     QDir dir;
     dir.remove(filePath);
+}
+
+void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
+    qDebug() << oldPath << newPath;
 }
 
 void MainWindow::addSourceTab(const QString& filePath) {

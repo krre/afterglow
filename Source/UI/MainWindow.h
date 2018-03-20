@@ -74,6 +74,7 @@ private slots:
     // ProjectTreeView
     void onFileCreated(const QString& filePath);
     void onFileRemoved(const QString& filePath);
+    void onFileRenamed(const QString& oldPath, const QString& newPath);
 
     void addSourceTab(const QString& filePath);
     void addNewFile(const QString& filePath);

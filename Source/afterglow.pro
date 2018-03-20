@@ -14,18 +14,17 @@ SOURCES += \
     UI/Options.cpp \
     Cargo/CargoManager.cpp \
     UI/ProjectTreeView.cpp \
-    Editor/Editor.cpp \
     UI/NewProject.cpp \
     Editor/LineNumberArea.cpp \
     Editor/Highlighter.cpp \
     UI/NewName.cpp \
     UI/ProjectProperties.cpp \
-    UI/Rename.cpp
+    UI/Rename.cpp \
+    Editor/Editor.cpp
 
 HEADERS += \
     UI/MainWindow.h \
     Core/Global.h \
-    Core/Constants.h \
     UI/SelectWorkspace.h \
     UI/Options.h \
     Cargo/CargoManager.h \
@@ -36,7 +35,8 @@ HEADERS += \
     Editor/Highlighter.h \
     UI/NewName.h \
     UI/ProjectProperties.h \
-    UI/Rename.h
+    UI/Rename.h \
+    Core/Constants.h
 
 FORMS += \
     UI/MainWindow.ui \

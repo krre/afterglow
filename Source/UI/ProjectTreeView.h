@@ -17,7 +17,7 @@ public:
 signals:
     void openActivated(const QString& filePath);
     void removeActivated(const QString& filePath);
-    void renameActivated(const QString& filePath);
+    void renameActivated(const QString& oldPath, const QString& newPath);
     void newFileActivated(const QString& filePath);
 
 public slots:

@@ -124,11 +124,19 @@ void ProjectTreeView::onFileRemove() {
 
 void ProjectTreeView::onFileRename() {
     QModelIndex index = selectedIndexes().first();
-    Rename rename(fsModel->filePath(index), this);
+    QString oldPath = fsModel->filePath(index);
+    Rename rename(oldPath, this);
     rename.exec();
     QString name = rename.getName();
     if (!name.isEmpty()) {
-        renameActivated(getCurrentDirectory() + "/" + name);
+        QString newPath = getCurrentDirectory() + "/" + name;
+        if (QFile::rename(oldPath, newPath)) {
+            QModelIndex modelIndex = fsModel->index(newPath);
+            setCurrentIndex(modelIndex);
+            renameActivated(oldPath, newPath);
+        } else {
+            qWarning() << QString("Failed to rename %1 to %2").arg(oldPath).arg(newPath);
+        }
     }
 }
 
