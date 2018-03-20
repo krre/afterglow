@@ -252,8 +252,6 @@ void MainWindow::onFileCreated(const QString& filePath) {
 
 void MainWindow::onFileRemoved(const QString& filePath) {
     on_tabWidgetSource_tabCloseRequested(findSource(filePath));
-    QDir dir;
-    dir.remove(filePath);
 }
 
 void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {

@@ -115,10 +115,20 @@ void ProjectTreeView::onFileRemove() {
             .arg(fsModel->fileName(index));
     int result = QMessageBox::question(this, tr("Remove"), text);
     if (result == QMessageBox::Yes) {
+        QString path = fsModel->filePath(index);
+        QDir dir(path);
+        bool success = false;
         if (isDir) {
-            fsModel->rmdir(index);
+            success = dir.removeRecursively();
+        } else {
+            success = dir.remove(path);
         }
-        emit removeActivated(fsModel->filePath(index));
+
+        if (success) {
+            emit removeActivated(path);
+        } else {
+            qWarning() << "Failed to remove" << path;
+        }
     }
 }
 
