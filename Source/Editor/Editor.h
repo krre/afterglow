@@ -7,7 +7,10 @@ class Editor : public QPlainTextEdit {
     Q_OBJECT
 public:
     explicit Editor(QString filePath, QWidget* parent = nullptr);
+
     QString getFilePath() const { return filePath; }
+    void setFilePath(const QString& filePath);
+
     void saveFile();
     QString getModifiedName() const;
 

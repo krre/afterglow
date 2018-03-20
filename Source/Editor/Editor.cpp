@@ -24,6 +24,10 @@ Editor::Editor(QString filePath, QWidget* parent) :
     readFile();
 }
 
+void Editor::setFilePath(const QString& filePath) {
+    this->filePath = filePath;
+}
+
 void Editor::saveFile() {
     QFile file(filePath);
     if (file.open(QFile::WriteOnly | QFile::Text)) {

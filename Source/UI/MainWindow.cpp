@@ -257,7 +257,12 @@ void MainWindow::onFileRemoved(const QString& filePath) {
 }
 
 void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
-    qDebug() << oldPath << newPath;
+    int index = findSource(oldPath);
+    if (index != -1) {
+        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(index));
+        editor->setFilePath(newPath);
+        onDocumentModified(editor);
+    }
 }
 
 void MainWindow::addSourceTab(const QString& filePath) {
