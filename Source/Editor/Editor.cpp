@@ -7,6 +7,9 @@ Editor::Editor(QString filePath, QWidget* parent) :
         QPlainTextEdit(parent),
         filePath(filePath) {
     setFrameShape(QFrame::NoFrame);
+    QFont font("Consolas", 11);
+    document()->setDefaultFont(font);
+
     lineNumberArea = new LineNumberArea(this);
     highlighter = new Highlighter(document());
 
