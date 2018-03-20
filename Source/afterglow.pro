@@ -13,7 +13,6 @@ SOURCES += \
     UI/SelectWorkspace.cpp \
     UI/Options.cpp \
     Cargo/CargoManager.cpp \
-    UI/ProjectTreeView.cpp \
     UI/NewProject.cpp \
     Editor/LineNumberArea.cpp \
     Editor/Highlighter.cpp \
@@ -21,7 +20,8 @@ SOURCES += \
     UI/ProjectProperties.cpp \
     UI/Rename.cpp \
     Editor/Editor.cpp \
-    UI/FileSystemProxyModel.cpp
+    UI/FileSystemProxyModel.cpp \
+    UI/ProjectTree.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -29,7 +29,6 @@ HEADERS += \
     UI/SelectWorkspace.h \
     UI/Options.h \
     Cargo/CargoManager.h \
-    UI/ProjectTreeView.h \
     Editor/Editor.h \
     UI/NewProject.h \
     Editor/LineNumberArea.h \
@@ -38,7 +37,8 @@ HEADERS += \
     UI/ProjectProperties.h \
     UI/Rename.h \
     Core/Constants.h \
-    UI/FileSystemProxyModel.h
+    UI/FileSystemProxyModel.h \
+    UI/ProjectTree.h
 
 FORMS += \
     UI/MainWindow.ui \

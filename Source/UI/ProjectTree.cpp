@@ -1,13 +1,13 @@
-#include "ProjectTreeView.h"
+#include "ProjectTree.h"
 #include "FileSystemProxyModel.h"
 #include "NewName.h"
 #include "Rename.h"
 #include <QtWidgets>
 
-ProjectTreeView::ProjectTreeView(QWidget* parent) : QTreeView(parent) {
+ProjectTree::ProjectTree(QWidget* parent) : QTreeView(parent) {
     setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, &QTreeView::customContextMenuRequested, this, &ProjectTreeView::onCustomContextMenu);
-    connect(this, &QTreeView::doubleClicked, this, &ProjectTreeView::onDoubleClicked);
+    connect(this, &QTreeView::customContextMenuRequested, this, &ProjectTree::onCustomContextMenu);
+    connect(this, &QTreeView::doubleClicked, this, &ProjectTree::onDoubleClicked);
 
     fsModel = new QFileSystemModel(this);
     fsProxyModel = new FileSystemProxyModel(this);
@@ -19,13 +19,13 @@ ProjectTreeView::ProjectTreeView(QWidget* parent) : QTreeView(parent) {
     QMenu* newMenu = new QMenu(tr("New"), this);
 
     QAction* newRustFileAction = newMenu->addAction(tr("Rust File..."));
-    connect(newRustFileAction, &QAction::triggered, this, &ProjectTreeView::onNewRustFile);
+    connect(newRustFileAction, &QAction::triggered, this, &ProjectTree::onNewRustFile);
 
     QAction* newFileAction = newMenu->addAction(tr("File..."));
-    connect(newFileAction, &QAction::triggered, this, &ProjectTreeView::onNewFile);
+    connect(newFileAction, &QAction::triggered, this, &ProjectTree::onNewFile);
 
     QAction* newDirectoryAction = newMenu->addAction(tr("Directory..."));
-    connect(newDirectoryAction, &QAction::triggered, this, &ProjectTreeView::onNewDirectory);
+    connect(newDirectoryAction, &QAction::triggered, this, &ProjectTree::onNewDirectory);
 
     contextMenu->addMenu(newMenu);
 
@@ -41,19 +41,19 @@ ProjectTreeView::ProjectTreeView(QWidget* parent) : QTreeView(parent) {
     });
 
     QAction* removeAction = contextMenu->addAction(tr("Remove..."));
-    connect(removeAction, &QAction::triggered, this, &ProjectTreeView::onFileRemove);
+    connect(removeAction, &QAction::triggered, this, &ProjectTree::onFileRemove);
 
     QAction* renameAction = contextMenu->addAction(tr("Rename..."));
-    connect(renameAction, &QAction::triggered, this, &ProjectTreeView::onFileRename);
+    connect(renameAction, &QAction::triggered, this, &ProjectTree::onFileRename);
 
     setFrameShape(QFrame::NoFrame);
     setHeaderHidden(true);
 }
 
-ProjectTreeView::~ProjectTreeView() {
+ProjectTree::~ProjectTree() {
 }
 
-void ProjectTreeView::setRootPath(const QString& path) {
+void ProjectTree::setRootPath(const QString& path) {
     if (path.isNull()) {
         setModel(nullptr);
     } else {
@@ -68,25 +68,25 @@ void ProjectTreeView::setRootPath(const QString& path) {
     }
 }
 
-void ProjectTreeView::selectFile(const QString& filePath) {
+void ProjectTree::selectFile(const QString& filePath) {
     QModelIndex index = fsModel->index(filePath);
     setCurrentIndex(fsProxyModel->mapFromSource(index));
 }
 
-void ProjectTreeView::onCustomContextMenu(const QPoint& point) {
+void ProjectTree::onCustomContextMenu(const QPoint& point) {
     if (indexAt(point).isValid()) {
         contextMenu->exec(mapToGlobal(point));
     }
 }
 
-void ProjectTreeView::onDoubleClicked(const QModelIndex& index) {
+void ProjectTree::onDoubleClicked(const QModelIndex& index) {
     QFileInfo fi = fsModel->fileInfo(fsProxyModel->mapToSource(index));
     if (!fi.isDir()) {
         emit openActivated(fi.absoluteFilePath());
     }
 }
 
-void ProjectTreeView::onNewRustFile() {
+void ProjectTree::onNewRustFile() {
     NewName newName(tr("New Rust File"), this);
     newName.exec();
     QString name = newName.getName();
@@ -97,7 +97,7 @@ void ProjectTreeView::onNewRustFile() {
     }
 }
 
-void ProjectTreeView::onNewFile() {
+void ProjectTree::onNewFile() {
     NewName newName(tr("New File"), this);
     newName.exec();
     QString name = newName.getName();
@@ -106,7 +106,7 @@ void ProjectTreeView::onNewFile() {
     }
 }
 
-void ProjectTreeView::onNewDirectory() {
+void ProjectTree::onNewDirectory() {
     NewName newName(tr("New Directory"), this);
     newName.exec();
     QString name = newName.getName();
@@ -117,7 +117,7 @@ void ProjectTreeView::onNewDirectory() {
     }
 }
 
-void ProjectTreeView::onFileRemove() {
+void ProjectTree::onFileRemove() {
     QModelIndex index = fsProxyModel->mapToSource(selectedIndexes().first());
     bool isDir = fsModel->isDir(index);
     QString text = QString("Remove %1 \"%2\"?")
@@ -142,7 +142,7 @@ void ProjectTreeView::onFileRemove() {
     }
 }
 
-void ProjectTreeView::onFileRename() {
+void ProjectTree::onFileRename() {
     QString oldPath = fsModel->filePath(fsProxyModel->mapToSource(selectedIndexes().first()));
     Rename rename(oldPath, this);
     rename.exec();
@@ -160,7 +160,7 @@ void ProjectTreeView::onFileRename() {
     }
 }
 
-QString ProjectTreeView::getCurrentDirectory() const {
+QString ProjectTree::getCurrentDirectory() const {
     QModelIndex index = fsProxyModel->mapToSource(selectedIndexes().first());
     return fsModel->isDir(index) ? fsModel->filePath(index)
                                  : fsModel->fileInfo(index).absolutePath();

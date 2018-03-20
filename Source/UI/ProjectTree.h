@@ -5,12 +5,12 @@
 class QMenu;
 class FileSystemProxyModel;
 
-class ProjectTreeView : public QTreeView {
+class ProjectTree : public QTreeView {
     Q_OBJECT
 
 public:
-    explicit ProjectTreeView(QWidget* parent = nullptr);
-    ~ProjectTreeView();
+    explicit ProjectTree(QWidget* parent = nullptr);
+    ~ProjectTree();
 
     void setRootPath(const QString& path);
     QFileSystemModel* getFsModel() const { return fsModel; }

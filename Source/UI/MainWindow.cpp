@@ -5,7 +5,7 @@
 #include "NewProject.h"
 #include "Options.h"
 #include "Cargo/CargoManager.h"
-#include "ProjectTreeView.h"
+#include "ProjectTree.h"
 #include "ProjectProperties.h"
 #include "Editor/Editor.h"
 #include "NewName.h"
@@ -22,12 +22,12 @@ MainWindow::MainWindow() :
     connect(cargoManager, &CargoManager::projectCreated, this, &MainWindow::onProjectCreated);
     connect(cargoManager, &CargoManager::outputMessage, this, &MainWindow::onOutputMessage);
 
-    projectTreeView = new ProjectTreeView;
-    connect(projectTreeView, &ProjectTreeView::openActivated, this, &MainWindow::addSourceTab);
-    connect(projectTreeView, &ProjectTreeView::newFileActivated, this, &MainWindow::onFileCreated);
-    connect(projectTreeView, &ProjectTreeView::removeActivated, this, &MainWindow::onFileRemoved);
-    connect(projectTreeView, &ProjectTreeView::renameActivated, this, &MainWindow::onFileRenamed);
-    ui->tabWidgetSide->addTab(projectTreeView, tr("Project"));
+    projectTree = new ProjectTree;
+    connect(projectTree, &ProjectTree::openActivated, this, &MainWindow::addSourceTab);
+    connect(projectTree, &ProjectTree::newFileActivated, this, &MainWindow::onFileCreated);
+    connect(projectTree, &ProjectTree::removeActivated, this, &MainWindow::onFileRemoved);
+    connect(projectTree, &ProjectTree::renameActivated, this, &MainWindow::onFileRenamed);
+    ui->tabWidgetSide->addTab(projectTree, tr("Project"));
 
     projectProperties = new ProjectProperties;
     ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
@@ -57,7 +57,7 @@ void MainWindow::on_actionNewProject_triggered() {
 }
 
 void MainWindow::on_actionNewRustFile_triggered() {
-    projectTreeView->onNewRustFile();
+    projectTree->onNewRustFile();
 }
 
 void MainWindow::on_actionCloseProject_triggered() {
@@ -117,11 +117,11 @@ void MainWindow::on_actionCloseOther_triggered() {
 }
 
 void MainWindow::on_actionNewFile_triggered() {
-    projectTreeView->onNewFile();
+    projectTree->onNewFile();
 }
 
 void MainWindow::on_actionNewDirectory_triggered() {
-    projectTreeView->onNewDirectory();
+    projectTree->onNewDirectory();
 }
 
 void MainWindow::on_actionOpen_triggered() {
@@ -215,10 +215,10 @@ void MainWindow::on_tabWidgetSource_currentChanged(int index) {
         Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(index));
         editor->setFocus();
         QString filePath = editor->getFilePath();
-        projectTreeView->selectFile(filePath);
+        projectTree->selectFile(filePath);
         changeWindowTitle(filePath);
     } else {
-        projectTreeView->setCurrentIndex(QModelIndex());
+        projectTree->setCurrentIndex(QModelIndex());
         changeWindowTitle();
     }
 
@@ -538,7 +538,7 @@ void MainWindow::restoreSession() {
 void MainWindow::openProject(const QString& path) {
     closeProject();
     projectPath = path;
-    projectTreeView->setRootPath(path);
+    projectTree->setRootPath(path);
     cargoManager->setProjectPath(path);
 
     loadProjectProperties();
@@ -560,7 +560,7 @@ void MainWindow::closeProject() {
     projectProperties->reset();
 
     on_actionCloseAll_triggered();
-    projectTreeView->setRootPath(QString());
+    projectTree->setRootPath(QString());
     projectPath = QString();
     changeWindowTitle();
     updateMenuState();
