@@ -129,8 +129,10 @@ void ProjectTreeView::onFileRename() {
     rename.exec();
     QString name = rename.getName();
     if (!name.isEmpty()) {
-        QString newPath = getCurrentDirectory() + "/" + name;
-        if (QFile::rename(oldPath, newPath)) {
+        QFileInfo fi(oldPath);
+        QString newPath = (fi.isDir() ? fi.absolutePath() : fi.path()) + "/" + name;
+        QDir dir;
+        if (dir.rename(oldPath, newPath)) {
             QModelIndex modelIndex = fsModel->index(newPath);
             setCurrentIndex(modelIndex);
             renameActivated(oldPath, newPath);
