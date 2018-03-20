@@ -25,6 +25,5 @@ void NewName::on_buttonBox_accepted() {
 }
 
 void NewName::on_lineEditName_textChanged(const QString& text) {
-    Q_UNUSED(text)
     ui->buttonBox->buttons().at(0)->setEnabled(!text.isEmpty());
 }
