@@ -19,7 +19,8 @@ SOURCES += \
     Editor/LineNumberArea.cpp \
     Editor/Highlighter.cpp \
     UI/NewName.cpp \
-    UI/ProjectProperties.cpp
+    UI/ProjectProperties.cpp \
+    UI/Rename.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -34,7 +35,8 @@ HEADERS += \
     Editor/LineNumberArea.h \
     Editor/Highlighter.h \
     UI/NewName.h \
-    UI/ProjectProperties.h
+    UI/ProjectProperties.h \
+    UI/Rename.h
 
 FORMS += \
     UI/MainWindow.ui \
@@ -42,7 +44,8 @@ FORMS += \
     UI/Options.ui \
     UI/NewProject.ui \
     UI/NewName.ui \
-    UI/ProjectProperties.ui
+    UI/ProjectProperties.ui \
+    UI/Rename.ui
 
 DISTFILES += \
     ../README.md \

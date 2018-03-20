@@ -1,5 +1,6 @@
 #include "ProjectTreeView.h"
 #include "NewName.h"
+#include "Rename.h"
 #include <QtWidgets>
 
 ProjectTreeView::ProjectTreeView(QWidget* parent) : QTreeView(parent) {
@@ -123,7 +124,12 @@ void ProjectTreeView::onFileRemove() {
 
 void ProjectTreeView::onFileRename() {
     QModelIndex index = selectedIndexes().first();
-    emit renameActivated(fsModel->filePath(index));
+    Rename rename(fsModel->filePath(index), this);
+    rename.exec();
+    QString name = rename.getName();
+    if (!name.isEmpty()) {
+        renameActivated(getCurrentDirectory() + "/" + name);
+    }
 }
 
 QString ProjectTreeView::getCurrentDirectory() const {
