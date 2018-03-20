@@ -135,7 +135,6 @@ void MainWindow::on_actionOpen_triggered() {
     if (fi.fileName() == "Cargo.toml") {
         QFileInfo fi(filePath);
         openProject(fi.absolutePath());
-        addRecentProject(fi.absolutePath());
     } else {
         addSourceTab(filePath);
     }
@@ -236,7 +235,6 @@ void MainWindow::on_toolButtonAppClear_clicked() {
 
 void MainWindow::onProjectCreated(const QString& path) {
     openProject(path);
-    addRecentProject(path);
 }
 
 void MainWindow::onOutputMessage(const QString& message) {
@@ -398,12 +396,6 @@ void MainWindow::readSettings() {
 
     ui->tabWidgetSide->setCurrentIndex(settings.value("sidebar", 0).toInt());
 
-    QString lastProject = settings.value("lastProject", "").toString();
-    if (!lastProject.isEmpty()) {
-        openProject(lastProject);
-        addRecentProject(lastProject);
-    }
-
     int size = settings.beginReadArray("recentFiles");
     for (int i = size - 1; i >= 0; --i) {
         settings.setArrayIndex(i);
@@ -419,6 +411,11 @@ void MainWindow::readSettings() {
         addRecentProject(projectPath);
     }
     settings.endArray();
+
+    QString lastProject = settings.value("lastProject", "").toString();
+    if (!lastProject.isEmpty()) {
+        openProject(lastProject);
+    }
 
     settings.endGroup();
 }
@@ -552,6 +549,7 @@ void MainWindow::openProject(const QString& path) {
     }
 
     updateMenuState();
+    addRecentProject(path);
 }
 
 void MainWindow::closeProject() {
