@@ -1,4 +1,5 @@
 #include "ProjectTreeView.h"
+#include "FileSystemProxyModel.h"
 #include "NewName.h"
 #include "Rename.h"
 #include <QtWidgets>
@@ -9,6 +10,9 @@ ProjectTreeView::ProjectTreeView(QWidget* parent) : QTreeView(parent) {
     connect(this, &QTreeView::doubleClicked, this, &ProjectTreeView::onDoubleClicked);
 
     fsModel = new QFileSystemModel(this);
+    fsProxyModel = new FileSystemProxyModel(this);
+    fsProxyModel->setSourceModel(fsModel);
+    fsProxyModel->sort(0, Qt::AscendingOrder);
 
     contextMenu = new QMenu(this);
 
@@ -27,11 +31,12 @@ ProjectTreeView::ProjectTreeView(QWidget* parent) : QTreeView(parent) {
 
     QAction* openAction = contextMenu->addAction(tr("Open"));
     connect(openAction, &QAction::triggered, [=]() {
-        QModelIndex index = selectedIndexes().first();
-        if (fsModel->isDir(index)) {
-            setExpanded(index, true);
+        QModelIndex proxyIndex = selectedIndexes().first();
+        QModelIndex sourceIndex = fsProxyModel->mapToSource(proxyIndex);
+        if (fsModel->isDir(sourceIndex)) {
+            setExpanded(proxyIndex, true);
         } else {
-            openActivated(fsModel->filePath(index));
+            openActivated(fsModel->filePath(sourceIndex));
         }
     });
 
@@ -52,8 +57,9 @@ void ProjectTreeView::setRootPath(const QString& path) {
     if (path.isNull()) {
         setModel(nullptr);
     } else {
-        setModel(fsModel);
-        setRootIndex(fsModel->setRootPath(path));
+        setModel(fsProxyModel);
+        QModelIndex index = fsModel->setRootPath(path);
+        setRootIndex(fsProxyModel->mapFromSource(index));
 
         // Hide columns exclude first
         for (int i = 1; i < fsModel->columnCount(); ++i) {
@@ -62,15 +68,19 @@ void ProjectTreeView::setRootPath(const QString& path) {
     }
 }
 
+void ProjectTreeView::selectFile(const QString& filePath) {
+    QModelIndex index = fsModel->index(filePath);
+    setCurrentIndex(fsProxyModel->mapFromSource(index));
+}
+
 void ProjectTreeView::onCustomContextMenu(const QPoint& point) {
-    QModelIndex index = indexAt(point);
-    if (index.isValid()) {
+    if (indexAt(point).isValid()) {
         contextMenu->exec(mapToGlobal(point));
     }
 }
 
 void ProjectTreeView::onDoubleClicked(const QModelIndex& index) {
-    QFileInfo fi = qobject_cast<QFileSystemModel*>(model())->fileInfo(index);
+    QFileInfo fi = fsModel->fileInfo(fsProxyModel->mapToSource(index));
     if (!fi.isDir()) {
         emit openActivated(fi.absoluteFilePath());
     }
@@ -101,14 +111,14 @@ void ProjectTreeView::onNewDirectory() {
     newName.exec();
     QString name = newName.getName();
     if (!name.isEmpty()) {
-        QModelIndex selectedIndex = selectedIndexes().first();
-        QModelIndex index = fsModel->mkdir(fsModel->isDir(selectedIndex) ? selectedIndex : fsModel->parent(selectedIndex), name);
+        QModelIndex sourceIndex = fsProxyModel->mapToSource(selectedIndexes().first());
+        QModelIndex index = fsModel->mkdir(fsModel->isDir(sourceIndex) ? sourceIndex : fsModel->parent(sourceIndex), name);
         setCurrentIndex(index);
     }
 }
 
 void ProjectTreeView::onFileRemove() {
-    QModelIndex index = selectedIndexes().first();
+    QModelIndex index = fsProxyModel->mapToSource(selectedIndexes().first());
     bool isDir = fsModel->isDir(index);
     QString text = QString("Remove %1 \"%2\"?")
             .arg(isDir ? tr("directory") : tr("file"))
@@ -133,8 +143,7 @@ void ProjectTreeView::onFileRemove() {
 }
 
 void ProjectTreeView::onFileRename() {
-    QModelIndex index = selectedIndexes().first();
-    QString oldPath = fsModel->filePath(index);
+    QString oldPath = fsModel->filePath(fsProxyModel->mapToSource(selectedIndexes().first()));
     Rename rename(oldPath, this);
     rename.exec();
     QString name = rename.getName();
@@ -143,8 +152,7 @@ void ProjectTreeView::onFileRename() {
         QString newPath = (fi.isDir() ? fi.absolutePath() : fi.path()) + "/" + name;
         QDir dir;
         if (dir.rename(oldPath, newPath)) {
-            QModelIndex modelIndex = fsModel->index(newPath);
-            setCurrentIndex(modelIndex);
+            setCurrentIndex(fsProxyModel->mapFromSource(fsModel->index(newPath)));
             renameActivated(oldPath, newPath);
         } else {
             qWarning() << QString("Failed to rename %1 to %2").arg(oldPath).arg(newPath);
@@ -153,7 +161,7 @@ void ProjectTreeView::onFileRename() {
 }
 
 QString ProjectTreeView::getCurrentDirectory() const {
-    QModelIndex index = selectedIndexes().first();
+    QModelIndex index = fsProxyModel->mapToSource(selectedIndexes().first());
     return fsModel->isDir(index) ? fsModel->filePath(index)
                                  : fsModel->fileInfo(index).absolutePath();
 }

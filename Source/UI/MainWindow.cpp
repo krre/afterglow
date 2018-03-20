@@ -216,8 +216,7 @@ void MainWindow::on_tabWidgetSource_currentChanged(int index) {
         Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(index));
         editor->setFocus();
         QString filePath = editor->getFilePath();
-        QModelIndex modelIndex = projectTreeView->getFsModel()->index(filePath);
-        projectTreeView->setCurrentIndex(modelIndex);
+        projectTreeView->selectFile(filePath);
         changeWindowTitle(filePath);
     } else {
         projectTreeView->setCurrentIndex(QModelIndex());

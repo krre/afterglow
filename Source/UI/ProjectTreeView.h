@@ -3,6 +3,7 @@
 #include <QFileSystemModel>
 
 class QMenu;
+class FileSystemProxyModel;
 
 class ProjectTreeView : public QTreeView {
     Q_OBJECT
@@ -13,6 +14,7 @@ public:
 
     void setRootPath(const QString& path);
     QFileSystemModel* getFsModel() const { return fsModel; }
+    void selectFile(const QString& filePath);
 
 signals:
     void openActivated(const QString& filePath);
@@ -36,5 +38,6 @@ private:
     QString getCurrentDirectory() const;
 
     QFileSystemModel* fsModel;
+    FileSystemProxyModel* fsProxyModel;
     QMenu* contextMenu;
 };

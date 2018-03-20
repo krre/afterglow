@@ -20,7 +20,8 @@ SOURCES += \
     UI/NewName.cpp \
     UI/ProjectProperties.cpp \
     UI/Rename.cpp \
-    Editor/Editor.cpp
+    Editor/Editor.cpp \
+    UI/FileSystemProxyModel.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -36,7 +37,8 @@ HEADERS += \
     UI/NewName.h \
     UI/ProjectProperties.h \
     UI/Rename.h \
-    Core/Constants.h
+    Core/Constants.h \
+    UI/FileSystemProxyModel.h
 
 FORMS += \
     UI/MainWindow.ui \
