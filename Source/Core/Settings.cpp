@@ -3,7 +3,7 @@
 #include <QtCore>
 
 namespace {
-    QJsonDocument workDoc = QJsonDocument();
+    QJsonObject storage = QJsonObject();
 
     void syncObjects(QJsonObject& src, QJsonObject& dst) {
         for (QString value : src.keys()) {
@@ -40,12 +40,10 @@ void Settings::init() {
     if (workPrefsFile.exists()) {
         // Update preferences.
         QJsonObject src = resDoc.object();
-        QJsonObject dst = workDoc.object();
-        syncObjects(src, dst);
-        workDoc.setObject(dst);
+        syncObjects(src, storage);
     } else {
         // Create preferences from resources.
-        workDoc = resDoc;
+        storage = resDoc.object();
     }
 
     flush();
@@ -58,5 +56,6 @@ void Settings::flush() {
         return;
     }
 
-    workPrefsFile.write(workDoc.toJson());
+    QJsonDocument doc(storage);
+    workPrefsFile.write(doc.toJson());
 }
