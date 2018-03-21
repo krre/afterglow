@@ -6,16 +6,16 @@ namespace {
     QJsonObject storage = QJsonObject();
 
     void syncObjects(QJsonObject& src, QJsonObject& dst) {
-        for (QString value : src.keys()) {
-            if (dst.contains(value)) {
-                if (src[value].isObject()) {
-                    QJsonObject srcObj = src[value].toObject();
-                    QJsonObject dstObj = dst[value].toObject();
+        for (QString key : src.keys()) {
+            if (dst.contains(key)) {
+                if (src[key].isObject()) {
+                    QJsonObject srcObj = src[key].toObject();
+                    QJsonObject dstObj = dst[key].toObject();
                     syncObjects(srcObj, dstObj);
-                    dst[value] = dstObj;
+                    dst[key] = dstObj;
                 }
             } else {
-                dst[value] = src[value];
+                dst[key] = src[key];
             }
         }
     }
@@ -56,6 +56,17 @@ void Settings::init() {
 
     QFile workPrefsFile(QCoreApplication::applicationDirPath() + "/" + Constants::APP_PREFS_NAME);
     if (workPrefsFile.exists()) {
+        if (!workPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qWarning() << "Failed to open file" << workPrefsFile.fileName();
+            return;
+        }
+        QJsonParseError err;
+        storage = QJsonDocument::fromJson(workPrefsFile.readAll(), &err).object();
+        if (err.error != QJsonParseError::NoError) {
+            qWarning() << "Failed to parse JSON file" << workPrefsFile.fileName();
+            qWarning() << "Error:" << err.errorString() << "offset:" << err.offset;
+            return;
+        }
         // Update preferences.
         QJsonObject src = resDoc.object();
         syncObjects(src, storage);
