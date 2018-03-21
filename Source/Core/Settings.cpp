@@ -26,7 +26,10 @@ void Settings::init() {
     QFile workPrefsFile(QCoreApplication::applicationDirPath() + "/" + Constants::APP_PREFS_NAME);
     if (workPrefsFile.exists()) {
         // Update preferences.
-
+        QJsonObject src = resDoc.object();
+        QJsonObject dst = workDoc.object();
+        syncObjects(src, dst);
+        workDoc.setObject(dst);
     } else {
         // Create preferences from resources.
         workDoc = resDoc;
@@ -43,4 +46,19 @@ void Settings::flush() {
     }
 
     workPrefsFile.write(workDoc.toJson());
+}
+
+void Settings::syncObjects(QJsonObject& src, QJsonObject& dst) {
+    for (QString value : src.keys()) {
+        if (dst.contains(value)) {
+            if (src[value].isObject()) {
+                QJsonObject srcObj = src[value].toObject();
+                QJsonObject dstObj = dst[value].toObject();
+                syncObjects(srcObj, dstObj);
+                dst[value] = dstObj;
+            }
+        } else {
+            dst[value] = src[value];
+        }
+    }
 }

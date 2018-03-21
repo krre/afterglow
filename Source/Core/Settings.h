@@ -11,5 +11,8 @@ public:
     static void flush();
 
 private:
+    static void syncObjects(QJsonObject& src, QJsonObject& dst);
+
     static QJsonDocument workDoc;
+
 };
