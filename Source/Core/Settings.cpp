@@ -78,34 +78,6 @@ void Settings::flush() {
     file.write(doc.toJson());
 }
 
-Settings::Writer::~Writer() {
-    finish();
-}
-
-Settings::Writer* Settings::Writer::go(const QString& key) {
-    path.append(key);
-    return this;
-}
-
-Settings::Writer* Settings::Writer::set(QJsonValue value) {
-    this->value = value;
-    return this;
-}
-
-void Settings::Writer::finish() {
-    if (!path.count()) return;
-
-    QJsonObject& obj = storage;
-    for (int i = 0; i < path.count() - 1; i++) {
-        obj = obj[path.at(i)].toObject();
-    }
-
-    obj[path.last()] = value;
-
-    path.clear();
-    value = QJsonValue();
-}
-
 // Using: Settings::setValue("window.width", 42);
 void Settings::setValue(const QString& path, const QJsonValue& value) {
     modifyJsonValue(storage, path, value);
