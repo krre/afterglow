@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 #include "Core/Global.h"
 #include "Core/Constants.h"
+#include "Core/Settings.h"
 #include "NewProject.h"
 #include "Options.h"
 #include "Cargo/CargoManager.h"
@@ -457,6 +458,8 @@ void MainWindow::writeSettings() {
     settings.endArray();
 
     settings.endGroup();
+
+    Settings::flush();
 }
 
 void MainWindow::saveSession() {
