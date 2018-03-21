@@ -2,10 +2,23 @@
 #include "Constants.h"
 #include <QtCore>
 
-QJsonDocument Settings::workDoc = QJsonDocument();
+namespace {
+    QJsonDocument workDoc = QJsonDocument();
 
-Settings::Settings(QObject* parent) : QObject(parent) {
-
+    void syncObjects(QJsonObject& src, QJsonObject& dst) {
+        for (QString value : src.keys()) {
+            if (dst.contains(value)) {
+                if (src[value].isObject()) {
+                    QJsonObject srcObj = src[value].toObject();
+                    QJsonObject dstObj = dst[value].toObject();
+                    syncObjects(srcObj, dstObj);
+                    dst[value] = dstObj;
+                }
+            } else {
+                dst[value] = src[value];
+            }
+        }
+    }
 }
 
 void Settings::init() {
@@ -46,19 +59,4 @@ void Settings::flush() {
     }
 
     workPrefsFile.write(workDoc.toJson());
-}
-
-void Settings::syncObjects(QJsonObject& src, QJsonObject& dst) {
-    for (QString value : src.keys()) {
-        if (dst.contains(value)) {
-            if (src[value].isObject()) {
-                QJsonObject srcObj = src[value].toObject();
-                QJsonObject dstObj = dst[value].toObject();
-                syncObjects(srcObj, dstObj);
-                dst[value] = dstObj;
-            }
-        } else {
-            dst[value] = src[value];
-        }
-    }
 }

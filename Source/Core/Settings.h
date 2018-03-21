@@ -1,18 +1,11 @@
 #pragma once
-#include <QObject>
-#include <QJsonDocument>
 
-class Settings : public QObject {
-    Q_OBJECT
+namespace Settings {
+    const char version[] = "version";
+    const char window[] = "window";
+    const char width[] = "width";
+    const char height[] = "height";
 
-public:
-    explicit Settings(QObject* parent = nullptr);
-    static void init();
-    static void flush();
-
-private:
-    static void syncObjects(QJsonObject& src, QJsonObject& dst);
-
-    static QJsonDocument workDoc;
-
-};
+    void init();
+    void flush();
+}
