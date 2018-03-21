@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>Resources/Highlighting/Rust.json</file>
+        <file>Resources/prefs.json</file>
     </qresource>
 </RCC>
