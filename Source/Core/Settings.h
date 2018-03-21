@@ -11,4 +11,5 @@ namespace Settings {
     void init();
     void flush();
     void setValue(const QString& path, const QJsonValue& value);
+    QJsonValue getValue(const QString& path);
 }
