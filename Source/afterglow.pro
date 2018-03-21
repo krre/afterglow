@@ -21,7 +21,8 @@ SOURCES += \
     UI/Rename.cpp \
     Editor/Editor.cpp \
     UI/FileSystemProxyModel.cpp \
-    UI/ProjectTree.cpp
+    UI/ProjectTree.cpp \
+    Core/Settings.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -38,7 +39,8 @@ HEADERS += \
     UI/Rename.h \
     Core/Constants.h \
     UI/FileSystemProxyModel.h \
-    UI/ProjectTree.h
+    UI/ProjectTree.h \
+    Core/Settings.h
 
 FORMS += \
     UI/MainWindow.ui \

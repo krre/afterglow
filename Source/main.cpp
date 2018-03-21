@@ -1,6 +1,7 @@
 #include "UI/MainWindow.h"
 #include "UI/SelectWorkspace.h"
 #include "Core/Constants.h"
+#include "Core/Settings.h"
 #include "Core/Global.h"
 #include <QApplication>
 #include <QSettings>
@@ -10,6 +11,8 @@ int main(int argc, char *argv[]) {
 
     app.setApplicationName(Constants::APP_NAME);
     app.setApplicationVersion(Constants::APP_VERSION);
+
+    Settings::init();
 
     MainWindow window;
     window.show();
