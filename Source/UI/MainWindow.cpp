@@ -263,11 +263,17 @@ void MainWindow::onFileRemoved(const QString& filePath) {
 }
 
 void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
-    int index = findSource(oldPath);
-    if (index != -1) {
-        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(index));
-        editor->setFilePath(newPath);
-        onDocumentModified(editor);
+    for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
+        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(i));
+        if (editor->getFilePath().contains(oldPath)) {
+            QFileInfo fi(newPath);
+            if (fi.isDir()) {
+                editor->setFilePath(editor->getFilePath().replace(oldPath, newPath));
+            } else {
+                editor->setFilePath(newPath);
+                onDocumentModified(editor);
+            }
+        }
     }
 }
 
