@@ -5,5 +5,11 @@
         "height": 720,
         "x": null,
         "y": null
+    },
+    "editor": {
+        "font": {
+            "family": "Consolas",
+            "size": 11
+        }
     }
 }

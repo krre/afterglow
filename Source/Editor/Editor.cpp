@@ -1,13 +1,17 @@
 #include "Editor.h"
 #include "LineNumberArea.h"
 #include "Highlighter.h"
+#include "Core/Settings.h"
 #include <QtGui>
 
 Editor::Editor(QString filePath, QWidget* parent) :
         QPlainTextEdit(parent),
         filePath(filePath) {
     setFrameShape(QFrame::NoFrame);
-    QFont font("Consolas", 11);
+
+    const QString& family = Settings::getValue("editor.font.family").toString();
+    int size = Settings::getValue("editor.font.size").toInt();
+    QFont font(family, size);
     document()->setDefaultFont(font);
 
     lineNumberArea = new LineNumberArea(this);
