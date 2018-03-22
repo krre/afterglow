@@ -380,8 +380,7 @@ void MainWindow::readSettings() {
 
     if (!restoreGeometry(settings.value("geometry").toByteArray())) {
         resize(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
-        const QRect availableGeometry = QApplication::desktop()->availableGeometry(this);
-        move((availableGeometry.width() - width()) / 2, (availableGeometry.height() - height()) / 2);
+        setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), qApp->desktop()->availableGeometry()));
     }
 
     QVariant splitterMainSize = settings.value("splitterMain");
