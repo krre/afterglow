@@ -64,7 +64,7 @@ void Settings::setValue(const QString& path, const QJsonValue& value) {
 // int width = Settings::getValue("window.width").toInt();
 QJsonValue Settings::getValue(const QString& path) {
     QStringList keys = path.split('.');
-    QJsonObject& obj = storage;
+    QJsonObject obj = storage;
     for (int i = 0; i < keys.count() - 1; i++) {
         obj = obj[keys.at(i)].toObject();
     }
