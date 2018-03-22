@@ -374,14 +374,29 @@ void MainWindow::loadProjectProperties() {
 }
 
 void MainWindow::readSettings() {
+    int width = Settings::getValue("window.geometry.width").toInt();
+    int height = Settings::getValue("window.geometry.height").toInt();
+
+    QJsonValue x = Settings::getValue("window.geometry.x");
+    QJsonValue y = Settings::getValue("window.geometry.y");
+
+    if (x.isNull() || y.isNull()) {
+        // Center window in screen.
+        resize(width, height);
+        setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), qApp->desktop()->availableGeometry()));
+    } else {
+        setGeometry(x.toInt(), y.toInt(), width, height);
+    }
+
+    Qt::WindowStates state = static_cast<Qt::WindowStates>(Settings::getValue("window.state").toInt());
+
+    if (state == Qt::WindowMaximized || state == Qt::WindowFullScreen) {
+        setWindowState(state);
+    }
+
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
 
     settings.beginGroup("MainWindow");
-
-    if (!restoreGeometry(settings.value("geometry").toByteArray())) {
-        resize(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
-        setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), qApp->desktop()->availableGeometry()));
-    }
 
     QVariant splitterMainSize = settings.value("splitterMain");
     if (splitterMainSize == QVariant()) {
@@ -427,10 +442,17 @@ void MainWindow::readSettings() {
 }
 
 void MainWindow::writeSettings() {
+    Settings::setValue("window.state", static_cast<int>(windowState()));
+    if (windowState() == Qt::WindowNoState) {
+        Settings::setValue("window.geometry.x", geometry().x());
+        Settings::setValue("window.geometry.y", geometry().y());
+        Settings::setValue("window.geometry.width", geometry().width());
+        Settings::setValue("window.geometry.height", geometry().height());
+    }
+
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
 
     settings.beginGroup("MainWindow");
-    settings.setValue("geometry", saveGeometry());
 
     settings.setValue("splitterMain", ui->splitterMain->saveState());
     settings.setValue("splitterSide", ui->splitterSide->saveState());

@@ -14,9 +14,6 @@ const char PROJECT_DATA_DIRECTORY[] = ".afterglow";
 const char PROJECT_SESSION_FILE[] = "session.json";
 const char PROJECT_PROPERTIES_FILE[] = "properties.json";
 
-const int WINDOW_WIDTH = 1200;
-const int WINDOW_HEIGHT = 800;
-
 const int MAX_RECENT_FILES = 10;
 const int SEPARATOR_AND_MENU_CLEAR_COUNT = 2;
 
