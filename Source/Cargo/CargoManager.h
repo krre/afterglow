@@ -23,6 +23,7 @@ public:
     void createProject(ProjectTemplate projectTemplate, const QString& path);
     void build(BuildTarget target);
     void run(BuildTarget target);
+    void clean();
 
     void setProjectPath(const QString& path);
 
@@ -39,6 +40,7 @@ private:
     void prepareAndStart(const QStringList& arguments);
 
     enum class CommandStatus {
+        None,
         New,
         Build,
         Run
@@ -48,7 +50,7 @@ private:
 
     QProcess* process;
     QTime measureTime;
-    CommandStatus commandStatus;
+    CommandStatus commandStatus = CommandStatus::None;
     QTextCodec* outputCodec = QTextCodec::codecForLocale();
     QTextCodec::ConverterState outputCodecState;
     QTextCodec::ConverterState errorCodecState;

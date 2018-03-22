@@ -49,6 +49,12 @@ void CargoManager::run(BuildTarget target) {
     commandStatus = CommandStatus::Run;
 }
 
+void CargoManager::clean() {
+    QStringList arguments;
+    arguments << "clean";
+    prepareAndStart(arguments);
+}
+
 void CargoManager::setProjectPath(const QString& path) {
     projectPath = path;
     process->setWorkingDirectory(path);

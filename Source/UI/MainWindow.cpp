@@ -188,6 +188,10 @@ void MainWindow::on_actionRun_triggered() {
     cargoManager->run(projectProperties->getTarget());
 }
 
+void MainWindow::on_actionClean_triggered() {
+    cargoManager->clean();
+}
+
 void MainWindow::on_actionOptions_triggered() {
     Options options(this);
     options.exec();

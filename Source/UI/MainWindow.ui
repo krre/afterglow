@@ -356,6 +356,7 @@
     </property>
     <addaction name="actionBuild"/>
     <addaction name="actionRun"/>
+    <addaction name="actionClean"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -562,6 +563,11 @@
   <action name="actionClearMenuRecentProjects">
    <property name="text">
     <string>Clear Menu</string>
+   </property>
+  </action>
+  <action name="actionClean">
+   <property name="text">
+    <string>Clean</string>
    </property>
   </action>
  </widget>
