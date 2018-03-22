@@ -25,6 +25,9 @@
         "recent": {
             "projects": [],
             "files": []
+        },
+        "session": {
+            "project": ""
         }
     },
     "editor": {

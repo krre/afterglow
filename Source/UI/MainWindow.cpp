@@ -434,16 +434,11 @@ void MainWindow::readSettings() {
         addRecentFile(filePath);
     }
 
-    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-
-    settings.beginGroup("MainWindow");
-
-    QString lastProject = settings.value("lastProject", "").toString();
+    // Last project
+    QString lastProject = Settings::getValue("gui.session.project").toString();
     if (!lastProject.isEmpty()) {
         openProject(lastProject);
     }
-
-    settings.endGroup();
 }
 
 void MainWindow::writeSettings() {
@@ -497,13 +492,8 @@ void MainWindow::writeSettings() {
     }
     Settings::setValue("gui.recent.files", recentFiles);
 
-    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-
-    settings.beginGroup("MainWindow");
-
-    settings.setValue("lastProject", projectPath);
-
-    settings.endGroup();
+    // Last project
+    Settings::setValue("gui.session.project", projectPath);
 
     Settings::flush();
 }
