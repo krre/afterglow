@@ -374,6 +374,7 @@ void MainWindow::loadProjectProperties() {
 }
 
 void MainWindow::readSettings() {
+    // Window geometry
     int width = Settings::getValue("window.geometry.width").toInt();
     int height = Settings::getValue("window.geometry.height").toInt();
 
@@ -388,12 +389,14 @@ void MainWindow::readSettings() {
         setGeometry(x.toInt(), y.toInt(), width, height);
     }
 
+    // Window state
     Qt::WindowStates state = static_cast<Qt::WindowStates>(Settings::getValue("window.state").toInt());
 
     if (state == Qt::WindowMaximized || state == Qt::WindowFullScreen) {
         setWindowState(state);
     }
 
+    // Splitter sizes
     QList<int> sizes;
     QJsonArray sizesArray = Settings::getValue("gui.splitters.main").toArray();
     for (const auto& size : sizesArray) {
@@ -443,7 +446,7 @@ void MainWindow::readSettings() {
 }
 
 void MainWindow::writeSettings() {
-    Settings::setValue("window.state", static_cast<int>(windowState()));
+    // Window geometry
     if (windowState() == Qt::WindowNoState) {
         Settings::setValue("window.geometry.x", geometry().x());
         Settings::setValue("window.geometry.y", geometry().y());
@@ -451,6 +454,10 @@ void MainWindow::writeSettings() {
         Settings::setValue("window.geometry.height", geometry().height());
     }
 
+    // Window state
+    Settings::setValue("window.state", static_cast<int>(windowState()));
+
+    // Splitter sizes
     QJsonArray sizesArray;
     for (int size : ui->splitterMain->sizes()) {
         sizesArray.append(QJsonValue(size));
