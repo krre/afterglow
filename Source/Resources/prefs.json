@@ -27,6 +27,7 @@
             "files": []
         },
         "session": {
+            "restore": true,
             "project": ""
         }
     },

@@ -341,6 +341,8 @@ void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, co
 }
 
 void MainWindow::saveProjectProperties() {
+    if (projectPath.isEmpty()) return;
+
     QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_PROPERTIES_FILE;
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly)) {
@@ -356,6 +358,8 @@ void MainWindow::saveProjectProperties() {
 }
 
 void MainWindow::loadProjectProperties() {
+    if (projectPath.isEmpty()) return;
+
     QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_PROPERTIES_FILE;
     QFileInfo fi(path);
     if (!fi.exists()) {
@@ -499,9 +503,7 @@ void MainWindow::writeSettings() {
 }
 
 void MainWindow::saveSession() {
-    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-
-    if (!settings.value("MainWindow/restoreSession").toBool() || projectPath.isEmpty()) {
+    if (!Settings::getValue("gui.session.restore").toBool() || projectPath.isEmpty()) {
         return;
     }
 
@@ -545,9 +547,7 @@ void MainWindow::saveSession() {
 }
 
 void MainWindow::restoreSession() {
-    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-
-    if (!settings.value("MainWindow/restoreSession").toBool() || projectPath.isEmpty()) {
+    if (!Settings::getValue("gui.session.restore").toBool() || projectPath.isEmpty()) {
         return;
     }
 
