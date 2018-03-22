@@ -244,6 +244,7 @@ void MainWindow::onOutputMessage(const QString& message) {
     int cargoTabIndex = static_cast<int>(OutputPane::Cargo);
     ui->tabWidgetOutput->setCurrentIndex(cargoTabIndex);
     ui->plainTextEditCargo->insertPlainText(message);
+    ui->plainTextEditCargo->verticalScrollBar()->setValue(ui->plainTextEditCargo->verticalScrollBar()->maximum());
 }
 
 void MainWindow::onFileCreated(const QString& filePath) {
