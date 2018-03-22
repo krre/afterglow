@@ -10,8 +10,7 @@ NewProject::NewProject(QWidget* parent) :
     ui->setupUi(this);
     setFixedHeight(height());
 
-    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-    ui->lineEditDirectory->setText(settings.value("Path/workspace", Global::getDefaultWorkspacePath()).toString());
+    ui->lineEditDirectory->setText(Global::getWorkspacePath());
 
     connect(ui->lineEditName, &QLineEdit::textChanged, this, &NewProject::adjustAcceptedButton);
     connect(ui->lineEditDirectory, &QLineEdit::textChanged, this, &NewProject::adjustAcceptedButton);

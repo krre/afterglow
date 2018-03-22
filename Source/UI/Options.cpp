@@ -1,6 +1,7 @@
 #include "Options.h"
 #include "ui_Options.h"
 #include "Core/Global.h"
+#include "Core/Settings.h"
 #include <QtWidgets>
 
 Options::Options(QWidget* parent) :
@@ -35,15 +36,13 @@ void Options::on_buttonBox_accepted() {
 }
 
 void Options::readSettings() {
-    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-    ui->lineEditCargo->setText(settings.value("Path/Cargo").toString());
-    ui->lineEditWorkspace->setText(settings.value("Path/workspace", Global::getDefaultWorkspacePath()).toString());
-    ui->checkBoxSession->setChecked(settings.value("MainWindow/restoreSession", true).toBool());
+//    ui->lineEditCargo->setText(settings.value("Path/Cargo").toString());
+    ui->lineEditWorkspace->setText(Global::getWorkspacePath());
+    ui->checkBoxSession->setChecked(Settings::getValue("gui.session.restore").toBool());
 }
 
 void Options::writeSettings() {
-    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-    settings.setValue("Path/cargo", ui->lineEditCargo->text());
-    settings.setValue("Path/workspace", ui->lineEditWorkspace->text());
-    settings.setValue("MainWindow/restoreSession", ui->checkBoxSession->isChecked());
+//    settings.setValue("Path/cargo", ui->lineEditCargo->text());
+    Settings::setValue("workspace", ui->lineEditWorkspace->text());
+    Settings::setValue("gui.session.restore", ui->checkBoxSession->isChecked());
 }

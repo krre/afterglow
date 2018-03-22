@@ -2,6 +2,7 @@
 #include "ui_SelectWorkspace.h"
 #include "Core/Constants.h"
 #include "Core/Global.h"
+#include "Core/Settings.h"
 #include <QtWidgets>
 
 SelectWorkspace::SelectWorkspace(QWidget* parent) :
@@ -9,7 +10,7 @@ SelectWorkspace::SelectWorkspace(QWidget* parent) :
         ui(new Ui::SelectWorkspace) {
     ui->setupUi(this);
     setFixedHeight(height());
-    ui->lineEdit->setText(Global::getDefaultWorkspacePath());
+    ui->lineEdit->setText(Global::getWorkspacePath());
 }
 
 SelectWorkspace::~SelectWorkspace() {
@@ -24,11 +25,9 @@ void SelectWorkspace::on_pushButtonBrowse_clicked() {
 }
 
 void SelectWorkspace::on_buttonBox_accepted() {
-    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-    settings.setValue("Path/workspace", ui->lineEdit->text());
+    Settings::setValue("workspace", ui->lineEdit->text());
 }
 
 void SelectWorkspace::on_lineEdit_textChanged(const QString& text) {
     ui->buttonBox->buttons().at(0)->setEnabled(!text.isEmpty());
 }
-

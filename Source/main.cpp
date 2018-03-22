@@ -17,8 +17,7 @@ int main(int argc, char *argv[]) {
     MainWindow window;
     window.show();
 
-    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-    if (settings.value("Path/workspace") == QVariant()) {
+    if (Settings::getValue("workspace").toString().isEmpty()) {
         SelectWorkspace selectWorkspace(&window);
         selectWorkspace.exec();
     }

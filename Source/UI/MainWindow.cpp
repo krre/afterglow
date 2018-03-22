@@ -126,9 +126,7 @@ void MainWindow::on_actionNewDirectory_triggered() {
 }
 
 void MainWindow::on_actionOpen_triggered() {
-    QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
-    QString workspace = settings.value("Path/workspace", Global::getDefaultWorkspacePath()).toString();
-    QString dirPath = projectPath.isEmpty() ? workspace : projectPath;
+    QString dirPath = projectPath.isEmpty() ? Global::getWorkspacePath() : projectPath;
     QString filePath = QFileDialog::getOpenFileName(this, tr("Open File or Project"), dirPath, "All Files(*.*)");
     if (filePath.isEmpty()) return;
 

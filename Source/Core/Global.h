@@ -8,6 +8,5 @@ class Global : public QObject {
 public:
     Global(QObject* parent = nullptr);
 
-    static QString getPortableSettingsPath();
-    static QString getDefaultWorkspacePath();
+    static QString getWorkspacePath();
 };
