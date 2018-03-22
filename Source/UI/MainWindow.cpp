@@ -243,7 +243,7 @@ void MainWindow::onProjectCreated(const QString& path) {
 void MainWindow::onOutputMessage(const QString& message) {
     int cargoTabIndex = static_cast<int>(OutputPane::Cargo);
     ui->tabWidgetOutput->setCurrentIndex(cargoTabIndex);
-    ui->textEditCargo->append(message);
+    ui->textEditCargo->insertPlainText(message);
 }
 
 void MainWindow::onFileCreated(const QString& filePath) {

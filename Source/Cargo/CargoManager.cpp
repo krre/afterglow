@@ -89,7 +89,7 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     QString finishedMessage = "The process " + process->program() +
         (exitStatus == QProcess::NormalExit ? " finished normally" : " crashed");
     timedOutputMessage(finishedMessage);
-    timedOutputMessage(QString("Elapsed time: %1 ms").arg(measureTime.elapsed()));
+    timedOutputMessage(QString("Elapsed time: %1 ms").arg(measureTime.elapsed()) + "\n");
     emit outputMessage();
 }
 
@@ -107,6 +107,6 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
 }
 
 void CargoManager::timedOutputMessage(const QString& message) {
-    QString timedMessage = QTime::currentTime().toString("hh:mm:ss: ") + message;
+    QString timedMessage = QTime::currentTime().toString("hh:mm:ss: ") + message + "\n";
     emit outputMessage(timedMessage);
 }
