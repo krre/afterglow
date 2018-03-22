@@ -9,6 +9,12 @@
         },
         "state": 0
     },
+    "gui": {
+        "splitters": {
+            "main": [100, 500],
+            "side": [450, 100]
+        }
+    },
     "editor": {
         "font": {
             "family": "Consolas",

@@ -394,23 +394,24 @@ void MainWindow::readSettings() {
         setWindowState(state);
     }
 
+    QList<int> sizes;
+    QJsonArray sizesArray = Settings::getValue("gui.splitters.main").toArray();
+    for (const auto& size : sizesArray) {
+        sizes.append(size.toInt());
+    }
+    ui->splitterMain->setSizes(sizes);
+
+    sizesArray = Settings::getValue("gui.splitters.side").toArray();
+    sizes.clear();
+
+    for (const auto& size : sizesArray) {
+        sizes.append(size.toInt());
+    }
+    ui->splitterSide->setSizes(sizes);
+
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
 
     settings.beginGroup("MainWindow");
-
-    QVariant splitterMainSize = settings.value("splitterMain");
-    if (splitterMainSize == QVariant()) {
-        ui->splitterMain->setSizes({ 100, 500 });
-    } else {
-        ui->splitterMain->restoreState(splitterMainSize.toByteArray());
-    }
-
-    QVariant splitterSideSize = settings.value("splitterSide");
-    if (splitterSideSize == QVariant()) {
-        ui->splitterSide->setSizes({ 500, 100 });
-    } else {
-        ui->splitterSide->restoreState(splitterSideSize.toByteArray());
-    }
 
     ui->actionShowSidebar->setChecked(settings.value("showSidebar", true).toBool());
     ui->actionShowOutput->setChecked(settings.value("showOutput", true).toBool());
@@ -450,12 +451,21 @@ void MainWindow::writeSettings() {
         Settings::setValue("window.geometry.height", geometry().height());
     }
 
+    QJsonArray sizesArray;
+    for (int size : ui->splitterMain->sizes()) {
+        sizesArray.append(QJsonValue(size));
+    }
+    Settings::setValue("gui.splitters.main", sizesArray);
+
+    sizesArray = QJsonArray();
+    for (int size : ui->splitterSide->sizes()) {
+        sizesArray.append(QJsonValue(size));
+    }
+    Settings::setValue("gui.splitters.side", sizesArray);
+
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
 
     settings.beginGroup("MainWindow");
-
-    settings.setValue("splitterMain", ui->splitterMain->saveState());
-    settings.setValue("splitterSide", ui->splitterSide->saveState());
 
     settings.setValue("showSidebar", ui->actionShowSidebar->isChecked());
     settings.setValue("showOutput", ui->actionShowOutput->isChecked());
