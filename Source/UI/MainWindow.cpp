@@ -412,14 +412,17 @@ void MainWindow::readSettings() {
     }
     ui->splitterSide->setSizes(sizes);
 
+    // Sidebar
+    ui->actionShowSidebar->setChecked(Settings::getValue("gui.sidebar.visible").toBool());
+    ui->tabWidgetSide->setCurrentIndex(Settings::getValue("gui.sidebar.tab").toInt());
+
+    // Output pane
+    ui->actionShowOutput->setChecked(Settings::getValue("gui.output.visible").toBool());
+    ui->tabWidgetOutput->setCurrentIndex(Settings::getValue("gui.output.tab").toInt());
+
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
 
     settings.beginGroup("MainWindow");
-
-    ui->actionShowSidebar->setChecked(settings.value("showSidebar", true).toBool());
-    ui->actionShowOutput->setChecked(settings.value("showOutput", true).toBool());
-
-    ui->tabWidgetSide->setCurrentIndex(settings.value("sidebar", 0).toInt());
 
     int size = settings.beginReadArray("recentFiles");
     for (int i = size - 1; i >= 0; --i) {
@@ -458,26 +461,33 @@ void MainWindow::writeSettings() {
     Settings::setValue("window.state", static_cast<int>(windowState()));
 
     // Splitter sizes
-    QJsonArray sizesArray;
-    for (int size : ui->splitterMain->sizes()) {
-        sizesArray.append(QJsonValue(size));
+    if (ui->actionShowSidebar->isChecked()) {
+        QJsonArray sizesArray;
+        for (int size : ui->splitterMain->sizes()) {
+            sizesArray.append(QJsonValue(size));
+        }
+        Settings::setValue("gui.splitters.main", sizesArray);
     }
-    Settings::setValue("gui.splitters.main", sizesArray);
 
-    sizesArray = QJsonArray();
-    for (int size : ui->splitterSide->sizes()) {
-        sizesArray.append(QJsonValue(size));
+    if (ui->actionShowOutput->isChecked()) {
+        QJsonArray sizesArray;
+        for (int size : ui->splitterSide->sizes()) {
+            sizesArray.append(QJsonValue(size));
+        }
+        Settings::setValue("gui.splitters.side", sizesArray);
     }
-    Settings::setValue("gui.splitters.side", sizesArray);
+
+    // Sidebar
+    Settings::setValue("gui.sidebar.visible", ui->actionShowSidebar->isChecked());
+    Settings::setValue("gui.sidebar.tab", ui->tabWidgetSide->currentIndex());
+
+    // Output pane
+    Settings::setValue("gui.output.visible", ui->actionShowOutput->isChecked());
+    Settings::setValue("gui.output.tab", ui->tabWidgetOutput->currentIndex());
 
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
 
     settings.beginGroup("MainWindow");
-
-    settings.setValue("showSidebar", ui->actionShowSidebar->isChecked());
-    settings.setValue("showOutput", ui->actionShowOutput->isChecked());
-
-    settings.setValue("sidebar", ui->tabWidgetSide->currentIndex());
 
     settings.setValue("lastProject", projectPath);
 

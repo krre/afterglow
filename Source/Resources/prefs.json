@@ -13,6 +13,14 @@
         "splitters": {
             "main": [100, 500],
             "side": [450, 100]
+        },
+        "sidebar": {
+            "visible": true,
+            "tab": 0
+        },
+        "output": {
+            "visible": true,
+            "tab": 0
         }
     },
     "editor": {
