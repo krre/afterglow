@@ -2,42 +2,7 @@
 #include "Constants.h"
 #include <QtCore>
 
-namespace {
-    QJsonObject storage = QJsonObject();
-
-    void syncObjects(QJsonObject& src, QJsonObject& dst) {
-        for (QString key : src.keys()) {
-            if (dst.contains(key)) {
-                if (src[key].isObject()) {
-                    QJsonObject srcObj = src[key].toObject();
-                    QJsonObject dstObj = dst[key].toObject();
-                    syncObjects(srcObj, dstObj);
-                    dst[key] = dstObj;
-                }
-            } else {
-                dst[key] = src[key];
-            }
-        }
-    }
-
-    void modifyJsonValue(QJsonObject& obj, const QString& path, const QJsonValue& newValue) {
-        const int indexOfDot = path.indexOf('.');
-        const QString propertyName = path.left(indexOfDot);
-        const QString subPath = indexOfDot > 0 ? path.mid(indexOfDot + 1) : QString();
-
-        QJsonValue subValue = obj[propertyName];
-
-        if (subPath.isEmpty()) {
-            subValue = newValue;
-        } else {
-            QJsonObject obj = subValue.toObject();
-            modifyJsonValue(obj, subPath, newValue);
-            subValue = obj;
-        }
-
-        obj[propertyName] = subValue;
-    }
-}
+QJsonObject Settings::storage = QJsonObject();
 
 void Settings::init() {
     QFile resPrefsFile(":/Resources/prefs.json");
@@ -105,4 +70,37 @@ QJsonValue Settings::getValue(const QString& path) {
     }
 
     return obj[keys.last()];
+}
+
+void Settings::syncObjects(QJsonObject& src, QJsonObject& dst) {
+    for (QString key : src.keys()) {
+        if (dst.contains(key)) {
+            if (src[key].isObject()) {
+                QJsonObject srcObj = src[key].toObject();
+                QJsonObject dstObj = dst[key].toObject();
+                syncObjects(srcObj, dstObj);
+                dst[key] = dstObj;
+            }
+        } else {
+            dst[key] = src[key];
+        }
+    }
+}
+
+void Settings::modifyJsonValue(QJsonObject& obj, const QString& path, const QJsonValue& newValue) {
+    const int indexOfDot = path.indexOf('.');
+    const QString propertyName = path.left(indexOfDot);
+    const QString subPath = indexOfDot > 0 ? path.mid(indexOfDot + 1) : QString();
+
+    QJsonValue subValue = obj[propertyName];
+
+    if (subPath.isEmpty()) {
+        subValue = newValue;
+    } else {
+        QJsonObject obj = subValue.toObject();
+        modifyJsonValue(obj, subPath, newValue);
+        subValue = obj;
+    }
+
+    obj[propertyName] = subValue;
 }
