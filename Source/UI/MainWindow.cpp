@@ -229,11 +229,11 @@ void MainWindow::on_tabWidgetSource_currentChanged(int index) {
 }
 
 void MainWindow::on_toolButtonCargoClear_clicked() {
-    ui->textEditCargo->clear();
+    ui->plainTextEditCargo->clear();
 }
 
 void MainWindow::on_toolButtonAppClear_clicked() {
-    ui->textEditApplication->clear();
+    ui->plainTextEditApplication->clear();
 }
 
 void MainWindow::onProjectCreated(const QString& path) {
@@ -243,7 +243,7 @@ void MainWindow::onProjectCreated(const QString& path) {
 void MainWindow::onOutputMessage(const QString& message) {
     int cargoTabIndex = static_cast<int>(OutputPane::Cargo);
     ui->tabWidgetOutput->setCurrentIndex(cargoTabIndex);
-    ui->textEditCargo->insertPlainText(message);
+    ui->plainTextEditCargo->insertPlainText(message);
 }
 
 void MainWindow::onFileCreated(const QString& filePath) {

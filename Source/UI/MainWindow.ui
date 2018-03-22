@@ -159,12 +159,9 @@
            </layout>
           </item>
           <item>
-           <widget class="QTextEdit" name="textEditCargo">
+           <widget class="QPlainTextEdit" name="plainTextEditCargo">
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -244,12 +241,9 @@
            </layout>
           </item>
           <item>
-           <widget class="QTextEdit" name="textEditApplication">
+           <widget class="QPlainTextEdit" name="plainTextEditApplication">
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
             </property>
            </widget>
           </item>
