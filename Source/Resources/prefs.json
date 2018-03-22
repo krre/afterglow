@@ -21,6 +21,10 @@
         "output": {
             "visible": true,
             "tab": 0
+        },
+        "recent": {
+            "projects": [],
+            "files": []
         }
     },
     "editor": {

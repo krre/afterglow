@@ -420,25 +420,23 @@ void MainWindow::readSettings() {
     ui->actionShowOutput->setChecked(Settings::getValue("gui.output.visible").toBool());
     ui->tabWidgetOutput->setCurrentIndex(Settings::getValue("gui.output.tab").toInt());
 
+    // Recent projects
+    QJsonArray recentProjects = Settings::getValue("gui.recent.projects").toArray();
+    for (int i = recentProjects.size() - 1; i >= 0; --i) {
+        QString projectPath = recentProjects.at(i).toString();
+        addRecentProject(projectPath);
+    }
+
+    // Recent files
+    QJsonArray recentFiles = Settings::getValue("gui.recent.files").toArray();
+    for (int i = recentFiles.size() - 1; i >= 0; --i) {
+        QString filePath = recentFiles.at(i).toString();
+        addRecentFile(filePath);
+    }
+
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
 
     settings.beginGroup("MainWindow");
-
-    int size = settings.beginReadArray("recentFiles");
-    for (int i = size - 1; i >= 0; --i) {
-        settings.setArrayIndex(i);
-        QString filePath = settings.value("path").toString();
-        addRecentFile(filePath);
-    }
-    settings.endArray();
-
-    size = settings.beginReadArray("recentProjects");
-    for (int i = size - 1; i >= 0; --i) {
-        settings.setArrayIndex(i);
-        QString projectPath = settings.value("path").toString();
-        addRecentProject(projectPath);
-    }
-    settings.endArray();
 
     QString lastProject = settings.value("lastProject", "").toString();
     if (!lastProject.isEmpty()) {
@@ -485,25 +483,25 @@ void MainWindow::writeSettings() {
     Settings::setValue("gui.output.visible", ui->actionShowOutput->isChecked());
     Settings::setValue("gui.output.tab", ui->tabWidgetOutput->currentIndex());
 
+    // Recent projects
+    QJsonArray recentProjects;
+    for (int i = 0; i < ui->menuRecentProjects->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
+        recentProjects.append(ui->menuRecentProjects->actions().at(i)->text());
+    }
+    Settings::setValue("gui.recent.projects", recentProjects);
+
+    // Recent files
+    QJsonArray recentFiles;
+    for (int i = 0; i < ui->menuRecentFiles->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
+        recentFiles.append(ui->menuRecentFiles->actions().at(i)->text());
+    }
+    Settings::setValue("gui.recent.files", recentFiles);
+
     QSettings settings(Global::getPortableSettingsPath(), QSettings::IniFormat);
 
     settings.beginGroup("MainWindow");
 
     settings.setValue("lastProject", projectPath);
-
-    settings.beginWriteArray("recentFiles");
-    for (int i = 0; i < ui->menuRecentFiles->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
-        settings.setArrayIndex(i);
-        settings.setValue("path", ui->menuRecentFiles->actions().at(i)->text());
-    }
-    settings.endArray();
-
-    settings.beginWriteArray("recentProjects");
-    for (int i = 0; i < ui->menuRecentProjects->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
-        settings.setArrayIndex(i);
-        settings.setValue("path", ui->menuRecentProjects->actions().at(i)->text());
-    }
-    settings.endArray();
 
     settings.endGroup();
 
