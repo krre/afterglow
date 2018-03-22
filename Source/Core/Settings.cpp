@@ -34,7 +34,8 @@ void Settings::init() {
         }
         // Update preferences.
         QJsonObject src = resDoc.object();
-        syncObjects(src, storage);
+        cleanupDeprecated(src, storage);
+        appendNew(src, storage);
     } else {
         // Create preferences from resources.
         storage = resDoc.object();
@@ -72,13 +73,28 @@ QJsonValue Settings::getValue(const QString& path) {
     return obj[keys.last()];
 }
 
-void Settings::syncObjects(QJsonObject& src, QJsonObject& dst) {
+void Settings::cleanupDeprecated(QJsonObject& src, QJsonObject& dst) {
+    for (QString key : dst.keys()) {
+        if (src.contains(key)) {
+            if (dst[key].isObject()) {
+                QJsonObject srcObj = src[key].toObject();
+                QJsonObject dstObj = dst[key].toObject();
+                cleanupDeprecated(srcObj, dstObj);
+                dst[key] = dstObj;
+            }
+        } else {
+            dst.remove(key);
+        }
+    }
+}
+
+void Settings::appendNew(QJsonObject& src, QJsonObject& dst) {
     for (QString key : src.keys()) {
         if (dst.contains(key)) {
             if (src[key].isObject()) {
                 QJsonObject srcObj = src[key].toObject();
                 QJsonObject dstObj = dst[key].toObject();
-                syncObjects(srcObj, dstObj);
+                appendNew(srcObj, dstObj);
                 dst[key] = dstObj;
             }
         } else {

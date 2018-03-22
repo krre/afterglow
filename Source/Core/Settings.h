@@ -11,7 +11,8 @@ public:
     static QJsonValue getValue(const QString& path);
 
 private:
-    static void syncObjects(QJsonObject& src, QJsonObject& dst);
+    static void cleanupDeprecated(QJsonObject& src, QJsonObject& dst);
+    static void appendNew(QJsonObject& src, QJsonObject& dst);
     static void modifyJsonValue(QJsonObject& obj, const QString& path, const QJsonValue& newValue);
 
     static QJsonObject storage;
