@@ -320,6 +320,9 @@ void MainWindow::addRecentFile(const QString& filePath) {
 }
 
 void MainWindow::addRecentProject(const QString& projectPath) {
+    QFileInfo fi(projectPath + "/Cargo.toml");
+    if (!fi.exists()) return;
+
     addRecentFileOrProject(ui->menuRecentProjects, projectPath, [=] {
         openProject(projectPath);
     });
@@ -443,7 +446,7 @@ void MainWindow::readSettings() {
 
     // Last project
     QString lastProject = Settings::getValue("gui.session.project").toString();
-    if (!lastProject.isEmpty()) {
+    if (QFileInfo::exists(lastProject + "/Cargo.toml")) {
         openProject(lastProject);
     }
 }
@@ -555,8 +558,7 @@ void MainWindow::restoreSession() {
     }
 
     QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_SESSION_FILE;
-    QFileInfo fi(path);
-    if (!fi.exists()) {
+    if (!QFileInfo::exists(path)) {
         return;
     }
 
@@ -585,6 +587,7 @@ void MainWindow::restoreSession() {
 
 void MainWindow::openProject(const QString& path) {
     closeProject();
+
     projectPath = path;
     projectTree->setRootPath(path);
     cargoManager->setProjectPath(path);
