@@ -63,13 +63,13 @@ void CargoManager::setProjectPath(const QString& path) {
 void CargoManager::onReadyReadStandardOutput() {
     QByteArray data = process->readAllStandardOutput();
     QString output = outputCodec->toUnicode(data.constData(), data.length(), &outputCodecState);
-    emit outputMessage(output);
+    emit cargoMessage(output);
 }
 
 void CargoManager::onReadyReadStandardError() {
     QByteArray data = process->readAllStandardError();
     QString output = outputCodec->toUnicode(data.constData(), data.length(), &errorCodecState);
-    emit outputMessage(output);
+    emit cargoMessage(output);
 }
 
 void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
@@ -90,7 +90,7 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
         (exitStatus == QProcess::NormalExit ? " finished normally" : " crashed");
     timedOutputMessage(finishedMessage);
     timedOutputMessage(QString("Elapsed time: %1 ms").arg(measureTime.elapsed()) + "\n");
-    emit outputMessage();
+    emit cargoMessage();
 }
 
 void CargoManager::prepareAndStart(const QStringList& arguments) {
@@ -108,5 +108,5 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
 
 void CargoManager::timedOutputMessage(const QString& message) {
     QString timedMessage = QTime::currentTime().toString("hh:mm:ss: ") + message + "\n";
-    emit outputMessage(timedMessage);
+    emit cargoMessage(timedMessage);
 }

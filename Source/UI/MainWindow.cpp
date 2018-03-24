@@ -21,7 +21,7 @@ MainWindow::MainWindow() :
 
     cargoManager = new CargoManager(this);
     connect(cargoManager, &CargoManager::projectCreated, this, &MainWindow::onProjectCreated);
-    connect(cargoManager, &CargoManager::outputMessage, this, &MainWindow::onOutputMessage);
+    connect(cargoManager, &CargoManager::cargoMessage, this, &MainWindow::onCargoMessage);
 
     projectTree = new ProjectTree;
     connect(projectTree, &ProjectTree::openActivated, this, &MainWindow::addSourceTab);
@@ -240,7 +240,7 @@ void MainWindow::onProjectCreated(const QString& path) {
     openProject(path);
 }
 
-void MainWindow::onOutputMessage(const QString& message) {
+void MainWindow::onCargoMessage(const QString& message) {
     int cargoTabIndex = static_cast<int>(OutputPane::Cargo);
     ui->tabWidgetOutput->setCurrentIndex(cargoTabIndex);
     ui->plainTextEditCargo->insertPlainText(message);

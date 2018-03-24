@@ -28,7 +28,7 @@ public:
     void setProjectPath(const QString& path);
 
 signals:
-    void outputMessage(const QString& message = QString());
+    void cargoMessage(const QString& message = QString());
     void projectCreated(const QString& path);
 
 private slots:
