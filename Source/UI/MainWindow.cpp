@@ -22,6 +22,7 @@ MainWindow::MainWindow() :
     cargoManager = new CargoManager(this);
     connect(cargoManager, &CargoManager::projectCreated, this, &MainWindow::onProjectCreated);
     connect(cargoManager, &CargoManager::cargoMessage, this, &MainWindow::onCargoMessage);
+    connect(cargoManager, &CargoManager::applicationMessage, this, &MainWindow::onApplicationMessage);
 
     projectTree = new ProjectTree;
     connect(projectTree, &ProjectTree::openActivated, this, &MainWindow::addSourceTab);
@@ -245,6 +246,10 @@ void MainWindow::onCargoMessage(const QString& message) {
     ui->tabWidgetOutput->setCurrentIndex(cargoTabIndex);
     ui->plainTextEditCargo->insertPlainText(message);
     ui->plainTextEditCargo->verticalScrollBar()->setValue(ui->plainTextEditCargo->verticalScrollBar()->maximum());
+}
+
+void MainWindow::onApplicationMessage(const QString& message) {
+    qDebug() << "application:" << message;
 }
 
 void MainWindow::onFileCreated(const QString& filePath) {

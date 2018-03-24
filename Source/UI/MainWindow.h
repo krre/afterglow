@@ -71,6 +71,7 @@ private slots:
     // CargoManager
     void onProjectCreated(const QString& path);
     void onCargoMessage(const QString& message);
+    void onApplicationMessage(const QString& message);
 
     // ProjectTree
     void onFileCreated(const QString& filePath);

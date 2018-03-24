@@ -29,6 +29,7 @@ public:
 
 signals:
     void cargoMessage(const QString& message = QString());
+    void applicationMessage(const QString& message = QString());
     void projectCreated(const QString& path);
 
 private slots:
