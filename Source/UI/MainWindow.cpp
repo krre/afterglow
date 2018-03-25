@@ -34,6 +34,28 @@ MainWindow::MainWindow() :
     projectProperties = new ProjectProperties;
     ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
+    if (QFontDatabase::addApplicationFont(":/Resources/Font/Font Awesome 5 Free-Solid-900.otf") < 0)
+        qWarning() << "Failed to load FontAwesome!";
+
+    QFont font;
+    font.setFamily("FontAwesome");
+    font.setPixelSize(16);
+
+    ui->toolButtonCargoStop->setFont(font);
+    ui->toolButtonCargoStop->setText(Constants::ICON_STOP);
+
+    ui->toolButtonCargoClear->setFont(font);
+    ui->toolButtonCargoClear->setText(Constants::ICON_TRASH_ALT);
+
+    ui->toolButtonAppRun->setFont(font);
+    ui->toolButtonAppRun->setText(Constants::ICON_PLAY);
+
+    ui->toolButtonAppStop->setFont(font);
+    ui->toolButtonAppStop->setText(Constants::ICON_STOP);
+
+    ui->toolButtonAppClear->setFont(font);
+    ui->toolButtonAppClear->setText(Constants::ICON_TRASH_ALT);
+
     readSettings();
     updateMenuState();
 }

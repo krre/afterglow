@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>Resources/Highlighting/Rust.json</file>
         <file>Resources/prefs.json</file>
+        <file>Resources/Font/Font Awesome 5 Free-Solid-900.otf</file>
     </qresource>
 </RCC>

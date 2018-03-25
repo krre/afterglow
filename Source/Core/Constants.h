@@ -17,4 +17,9 @@ const char PROJECT_PROPERTIES_FILE[] = "properties.json";
 const int MAX_RECENT_FILES = 10;
 const int SEPARATOR_AND_MENU_CLEAR_COUNT = 2;
 
+// Font Awesome
+const char ICON_STOP[] = "\uf04d";
+const char ICON_TRASH_ALT[] = "\uf2ed";
+const char ICON_PLAY[] = "\uf04b";
+
 } // Constants
