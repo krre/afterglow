@@ -21,8 +21,7 @@ MainWindow::MainWindow() :
 
     cargoManager = new CargoManager(this);
     connect(cargoManager, &CargoManager::projectCreated, this, &MainWindow::onProjectCreated);
-    connect(cargoManager, &CargoManager::cargoMessage, this, &MainWindow::onCargoMessage);
-    connect(cargoManager, &CargoManager::applicationMessage, this, &MainWindow::onApplicationMessage);
+    connect(cargoManager, &CargoManager::consoleMessage, this, &MainWindow::onCargoMessage);
 
     projectTree = new ProjectTree;
     connect(projectTree, &ProjectTree::openActivated, this, &MainWindow::addSourceTab);

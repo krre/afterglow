@@ -51,11 +51,11 @@ void CargoManager::setProjectPath(const QString& path) {
 }
 
 void CargoManager::onReadyReadStandardOutput(const QString& data) {
-    emit cargoMessage(data);
+    emit consoleMessage(data);
 }
 
 void CargoManager::onReadyReadStandardError(const QString& data) {
-    emit cargoMessage(data);
+    emit consoleMessage(data);
 }
 
 void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
@@ -94,5 +94,5 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
 
 void CargoManager::timedOutputMessage(const QString& message, bool start) {
     QString timedMessage = QTime::currentTime().toString("hh:mm:ss: ") + message + "\n";
-    emit cargoMessage(timedMessage, start);
+    emit consoleMessage(timedMessage, start);
 }
