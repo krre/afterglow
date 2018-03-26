@@ -352,8 +352,7 @@ void MainWindow::addRecentFile(const QString& filePath) {
 }
 
 void MainWindow::addRecentProject(const QString& projectPath) {
-    QFileInfo fi(projectPath + "/Cargo.toml");
-    if (!fi.exists()) return;
+    if (!QFileInfo::exists(projectPath + "/Cargo.toml")) return;
 
     addRecentFileOrProject(ui->menuRecentProjects, projectPath, [=] {
         openProject(projectPath);
@@ -399,8 +398,7 @@ void MainWindow::loadProjectProperties() {
     if (projectPath.isEmpty()) return;
 
     QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_PROPERTIES_FILE;
-    QFileInfo fi(path);
-    if (!fi.exists()) {
+    if (!QFileInfo::exists(path)) {
         return;
     }
 
@@ -607,8 +605,7 @@ void MainWindow::restoreSession() {
 
     for (int i = 0; i < array.count(); i++) {
         QString filePath = array.at(i).toString();
-        QFileInfo fi(filePath);
-        if (fi.exists()) {
+        if (QFileInfo::exists(filePath)) {
             addSourceTab(filePath);
         }
     }
