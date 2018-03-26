@@ -15,7 +15,7 @@ public:
     ~ProjectProperties();
 
     CargoManager::BuildTarget getTarget() const;
-    void setTarget(CargoManager::BuildTarget target);
+    void setBuildTarget(CargoManager::BuildTarget buildTarget);
     void setProject(const QString& projectPath);
 
     const QString getTargetDirectory() const;

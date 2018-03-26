@@ -412,7 +412,7 @@ void MainWindow::loadProjectProperties() {
 
     QJsonDocument doc(QJsonDocument::fromJson(file.readAll()));
     CargoManager::BuildTarget target = static_cast<CargoManager::BuildTarget>(doc.object()["target"].toInt());
-    projectProperties->setTarget(target);
+    projectProperties->setBuildTarget(target);
 }
 
 void MainWindow::readSettings() {

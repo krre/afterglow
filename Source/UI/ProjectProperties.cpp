@@ -16,8 +16,8 @@ CargoManager::BuildTarget ProjectProperties::getTarget() const {
     return static_cast<CargoManager::BuildTarget>(ui->comboBoxTarget->currentIndex());
 }
 
-void ProjectProperties::setTarget(CargoManager::BuildTarget target) {
-    ui->comboBoxTarget->setCurrentIndex(static_cast<int>(target));
+void ProjectProperties::setBuildTarget(CargoManager::BuildTarget buildTarget) {
+    ui->comboBoxTarget->setCurrentIndex(static_cast<int>(buildTarget));
 }
 
 void ProjectProperties::setProject(const QString& projectPath) {
