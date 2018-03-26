@@ -21,6 +21,7 @@ public:
     const QString getTargetDirectory() const;
 
     void reset();
+    void updateMetadata();
 
 private:
     Ui::ProjectProperties* ui;
