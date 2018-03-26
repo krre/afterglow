@@ -23,7 +23,8 @@ SOURCES += \
     UI/ProjectTree.cpp \
     Core/Settings.cpp \
     Process/ProcessManager.cpp \
-    Process/CargoManager.cpp
+    Process/CargoManager.cpp \
+    Process/ApplicationManager.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     Core/Settings.h \
     Core/Singleton.h \
     Process/ProcessManager.h \
-    Process/CargoManager.h
+    Process/CargoManager.h \
+    Process/ApplicationManager.h
 
 FORMS += \
     UI/MainWindow.ui \
