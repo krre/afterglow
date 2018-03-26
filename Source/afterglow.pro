@@ -40,7 +40,8 @@ HEADERS += \
     Core/Constants.h \
     UI/FileSystemProxyModel.h \
     UI/ProjectTree.h \
-    Core/Settings.h
+    Core/Settings.h \
+    Core/Singleton.h
 
 FORMS += \
     UI/MainWindow.ui \
