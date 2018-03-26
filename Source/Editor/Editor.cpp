@@ -36,6 +36,8 @@ void Editor::setFilePath(const QString& filePath) {
 }
 
 void Editor::saveFile() {
+    if (!document()->isModified()) return;
+
     QFile file(filePath);
     if (file.open(QFile::WriteOnly | QFile::Text)) {
         QTextStream out(&file);
