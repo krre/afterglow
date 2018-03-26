@@ -402,6 +402,8 @@ void MainWindow::loadProjectProperties() {
         return;
     }
 
+    projectProperties->setProject(projectPath);
+
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly)) {
         qWarning() << "Failed to open project properties file for reading" << path;

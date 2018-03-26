@@ -15,9 +15,11 @@ public:
 
     CargoManager::BuildTarget getTarget() const;
     void setTarget(CargoManager::BuildTarget target);
+    void setProject(const QString& projectPath);
 
     void reset();
 
 private:
     Ui::ProjectProperties* ui;
+    QString projectPath;
 };
