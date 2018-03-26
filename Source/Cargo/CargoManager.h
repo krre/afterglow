@@ -21,8 +21,8 @@ public:
     ~CargoManager();
 
     void createProject(ProjectTemplate projectTemplate, const QString& path);
-    void build(BuildTarget target);
-    void run(BuildTarget target);
+    void build(BuildTarget buildTarget);
+    void run(BuildTarget buildTarget, const QString& runTarget);
     void clean();
 
     void setProjectPath(const QString& path);
@@ -49,11 +49,12 @@ private:
 
     void timedOutputMessage(const QString& message, bool start = false);
 
-    QProcess* process;
+    QProcess* cargoProcess;
     QTime measureTime;
     CommandStatus commandStatus = CommandStatus::None;
     QTextCodec* outputCodec = QTextCodec::codecForLocale();
     QTextCodec::ConverterState outputCodecState;
     QTextCodec::ConverterState errorCodecState;
     QString projectPath;
+    QString runTarget;
 };

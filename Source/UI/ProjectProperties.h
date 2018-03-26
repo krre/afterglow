@@ -14,11 +14,11 @@ public:
     explicit ProjectProperties(QWidget* parent = 0);
     ~ProjectProperties();
 
-    CargoManager::BuildTarget getTarget() const;
+    CargoManager::BuildTarget getBuildTarget() const;
     void setBuildTarget(CargoManager::BuildTarget buildTarget);
-    void setProject(const QString& projectPath);
 
-    const QString getTargetDirectory() const;
+    const QString getRunTarget() const;
+    void setProject(const QString& projectPath);
 
     void reset();
     void updateMetadata();

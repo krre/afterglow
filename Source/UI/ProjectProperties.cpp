@@ -12,7 +12,7 @@ ProjectProperties::~ProjectProperties() {
     delete ui;
 }
 
-CargoManager::BuildTarget ProjectProperties::getTarget() const {
+CargoManager::BuildTarget ProjectProperties::getBuildTarget() const {
     return static_cast<CargoManager::BuildTarget>(ui->comboBoxTarget->currentIndex());
 }
 
@@ -25,8 +25,10 @@ void ProjectProperties::setProject(const QString& projectPath) {
     updateMetadata();
 }
 
-const QString ProjectProperties::getTargetDirectory() const {
-    return metadata["target_directory"].toString();
+const QString ProjectProperties::getRunTarget() const {
+    return metadata["target_directory"].toString() + "/"
+            + (getBuildTarget() == CargoManager::BuildTarget::Debug ? "debug" : "release") + "/"
+            + ui->comboBoxRun->currentText();
 }
 
 void ProjectProperties::reset() {

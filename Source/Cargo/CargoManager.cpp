@@ -2,11 +2,11 @@
 #include <QtCore>
 
 CargoManager::CargoManager(QObject* parent) : QObject(parent) {
-    process = new QProcess(this);
-    process->setProgram("cargo");
-    connect(process, &QProcess::readyReadStandardOutput, this, &CargoManager::onReadyReadStandardOutput);
-    connect(process, &QProcess::readyReadStandardError, this, &CargoManager::onReadyReadStandardError);
-    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+    cargoProcess = new QProcess(this);
+    cargoProcess->setProgram("cargo");
+    connect(cargoProcess, &QProcess::readyReadStandardOutput, this, &CargoManager::onReadyReadStandardOutput);
+    connect(cargoProcess, &QProcess::readyReadStandardError, this, &CargoManager::onReadyReadStandardError);
+    connect(cargoProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
         [=](int exitCode, QProcess::ExitStatus exitStatus) { onFinished(exitCode, exitStatus); });
 }
 
@@ -24,29 +24,24 @@ void CargoManager::createProject(ProjectTemplate projectTemplate, const QString&
     }
 
     arguments << path;
-    prepareAndStart(arguments);
     commandStatus = CommandStatus::New;
+    prepareAndStart(arguments);
     setProjectPath(path);
 }
 
-void CargoManager::build(BuildTarget target) {
+void CargoManager::build(BuildTarget buildTarget) {
     QStringList arguments;
     arguments << "build";
-    if (target == BuildTarget::Release) {
+    if (buildTarget == BuildTarget::Release) {
         arguments << "--release";
     }
     prepareAndStart(arguments);
-    commandStatus = CommandStatus::Build;
 }
 
-void CargoManager::run(BuildTarget target) {
-    QStringList arguments;
-    arguments << "run";
-    if (target == BuildTarget::Release) {
-        arguments << "--release";
-    }
-    prepareAndStart(arguments);
+void CargoManager::run(BuildTarget buildTarget, const QString& runTarget) {
     commandStatus = CommandStatus::Run;
+    build(buildTarget);
+    this->runTarget = runTarget;
 }
 
 void CargoManager::clean() {
@@ -57,17 +52,17 @@ void CargoManager::clean() {
 
 void CargoManager::setProjectPath(const QString& path) {
     projectPath = path;
-    process->setWorkingDirectory(path);
+    cargoProcess->setWorkingDirectory(path);
 }
 
 void CargoManager::onReadyReadStandardOutput() {
-    QByteArray data = process->readAllStandardOutput();
+    QByteArray data = cargoProcess->readAllStandardOutput();
     QString output = outputCodec->toUnicode(data.constData(), data.length(), &outputCodecState);
     emit cargoMessage(output);
 }
 
 void CargoManager::onReadyReadStandardError() {
-    QByteArray data = process->readAllStandardError();
+    QByteArray data = cargoProcess->readAllStandardError();
     QString output = outputCodec->toUnicode(data.constData(), data.length(), &errorCodecState);
     emit cargoMessage(output);
 }
@@ -81,19 +76,22 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
 
     switch (commandStatus) {
     case CommandStatus::New:
-        emit projectCreated(process->arguments().last());
+        emit projectCreated(cargoProcess->arguments().last());
+        break;
+    case CommandStatus::Run:
+        qDebug() << runTarget;
         break;
     default:
         break;
     }
-    QString finishedMessage = "The process " + process->program() +
+    QString finishedMessage = "The process " + cargoProcess->program() +
         (exitStatus == QProcess::NormalExit ? " finished normally" : " crashed");
     timedOutputMessage(finishedMessage);
     timedOutputMessage(QString("Elapsed time: %1 ms").arg(measureTime.elapsed()));
 }
 
 void CargoManager::prepareAndStart(const QStringList& arguments) {
-    process->setArguments(arguments);
+    cargoProcess->setArguments(arguments);
 
     QString message = "Starting: cargo";
     for (const auto& argument : arguments) {
@@ -102,7 +100,7 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
 
     timedOutputMessage(message, true);
     measureTime.start();
-    process->start();
+    cargoProcess->start();
 }
 
 void CargoManager::timedOutputMessage(const QString& message, bool start) {

@@ -203,12 +203,12 @@ void MainWindow::on_actionSelectAll_triggered() {
 
 void MainWindow::on_actionBuild_triggered() {
     on_actionSaveAll_triggered();
-    cargoManager->build(projectProperties->getTarget());
+    cargoManager->build(projectProperties->getBuildTarget());
 }
 
 void MainWindow::on_actionRun_triggered() {
     on_actionSaveAll_triggered();
-    cargoManager->run(projectProperties->getTarget());
+    cargoManager->run(projectProperties->getBuildTarget(), projectProperties->getRunTarget());
 }
 
 void MainWindow::on_actionClean_triggered() {
@@ -388,7 +388,7 @@ void MainWindow::saveProjectProperties() {
     }
 
     QJsonObject obj;
-    obj["target"] = static_cast<int>(projectProperties->getTarget());
+    obj["target"] = static_cast<int>(projectProperties->getBuildTarget());
 
     QJsonDocument doc(obj);
     file.write(doc.toJson());
