@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/ProcessManager.h"
+#include "ProcessManager.h"
 #include <QTime>
 
 class CargoManager : public ProcessManager {

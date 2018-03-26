@@ -1,5 +1,5 @@
 #pragma once
-#include "Cargo/CargoManager.h"
+#include "Process/CargoManager.h"
 #include <QDialog>
 
 namespace Ui {

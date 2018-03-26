@@ -5,7 +5,7 @@
 #include "Core/Settings.h"
 #include "NewProject.h"
 #include "Options.h"
-#include "Cargo/CargoManager.h"
+#include "Process/CargoManager.h"
 #include "ProjectTree.h"
 #include "ProjectProperties.h"
 #include "Editor/Editor.h"

@@ -1,6 +1,6 @@
 #pragma once
 #include <QWidget>
-#include "Cargo/CargoManager.h"
+#include "Process/CargoManager.h"
 #include <QJsonObject>
 
 namespace Ui {
