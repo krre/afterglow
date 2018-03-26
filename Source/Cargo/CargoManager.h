@@ -1,10 +1,8 @@
 #pragma once
-#include <QObject>
-#include <QProcess>
+#include "Core/ProcessManager.h"
 #include <QTime>
-#include <QTextCodec>
 
-class CargoManager : public QObject {
+class CargoManager : public ProcessManager {
     Q_OBJECT
 public:
     enum class ProjectTemplate {
@@ -33,9 +31,9 @@ signals:
     void projectCreated(const QString& path);
 
 private slots:
-    void onReadyReadStandardOutput();
-    void onReadyReadStandardError();
-    void onFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onReadyReadStandardOutput(const QString& data) override;
+    void onReadyReadStandardError(const QString& data) override;
+    void onFinished(int exitCode, QProcess::ExitStatus exitStatus) override;
 
 private:
     void prepareAndStart(const QStringList& arguments);
@@ -49,12 +47,8 @@ private:
 
     void timedOutputMessage(const QString& message, bool start = false);
 
-    QProcess* cargoProcess;
     QTime measureTime;
     CommandStatus commandStatus = CommandStatus::None;
-    QTextCodec* outputCodec = QTextCodec::codecForLocale();
-    QTextCodec::ConverterState outputCodecState;
-    QTextCodec::ConverterState errorCodecState;
     QString projectPath;
     QString runTarget;
 };

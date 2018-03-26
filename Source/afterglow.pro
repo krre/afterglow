@@ -22,7 +22,8 @@ SOURCES += \
     Editor/Editor.cpp \
     UI/FileSystemProxyModel.cpp \
     UI/ProjectTree.cpp \
-    Core/Settings.cpp
+    Core/Settings.cpp \
+    Core/ProcessManager.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -41,7 +42,8 @@ HEADERS += \
     UI/FileSystemProxyModel.h \
     UI/ProjectTree.h \
     Core/Settings.h \
-    Core/Singleton.h
+    Core/Singleton.h \
+    Core/ProcessManager.h
 
 FORMS += \
     UI/MainWindow.ui \
