@@ -1,12 +1,17 @@
 #include "ApplicationManager.h"
 #include <QtCore>
 
-ApplicationManager::ApplicationManager(QObject* parent) : ProcessManager(parent) {
+ApplicationManager::ApplicationManager() {
 
 }
 
 ApplicationManager::~ApplicationManager() {
 
+}
+
+void ApplicationManager::start(const QString& command) {
+    emit consoleMessage(QString("Starting %1...\n").arg(command), true);
+    getProcess()->start(command);
 }
 
 void ApplicationManager::onReadyReadStandardOutput(const QString& data) {
@@ -22,7 +27,7 @@ void ApplicationManager::onFinished(int exitCode, QProcess::ExitStatus exitStatu
         return;
     }
 
-    QString finishedMessage = "The process " + getProcess()->program() +
-        (exitStatus == QProcess::NormalExit ? " finished normally" : " crashed");
-    emit consoleMessage(finishedMessage);
+    QString message = "The process " + getProcess()->program() +
+        (exitStatus == QProcess::NormalExit ? " finished normally" : " crashed") + "\n";
+    emit consoleMessage(message);
 }

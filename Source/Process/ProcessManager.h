@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/Singleton.h"
 #include <QProcess>
 #include <QTextCodec>
 
@@ -6,8 +7,6 @@ class ProcessManager : public QObject {
     Q_OBJECT
 public:
     explicit ProcessManager(QObject* parent = nullptr);
-
-protected:
     QProcess* getProcess();
 
 protected slots:

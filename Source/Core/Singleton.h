@@ -1,11 +1,10 @@
 #pragma once
 #include <QtGlobal>
-#include <QObject>
 
-template <typename T> class Singleton : public QObject {
+template <typename T> class Singleton {
 
 public:
-    Singleton(QObject* parent = nullptr) : QObject(parent) {
+    Singleton() {
         Q_ASSERT(instance == nullptr && "Singleton object should be initialized only once");
         instance = static_cast<T*>(this);
     }

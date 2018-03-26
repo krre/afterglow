@@ -1,4 +1,5 @@
 #include "CargoManager.h"
+#include "ApplicationManager.h"
 #include <QtCore>
 
 CargoManager::CargoManager(QObject* parent) : ProcessManager(parent) {
@@ -68,7 +69,7 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
         emit projectCreated(getProcess()->arguments().last());
         break;
     case CommandStatus::Run:
-        qDebug() << runTarget;
+        ApplicationManager::getInstance()->start(runTarget);
         break;
     default:
         break;

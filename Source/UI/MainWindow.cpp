@@ -6,6 +6,7 @@
 #include "NewProject.h"
 #include "Options.h"
 #include "Process/CargoManager.h"
+#include "Process/ApplicationManager.h"
 #include "ProjectTree.h"
 #include "ProjectProperties.h"
 #include "Editor/Editor.h"
@@ -22,6 +23,9 @@ MainWindow::MainWindow() :
     cargoManager = new CargoManager(this);
     connect(cargoManager, &CargoManager::projectCreated, this, &MainWindow::onProjectCreated);
     connect(cargoManager, &CargoManager::consoleMessage, this, &MainWindow::onCargoMessage);
+
+    applicationManager = new ApplicationManager();
+    connect(applicationManager, &ApplicationManager::consoleMessage, this, &MainWindow::onApplicationMessage);
 
     projectTree = new ProjectTree;
     connect(projectTree, &ProjectTree::openActivated, this, &MainWindow::addSourceTab);
@@ -61,6 +65,7 @@ MainWindow::MainWindow() :
 
 MainWindow::~MainWindow() {
     delete ui;
+    applicationManager->release();
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
@@ -263,8 +268,8 @@ void MainWindow::onProjectCreated(const QString& path) {
 }
 
 void MainWindow::onCargoMessage(const QString& message, bool start) {
-    int cargoTabIndex = static_cast<int>(OutputPane::Cargo);
-    ui->tabWidgetOutput->setCurrentIndex(cargoTabIndex);
+    int index = static_cast<int>(OutputPane::Cargo);
+    ui->tabWidgetOutput->setCurrentIndex(index);
 
     if (start) {
         ui->plainTextEditCargo->clear();
@@ -274,8 +279,16 @@ void MainWindow::onCargoMessage(const QString& message, bool start) {
     ui->plainTextEditCargo->verticalScrollBar()->setValue(ui->plainTextEditCargo->verticalScrollBar()->maximum());
 }
 
-void MainWindow::onApplicationMessage(const QString& message) {
-    qDebug() << "application:" << message;
+void MainWindow::onApplicationMessage(const QString& message, bool start) {
+    int index = static_cast<int>(OutputPane::Application);
+    ui->tabWidgetOutput->setCurrentIndex(index);
+
+    if (start && ui->plainTextEditApplication->toPlainText().size()) {
+        ui->plainTextEditApplication->insertPlainText("\n");
+    }
+
+    ui->plainTextEditApplication->insertPlainText(message);
+    ui->plainTextEditApplication->verticalScrollBar()->setValue(ui->plainTextEditApplication->verticalScrollBar()->maximum());
 }
 
 void MainWindow::onFileCreated(const QString& filePath) {

@@ -3,6 +3,7 @@
 #include <functional>
 
 class CargoManager;
+class ApplicationManager;
 class ProjectTree;
 class ProjectProperties;
 class Editor;
@@ -71,7 +72,7 @@ private slots:
     // CargoManager
     void onProjectCreated(const QString& path);
     void onCargoMessage(const QString& message, bool start);
-    void onApplicationMessage(const QString& message);
+    void onApplicationMessage(const QString& message, bool start);
 
     // ProjectTree
     void onFileCreated(const QString& filePath);
@@ -113,6 +114,7 @@ private:
 
     Ui::MainWindow* ui;
     CargoManager* cargoManager;
+    ApplicationManager* applicationManager;
     ProjectTree* projectTree;
     ProjectProperties* projectProperties;
     QString projectPath;

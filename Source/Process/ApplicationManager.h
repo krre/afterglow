@@ -1,11 +1,13 @@
 #pragma once
 #include "ProcessManager.h"
+#include "Core/Singleton.h"
 
-class ApplicationManager : public ProcessManager {
+class ApplicationManager : public ProcessManager, public Singleton<ApplicationManager> {
     Q_OBJECT
 public:
-    explicit ApplicationManager(QObject* parent = nullptr);
+    explicit ApplicationManager();
     ~ApplicationManager();
+    void start(const QString& command);
 
 signals:
     void consoleMessage(const QString& message, bool start = false);
