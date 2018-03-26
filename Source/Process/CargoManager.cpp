@@ -31,12 +31,13 @@ void CargoManager::build(BuildTarget buildTarget) {
     if (buildTarget == BuildTarget::Release) {
         arguments << "--release";
     }
+    commandStatus = CommandStatus::Build;
     prepareAndStart(arguments);
 }
 
 void CargoManager::run(BuildTarget buildTarget, const QString& runTarget) {
-    commandStatus = CommandStatus::Run;
     build(buildTarget);
+    commandStatus = CommandStatus::Run;
     this->runTarget = runTarget;
 }
 
