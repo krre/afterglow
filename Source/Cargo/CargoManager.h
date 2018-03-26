@@ -28,7 +28,7 @@ public:
     void setProjectPath(const QString& path);
 
 signals:
-    void cargoMessage(const QString& message = QString());
+    void cargoMessage(const QString& message, bool start = false);
     void applicationMessage(const QString& message = QString());
     void projectCreated(const QString& path);
 
@@ -47,7 +47,7 @@ private:
         Run
     };
 
-    void timedOutputMessage(const QString& message);
+    void timedOutputMessage(const QString& message, bool start = false);
 
     QProcess* process;
     QTime measureTime;

@@ -70,7 +70,7 @@ private slots:
 
     // CargoManager
     void onProjectCreated(const QString& path);
-    void onCargoMessage(const QString& message);
+    void onCargoMessage(const QString& message, bool start);
     void onApplicationMessage(const QString& message);
 
     // ProjectTree

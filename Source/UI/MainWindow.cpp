@@ -263,9 +263,14 @@ void MainWindow::onProjectCreated(const QString& path) {
     openProject(path);
 }
 
-void MainWindow::onCargoMessage(const QString& message) {
+void MainWindow::onCargoMessage(const QString& message, bool start) {
     int cargoTabIndex = static_cast<int>(OutputPane::Cargo);
     ui->tabWidgetOutput->setCurrentIndex(cargoTabIndex);
+
+    if (start) {
+        ui->plainTextEditCargo->clear();
+    }
+
     ui->plainTextEditCargo->insertPlainText(message);
     ui->plainTextEditCargo->verticalScrollBar()->setValue(ui->plainTextEditCargo->verticalScrollBar()->maximum());
 }
