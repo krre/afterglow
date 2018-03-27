@@ -125,8 +125,31 @@ void Editor::commentUncommentLine() {
 
 void Editor::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Tab) {
+        // Add 4 white spaces to right
         insertPlainText(QString(4, ' '));
+    } else if (event->key() == Qt::Key_Backtab) {
+        // Remove white spaces to left
+        QTextCursor cursor = textCursor();
+        QTextBlock block = cursor.block();
+        int charPos = cursor.position() - block.position();
+        if (charPos && block.text().at(charPos - 1) == ' ') {
+            int removeSpaces = charPos % 4;
+            if (!removeSpaces) {
+                removeSpaces = 4;
+            }
+
+            while (removeSpaces) {
+                cursor.movePosition(QTextCursor::PreviousCharacter);
+                cursor.deleteChar();
+                charPos = cursor.position() - block.position();
+                if (charPos && block.text().at(charPos - 1) != ' ') {
+                    break;
+                }
+                removeSpaces--;
+            }
+        }
     } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+        // Autoindent
         QPlainTextEdit::keyPressEvent(event);
         QTextCursor cursor = textCursor();
         int row = cursor.blockNumber();
