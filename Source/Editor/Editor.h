@@ -19,6 +19,7 @@ public:
 
     void commentUncommentLine();
     void joinLines();
+    void autoindent();
 
 signals:
     void documentModified(Editor* editor);

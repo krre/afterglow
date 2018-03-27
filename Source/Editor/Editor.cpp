@@ -151,6 +151,24 @@ void Editor::joinLines() {
     cursor.endEditBlock();
 }
 
+void Editor::autoindent() {
+    QTextCursor cursor = textCursor();
+    int row = cursor.blockNumber();
+    if (row > 0) {
+        QTextBlock block = document()->findBlockByLineNumber(row - 1);
+        int count = 0;
+        for (; count < block.text().size(); count++) {
+            if (block.text().at(count) != ' ') {
+                break;
+            }
+        }
+
+        if (count > 0) {
+            insertPlainText(QString(count, ' '));
+        }
+    }
+}
+
 void Editor::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Tab) {
         // Add white spaces to right
@@ -177,24 +195,8 @@ void Editor::keyPressEvent(QKeyEvent* event) {
             }
         }
     } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-        // Autoindent
         QPlainTextEdit::keyPressEvent(event);
-        QTextCursor cursor = textCursor();
-        int row = cursor.blockNumber();
-//        int column = cursor.positionInBlock();
-        if (row > 0) {
-            QTextBlock block = document()->findBlockByLineNumber(row - 1);
-            int count = 0;
-            for (; count < block.text().size(); count++) {
-                if (block.text().at(count) != ' ') {
-                    break;
-                }
-            }
-
-            if (count > 0) {
-                insertPlainText(QString(count, ' '));
-            }
-        }
+        autoindent();
     } else {
         QPlainTextEdit::keyPressEvent(event);
     }
