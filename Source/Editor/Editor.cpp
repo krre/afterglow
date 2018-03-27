@@ -14,6 +14,8 @@ Editor::Editor(QString filePath, QWidget* parent) :
     QFont font(family, size);
     document()->setDefaultFont(font);
 
+    setWordWrapMode(QTextOption::NoWrap);
+
     lineNumberArea = new LineNumberArea(this);
     highlighter = new Highlighter(document());
 
