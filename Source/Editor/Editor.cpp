@@ -2,6 +2,7 @@
 #include "LineNumberArea.h"
 #include "Highlighter.h"
 #include "Core/Settings.h"
+#include "Core/Constants.h"
 #include <QtGui>
 
 Editor::Editor(QString filePath, QWidget* parent) :
@@ -152,17 +153,17 @@ void Editor::joinLines() {
 
 void Editor::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Tab) {
-        // Add 4 white spaces to right
-        insertPlainText(QString(4, ' '));
+        // Add white spaces to right
+        insertPlainText(QString(Constants::TAB_SPACES_COUNT, ' '));
     } else if (event->key() == Qt::Key_Backtab) {
         // Remove white spaces to left
         QTextCursor cursor = textCursor();
         QTextBlock block = cursor.block();
         int charPos = cursor.position() - block.position();
         if (charPos && block.text().at(charPos - 1) == ' ') {
-            int removeSpaces = charPos % 4;
+            int removeSpaces = charPos % Constants::TAB_SPACES_COUNT;
             if (!removeSpaces) {
-                removeSpaces = 4;
+                removeSpaces = Constants::TAB_SPACES_COUNT;
             }
 
             while (removeSpaces) {
