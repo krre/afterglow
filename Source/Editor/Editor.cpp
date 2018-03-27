@@ -123,6 +123,33 @@ void Editor::commentUncommentLine() {
     cursor.endEditBlock();
 }
 
+void Editor::joinLines() {
+    QTextCursor cursor = textCursor();
+    QTextBlock block = cursor.block();
+    QTextBlock nextBlock = block.next();
+
+    if (!nextBlock.isValid()) return;
+
+    cursor.beginEditBlock();
+
+    cursor.movePosition(QTextCursor::NextBlock);
+    cursor.movePosition(QTextCursor::StartOfBlock);
+    cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+    QString cutLine = cursor.selectedText();
+
+    // Collapse leading whitespaces to one or insert whitespace
+    cutLine.replace(QRegExp(QLatin1String("^\\s*")), QLatin1String(" "));
+    cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
+    cursor.removeSelectedText();
+
+    cursor.movePosition(QTextCursor::PreviousBlock);
+    cursor.movePosition(QTextCursor::EndOfBlock);
+
+    cursor.insertText(cutLine);
+
+    cursor.endEditBlock();
+}
+
 void Editor::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Tab) {
         // Add 4 white spaces to right

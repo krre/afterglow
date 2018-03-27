@@ -332,6 +332,7 @@
     <addaction name="actionSelectAll"/>
     <addaction name="separator"/>
     <addaction name="actionComment"/>
+    <addaction name="actionJoinLines"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -572,6 +573,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+/</string>
+   </property>
+  </action>
+  <action name="actionJoinLines">
+   <property name="text">
+    <string>Join Lines</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+J</string>
    </property>
   </action>
  </widget>

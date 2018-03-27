@@ -18,6 +18,7 @@ public:
     int getLineNumberAreaWidth();
 
     void commentUncommentLine();
+    void joinLines();
 
 signals:
     void documentModified(Editor* editor);

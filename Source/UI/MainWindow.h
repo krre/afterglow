@@ -52,6 +52,7 @@ private slots:
     void on_actionPaste_triggered();
     void on_actionSelectAll_triggered();
     void on_actionComment_triggered();
+    void on_actionJoinLines_triggered();
 
     // Cargo
     void on_actionBuild_triggered();

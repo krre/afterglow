@@ -201,6 +201,10 @@ void MainWindow::on_actionComment_triggered() {
     editor->commentUncommentLine();
 }
 
+void MainWindow::on_actionJoinLines_triggered() {
+    editor->joinLines();
+}
+
 void MainWindow::on_actionBuild_triggered() {
     on_actionSaveAll_triggered();
     cargoManager->build(projectProperties->getBuildTarget());
