@@ -658,6 +658,8 @@ void MainWindow::closeProject() {
     projectPath = QString();
     changeWindowTitle();
     updateMenuState();
+    ui->plainTextEditCargo->clear();
+    ui->plainTextEditApplication->clear();
 }
 
 void MainWindow::changeWindowTitle(const QString& filePath) {
