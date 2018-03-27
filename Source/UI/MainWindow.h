@@ -51,6 +51,7 @@ private slots:
     void on_actionCopy_triggered();
     void on_actionPaste_triggered();
     void on_actionSelectAll_triggered();
+    void on_actionComment_triggered();
 
     // Cargo
     void on_actionBuild_triggered();
@@ -118,5 +119,5 @@ private:
     ProjectTree* projectTree;
     ProjectProperties* projectProperties;
     QString projectPath;
-
+    Editor* editor = nullptr;
 };

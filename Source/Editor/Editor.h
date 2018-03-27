@@ -17,6 +17,8 @@ public:
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int getLineNumberAreaWidth();
 
+    void commentUncommentLine();
+
 signals:
     void documentModified(Editor* editor);
 

@@ -102,7 +102,6 @@ void MainWindow::on_actionSaveAs_triggered() {
 
 void MainWindow::on_actionSaveAll_triggered() {
     for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
-        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(i));
         editor->saveFile();
     }
 }
@@ -167,7 +166,6 @@ void MainWindow::on_actionOpen_triggered() {
 }
 
 void MainWindow::on_actionSave_triggered() {
-    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
     editor->saveFile();
 }
 
@@ -176,33 +174,31 @@ void MainWindow::on_actionExit_triggered() {
 }
 
 void MainWindow::on_actionUndo_triggered() {
-    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
     editor->undo();
 }
 
 void MainWindow::on_actionRedo_triggered() {
-    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
     editor->redo();
 }
 
 void MainWindow::on_actionCut_triggered() {
-    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
     editor->cut();
 }
 
 void MainWindow::on_actionCopy_triggered() {
-    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
     editor->copy();
 }
 
 void MainWindow::on_actionPaste_triggered() {
-    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
     editor->paste();
 }
 
 void MainWindow::on_actionSelectAll_triggered() {
-    Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->currentWidget());
     editor->selectAll();
+}
+
+void MainWindow::on_actionComment_triggered() {
+    editor->commentUncommentLine();
 }
 
 void MainWindow::on_actionBuild_triggered() {
@@ -242,12 +238,13 @@ void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {
 
 void MainWindow::on_tabWidgetSource_currentChanged(int index) {
     if (index >= 0) {
-        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(index));
+        editor = static_cast<Editor*>(ui->tabWidgetSource->widget(index));
         editor->setFocus();
         QString filePath = editor->getFilePath();
         projectTree->selectFile(filePath);
         changeWindowTitle(filePath);
     } else {
+        editor = nullptr;
         projectTree->setCurrentIndex(QModelIndex());
         changeWindowTitle();
     }

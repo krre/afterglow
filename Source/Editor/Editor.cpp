@@ -94,6 +94,10 @@ int Editor::getLineNumberAreaWidth() {
     return space;
 }
 
+void Editor::commentUncommentLine() {
+
+}
+
 void Editor::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Tab) {
         insertPlainText(QString(4, ' '));
