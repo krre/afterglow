@@ -20,6 +20,8 @@ public:
     void commentUncommentLine();
     void joinLines();
     void autoindent();
+    void insertTabSpaces();
+    void removeTabSpaces();
 
 signals:
     void documentModified(Editor* editor);

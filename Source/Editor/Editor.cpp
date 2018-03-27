@@ -169,31 +169,39 @@ void Editor::autoindent() {
     }
 }
 
+// Add white spaces to right
+void Editor::insertTabSpaces() {
+    insertPlainText(QString(Constants::TAB_SPACES_COUNT, ' '));
+}
+
+// Remove white spaces to left
+void Editor::removeTabSpaces() {
+    QTextCursor cursor = textCursor();
+    QTextBlock block = cursor.block();
+    int charPos = cursor.position() - block.position();
+    if (charPos && block.text().at(charPos - 1) == ' ') {
+        int removeSpaces = charPos % Constants::TAB_SPACES_COUNT;
+        if (!removeSpaces) {
+            removeSpaces = Constants::TAB_SPACES_COUNT;
+        }
+
+        while (removeSpaces) {
+            cursor.movePosition(QTextCursor::PreviousCharacter);
+            cursor.deleteChar();
+            charPos = cursor.position() - block.position();
+            if (charPos && block.text().at(charPos - 1) != ' ') {
+                break;
+            }
+            removeSpaces--;
+        }
+    }
+}
+
 void Editor::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Tab) {
-        // Add white spaces to right
-        insertPlainText(QString(Constants::TAB_SPACES_COUNT, ' '));
+        insertTabSpaces();
     } else if (event->key() == Qt::Key_Backtab) {
-        // Remove white spaces to left
-        QTextCursor cursor = textCursor();
-        QTextBlock block = cursor.block();
-        int charPos = cursor.position() - block.position();
-        if (charPos && block.text().at(charPos - 1) == ' ') {
-            int removeSpaces = charPos % Constants::TAB_SPACES_COUNT;
-            if (!removeSpaces) {
-                removeSpaces = Constants::TAB_SPACES_COUNT;
-            }
-
-            while (removeSpaces) {
-                cursor.movePosition(QTextCursor::PreviousCharacter);
-                cursor.deleteChar();
-                charPos = cursor.position() - block.position();
-                if (charPos && block.text().at(charPos - 1) != ' ') {
-                    break;
-                }
-                removeSpaces--;
-            }
-        }
+        removeTabSpaces();
     } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
         QPlainTextEdit::keyPressEvent(event);
         autoindent();
