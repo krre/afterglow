@@ -236,7 +236,7 @@ void Editor::autocomplete(QKeyEvent* event) {
         completer->popup()->setCurrentIndex(completer->completionModel()->index(0, 0));
     }
     QRect cr = cursorRect();
-    qDebug() << cr;
+    cr.setX(cr.x() + viewportMargins().left());
     cr.setWidth(completer->popup()->sizeHintForColumn(0)
                 + completer->popup()->verticalScrollBar()->sizeHint().width());
     completer->complete(cr); // popup it up!
