@@ -10,6 +10,7 @@
 #include "ProjectTree.h"
 #include "ProjectProperties.h"
 #include "Editor/Editor.h"
+#include "Editor/AutoCompleter.h"
 #include "NewName.h"
 #ifdef Q_OS_WIN
     #include <windows.h>
@@ -61,7 +62,7 @@ MainWindow::MainWindow() :
 
     QStringList keywords;
     keywords << "fn" << "let" << "struct";
-    completer = new QCompleter(keywords, this);
+    completer = new AutoCompleter(keywords, this);
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setWrapAround(false);

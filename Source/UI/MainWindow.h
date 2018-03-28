@@ -7,7 +7,7 @@ class ApplicationManager;
 class ProjectTree;
 class ProjectProperties;
 class Editor;
-class QCompleter;
+class AutoCompleter;
 
 namespace Ui {
     class MainWindow;
@@ -122,5 +122,5 @@ private:
     ProjectProperties* projectProperties;
     QString projectPath;
     Editor* editor = nullptr;
-    QCompleter* completer;
+    AutoCompleter* completer;
 };

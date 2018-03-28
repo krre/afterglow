@@ -24,7 +24,8 @@ SOURCES += \
     Core/Settings.cpp \
     Process/ProcessManager.cpp \
     Process/CargoManager.cpp \
-    Process/ApplicationManager.cpp
+    Process/ApplicationManager.cpp \
+    Editor/AutoCompleter.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -45,7 +46,8 @@ HEADERS += \
     Core/Singleton.h \
     Process/ProcessManager.h \
     Process/CargoManager.h \
-    Process/ApplicationManager.h
+    Process/ApplicationManager.h \
+    Editor/AutoCompleter.h
 
 FORMS += \
     UI/MainWindow.ui \
