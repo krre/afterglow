@@ -27,7 +27,7 @@ Editor::Editor(QString filePath, QWidget* parent) :
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
 
-    connect(this, &Editor::textChanged, [=](){
+    connect(this, &Editor::textChanged, [this] {
         emit documentModified(this);
     });
 
@@ -236,6 +236,7 @@ void Editor::autocomplete(QKeyEvent* event) {
         completer->popup()->setCurrentIndex(completer->completionModel()->index(0, 0));
     }
     QRect cr = cursorRect();
+    qDebug() << cr;
     cr.setWidth(completer->popup()->sizeHintForColumn(0)
                 + completer->popup()->verticalScrollBar()->sizeHint().width());
     completer->complete(cr); // popup it up!
