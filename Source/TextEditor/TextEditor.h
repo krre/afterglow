@@ -2,7 +2,7 @@
 #include <QPlainTextEdit>
 
 class Highlighter;
-class QCompleter;
+class AutoCompleter;
 
 class TextEditor : public QPlainTextEdit {
     Q_OBJECT
@@ -12,8 +12,8 @@ public:
     QString getFilePath() const { return filePath; }
     void setFilePath(const QString& filePath);
 
-    void setCompleter(QCompleter* completer);
-    QCompleter* getCompleter() const { return completer; }
+    void setAutoCompleter(AutoCompleter* completer);
+    AutoCompleter* getAutoCompleter() const { return completer; }
 
     void saveFile();
     QString getModifiedName() const;
@@ -49,5 +49,5 @@ private:
     QWidget* lineNumberArea;
     Highlighter* highlighter;
     QString filePath;
-    QCompleter* completer;
+    AutoCompleter* completer;
 };

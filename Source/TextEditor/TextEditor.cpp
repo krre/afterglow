@@ -1,6 +1,7 @@
 #include "TextEditor.h"
 #include "LineNumberArea.h"
 #include "Highlighter.h"
+#include "AutoCompleter.h"
 #include "Core/Settings.h"
 #include "Core/Constants.h"
 #include <QtWidgets>
@@ -38,7 +39,7 @@ void TextEditor::setFilePath(const QString& filePath) {
     this->filePath = filePath;
 }
 
-void TextEditor::setCompleter(QCompleter* completer) {
+void TextEditor::setAutoCompleter(AutoCompleter* completer) {
     if (this->completer)
         QObject::disconnect(completer, 0, this, 0);
 

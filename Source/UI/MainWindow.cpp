@@ -251,7 +251,7 @@ void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {
 void MainWindow::on_tabWidgetSource_currentChanged(int index) {
     if (index >= 0) {
         editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(index));
-        editor->setCompleter(completer);
+        editor->setAutoCompleter(completer);
         editor->setFocus();
         QString filePath = editor->getFilePath();
         projectTree->selectFile(filePath);
