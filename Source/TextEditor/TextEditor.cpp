@@ -205,36 +205,6 @@ void TextEditor::removeTabSpaces() {
     }
 }
 
-void TextEditor::autocomplete(QKeyEvent* event) {
-    bool isShortcut = ((event->modifiers() & Qt::ControlModifier) && event->key() == Qt::Key_Space);
-    if (!completer || !isShortcut) // do not process the shortcut when we have a completer
-        QPlainTextEdit(event);
-
-    const bool ctrlOrShift = event->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
-    if (!completer || (ctrlOrShift && event->text().isEmpty()))
-        return;
-
-    static QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
-    bool hasModifier = (event->modifiers() != Qt::NoModifier) && !ctrlOrShift;
-    QString completionPrefix = textUnderCursor();
-
-    if (!isShortcut && (hasModifier || event->text().isEmpty()|| completionPrefix.length() < 3
-                      || eow.contains(event->text().right(1)))) {
-        completer->popup()->hide();
-        return;
-    }
-
-    if (completionPrefix != completer->completionPrefix()) {
-        completer->setCompletionPrefix(completionPrefix);
-        completer->popup()->setCurrentIndex(completer->completionModel()->index(0, 0));
-    }
-    QRect cr = cursorRect();
-    cr.setX(cr.x() + viewportMargins().left());
-    cr.setWidth(completer->popup()->sizeHintForColumn(0)
-                + completer->popup()->verticalScrollBar()->sizeHint().width());
-    completer->complete(cr); // popup it up!
-}
-
 void TextEditor::keyPressEvent(QKeyEvent* event) {
     if (completer && completer->popup()->isVisible()) {
         // The following keys are forwarded by the completer to the widget
@@ -259,7 +229,7 @@ void TextEditor::keyPressEvent(QKeyEvent* event) {
         QPlainTextEdit::keyPressEvent(event);
         autoindent();
     } else if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Space && !event->isAutoRepeat()) {
-        autocomplete(event);
+        completer->open(event);
     } else {
         QPlainTextEdit::keyPressEvent(event);
     }
@@ -327,4 +297,8 @@ QString TextEditor::textUnderCursor() const {
     QTextCursor cursor = textCursor();
     cursor.select(QTextCursor::WordUnderCursor);
     return cursor.selectedText();
+}
+
+int TextEditor::leftMargin() const {
+    return viewportMargins().left();
 }

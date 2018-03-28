@@ -21,12 +21,14 @@ public:
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int getLineNumberAreaWidth();
 
+    QString textUnderCursor() const;
+    int leftMargin() const;
+
     void commentUncommentLine();
     void joinLines();
     void autoindent();
     void insertTabSpaces();
     void removeTabSpaces();
-    void autocomplete(QKeyEvent* event);
 
 signals:
     void documentModified(TextEditor* editor);
@@ -43,7 +45,6 @@ private slots:
 
 private:
     void readFile();
-    QString textUnderCursor() const;
 
     QWidget* lineNumberArea;
     Highlighter* highlighter;
