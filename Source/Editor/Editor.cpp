@@ -3,7 +3,7 @@
 #include "Highlighter.h"
 #include "Core/Settings.h"
 #include "Core/Constants.h"
-#include <QtGui>
+#include <QtWidgets>
 
 Editor::Editor(QString filePath, QWidget* parent) :
         QPlainTextEdit(parent),
@@ -36,6 +36,21 @@ Editor::Editor(QString filePath, QWidget* parent) :
 
 void Editor::setFilePath(const QString& filePath) {
     this->filePath = filePath;
+}
+
+void Editor::setCompleter(QCompleter* completer) {
+    if (this->completer)
+        QObject::disconnect(completer, 0, this, 0);
+
+    this->completer = completer;
+
+    if (!completer)
+        return;
+
+    completer->setWidget(this);
+    completer->setCompletionMode(QCompleter::PopupCompletion);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    QObject::connect(completer, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
 }
 
 void Editor::saveFile() {
@@ -197,11 +212,51 @@ void Editor::removeTabSpaces() {
     }
 }
 
-void Editor::autocomplete() {
-    qDebug() << "autocomplete";
+void Editor::autocomplete(QKeyEvent* event) {
+    bool isShortcut = ((event->modifiers() & Qt::ControlModifier) && event->key() == Qt::Key_Space);
+    if (!completer || !isShortcut) // do not process the shortcut when we have a completer
+        QPlainTextEdit(event);
+
+    const bool ctrlOrShift = event->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
+    if (!completer || (ctrlOrShift && event->text().isEmpty()))
+        return;
+
+    static QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
+    bool hasModifier = (event->modifiers() != Qt::NoModifier) && !ctrlOrShift;
+    QString completionPrefix = textUnderCursor();
+
+    if (!isShortcut && (hasModifier || event->text().isEmpty()|| completionPrefix.length() < 3
+                      || eow.contains(event->text().right(1)))) {
+        completer->popup()->hide();
+        return;
+    }
+
+    if (completionPrefix != completer->completionPrefix()) {
+        completer->setCompletionPrefix(completionPrefix);
+        completer->popup()->setCurrentIndex(completer->completionModel()->index(0, 0));
+    }
+    QRect cr = cursorRect();
+    cr.setWidth(completer->popup()->sizeHintForColumn(0)
+                + completer->popup()->verticalScrollBar()->sizeHint().width());
+    completer->complete(cr); // popup it up!
 }
 
 void Editor::keyPressEvent(QKeyEvent* event) {
+    if (completer && completer->popup()->isVisible()) {
+            // The following keys are forwarded by the completer to the widget
+           switch (event->key()) {
+               case Qt::Key_Enter:
+               case Qt::Key_Return:
+               case Qt::Key_Escape:
+               case Qt::Key_Tab:
+               case Qt::Key_Backtab:
+                    event->ignore();
+                    return; // let the completer do default behavior
+               default:
+                   break;
+           }
+    }
+
     if (event->key() == Qt::Key_Tab) {
         insertTabSpaces();
     } else if (event->key() == Qt::Key_Backtab) {
@@ -210,7 +265,7 @@ void Editor::keyPressEvent(QKeyEvent* event) {
         QPlainTextEdit::keyPressEvent(event);
         autoindent();
     } else if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Space && !event->isAutoRepeat()) {
-        autocomplete();
+        autocomplete(event);
     } else {
         QPlainTextEdit::keyPressEvent(event);
     }
@@ -221,6 +276,13 @@ void Editor::resizeEvent(QResizeEvent* event) {
 
     QRect cr = contentsRect();
     lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), getLineNumberAreaWidth(), cr.height()));
+}
+
+void Editor::focusInEvent(QFocusEvent* event) {
+    if (event->gotFocus() && completer) {
+        completer->setWidget(this);
+    }
+    QPlainTextEdit::focusInEvent(event);
 }
 
 void Editor::updateLineNumberAreaWidth(int newBlockCount) {
@@ -265,4 +327,23 @@ void Editor::readFile() {
     } else {
         qWarning() << "Failed to open file for reading" << filePath;
     }
+}
+
+QString Editor::textUnderCursor() const {
+    QTextCursor cursor = textCursor();
+    cursor.select(QTextCursor::WordUnderCursor);
+    return cursor.selectedText();
+}
+
+void Editor::insertCompletion(const QString& completion) {
+    if (completer->widget() != this) {
+        return;
+    }
+
+    QTextCursor cursor = textCursor();
+    int extra = completion.length() - completer->completionPrefix().length();
+    cursor.movePosition(QTextCursor::Left);
+    cursor.movePosition(QTextCursor::EndOfWord);
+    cursor.insertText(completion.right(extra));
+    setTextCursor(cursor);
 }
