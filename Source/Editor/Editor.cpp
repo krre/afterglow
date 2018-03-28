@@ -197,6 +197,10 @@ void Editor::removeTabSpaces() {
     }
 }
 
+void Editor::autocomplete() {
+    qDebug() << "autocomplete";
+}
+
 void Editor::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Tab) {
         insertTabSpaces();
@@ -205,6 +209,8 @@ void Editor::keyPressEvent(QKeyEvent* event) {
     } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
         QPlainTextEdit::keyPressEvent(event);
         autoindent();
+    } else if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Space && !event->isAutoRepeat()) {
+        autocomplete();
     } else {
         QPlainTextEdit::keyPressEvent(event);
     }

@@ -22,6 +22,7 @@ public:
     void autoindent();
     void insertTabSpaces();
     void removeTabSpaces();
+    void autocomplete();
 
 signals:
     void documentModified(Editor* editor);
