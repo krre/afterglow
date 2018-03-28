@@ -6,7 +6,7 @@ class CargoManager;
 class ApplicationManager;
 class ProjectTree;
 class ProjectProperties;
-class Editor;
+class TextEditor;
 class AutoCompleter;
 
 namespace Ui {
@@ -86,7 +86,7 @@ private slots:
     void addNewFile(const QString& filePath);
 
     // Editor
-    void onDocumentModified(Editor* editor);
+    void onDocumentModified(TextEditor* editor);
 
 private:
     void addRecentFile(const QString& filePath);
@@ -121,6 +121,6 @@ private:
     ProjectTree* projectTree;
     ProjectProperties* projectProperties;
     QString projectPath;
-    Editor* editor = nullptr;
+    TextEditor* editor = nullptr;
     AutoCompleter* completer;
 };

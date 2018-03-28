@@ -18,21 +18,20 @@ SOURCES += \
     UI/NewName.cpp \
     UI/ProjectProperties.cpp \
     UI/Rename.cpp \
-    TextEditor/Editor.cpp \
     UI/FileSystemProxyModel.cpp \
     UI/ProjectTree.cpp \
     Core/Settings.cpp \
     Process/ProcessManager.cpp \
     Process/CargoManager.cpp \
     Process/ApplicationManager.cpp \
-    TextEditor/AutoCompleter.cpp
+    TextEditor/AutoCompleter.cpp \
+    TextEditor/TextEditor.cpp
 
 HEADERS += \
     UI/MainWindow.h \
     Core/Global.h \
     UI/SelectWorkspace.h \
     UI/Options.h \
-    TextEditor/Editor.h \
     UI/NewProject.h \
     TextEditor/LineNumberArea.h \
     TextEditor/Highlighter.h \
@@ -47,7 +46,8 @@ HEADERS += \
     Process/ProcessManager.h \
     Process/CargoManager.h \
     Process/ApplicationManager.h \
-    TextEditor/AutoCompleter.h
+    TextEditor/AutoCompleter.h \
+    TextEditor/TextEditor.h
 
 FORMS += \
     UI/MainWindow.ui \

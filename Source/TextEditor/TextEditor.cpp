@@ -1,11 +1,11 @@
-#include "Editor.h"
+#include "TextEditor.h"
 #include "LineNumberArea.h"
 #include "Highlighter.h"
 #include "Core/Settings.h"
 #include "Core/Constants.h"
 #include <QtWidgets>
 
-Editor::Editor(QString filePath, QWidget* parent) :
+TextEditor::TextEditor(QString filePath, QWidget* parent) :
         QPlainTextEdit(parent),
         filePath(filePath) {
     setFrameShape(QFrame::NoFrame);
@@ -20,25 +20,25 @@ Editor::Editor(QString filePath, QWidget* parent) :
     lineNumberArea = new LineNumberArea(this);
     highlighter = new Highlighter(document());
 
-    connect(this, &Editor::blockCountChanged, this, &Editor::updateLineNumberAreaWidth);
-    connect(this, &Editor::updateRequest, this, &Editor::updateLineNumberArea);
-    connect(this, &Editor::cursorPositionChanged, this, &Editor::highlightCurrentLine);
+    connect(this, &TextEditor::blockCountChanged, this, &TextEditor::updateLineNumberAreaWidth);
+    connect(this, &TextEditor::updateRequest, this, &TextEditor::updateLineNumberArea);
+    connect(this, &TextEditor::cursorPositionChanged, this, &TextEditor::highlightCurrentLine);
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
 
-    connect(this, &Editor::textChanged, [this] {
+    connect(this, &TextEditor::textChanged, [this] {
         emit documentModified(this);
     });
 
     readFile();
 }
 
-void Editor::setFilePath(const QString& filePath) {
+void TextEditor::setFilePath(const QString& filePath) {
     this->filePath = filePath;
 }
 
-void Editor::setCompleter(QCompleter* completer) {
+void TextEditor::setCompleter(QCompleter* completer) {
     if (this->completer)
         QObject::disconnect(completer, 0, this, 0);
 
@@ -53,7 +53,7 @@ void Editor::setCompleter(QCompleter* completer) {
     QObject::connect(completer, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
 }
 
-void Editor::saveFile() {
+void TextEditor::saveFile() {
     if (!document()->isModified()) return;
 
     QFile file(filePath);
@@ -67,12 +67,12 @@ void Editor::saveFile() {
     }
 }
 
-QString Editor::getModifiedName() const {
+QString TextEditor::getModifiedName() const {
     QFileInfo fi(filePath);
     return fi.fileName() + (document()->isModified() ? "*" : "");
 }
 
-void Editor::lineNumberAreaPaintEvent(QPaintEvent* event) {
+void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event) {
     QPainter painter(lineNumberArea);
     painter.fillRect(event->rect(), QColor(240, 240, 240));
 
@@ -96,7 +96,7 @@ void Editor::lineNumberAreaPaintEvent(QPaintEvent* event) {
     }
 }
 
-int Editor::getLineNumberAreaWidth() {
+int TextEditor::getLineNumberAreaWidth() {
     int digits = 1;
     int max = qMax(1, blockCount());
     while (max >= 10) {
@@ -112,7 +112,7 @@ int Editor::getLineNumberAreaWidth() {
     return space;
 }
 
-void Editor::commentUncommentLine() {
+void TextEditor::commentUncommentLine() {
     QTextCursor cursor = textCursor();
     int row = cursor.blockNumber();
     QTextBlock block = document()->findBlockByLineNumber(row);
@@ -139,7 +139,7 @@ void Editor::commentUncommentLine() {
     cursor.endEditBlock();
 }
 
-void Editor::joinLines() {
+void TextEditor::joinLines() {
     QTextCursor cursor = textCursor();
     QTextBlock block = cursor.block();
     QTextBlock nextBlock = block.next();
@@ -166,7 +166,7 @@ void Editor::joinLines() {
     cursor.endEditBlock();
 }
 
-void Editor::autoindent() {
+void TextEditor::autoindent() {
     QTextCursor cursor = textCursor();
     int row = cursor.blockNumber();
     if (row > 0) {
@@ -185,12 +185,12 @@ void Editor::autoindent() {
 }
 
 // Add white spaces to right
-void Editor::insertTabSpaces() {
+void TextEditor::insertTabSpaces() {
     insertPlainText(QString(Constants::TAB_SPACES_COUNT, ' '));
 }
 
 // Remove white spaces to left
-void Editor::removeTabSpaces() {
+void TextEditor::removeTabSpaces() {
     QTextCursor cursor = textCursor();
     QTextBlock block = cursor.block();
     int charPos = cursor.position() - block.position();
@@ -212,7 +212,7 @@ void Editor::removeTabSpaces() {
     }
 }
 
-void Editor::autocomplete(QKeyEvent* event) {
+void TextEditor::autocomplete(QKeyEvent* event) {
     bool isShortcut = ((event->modifiers() & Qt::ControlModifier) && event->key() == Qt::Key_Space);
     if (!completer || !isShortcut) // do not process the shortcut when we have a completer
         QPlainTextEdit(event);
@@ -242,7 +242,7 @@ void Editor::autocomplete(QKeyEvent* event) {
     completer->complete(cr); // popup it up!
 }
 
-void Editor::keyPressEvent(QKeyEvent* event) {
+void TextEditor::keyPressEvent(QKeyEvent* event) {
     if (completer && completer->popup()->isVisible()) {
         // The following keys are forwarded by the completer to the widget
         switch (event->key()) {
@@ -272,26 +272,26 @@ void Editor::keyPressEvent(QKeyEvent* event) {
     }
 }
 
-void Editor::resizeEvent(QResizeEvent* event) {
+void TextEditor::resizeEvent(QResizeEvent* event) {
     QPlainTextEdit::resizeEvent(event);
 
     QRect cr = contentsRect();
     lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), getLineNumberAreaWidth(), cr.height()));
 }
 
-void Editor::focusInEvent(QFocusEvent* event) {
+void TextEditor::focusInEvent(QFocusEvent* event) {
     if (event->gotFocus() && completer) {
         completer->setWidget(this);
     }
     QPlainTextEdit::focusInEvent(event);
 }
 
-void Editor::updateLineNumberAreaWidth(int newBlockCount) {
+void TextEditor::updateLineNumberAreaWidth(int newBlockCount) {
     Q_UNUSED(newBlockCount)
     setViewportMargins(getLineNumberAreaWidth(), 0, 0, 0);
 }
 
-void Editor::highlightCurrentLine() {
+void TextEditor::highlightCurrentLine() {
     QList<QTextEdit::ExtraSelection> extraSelections;
 
     if (!isReadOnly()) {
@@ -309,7 +309,7 @@ void Editor::highlightCurrentLine() {
     setExtraSelections(extraSelections);
 }
 
-void Editor::updateLineNumberArea(const QRect& rect, int dy) {
+void TextEditor::updateLineNumberArea(const QRect& rect, int dy) {
     if (dy) {
         lineNumberArea->scroll(0, dy);
     } else {
@@ -321,7 +321,7 @@ void Editor::updateLineNumberArea(const QRect& rect, int dy) {
     }
 }
 
-void Editor::readFile() {
+void TextEditor::readFile() {
     QFile file(filePath);
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         setPlainText(file.readAll());
@@ -330,13 +330,13 @@ void Editor::readFile() {
     }
 }
 
-QString Editor::textUnderCursor() const {
+QString TextEditor::textUnderCursor() const {
     QTextCursor cursor = textCursor();
     cursor.select(QTextCursor::WordUnderCursor);
     return cursor.selectedText();
 }
 
-void Editor::insertCompletion(const QString& completion) {
+void TextEditor::insertCompletion(const QString& completion) {
     if (completer->widget() != this) {
         return;
     }

@@ -4,10 +4,10 @@
 class Highlighter;
 class QCompleter;
 
-class Editor : public QPlainTextEdit {
+class TextEditor : public QPlainTextEdit {
     Q_OBJECT
 public:
-    explicit Editor(QString filePath, QWidget* parent = nullptr);
+    explicit TextEditor(QString filePath, QWidget* parent = nullptr);
 
     QString getFilePath() const { return filePath; }
     void setFilePath(const QString& filePath);
@@ -29,7 +29,7 @@ public:
     void autocomplete(QKeyEvent* event);
 
 signals:
-    void documentModified(Editor* editor);
+    void documentModified(TextEditor* editor);
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;

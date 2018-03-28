@@ -9,7 +9,7 @@
 #include "Process/ApplicationManager.h"
 #include "ProjectTree.h"
 #include "ProjectProperties.h"
-#include "TextEditor/Editor.h"
+#include "TextEditor/TextEditor.h"
 #include "TextEditor/AutoCompleter.h"
 #include "NewName.h"
 #ifdef Q_OS_WIN
@@ -250,7 +250,7 @@ void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {
 
 void MainWindow::on_tabWidgetSource_currentChanged(int index) {
     if (index >= 0) {
-        editor = static_cast<Editor*>(ui->tabWidgetSource->widget(index));
+        editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(index));
         editor->setCompleter(completer);
         editor->setFocus();
         QString filePath = editor->getFilePath();
@@ -308,7 +308,7 @@ void MainWindow::onFileCreated(const QString& filePath) {
 void MainWindow::onFileRemoved(const QString& filePath) {
     QVector<int> indices;
     for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
-        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(i));
+        TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
         if (editor->getFilePath().contains(filePath)) {
             indices.append(i);
         }
@@ -322,7 +322,7 @@ void MainWindow::onFileRemoved(const QString& filePath) {
 
 void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
     for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
-        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(i));
+        TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
         if (editor->getFilePath().contains(oldPath)) {
             QFileInfo fi(newPath);
             if (fi.isDir()) {
@@ -341,8 +341,8 @@ void MainWindow::addSourceTab(const QString& filePath) {
         ui->tabWidgetSource->setCurrentIndex(tabIndex);
     } else {
         QFileInfo fi(filePath);
-        Editor* editor = new Editor(filePath);
-        connect(editor, &Editor::documentModified, this, &MainWindow::onDocumentModified);
+        TextEditor* editor = new TextEditor(filePath);
+        connect(editor, &TextEditor::documentModified, this, &MainWindow::onDocumentModified);
         int index = ui->tabWidgetSource->addTab(editor, fi.fileName());
         ui->tabWidgetSource->setTabToolTip(index, filePath);
         ui->tabWidgetSource->setCurrentIndex(index);
@@ -363,7 +363,7 @@ void MainWindow::addNewFile(const QString& filePath) {
     }
 }
 
-void MainWindow::onDocumentModified(Editor* editor) {
+void MainWindow::onDocumentModified(TextEditor* editor) {
     ui->tabWidgetSource->setTabText(ui->tabWidgetSource->indexOf(editor), editor->getModifiedName());
 }
 
@@ -594,7 +594,7 @@ void MainWindow::saveSession() {
 
     QJsonArray openFiles;
     for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
-        Editor* cave = static_cast<Editor*>(ui->tabWidgetSource->widget(i));
+        TextEditor* cave = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
         openFiles.append(QJsonValue(cave->getFilePath()));
     }
 
@@ -690,7 +690,7 @@ void MainWindow::changeWindowTitle(const QString& filePath) {
 
 int MainWindow::findSource(const QString& filePath) {
     for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
-        Editor* editor = static_cast<Editor*>(ui->tabWidgetSource->widget(i));
+        TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
         if (editor->getFilePath() == filePath) {
             return i;
         }

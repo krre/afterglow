@@ -1,7 +1,7 @@
 #include "LineNumberArea.h"
-#include "Editor.h"
+#include "TextEditor.h"
 
-LineNumberArea::LineNumberArea(Editor* editor) : QWidget(editor) {
+LineNumberArea::LineNumberArea(TextEditor* editor) : QWidget(editor) {
     this->editor = editor;
 }
 
