@@ -9,8 +9,8 @@
 #include "Process/ApplicationManager.h"
 #include "ProjectTree.h"
 #include "ProjectProperties.h"
-#include "Editor/Editor.h"
-#include "Editor/AutoCompleter.h"
+#include "TextEditor/Editor.h"
+#include "TextEditor/AutoCompleter.h"
 #include "NewName.h"
 #ifdef Q_OS_WIN
     #include <windows.h>
