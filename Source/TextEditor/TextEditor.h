@@ -40,7 +40,6 @@ private slots:
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
     void updateLineNumberArea(const QRect &rect, int dy);
-    void insertCompletion(const QString& completion);
 
 private:
     void readFile();

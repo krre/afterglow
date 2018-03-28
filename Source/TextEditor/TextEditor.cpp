@@ -40,18 +40,10 @@ void TextEditor::setFilePath(const QString& filePath) {
 }
 
 void TextEditor::setAutoCompleter(AutoCompleter* completer) {
-    if (this->completer)
-        QObject::disconnect(completer, 0, this, 0);
-
     this->completer = completer;
-
-    if (!completer)
-        return;
-
-    completer->setWidget(this);
-    completer->setCompletionMode(QCompleter::PopupCompletion);
-    completer->setCaseSensitivity(Qt::CaseInsensitive);
-    QObject::connect(completer, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
+    if (completer) {
+        completer->setTextEditor(this);
+    }
 }
 
 void TextEditor::saveFile() {
@@ -335,17 +327,4 @@ QString TextEditor::textUnderCursor() const {
     QTextCursor cursor = textCursor();
     cursor.select(QTextCursor::WordUnderCursor);
     return cursor.selectedText();
-}
-
-void TextEditor::insertCompletion(const QString& completion) {
-    if (completer->widget() != this) {
-        return;
-    }
-
-    QTextCursor cursor = textCursor();
-    int extra = completion.length() - completer->completionPrefix().length();
-    cursor.movePosition(QTextCursor::Left);
-    cursor.movePosition(QTextCursor::EndOfWord);
-    cursor.insertText(completion.right(extra));
-    setTextCursor(cursor);
 }
