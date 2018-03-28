@@ -38,7 +38,45 @@ void AutoCompleter::open(QKeyEvent* event) {
     QRect cr = editor->cursorRect();
     cr.setX(cr.x() + editor->leftMargin());
     cr.setWidth(popup()->sizeHintForColumn(0) + popup()->verticalScrollBar()->sizeHint().width());
-    complete(cr); // popup it up!
+
+    QString tmpPath = QDir::tempPath() + "/racer.tmp";
+    QFile file(tmpPath);
+    if (!file.open(QIODevice::ReadWrite)) {
+        qWarning() << "Failed to open temporary Racer file" << tmpPath;
+        return;
+    }
+
+    file.write(editor->document()->toPlainText().toUtf8());
+
+    QProcess process;
+    QStringList arguments;
+    arguments << "complete";
+
+    QTextCursor cursor = editor->textCursor();
+    arguments << QString::number(cursor.blockNumber() + 1);
+    arguments << QString::number(cursor.columnNumber() + 1);
+    arguments << tmpPath;
+
+    qDebug() << arguments;
+
+    process.start("racer", arguments);
+    process.waitForFinished();
+
+    file.close();
+    file.remove();
+
+    QString error = process.readAllStandardError();
+    if (!error.isEmpty()) {
+        qWarning() << "Error running Racer:" << error;
+        return;
+    }
+
+    QString result = process.readAllStandardOutput();
+    if (result.isEmpty()) return;
+
+    qDebug() << result;
+
+    //    complete(cr);
 }
 
 void AutoCompleter::onActivate(const QString& completion) {
