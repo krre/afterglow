@@ -244,7 +244,7 @@ void TextEditor::resizeEvent(QResizeEvent* event) {
 
 void TextEditor::focusInEvent(QFocusEvent* event) {
     if (event->gotFocus() && completer) {
-        completer->setWidget(this);
+//        completer->setWidget(this);
     }
     QPlainTextEdit::focusInEvent(event);
 }
