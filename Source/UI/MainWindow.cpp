@@ -279,6 +279,10 @@ void MainWindow::on_toolButtonAppStop_clicked() {
     applicationManager->stop();
 }
 
+void MainWindow::on_toolButtonAppRun_clicked() {
+    applicationManager->start(projectProperties->getRunTarget());
+}
+
 void MainWindow::onProjectCreated(const QString& path) {
     openProject(path);
 }

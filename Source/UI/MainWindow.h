@@ -75,6 +75,7 @@ private slots:
 
     void on_toolButtonAppClear_clicked();
     void on_toolButtonAppStop_clicked();
+    void on_toolButtonAppRun_clicked();
 
 
     // CargoManager
