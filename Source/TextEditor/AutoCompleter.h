@@ -3,12 +3,13 @@
 
 class TextEditor;
 class QKeyEvent;
+class QStringListModel;
 
 class AutoCompleter : public QCompleter {
     Q_OBJECT
 
 public:
-    explicit AutoCompleter(const QStringList& list, QObject* parent = nullptr);
+    explicit AutoCompleter(QObject* parent = nullptr);
     void setTextEditor(TextEditor* editor);
     void open(QKeyEvent* event);
 
@@ -17,4 +18,5 @@ private slots:
 
 private:
     TextEditor* editor;
+    QStringListModel* listModel;
 };

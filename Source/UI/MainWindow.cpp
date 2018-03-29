@@ -60,9 +60,7 @@ MainWindow::MainWindow() :
     ui->toolButtonAppClear->setFont(font);
     ui->toolButtonAppClear->setText(Constants::ICON_TRASH_ALT);
 
-    QStringList keywords;
-    keywords << "fn" << "let" << "struct";
-    completer = new AutoCompleter(keywords, this);
+    completer = new AutoCompleter(this);
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setWrapAround(false);

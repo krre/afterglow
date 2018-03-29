@@ -2,9 +2,12 @@
 #include "TextEditor.h"
 #include <QtWidgets>
 
-AutoCompleter::AutoCompleter(const QStringList& list, QObject* parent) : QCompleter(list, parent) {
+AutoCompleter::AutoCompleter(QObject* parent) : QCompleter(parent) {
     setCompletionMode(QCompleter::PopupCompletion);
     setCaseSensitivity(Qt::CaseInsensitive);
+
+    listModel = new QStringListModel(this);
+    setModel(listModel);
 
     QObject::connect(this, SIGNAL(activated(QString)), this, SLOT(onActivate(QString)));
 }
@@ -35,9 +38,6 @@ void AutoCompleter::open(QKeyEvent* event) {
         setCompletionPrefix(prefix);
         popup()->setCurrentIndex(completionModel()->index(0, 0));
     }
-    QRect cr = editor->cursorRect();
-    cr.setX(cr.x() + editor->leftMargin());
-    cr.setWidth(popup()->sizeHintForColumn(0) + popup()->verticalScrollBar()->sizeHint().width());
 
     QString tmpPath = QDir::tempPath() + "/racer.tmp";
     QFile file(tmpPath);
@@ -58,8 +58,6 @@ void AutoCompleter::open(QKeyEvent* event) {
     arguments << QString::number(cursor.columnNumber() + 1);
     arguments << tmpPath;
 
-    qDebug() << arguments;
-
     process.start("racer", arguments);
     process.waitForFinished();
 
@@ -72,11 +70,24 @@ void AutoCompleter::open(QKeyEvent* event) {
     }
 
     QString result = process.readAllStandardOutput();
-    if (result.isEmpty()) return;
+    QStringList rows = result.split('\n');
+    QStringList words;
 
-    qDebug() << result;
+    for (int i = 0; i < rows.count(); i++) {
+        if (rows.at(i).left(5) == "MATCH") {
+            QString word = rows.at(i).split(',').at(0).split(' ').at(1);
+            words << word;
+        }
+    }
 
-    //    complete(cr);
+    listModel->setStringList(words);
+    listModel->sort(0);
+
+    QRect cr = editor->cursorRect();
+    cr.setX(cr.x() + editor->leftMargin());
+    cr.setWidth(popup()->sizeHintForColumn(0) + popup()->verticalScrollBar()->sizeHint().width());
+
+    complete(cr);
 }
 
 void AutoCompleter::onActivate(const QString& completion) {
