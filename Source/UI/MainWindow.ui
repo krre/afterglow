@@ -249,11 +249,6 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="tabSearch">
-         <attribute name="title">
-          <string>Search</string>
-         </attribute>
-        </widget>
        </widget>
       </widget>
      </widget>
