@@ -25,6 +25,18 @@ void ProjectProperties::setProject(const QString& projectPath) {
     updateMetadata();
 }
 
+QString ProjectProperties::getArguments() const {
+    return ui->lineEditArguments->text();
+}
+
+QStringList ProjectProperties::getArgumentsList() const {
+    return ui->lineEditArguments->text().split(' ');
+}
+
+void ProjectProperties::setArguments(const QString& arguments) {
+    ui->lineEditArguments->setText(arguments);
+}
+
 const QString ProjectProperties::getRunTarget() const {
     return metadata["target_directory"].toString() + "/"
             + (getBuildTarget() == CargoManager::BuildTarget::Debug ? "debug" : "release") + "/"

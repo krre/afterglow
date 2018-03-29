@@ -21,11 +21,14 @@ MainWindow::MainWindow() :
         ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    cargoManager = new CargoManager(this);
+    projectProperties = new ProjectProperties;
+    ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
+
+    cargoManager = new CargoManager(projectProperties, this);
     connect(cargoManager, &CargoManager::projectCreated, this, &MainWindow::onProjectCreated);
     connect(cargoManager, &CargoManager::consoleMessage, this, &MainWindow::onCargoMessage);
 
-    applicationManager = new ApplicationManager();
+    applicationManager = new ApplicationManager(projectProperties);
     connect(applicationManager, &ApplicationManager::consoleMessage, this, &MainWindow::onApplicationMessage);
 
     projectTree = new ProjectTree;
@@ -34,9 +37,6 @@ MainWindow::MainWindow() :
     connect(projectTree, &ProjectTree::removeActivated, this, &MainWindow::onFileRemoved);
     connect(projectTree, &ProjectTree::renameActivated, this, &MainWindow::onFileRenamed);
     ui->tabWidgetSide->addTab(projectTree, tr("Project"));
-
-    projectProperties = new ProjectProperties;
-    ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
     if (QFontDatabase::addApplicationFont(":/Resources/Font/Font Awesome 5 Free-Solid-900.otf") < 0)
         qWarning() << "Failed to load FontAwesome!";
@@ -213,12 +213,12 @@ void MainWindow::on_actionJoinLines_triggered() {
 
 void MainWindow::on_actionBuild_triggered() {
     on_actionSaveAll_triggered();
-    cargoManager->build(projectProperties->getBuildTarget());
+    cargoManager->build();
 }
 
 void MainWindow::on_actionRun_triggered() {
     on_actionSaveAll_triggered();
-    cargoManager->run(projectProperties->getBuildTarget(), projectProperties->getRunTarget());
+    cargoManager->run();
 }
 
 void MainWindow::on_actionClean_triggered() {
@@ -280,7 +280,7 @@ void MainWindow::on_toolButtonAppStop_clicked() {
 }
 
 void MainWindow::on_toolButtonAppRun_clicked() {
-    applicationManager->start(projectProperties->getRunTarget());
+    applicationManager->start();
 }
 
 void MainWindow::onProjectCreated(const QString& path) {
@@ -421,6 +421,7 @@ void MainWindow::saveProjectProperties() {
 
     QJsonObject obj;
     obj["target"] = static_cast<int>(projectProperties->getBuildTarget());
+    obj["arguments"] = projectProperties->getArguments();
 
     QJsonDocument doc(obj);
     file.write(doc.toJson());
@@ -443,8 +444,11 @@ void MainWindow::loadProjectProperties() {
     }
 
     QJsonDocument doc(QJsonDocument::fromJson(file.readAll()));
-    CargoManager::BuildTarget target = static_cast<CargoManager::BuildTarget>(doc.object()["target"].toInt());
+    QJsonObject obj = doc.object();
+
+    CargoManager::BuildTarget target = static_cast<CargoManager::BuildTarget>(obj["target"].toInt());
     projectProperties->setBuildTarget(target);
+    projectProperties->setArguments(obj["arguments"].toString());
 }
 
 void MainWindow::readSettings() {

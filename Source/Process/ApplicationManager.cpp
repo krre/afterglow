@@ -1,7 +1,9 @@
 #include "ApplicationManager.h"
+#include "UI/ProjectProperties.h"
 #include <QtCore>
 
-ApplicationManager::ApplicationManager() {
+ApplicationManager::ApplicationManager(ProjectProperties* projectProperties) :
+    projectProperties(projectProperties) {
 
 }
 
@@ -9,9 +11,10 @@ ApplicationManager::~ApplicationManager() {
 
 }
 
-void ApplicationManager::start(const QString& command) {
+void ApplicationManager::start() {
+    const QString& command = projectProperties->getRunTarget();
     emit consoleMessage(QString("Starting %1...\n").arg(command), true);
-    getProcess()->start(command);
+    getProcess()->start(command, projectProperties->getArgumentsList());
 }
 
 void ApplicationManager::onReadyReadStandardOutput(const QString& data) {

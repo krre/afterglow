@@ -20,6 +20,10 @@ public:
     const QString getRunTarget() const;
     void setProject(const QString& projectPath);
 
+    QString getArguments() const;
+    QStringList getArgumentsList() const;
+    void setArguments(const QString& arguments);
+
     void reset();
     void updateMetadata();
 

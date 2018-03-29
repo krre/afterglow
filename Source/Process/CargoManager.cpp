@@ -1,8 +1,11 @@
 #include "CargoManager.h"
 #include "ApplicationManager.h"
+#include "UI/ProjectProperties.h"
 #include <QtCore>
 
-CargoManager::CargoManager(QObject* parent) : ProcessManager(parent) {
+CargoManager::CargoManager(ProjectProperties* projectProperties, QObject* parent) :
+        ProcessManager(parent),
+        projectProperties(projectProperties) {
     getProcess()->setProgram("cargo");
 }
 
@@ -25,20 +28,19 @@ void CargoManager::createProject(ProjectTemplate projectTemplate, const QString&
     setProjectPath(path);
 }
 
-void CargoManager::build(BuildTarget buildTarget) {
+void CargoManager::build() {
     QStringList arguments;
     arguments << "build";
-    if (buildTarget == BuildTarget::Release) {
+    if (projectProperties->getBuildTarget() == BuildTarget::Release) {
         arguments << "--release";
     }
     commandStatus = CommandStatus::Build;
     prepareAndStart(arguments);
 }
 
-void CargoManager::run(BuildTarget buildTarget, const QString& runTarget) {
-    build(buildTarget);
+void CargoManager::run() {
+    build();
     commandStatus = CommandStatus::Run;
-    this->runTarget = runTarget;
 }
 
 void CargoManager::clean() {
@@ -66,7 +68,7 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
             emit projectCreated(getProcess()->arguments().last());
             break;
         case CommandStatus::Run:
-            ApplicationManager::getInstance()->start(runTarget);
+            ApplicationManager::getInstance()->start();
             break;
         default:
             break;

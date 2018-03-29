@@ -2,6 +2,8 @@
 #include "ProcessManager.h"
 #include <QTime>
 
+class ProjectProperties;
+
 class CargoManager : public ProcessManager {
     Q_OBJECT
 public:
@@ -15,12 +17,12 @@ public:
         Release
     };
 
-    explicit CargoManager(QObject* parent = nullptr);
+    explicit CargoManager(ProjectProperties* projectProperties, QObject* parent = nullptr);
     ~CargoManager();
 
     void createProject(ProjectTemplate projectTemplate, const QString& path);
-    void build(BuildTarget buildTarget);
-    void run(BuildTarget buildTarget, const QString& runTarget);
+    void build();
+    void run();
     void clean();
 
     void setProjectPath(const QString& path);
@@ -46,8 +48,8 @@ private:
 
     void timedOutputMessage(const QString& message, bool start = false);
 
+    ProjectProperties* projectProperties;
     QTime measureTime;
     CommandStatus commandStatus = CommandStatus::None;
     QString projectPath;
-    QString runTarget;
 };
