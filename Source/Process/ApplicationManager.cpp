@@ -29,3 +29,7 @@ void ApplicationManager::onFinished(int exitCode, QProcess::ExitStatus exitStatu
             .arg(exitCode);
     emit consoleMessage(message);
 }
+
+void ApplicationManager::onErrorOccurred(QProcess::ProcessError error) {
+    emit consoleMessage(QString("Process error: %1").arg(errorToString(error)));
+}

@@ -16,4 +16,5 @@ private slots:
     void onReadyReadStandardOutput(const QString& data) override;
     void onReadyReadStandardError(const QString& data) override;
     void onFinished(int exitCode, QProcess::ExitStatus exitStatus) override;
+    void onErrorOccurred(QProcess::ProcessError error);
 };
