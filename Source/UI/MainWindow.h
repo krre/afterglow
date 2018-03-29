@@ -70,7 +70,10 @@ private slots:
     void on_tabWidgetSource_tabCloseRequested(int index);
     void on_tabWidgetSource_currentChanged(int index);
     void on_toolButtonCargoClear_clicked();
+
     void on_toolButtonAppClear_clicked();
+    void on_toolButtonAppStop_clicked();
+
 
     // CargoManager
     void onProjectCreated(const QString& path);

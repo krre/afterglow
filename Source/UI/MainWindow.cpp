@@ -271,6 +271,10 @@ void MainWindow::on_toolButtonAppClear_clicked() {
     ui->plainTextEditApplication->clear();
 }
 
+void MainWindow::on_toolButtonAppStop_clicked() {
+    applicationManager->stop();
+}
+
 void MainWindow::onProjectCreated(const QString& path) {
     openProject(path);
 }
