@@ -267,6 +267,10 @@ void MainWindow::on_toolButtonCargoClear_clicked() {
     ui->plainTextEditCargo->clear();
 }
 
+void MainWindow::on_toolButtonCargoStop_clicked() {
+    cargoManager->stop();
+}
+
 void MainWindow::on_toolButtonAppClear_clicked() {
     ui->plainTextEditApplication->clear();
 }

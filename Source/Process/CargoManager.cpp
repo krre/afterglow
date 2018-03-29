@@ -61,23 +61,22 @@ void CargoManager::onReadyReadStandardError(const QString& data) {
 }
 
 void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
-    if (exitCode) {
-        return;
+    switch (commandStatus) {
+        case CommandStatus::New:
+            emit projectCreated(getProcess()->arguments().last());
+            break;
+        case CommandStatus::Run:
+            ApplicationManager::getInstance()->start(runTarget);
+            break;
+        default:
+            break;
     }
 
-    switch (commandStatus) {
-    case CommandStatus::New:
-        emit projectCreated(getProcess()->arguments().last());
-        break;
-    case CommandStatus::Run:
-        ApplicationManager::getInstance()->start(runTarget);
-        break;
-    default:
-        break;
-    }
-    QString finishedMessage = "The process " + getProcess()->program() +
-        (exitStatus == QProcess::NormalExit ? " finished normally" : " crashed");
-    timedOutputMessage(finishedMessage);
+    QString message = QString("The process %1 %2 with code %3")
+            .arg(getProcess()->program())
+            .arg(exitStatus == QProcess::NormalExit ? "finished normally" : "crashed")
+            .arg(exitCode);
+    timedOutputMessage(message);
     timedOutputMessage(QString("Elapsed time: %1 ms").arg(measureTime.elapsed()));
 }
 

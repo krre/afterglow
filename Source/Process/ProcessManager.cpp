@@ -1,4 +1,5 @@
 #include "ProcessManager.h"
+#include <QDebug>
 
 ProcessManager::ProcessManager(QObject* parent) : QObject(parent) {
     process = new QProcess(this);
