@@ -23,6 +23,10 @@ QProcess* ProcessManager::getProcess() {
     return process;
 }
 
+void ProcessManager::stop() {
+    process->kill();
+}
+
 void ProcessManager::onReadyReadStandardOutput(const QString& data) {
     Q_UNUSED(data)
 }

@@ -14,10 +14,6 @@ void ApplicationManager::start(const QString& command) {
     getProcess()->start(command);
 }
 
-void ApplicationManager::stop() {
-    getProcess()->kill();
-}
-
 void ApplicationManager::onReadyReadStandardOutput(const QString& data) {
     emit consoleMessage(data);
 }

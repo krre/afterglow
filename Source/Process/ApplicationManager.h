@@ -8,7 +8,6 @@ public:
     explicit ApplicationManager();
     ~ApplicationManager();
     void start(const QString& command);
-    void stop();
 
 signals:
     void consoleMessage(const QString& message, bool start = false);

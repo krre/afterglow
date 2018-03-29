@@ -8,6 +8,7 @@ class ProcessManager : public QObject {
 public:
     explicit ProcessManager(QObject* parent = nullptr);
     QProcess* getProcess();
+    void stop();
 
 protected slots:
     virtual void onReadyReadStandardOutput(const QString& data);
