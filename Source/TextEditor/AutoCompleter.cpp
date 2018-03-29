@@ -41,12 +41,13 @@ void AutoCompleter::open(QKeyEvent* event) {
 
     QString tmpPath = QDir::tempPath() + "/racer.tmp";
     QFile file(tmpPath);
-    if (!file.open(QIODevice::ReadWrite)) {
+    if (!file.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open temporary Racer file" << tmpPath;
         return;
     }
 
     file.write(editor->document()->toPlainText().toUtf8());
+    file.close();
 
     QProcess process;
     QStringList arguments;
@@ -62,7 +63,6 @@ void AutoCompleter::open(QKeyEvent* event) {
     process.start("racer", arguments);
     process.waitForFinished();
 
-    file.close();
     file.remove();
 
     QString error = process.readAllStandardError();
