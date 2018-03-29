@@ -31,5 +31,5 @@ void ApplicationManager::onFinished(int exitCode, QProcess::ExitStatus exitStatu
 }
 
 void ApplicationManager::onErrorOccurred(QProcess::ProcessError error) {
-    emit consoleMessage(QString("Process error: %1").arg(errorToString(error)));
+    emit consoleMessage(QString("Process error: %1\n").arg(errorToString(error)));
 }
