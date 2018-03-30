@@ -353,10 +353,11 @@ void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
     }
 }
 
-void MainWindow::addSourceTab(const QString& filePath) {
+int MainWindow::addSourceTab(const QString& filePath) {
     int tabIndex = findSource(filePath);
     if (tabIndex != -1) {
         ui->tabWidgetSource->setCurrentIndex(tabIndex);
+        return tabIndex;
     } else {
         QFileInfo fi(filePath);
         TextEditor* editor = new TextEditor(filePath);
@@ -366,6 +367,8 @@ void MainWindow::addSourceTab(const QString& filePath) {
         ui->tabWidgetSource->setCurrentIndex(index);
 
         addRecentFile(filePath);
+
+        return index;
     }
 }
 
@@ -616,8 +619,18 @@ void MainWindow::saveSession() {
 
     QJsonArray openFiles;
     for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
-        TextEditor* cave = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
-        openFiles.append(QJsonValue(cave->getFilePath()));
+        TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
+
+        QJsonObject obj;
+        obj["path"] = editor->getFilePath();
+
+        QJsonArray cursorPosArray;
+        QPoint pos = editor->getCursorPosition();
+        cursorPosArray.append(pos.x());
+        cursorPosArray.append(pos.y());
+        obj["cursor"] = cursorPosArray;
+
+        openFiles.append(obj);
     }
 
     QJsonObject obj;
@@ -650,9 +663,13 @@ void MainWindow::restoreSession() {
     QString selectedFilePath = array.at(selectedTab).toString();
 
     for (int i = 0; i < array.count(); i++) {
-        QString filePath = array.at(i).toString();
+        QJsonObject obj = array.at(i).toObject();
+        QString filePath = obj["path"].toString();
         if (QFileInfo::exists(filePath)) {
-            addSourceTab(filePath);
+            int index = addSourceTab(filePath);
+            QJsonArray cursorPosArray = obj["cursor"].toArray();
+            TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(index));
+            editor->setCursorPosition(QPoint(cursorPosArray.at(0).toInt(), cursorPosArray.at(1).toInt()));
         }
     }
 

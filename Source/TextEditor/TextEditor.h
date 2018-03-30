@@ -1,5 +1,6 @@
 #pragma once
 #include <QPlainTextEdit>
+#include <QPoint>
 
 class Highlighter;
 class AutoCompleter;
@@ -17,6 +18,9 @@ public:
 
     void saveFile();
     QString getModifiedName() const;
+
+    QPoint getCursorPosition();
+    void setCursorPosition(const QPoint& pos);
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int getLineNumberAreaWidth();

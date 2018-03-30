@@ -65,6 +65,18 @@ QString TextEditor::getModifiedName() const {
     return fi.fileName() + (document()->isModified() ? "*" : "");
 }
 
+QPoint TextEditor::getCursorPosition() {
+    QTextCursor cursor = textCursor();
+    return QPoint(cursor.positionInBlock(), cursor.blockNumber());
+}
+
+void TextEditor::setCursorPosition(const QPoint& pos) {
+    QTextCursor cursor = textCursor();
+    cursor.movePosition(QTextCursor::NextBlock, QTextCursor::MoveAnchor, pos.y());
+    cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, pos.x());
+    setTextCursor(cursor);
+}
+
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event) {
     QPainter painter(lineNumberArea);
     painter.fillRect(event->rect(), QColor(240, 240, 240));
