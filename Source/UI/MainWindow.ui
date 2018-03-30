@@ -328,6 +328,7 @@
     <addaction name="separator"/>
     <addaction name="actionComment"/>
     <addaction name="actionJoinLines"/>
+    <addaction name="actionDuplicateLine"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -576,6 +577,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+J</string>
+   </property>
+  </action>
+  <action name="actionDuplicateLine">
+   <property name="text">
+    <string>Duplicate Line</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>

@@ -211,6 +211,10 @@ void MainWindow::on_actionJoinLines_triggered() {
     editor->joinLines();
 }
 
+void MainWindow::on_actionDuplicateLine_triggered() {
+    editor->duplicateLine();
+}
+
 void MainWindow::on_actionBuild_triggered() {
     on_actionSaveAll_triggered();
     cargoManager->build();

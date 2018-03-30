@@ -159,6 +159,24 @@ void TextEditor::joinLines() {
     cursor.endEditBlock();
 }
 
+void TextEditor::duplicateLine() {
+    QTextCursor cursor = textCursor();
+
+    cursor.beginEditBlock();
+
+    cursor.movePosition(QTextCursor::StartOfBlock);
+    cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+    QString line = cursor.selectedText();
+    cursor.movePosition(QTextCursor::NextBlock);
+    cursor.insertText(line + '\n');
+
+    cursor = textCursor();
+    cursor.movePosition(QTextCursor::Down);
+    setTextCursor(cursor);
+
+    cursor.endEditBlock();
+}
+
 void TextEditor::autoindent() {
     QTextCursor cursor = textCursor();
     int row = cursor.blockNumber();

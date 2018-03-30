@@ -26,6 +26,7 @@ public:
 
     void commentUncommentLine();
     void joinLines();
+    void duplicateLine();
     void autoindent();
     void insertTabSpaces();
     void removeTabSpaces();
