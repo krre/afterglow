@@ -55,6 +55,7 @@ private slots:
     void on_actionComment_triggered();
     void on_actionJoinLines_triggered();
     void on_actionDuplicateLine_triggered();
+    void on_actionCutLine_triggered();
 
     // Cargo
     void on_actionBuild_triggered();

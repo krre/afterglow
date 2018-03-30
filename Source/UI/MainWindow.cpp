@@ -215,6 +215,10 @@ void MainWindow::on_actionDuplicateLine_triggered() {
     editor->duplicateLine();
 }
 
+void MainWindow::on_actionCutLine_triggered() {
+    editor->cutLine();
+}
+
 void MainWindow::on_actionBuild_triggered() {
     on_actionSaveAll_triggered();
     cargoManager->build();

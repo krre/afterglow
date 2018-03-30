@@ -177,6 +177,17 @@ void TextEditor::duplicateLine() {
     cursor.endEditBlock();
 }
 
+void TextEditor::cutLine() {
+    QTextCursor cursor = textCursor();
+
+    cursor.beginEditBlock();
+
+    cursor.select(QTextCursor::BlockUnderCursor);
+    cursor.removeSelectedText();
+
+    cursor.endEditBlock();
+}
+
 void TextEditor::autoindent() {
     QTextCursor cursor = textCursor();
     int row = cursor.blockNumber();
