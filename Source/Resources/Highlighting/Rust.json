@@ -5,12 +5,6 @@
     },
 
     "highlighting": {
-        "fn": [
-            "fn"
-        ],
-        "type": [
-            "type"
-        ],
         "keywords": [
             "as",
             "box",
@@ -21,6 +15,7 @@
             "else",
             "enum",
             "extern",
+            "fn",
             "for",
             "if",
             "impl",
@@ -34,10 +29,12 @@
             "pub",
             "ref",
             "return",
+            "self",
             "static",
             "struct",
             "super",
             "trait",
+            "type",
             "unsafe",
             "use",
             "virtual",
@@ -107,7 +104,7 @@
             "Vec",
             "String"
         ],
-            "ctypes": [
+        "ctypes": [
             "c_float",
             "c_double",
             "c_void",
@@ -138,9 +135,6 @@
             "pid_t",
             "mode_t",
             "ssize_t"
-        ],
-        "self": [
-            "self"
         ],
         "constants": [
             "true",
