@@ -45,6 +45,12 @@ MainWindow::MainWindow() :
     font.setFamily("FontAwesome");
     font.setPixelSize(16);
 
+    ui->toolButtonCargoBuild->setFont(font);
+    ui->toolButtonCargoBuild->setText(Constants::ICON_COG);
+
+    ui->toolButtonCargoRun->setFont(font);
+    ui->toolButtonCargoRun->setText(Constants::ICON_PLAY);
+
     ui->toolButtonCargoStop->setFont(font);
     ui->toolButtonCargoStop->setText(Constants::ICON_STOP);
 

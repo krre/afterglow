@@ -19,6 +19,7 @@ const int SEPARATOR_AND_MENU_CLEAR_COUNT = 2;
 const int TAB_SPACES_COUNT = 4;
 
 // Font Awesome
+const char ICON_COG[] = "\uf013";
 const char ICON_STOP[] = "\uf04d";
 const char ICON_TRASH_ALT[] = "\uf2ed";
 const char ICON_PLAY[] = "\uf04b";

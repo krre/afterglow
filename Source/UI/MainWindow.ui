@@ -130,6 +130,26 @@
              <number>1</number>
             </property>
             <item>
+             <widget class="QToolButton" name="toolButtonCargoBuild">
+              <property name="toolTip">
+               <string>Build</string>
+              </property>
+              <property name="text">
+               <string>Build</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="toolButtonCargoRun">
+              <property name="toolTip">
+               <string>Run</string>
+              </property>
+              <property name="text">
+               <string>Run</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QToolButton" name="toolButtonCargoStop">
               <property name="toolTip">
                <string>Stop</string>
