@@ -73,6 +73,8 @@ private slots:
     void on_tabWidgetSource_tabCloseRequested(int index);
     void on_tabWidgetSource_currentChanged(int index);
 
+    void on_toolButtonCargoBuild_clicked();
+    void on_toolButtonCargoRun_clicked();
     void on_toolButtonCargoClear_clicked();
     void on_toolButtonCargoStop_clicked();
 

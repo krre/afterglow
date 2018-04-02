@@ -282,6 +282,14 @@ void MainWindow::on_tabWidgetSource_currentChanged(int index) {
     updateMenuState();
 }
 
+void MainWindow::on_toolButtonCargoBuild_clicked() {
+    cargoManager->build();
+}
+
+void MainWindow::on_toolButtonCargoRun_clicked() {
+    cargoManager->run();
+}
+
 void MainWindow::on_toolButtonCargoClear_clicked() {
     ui->plainTextEditCargo->clear();
 }
