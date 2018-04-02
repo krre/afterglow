@@ -131,6 +131,9 @@
             </property>
             <item>
              <widget class="QToolButton" name="toolButtonCargoStop">
+              <property name="toolTip">
+               <string>Stop</string>
+              </property>
               <property name="text">
                <string>Stop</string>
               </property>
@@ -138,6 +141,9 @@
             </item>
             <item>
              <widget class="QToolButton" name="toolButtonCargoClear">
+              <property name="toolTip">
+               <string>Clear</string>
+              </property>
               <property name="text">
                <string>Clear</string>
               </property>
@@ -206,6 +212,9 @@
             </property>
             <item>
              <widget class="QToolButton" name="toolButtonAppRun">
+              <property name="toolTip">
+               <string>Run</string>
+              </property>
               <property name="text">
                <string>Run</string>
               </property>
@@ -213,6 +222,9 @@
             </item>
             <item>
              <widget class="QToolButton" name="toolButtonAppStop">
+              <property name="toolTip">
+               <string>Stop</string>
+              </property>
               <property name="text">
                <string>Stop</string>
               </property>
@@ -220,6 +232,9 @@
             </item>
             <item>
              <widget class="QToolButton" name="toolButtonAppClear">
+              <property name="toolTip">
+               <string>Clear</string>
+              </property>
               <property name="text">
                <string>Clear</string>
               </property>
@@ -261,7 +276,7 @@
      <x>0</x>
      <y>0</y>
      <width>1043</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
