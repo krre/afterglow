@@ -365,6 +365,7 @@
     </property>
     <addaction name="actionBuild"/>
     <addaction name="actionRun"/>
+    <addaction name="actionStop"/>
     <addaction name="actionClean"/>
    </widget>
    <addaction name="menuFile"/>
@@ -609,6 +610,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Del</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="text">
+    <string>Stop</string>
    </property>
   </action>
  </widget>

@@ -229,6 +229,10 @@ void MainWindow::on_actionRun_triggered() {
     cargoManager->run();
 }
 
+void MainWindow::on_actionStop_triggered() {
+    cargoManager->stop();
+}
+
 void MainWindow::on_actionClean_triggered() {
     cargoManager->clean();
 }
