@@ -17,9 +17,9 @@ protected:
 private:
     void loadRules();
 
-    enum class CommentBlockState {
-        Begin,
-        End
+    enum class BlockState {
+        MultilineCommentBegin,
+        MultilineCommentEnd
     };
 
     struct HighlightingRule {
