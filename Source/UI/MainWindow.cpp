@@ -11,6 +11,7 @@
 #include "ProjectProperties.h"
 #include "TextEditor/TextEditor.h"
 #include "TextEditor/AutoCompleter.h"
+#include "TextEditor/SyntaxHighlightManager.h"
 #include "NewName.h"
 #ifdef Q_OS_WIN
     #include <windows.h>
@@ -75,6 +76,8 @@ MainWindow::MainWindow() :
 
     readSettings();
     updateMenuState();
+
+    new SyntaxHighlightManager(this);
 }
 
 MainWindow::~MainWindow() {

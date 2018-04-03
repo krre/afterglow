@@ -25,7 +25,8 @@ SOURCES += \
     Process/CargoManager.cpp \
     Process/ApplicationManager.cpp \
     TextEditor/AutoCompleter.cpp \
-    TextEditor/TextEditor.cpp
+    TextEditor/TextEditor.cpp \
+    TextEditor/SyntaxHighlightManager.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -47,7 +48,8 @@ HEADERS += \
     Process/CargoManager.h \
     Process/ApplicationManager.h \
     TextEditor/AutoCompleter.h \
-    TextEditor/TextEditor.h
+    TextEditor/TextEditor.h \
+    TextEditor/SyntaxHighlightManager.h
 
 FORMS += \
     UI/MainWindow.ui \
