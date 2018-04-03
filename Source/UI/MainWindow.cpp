@@ -680,7 +680,7 @@ void MainWindow::restoreSession() {
     QJsonDocument doc(QJsonDocument::fromJson(file.readAll()));
     QJsonArray array = doc.object()["openFiles"].toArray();
     int selectedTab = doc.object()["selectedTab"].toInt();
-    QString selectedFilePath = array.at(selectedTab).toString();
+    QString selectedFilePath = array.at(selectedTab).toObject()["path"].toString();
 
     for (int i = 0; i < array.count(); i++) {
         QJsonObject obj = array.at(i).toObject();
