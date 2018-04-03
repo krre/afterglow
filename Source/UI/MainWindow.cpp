@@ -22,7 +22,6 @@ MainWindow::MainWindow() :
     ui->setupUi(this);
 
     projectProperties = new ProjectProperties;
-    ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
     cargoManager = new CargoManager(projectProperties, this);
     connect(cargoManager, &CargoManager::projectCreated, this, &MainWindow::onProjectCreated);
@@ -36,7 +35,9 @@ MainWindow::MainWindow() :
     connect(projectTree, &ProjectTree::newFileActivated, this, &MainWindow::onFileCreated);
     connect(projectTree, &ProjectTree::removeActivated, this, &MainWindow::onFileRemoved);
     connect(projectTree, &ProjectTree::renameActivated, this, &MainWindow::onFileRenamed);
+
     ui->tabWidgetSide->addTab(projectTree, tr("Project"));
+    ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
     if (QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font Awesome 5 Free-Solid-900.otf") < 0) {
         qWarning() << "Failed to load FontAwesome!";
