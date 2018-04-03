@@ -14,10 +14,10 @@ void Highlighter::highlightBlock(const QString& text) {
         }
     }
 
-    setCurrentBlockState(0);
+    setCurrentBlockState(static_cast<int>(CommentBlockState::Begin));
 
     int startIndex = 0;
-    if (previousBlockState() != 1) {
+    if (static_cast<CommentBlockState>(previousBlockState()) != CommentBlockState::End) {
         startIndex = text.indexOf(commentStartExpression);
     }
 
@@ -26,7 +26,7 @@ void Highlighter::highlightBlock(const QString& text) {
         int endIndex = match.capturedStart();
         int commentLength = 0;
         if (endIndex == -1) {
-            setCurrentBlockState(1);
+            setCurrentBlockState(static_cast<int>(CommentBlockState::End));
             commentLength = text.length() - startIndex;
         } else {
             commentLength = endIndex - startIndex + match.capturedLength();

@@ -17,6 +17,11 @@ protected:
 private:
     void loadRules();
 
+    enum class CommentBlockState {
+        Begin,
+        End
+    };
+
     struct HighlightingRule {
         QRegularExpression pattern;
         QTextCharFormat format;
