@@ -20,7 +20,6 @@ public:
     static void release() {
         if (instance != nullptr) {
             delete instance;
-            instance = nullptr;
         }
     }
 
