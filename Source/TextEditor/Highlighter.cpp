@@ -6,7 +6,7 @@ Highlighter::Highlighter(QTextDocument* parent) : QSyntaxHighlighter(parent) {
 }
 
 void Highlighter::highlightBlock(const QString& text) {
-    foreach (const HighlightingRule &rule, highlightingRules) {
+    for (const HighlightingRule &rule : highlightingRules) {
         QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
         while (matchIterator.hasNext()) {
             QRegularExpressionMatch match = matchIterator.next();
