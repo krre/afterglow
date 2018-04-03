@@ -17,8 +17,9 @@ void Highlighter::highlightBlock(const QString& text) {
     setCurrentBlockState(0);
 
     int startIndex = 0;
-    if (previousBlockState() != 1)
+    if (previousBlockState() != 1) {
         startIndex = text.indexOf(commentStartExpression);
+    }
 
     while (startIndex >= 0) {
         QRegularExpressionMatch match = commentEndExpression.match(text, startIndex);
