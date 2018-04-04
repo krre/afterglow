@@ -21,5 +21,7 @@ private slots:
     void onErrorOccurred(QProcess::ProcessError error);
 
 private:
+    void coloredOutputMessage(const QString& message, bool start = false);
+
     ProjectProperties* projectProperties;
 };

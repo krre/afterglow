@@ -96,6 +96,9 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
 }
 
 void CargoManager::timedOutputMessage(const QString& message, bool start) {
-    QString timedMessage = QTime::currentTime().toString("hh:mm:ss: ") + message + "\n";
+    QString timedMessage = QString("<font color=%1>%2: %3</font>\n")
+            .arg("#0000FF")
+            .arg(QTime::currentTime().toString("hh:mm:ss"))
+            .arg(message);
     emit consoleMessage(timedMessage, start);
 }

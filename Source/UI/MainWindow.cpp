@@ -334,7 +334,7 @@ void MainWindow::onCargoMessage(const QString& message, bool start) {
         ui->plainTextEditCargo->clear();
     }
 
-    ui->plainTextEditCargo->insertPlainText(message);
+    ui->plainTextEditCargo->appendHtml(message);
     ui->plainTextEditCargo->verticalScrollBar()->setValue(ui->plainTextEditCargo->verticalScrollBar()->maximum());
 }
 
@@ -346,7 +346,7 @@ void MainWindow::onApplicationMessage(const QString& message, bool start) {
         ui->plainTextEditApplication->insertPlainText("\n");
     }
 
-    ui->plainTextEditApplication->insertPlainText(message);
+    ui->plainTextEditApplication->appendHtml(message);
     ui->plainTextEditApplication->verticalScrollBar()->setValue(ui->plainTextEditApplication->verticalScrollBar()->maximum());
 }
 
