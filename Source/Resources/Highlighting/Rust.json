@@ -224,7 +224,7 @@
     "formats": {
         "normal": {},
         "comment": {
-            "foreground": "#c0c0c0"
+            "foreground": "#a29a78"
         },
         "keyword": {
             "foreground": "#000080",
