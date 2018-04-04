@@ -10,6 +10,8 @@ class Highlighter : public QSyntaxHighlighter {
 
 public:
     explicit Highlighter(QTextDocument* parent = nullptr);
+    const QString& getLang() const { return lang; }
+    const QString& getLangExt() const { return langExt; }
 
 protected:
     void highlightBlock(const QString& text) override;
@@ -26,6 +28,10 @@ private:
         QRegularExpression pattern;
         QTextCharFormat format;
     };
+
+    QString lang;
+    QString langExt;
+
     QVector<HighlightingRule> highlightingRules;
 
     QRegularExpression commentStartExpression;

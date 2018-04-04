@@ -2,7 +2,7 @@
     "lang": {
         "name": "Rust",
         "version": "1.0.0",
-        "extensions": "*.rs"
+        "extension": "rs"
     },
 
     "highlighting": {

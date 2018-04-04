@@ -51,7 +51,11 @@ void Highlighter::loadRules() {
         return;
     }
 
-    QJsonObject highighting = doc.object()["highlighting"].toObject();
+    QJsonObject obj = doc.object();
+    lang = obj["lang"].toObject()["name"].toString();
+    langExt = obj["lang"].toObject()["extension"].toString();
+
+    QJsonObject highighting = obj["highlighting"].toObject();
 
     HighlightingRule rule;
 
