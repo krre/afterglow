@@ -53,6 +53,7 @@ void Highlighter::loadRules(const QString& fileExt) {
 
     HighlightingRule rule;
 
+    QTextCharFormat keywordFormat;
     keywordFormat.setForeground(Qt::darkBlue);
     keywordFormat.setFontWeight(QFont::Bold);
 
@@ -62,12 +63,14 @@ void Highlighter::loadRules(const QString& fileExt) {
         highlightingRules.append(rule);
     }
 
+    QTextCharFormat classFormat;
     classFormat.setFontWeight(QFont::Bold);
     classFormat.setForeground(Qt::darkMagenta);
     rule.pattern = QRegularExpression("\\bQ[A-Za-z]+\\b");
     rule.format = classFormat;
     highlightingRules.append(rule);
 
+    QTextCharFormat singleLineCommentFormat;
     singleLineCommentFormat.setForeground(Qt::red);
     rule.pattern = QRegularExpression("//[^\n]*");
     rule.format = singleLineCommentFormat;
@@ -75,11 +78,13 @@ void Highlighter::loadRules(const QString& fileExt) {
 
     multiLineCommentFormat.setForeground(Qt::red);
 
+    QTextCharFormat quotationFormat;
     quotationFormat.setForeground(Qt::darkGreen);
     rule.pattern = QRegularExpression("\".*\"");
     rule.format = quotationFormat;
     highlightingRules.append(rule);
 
+    QTextCharFormat functionFormat;
     functionFormat.setFontItalic(true);
     functionFormat.setForeground(Qt::blue);
     rule.pattern = QRegularExpression("\\b[A-Za-z0-9_]+(?=\\()");
