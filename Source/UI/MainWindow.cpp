@@ -260,12 +260,15 @@ void MainWindow::on_actionOptions_triggered() {
 
 void MainWindow::on_actionAbout_triggered() {
     QMessageBox::about(this, tr("About %1").arg(Constants::APP_NAME),
-        tr("<h3>%1 %2</h3> \
-           Based on Qt %3<br> \
-           Build on %4<br><br> \
-           <a href=%5>%5</a><br><br>%6")
-            .arg(Constants::APP_NAME).arg(Constants::APP_VERSION).arg(QT_VERSION_STR)
-            .arg(__DATE__).arg(Constants::APP_URL).arg(Constants::APP_COPYRIGHT));
+        tr("<h3>%1 %2 %3</h3>\
+           Based on Qt %4<br> \
+           Build on %5<br><br> \
+           <a href=%6>%6</a><br><br>%7")
+            .arg(Constants::APP_NAME)
+            .arg(Constants::APP_VERSION).arg(Constants::APP_STATUS)
+            .arg(QT_VERSION_STR)
+            .arg(__DATE__)
+            .arg(Constants::APP_URL).arg(Constants::APP_COPYRIGHT));
 }
 
 void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {

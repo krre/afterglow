@@ -5,6 +5,7 @@ namespace Constants {
 
 const char APP_NAME[] = "Afterglow";
 const char APP_VERSION[] = "0.1.0";
+const char APP_STATUS[] = "Preview Alpha";
 const char APP_URL[] = "https://github.com/krre/afterglow";
 const char APP_SETTINGS_NAME[] = "afterglow.ini";
 const char APP_PREFS_NAME[] = "prefs.json";
