@@ -110,10 +110,14 @@ void MainWindow::on_actionCloseProject_triggered() {
 }
 
 void MainWindow::on_actionSaveAs_triggered() {
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Save File"), projectPath, "Rust (*.rs);;All Files(*.*)");
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Save File"), editor->getFilePath(), "Rust (*.rs);;All Files(*.*)");
     if (!filePath.isEmpty()) {
-        // TODO: Duplicate file
-        addSourceTab(filePath);
+        bool result = QFile::copy(editor->getFilePath(), filePath);
+        if (result) {
+            addSourceTab(filePath);
+        } else {
+            QMessageBox::critical(this, tr("Duplicate"), tr("Error creating copy of file"));
+        }
     }
 }
 
