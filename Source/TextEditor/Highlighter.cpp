@@ -1,8 +1,13 @@
 #include "Highlighter.h"
+#include "SyntaxHighlightManager.h"
 #include <QtCore>
 
-Highlighter::Highlighter(QTextDocument* parent) : QSyntaxHighlighter(parent) {
-    loadRules();
+Highlighter::Highlighter(const QString& fileExt, QTextDocument* parent) : QSyntaxHighlighter(parent) {
+    loadRules(fileExt);
+}
+
+bool Highlighter::hasExtension(const QString& ext) {
+    return SyntaxHighlightManager::getInstance()->hasExtension(ext);
 }
 
 void Highlighter::highlightBlock(const QString& text) {
@@ -36,22 +41,11 @@ void Highlighter::highlightBlock(const QString& text) {
     }
 }
 
-void Highlighter::loadRules() {
-    QFile file(":/Resources/Highlighting/Rust.json");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Failed to open file" << file.fileName();
-        return;
-    }
+void Highlighter::loadRules(const QString& fileExt) {
+    if (!SyntaxHighlightManager::getInstance()->hasExtension(fileExt)) return;
 
-    QJsonParseError err;
-    QJsonDocument doc(QJsonDocument::fromJson(file.readAll(), &err));
-    if (err.error != QJsonParseError::NoError) {
-        qWarning() << "Failed to parse JSON file" << file.fileName();
-        qWarning() << "Error:" << err.errorString() << "offset:" << err.offset;
-        return;
-    }
+    QJsonObject obj = SyntaxHighlightManager::getInstance()->getSyntaxJson(fileExt);
 
-    QJsonObject obj = doc.object();
     lang = obj["lang"].toObject()["name"].toString();
     langExt = obj["lang"].toObject()["extension"].toString();
 
@@ -99,4 +93,6 @@ void Highlighter::loadRules() {
 
     commentStartExpression = QRegularExpression("/\\*");
     commentEndExpression = QRegularExpression("\\*/");
+
+    valid = true;
 }

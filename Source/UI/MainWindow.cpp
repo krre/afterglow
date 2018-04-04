@@ -20,6 +20,8 @@
 
 MainWindow::MainWindow() :
         ui(new Ui::MainWindow) {
+    new SyntaxHighlightManager(this);
+
     ui->setupUi(this);
 
     projectProperties = new ProjectProperties;
@@ -76,8 +78,6 @@ MainWindow::MainWindow() :
 
     readSettings();
     updateMenuState();
-
-    new SyntaxHighlightManager(this);
 }
 
 MainWindow::~MainWindow() {

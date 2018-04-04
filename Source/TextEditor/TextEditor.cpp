@@ -19,7 +19,11 @@ TextEditor::TextEditor(QString filePath, QWidget* parent) :
     setWordWrapMode(QTextOption::NoWrap);
 
     lineNumberArea = new LineNumberArea(this);
-    highlighter = new Highlighter(document());
+
+    QFileInfo fi(filePath);
+    if (Highlighter::hasExtension(fi.suffix())) {
+        highlighter = new Highlighter(fi.suffix(), document());
+    }
 
     connect(this, &TextEditor::blockCountChanged, this, &TextEditor::updateLineNumberAreaWidth);
     connect(this, &TextEditor::updateRequest, this, &TextEditor::updateLineNumberArea);
