@@ -55,14 +55,9 @@ void Highlighter::loadRules(const QString& fileExt) {
 
     keywordFormat.setForeground(Qt::darkBlue);
     keywordFormat.setFontWeight(QFont::Bold);
-    QStringList keywordPatterns;
 
     for (const auto& keyword: highighting["keywords"].toArray()) {
-        keywordPatterns << QString("\\b%1\\b").arg(keyword.toString());
-    }
-
-    for (const QString &pattern: keywordPatterns) {
-        rule.pattern = QRegularExpression(pattern);
+        rule.pattern = QRegularExpression(QString("\\b%1\\b").arg(keyword.toString()));
         rule.format = keywordFormat;
         highlightingRules.append(rule);
     }
