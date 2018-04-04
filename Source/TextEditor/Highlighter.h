@@ -10,7 +10,7 @@ class Highlighter : public QSyntaxHighlighter {
 
 public:
     explicit Highlighter(const QString& fileExt, QTextDocument* parent);
-    const QString& getLang() const { return lang; }
+    const QString& getLangName() const { return langName; }
     const QString& getLangExt() const { return langExt; }
     bool isValid() const { return valid; }
 
@@ -21,6 +21,7 @@ protected:
 
 private:
     void loadRules(const QString& fileExt);
+    QTextCharFormat jsonToFormat(const QJsonObject& obj);
 
     enum class BlockState {
         MultilineCommentBegin,
@@ -34,7 +35,7 @@ private:
 
     bool valid = false;
 
-    QString lang;
+    QString langName;
     QString langExt;
 
     QVector<HighlightingRule> highlightingRules;

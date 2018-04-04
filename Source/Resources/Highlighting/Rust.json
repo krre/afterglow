@@ -1,11 +1,12 @@
 {
     "lang": {
         "name": "Rust",
+        "theme": "light",
         "version": "1.0.0",
         "extension": "rs"
     },
 
-    "highlighting": {
+    "words": {
         "keywords": [
             "as",
             "box",
@@ -193,5 +194,44 @@
             "STDOUT_FILENO",
             "STDERR_FILENO"
         ]
+    },
+
+    "rules": [
+        {
+            "pattern": "\\b%1\\b",
+            "format": "keyword",
+            "words": "keywords"
+        },
+        {
+            "pattern": "\".*\"",
+            "format": "quotation"
+        },
+        {
+            "pattern": "//[^\n]*",
+            "format": "comment"
+        }
+    ],
+
+    "blocks": [
+        {
+            "name": "SingleLineComment",
+            "start": "/\\*",
+            "end": "\\*/",
+            "format": "comment"
+        }
+    ],
+
+    "formats": {
+        "normal": {},
+        "comment": {
+            "foreground": "#c0c0c0"
+        },
+        "keyword": {
+            "foreground": "#000080",
+            "bold": true
+        },
+        "quotation": {
+            "foreground": "#008000"
+        }
     }
 }

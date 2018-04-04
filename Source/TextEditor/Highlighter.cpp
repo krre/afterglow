@@ -46,53 +46,56 @@ void Highlighter::loadRules(const QString& fileExt) {
 
     QJsonObject obj = SyntaxHighlightManager::getInstance()->getSyntaxJson(fileExt);
 
-    lang = obj["lang"].toObject()["name"].toString();
-    langExt = obj["lang"].toObject()["extension"].toString();
+    QJsonObject lang = obj["lang"].toObject();
+    QJsonObject words = obj["words"].toObject();
+    QJsonArray rules = obj["rules"].toArray();
+    QJsonArray blocks = obj["blocks"].toArray();
+    QJsonObject formats = obj["formats"].toObject();
 
-    QJsonObject highighting = obj["highlighting"].toObject();
+    langName = lang["name"].toString();
+    langExt = lang["extension"].toString();
 
-    HighlightingRule rule;
+    for (const auto& r : rules) {
+        QJsonObject rule = r.toObject();
+        HighlightingRule highlightingRule;
+        highlightingRule.format = jsonToFormat(formats[rule["format"].toString()].toObject());
 
-    QTextCharFormat keywordFormat;
-    keywordFormat.setForeground(Qt::darkBlue);
-    keywordFormat.setFontWeight(QFont::Bold);
+        if (rule.contains("words")) {
+            for (const auto& word : words[rule["words"].toString()].toArray()) {
+                highlightingRule.pattern = QRegularExpression(rule["pattern"].toString().arg(word.toString()));
+                highlightingRules.append(highlightingRule);
+            }
 
-    for (const auto& keyword: highighting["keywords"].toArray()) {
-        rule.pattern = QRegularExpression(QString("\\b%1\\b").arg(keyword.toString()));
-        rule.format = keywordFormat;
-        highlightingRules.append(rule);
+        } else {
+            highlightingRule.pattern = QRegularExpression(rule["pattern"].toString());
+            highlightingRules.append(highlightingRule);
+        }
+
     }
 
-    QTextCharFormat classFormat;
-    classFormat.setFontWeight(QFont::Bold);
-    classFormat.setForeground(Qt::darkMagenta);
-    rule.pattern = QRegularExpression("\\bQ[A-Za-z]+\\b");
-    rule.format = classFormat;
-    highlightingRules.append(rule);
-
-    multiLineCommentFormat.setForeground(Qt::red);
-
-    QTextCharFormat quotationFormat;
-    quotationFormat.setForeground(Qt::darkGreen);
-    rule.pattern = QRegularExpression("\".*\"");
-    rule.format = quotationFormat;
-    highlightingRules.append(rule);
-
-    QTextCharFormat functionFormat;
-    functionFormat.setFontItalic(true);
-    functionFormat.setForeground(Qt::blue);
-    rule.pattern = QRegularExpression("\\b[A-Za-z0-9_]+(?=\\()");
-    rule.format = functionFormat;
-    highlightingRules.append(rule);
-
-    QTextCharFormat singleLineCommentFormat;
-    singleLineCommentFormat.setForeground(Qt::red);
-    rule.pattern = QRegularExpression("//[^\n]*");
-    rule.format = singleLineCommentFormat;
-    highlightingRules.append(rule);
-
-    commentStartExpression = QRegularExpression("/\\*");
-    commentEndExpression = QRegularExpression("\\*/");
+    for (const auto&b : blocks) {
+        QJsonObject block = b.toObject();
+        if (block["name"].toString() == "SingleLineComment") {
+            commentStartExpression = QRegularExpression(block["start"].toString());
+            commentEndExpression = QRegularExpression(block["end"].toString());
+            multiLineCommentFormat = jsonToFormat(formats[block["format"].toString()].toObject());
+        }
+    }
 
     valid = true;
+}
+
+QTextCharFormat Highlighter::jsonToFormat(const QJsonObject& obj) {
+    QTextCharFormat format;
+
+    if (obj.contains("foreground")) {
+        QColor color(obj["foreground"].toString());
+        format.setForeground(QBrush(color));
+    }
+
+    if (obj.contains("bold")) {
+        format.setFontWeight(QFont::Bold);
+    }
+
+    return format;
 }
