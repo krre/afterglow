@@ -119,6 +119,7 @@ void MainWindow::on_actionSaveAs_triggered() {
 
 void MainWindow::on_actionSaveAll_triggered() {
     for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
+        TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
         editor->saveFile();
     }
 }
