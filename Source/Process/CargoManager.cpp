@@ -101,5 +101,5 @@ void CargoManager::timedOutputMessage(const QString& message, bool start) {
             .arg("#0000FF")
             .arg(QTime::currentTime().toString("hh:mm:ss"))
             .arg(message);
-    emit consoleMessage(timedMessage, start);
+    emit consoleMessage(timedMessage, true, start);
 }

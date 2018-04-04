@@ -326,7 +326,7 @@ void MainWindow::onProjectCreated(const QString& path) {
     openProject(path);
 }
 
-void MainWindow::onCargoMessage(const QString& message, bool start) {
+void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
     int index = static_cast<int>(OutputPane::Cargo);
     ui->tabWidgetOutput->setCurrentIndex(index);
 
@@ -334,7 +334,12 @@ void MainWindow::onCargoMessage(const QString& message, bool start) {
         ui->plainTextEditCargo->clear();
     }
 
-    ui->plainTextEditCargo->appendHtml(message);
+    if (html) {
+        ui->plainTextEditCargo->appendHtml(message);
+    } else {
+        ui->plainTextEditCargo->insertPlainText(message);
+    }
+
     ui->plainTextEditCargo->verticalScrollBar()->setValue(ui->plainTextEditCargo->verticalScrollBar()->maximum());
 }
 
