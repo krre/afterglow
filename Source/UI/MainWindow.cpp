@@ -40,7 +40,7 @@ MainWindow::MainWindow() :
     ui->tabWidgetSide->addTab(projectTree, tr("Project"));
     ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
-    if (QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font Awesome 5 Free-Solid-900.otf") < 0) {
+    if (QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font-Awesome-5-Free-Solid-900.otf") < 0) {
         qWarning() << "Failed to load FontAwesome!";
     }
 

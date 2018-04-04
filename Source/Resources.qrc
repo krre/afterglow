@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>Resources/Highlighting/Rust.json</file>
         <file>Resources/prefs.json</file>
-        <file>Resources/Font/FontAwesome/Font Awesome 5 Free-Solid-900.otf</file>
+        <file>Resources/Font/FontAwesome/Font-Awesome-5-Free-Solid-900.otf</file>
         <file>Resources/Font/FontAwesome/LICENSE.txt</file>
         <file>Resources/Font/FontAwesome/README.md</file>
     </qresource>
