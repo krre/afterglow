@@ -76,7 +76,7 @@ MainWindow::MainWindow() :
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setWrapAround(false);
 
-    readSettings();
+    loadSettings();
     updateMenuState();
 }
 
@@ -498,7 +498,7 @@ void MainWindow::loadProjectProperties() {
     projectProperties->setArguments(obj["arguments"].toString());
 }
 
-void MainWindow::readSettings() {
+void MainWindow::loadSettings() {
     // Window geometry
     int width = Settings::getValue("window.geometry.width").toInt();
     int height = Settings::getValue("window.geometry.height").toInt();

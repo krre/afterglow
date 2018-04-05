@@ -113,7 +113,7 @@ private:
         Search
     };
 
-    void readSettings();
+    void loadSettings();
     void saveSettings();
 
     void saveSession();
