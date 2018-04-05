@@ -86,7 +86,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
-    writeSettings();
+    saveSettings();
     saveSession();
     saveProjectProperties();
     QMainWindow::closeEvent(event);
@@ -566,7 +566,7 @@ void MainWindow::readSettings() {
     }
 }
 
-void MainWindow::writeSettings() {
+void MainWindow::saveSettings() {
     // Window geometry
     if (windowState() == Qt::WindowNoState) {
         Settings::setValue("window.geometry.x", geometry().x());

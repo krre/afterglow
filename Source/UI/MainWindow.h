@@ -114,7 +114,7 @@ private:
     };
 
     void readSettings();
-    void writeSettings();
+    void saveSettings();
 
     void saveSession();
     void restoreSession();
