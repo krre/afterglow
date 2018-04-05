@@ -192,7 +192,7 @@ void MainWindow::on_actionSave_triggered() {
 }
 
 void MainWindow::on_actionExit_triggered() {
-    QApplication::quit();
+    close();
 }
 
 void MainWindow::on_actionUndo_triggered() {
