@@ -87,9 +87,8 @@ MainWindow::~MainWindow() {
 
 void MainWindow::closeEvent(QCloseEvent* event) {
     saveSettings();
-    saveSession();
-    saveProjectProperties();
-    QMainWindow::closeEvent(event);
+    closeProject();
+    event->accept();
 }
 
 void MainWindow::on_actionNewProject_triggered() {
@@ -749,9 +748,10 @@ void MainWindow::closeProject() {
 
     saveSession();
     saveProjectProperties();
-    projectProperties->reset();
 
     on_actionCloseAll_triggered();
+
+    projectProperties->reset();
     projectTree->setRootPath(QString());
     projectPath = QString();
     changeWindowTitle();
