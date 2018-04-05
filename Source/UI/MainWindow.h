@@ -117,7 +117,7 @@ private:
     void saveSettings();
 
     void saveSession();
-    void restoreSession();
+    void loadSession();
 
     void openProject(const QString& path, bool isNew = false);
     void closeProject();

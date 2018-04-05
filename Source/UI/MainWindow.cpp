@@ -677,7 +677,7 @@ void MainWindow::saveSession() {
     file.write(doc.toJson());
 }
 
-void MainWindow::restoreSession() {
+void MainWindow::loadSession() {
     if (!Settings::getValue("gui.session.restore").toBool() || projectPath.isEmpty()) {
         return;
     }
@@ -733,7 +733,7 @@ void MainWindow::openProject(const QString& path, bool isNew) {
         projectProperties->setProject(projectPath);
     } else {
         loadProjectProperties();
-        restoreSession();
+        loadSession();
     }
 
     if (!ui->tabWidgetSource->count()) {
