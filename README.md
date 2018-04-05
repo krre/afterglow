@@ -15,3 +15,6 @@ https://github.com/krre/afterglow/releases
 2. Install Racer for code completion:
     ```cargo install racer```
 3. Run Afterglow.
+
+## Screenshots
+![Screenshot](/Images/Screenshot-1.png?raw=true)
