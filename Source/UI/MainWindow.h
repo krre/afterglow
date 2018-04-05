@@ -119,7 +119,7 @@ private:
     void saveSession();
     void restoreSession();
 
-    void openProject(const QString& path);
+    void openProject(const QString& path, bool isNew = false);
     void closeProject();
 
     void changeWindowTitle(const QString& filePath = QString());

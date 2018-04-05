@@ -323,7 +323,7 @@ void MainWindow::on_toolButtonAppRun_clicked() {
 }
 
 void MainWindow::onProjectCreated(const QString& path) {
-    openProject(path);
+    openProject(path, true);
 }
 
 void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
@@ -713,15 +713,27 @@ void MainWindow::restoreSession() {
     ui->tabWidgetSource->setCurrentIndex(index);
 }
 
-void MainWindow::openProject(const QString& path) {
+void MainWindow::openProject(const QString& path, bool isNew) {
     closeProject();
 
     projectPath = path;
     projectTree->setRootPath(path);
     cargoManager->setProjectPath(path);
 
-    loadProjectProperties();
-    restoreSession();
+    if (isNew) {
+        QString filePath = projectPath + "/src/main.rs";
+        if (QFileInfo::exists(filePath)) {
+            addSourceTab(filePath);
+        } else {
+            filePath = projectPath + "/src/lib.rs";
+            if (QFileInfo::exists(filePath)) {
+                addSourceTab(filePath);
+            }
+        }
+    } else {
+        loadProjectProperties();
+        restoreSession();
+    }
 
     if (!ui->tabWidgetSource->count()) {
         changeWindowTitle();
