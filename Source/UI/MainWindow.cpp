@@ -730,6 +730,7 @@ void MainWindow::openProject(const QString& path, bool isNew) {
                 addSourceTab(filePath);
             }
         }
+        projectProperties->setProject(projectPath);
     } else {
         loadProjectProperties();
         restoreSession();
