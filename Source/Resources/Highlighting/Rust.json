@@ -208,6 +208,11 @@
             "words": "types"
         },
         {
+            "pattern": "\\b%1\\b",
+            "format": "constant",
+            "words": "constants"
+        },
+        {
             "pattern": "\".*\"",
             "format": "quotation"
         },
@@ -237,6 +242,10 @@
         },
         "type": {
             "foreground": "#dc3636",
+            "bold": true
+        },
+        "constant": {
+            "foreground": "#c88d00",
             "bold": true
         },
         "quotation": {
