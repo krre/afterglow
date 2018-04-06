@@ -203,6 +203,11 @@
             "words": "keywords"
         },
         {
+            "pattern": "\\b%1\\b",
+            "format": "type",
+            "words": "types"
+        },
+        {
             "pattern": "\".*\"",
             "format": "quotation"
         },
@@ -228,6 +233,10 @@
         },
         "keyword": {
             "foreground": "#000080",
+            "bold": true
+        },
+        "type": {
+            "foreground": "#dc3636",
             "bold": true
         },
         "quotation": {
