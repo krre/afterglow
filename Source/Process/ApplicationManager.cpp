@@ -26,9 +26,9 @@ void ApplicationManager::onReadyReadStandardError(const QString& data) {
 }
 
 void ApplicationManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
-    QString message = QString("The process %1 %2 with code %3\n")
+    QString message = QString("Process %1 %2 with code %3\n")
             .arg(getProcess()->program())
-            .arg(exitStatus == QProcess::NormalExit ? "finished normally" : "crashed")
+            .arg(exitStatus == QProcess::NormalExit ? "finished" : "crashed")
             .arg(exitCode);
     coloredOutputMessage(message);
 }

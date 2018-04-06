@@ -74,9 +74,9 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
             break;
     }
 
-    QString message = QString("The process %1 %2 with code %3")
+    QString message = QString("Process %1 %2 with code %3")
             .arg(getProcess()->program())
-            .arg(exitStatus == QProcess::NormalExit ? "finished normally" : "crashed")
+            .arg(exitStatus == QProcess::NormalExit ? "finished" : "crashed")
             .arg(exitCode);
     timedOutputMessage(message);
     QString elapsedTime = QDateTime::fromTime_t(measureTime.elapsed() / 1000).toUTC().toString("hh:mm:ss");
