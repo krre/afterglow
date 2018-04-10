@@ -190,10 +190,6 @@ void MainWindow::on_actionSave_triggered() {
     editor->saveFile();
 }
 
-void MainWindow::on_actionExit_triggered() {
-    close();
-}
-
 void MainWindow::on_actionUndo_triggered() {
     editor->undo();
 }

@@ -43,8 +43,6 @@ private slots:
     void on_actionCloseAll_triggered();
     void on_actionCloseOther_triggered();
 
-    void on_actionExit_triggered();
-
     // Edit
     void on_actionUndo_triggered();
     void on_actionRedo_triggered();
