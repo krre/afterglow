@@ -75,7 +75,7 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
             break;
     }
 
-    QString message = QString("Process %1 %2 with code %3")
+    QString message = QString("%1 %2 with code %3")
             .arg(getProcess()->program())
             .arg(exitStatus == QProcess::NormalExit ? "finished" : "crashed")
             .arg(exitCode);
@@ -87,7 +87,7 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
     getProcess()->setProgram(cargoPath.isEmpty() ? "cargo" : cargoPath);
     getProcess()->setArguments(arguments);
 
-    QString message = "Starting: " + getProcess()->program();
+    QString message = getProcess()->program();
     for (const auto& argument : arguments) {
         message += " " + argument;
     }
