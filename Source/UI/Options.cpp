@@ -18,9 +18,9 @@ Options::~Options() {
 }
 
 void Options::on_pushButtonCargo_clicked() {
-    QString dirPath = QFileDialog::getExistingDirectory(this);
-    if (!dirPath.isEmpty()) {
-        ui->lineEditCargo->setText(dirPath);
+    QString cargoPath = QFileDialog::getOpenFileName(this);
+    if (!cargoPath.isEmpty()) {
+        ui->lineEditCargo->setText(cargoPath);
     }
 }
 
@@ -36,13 +36,13 @@ void Options::on_buttonBox_accepted() {
 }
 
 void Options::readSettings() {
-//    ui->lineEditCargo->setText(settings.value("Path/Cargo").toString());
+    ui->lineEditCargo->setText(Settings::getValue("cargo.path").toString());
     ui->lineEditWorkspace->setText(Global::getWorkspacePath());
     ui->checkBoxSession->setChecked(Settings::getValue("gui.session.restore").toBool());
 }
 
 void Options::writeSettings() {
-//    settings.setValue("Path/cargo", ui->lineEditCargo->text());
+    Settings::setValue("cargo.path", ui->lineEditCargo->text());
     Settings::setValue("workspace", ui->lineEditWorkspace->text());
     Settings::setValue("gui.session.restore", ui->checkBoxSession->isChecked());
 }

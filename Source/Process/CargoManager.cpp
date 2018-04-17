@@ -1,12 +1,12 @@
 #include "CargoManager.h"
 #include "ApplicationManager.h"
 #include "UI/ProjectProperties.h"
+#include "Core/Settings.h"
 #include <QtCore>
 
 CargoManager::CargoManager(ProjectProperties* projectProperties, QObject* parent) :
         ProcessManager(parent),
         projectProperties(projectProperties) {
-    getProcess()->setProgram("cargo");
 }
 
 CargoManager::~CargoManager() {
@@ -84,6 +84,8 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
 }
 
 void CargoManager::prepareAndStart(const QStringList& arguments) {
+    QString cargoPath = Settings::getValue("cargo.path").toString();
+    getProcess()->setProgram(cargoPath.isEmpty() ? "cargo" : cargoPath);
     getProcess()->setArguments(arguments);
 
     QString message = "Starting: cargo";
