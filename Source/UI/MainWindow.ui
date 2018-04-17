@@ -187,7 +187,10 @@
           <item>
            <widget class="QPlainTextEdit" name="plainTextEditCargo">
             <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
+             <enum>Qt::StrongFocus</enum>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
