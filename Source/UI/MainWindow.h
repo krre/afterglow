@@ -76,15 +76,9 @@ private slots:
     void on_toolButtonCargoClear_clicked();
     void on_toolButtonCargoStop_clicked();
 
-    void on_toolButtonAppClear_clicked();
-    void on_toolButtonAppStop_clicked();
-    void on_toolButtonAppRun_clicked();
-
-
     // CargoManager
     void onProjectCreated(const QString& path);
     void onCargoMessage(const QString& message, bool html, bool start);
-    void onApplicationMessage(const QString& message, bool start);
 
     // ProjectTree
     void onFileCreated(const QString& filePath);

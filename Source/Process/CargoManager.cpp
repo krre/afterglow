@@ -1,5 +1,4 @@
 #include "CargoManager.h"
-#include "ApplicationManager.h"
 #include "UI/ProjectProperties.h"
 #include "Core/Settings.h"
 #include <QtCore>
@@ -39,8 +38,13 @@ void CargoManager::build() {
 }
 
 void CargoManager::run() {
-    build();
+    QStringList arguments;
+    arguments << "run";
+    if (projectProperties->getBuildTarget() == BuildTarget::Release) {
+        arguments << "--release";
+    }
     commandStatus = CommandStatus::Run;
+    prepareAndStart(arguments);
 }
 
 void CargoManager::clean() {
@@ -67,9 +71,6 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
         case CommandStatus::New:
             emit projectCreated(getProcess()->arguments().last());
             break;
-        case CommandStatus::Run:
-            ApplicationManager::getInstance()->start();
-            break;
         default:
             break;
     }
@@ -78,9 +79,7 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
             .arg(getProcess()->program())
             .arg(exitStatus == QProcess::NormalExit ? "finished" : "crashed")
             .arg(exitCode);
-    timedOutputMessage(message);
-    QString elapsedTime = QDateTime::fromTime_t(measureTime.elapsed() / 1000).toUTC().toString("hh:mm:ss");
-    timedOutputMessage(QString("Elapsed time: %1").arg(elapsedTime));
+    coloredOutputMessage(message);
 }
 
 void CargoManager::prepareAndStart(const QStringList& arguments) {
@@ -88,22 +87,20 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
     getProcess()->setProgram(cargoPath.isEmpty() ? "cargo" : cargoPath);
     getProcess()->setArguments(arguments);
 
-    QString message = "Starting: cargo";
+    QString message = "Starting: " + getProcess()->program();
     for (const auto& argument : arguments) {
         message += " " + argument;
     }
 
     message += "<br>";
 
-    timedOutputMessage(message, true);
-    measureTime.start();
+    coloredOutputMessage(message, true);
     getProcess()->start();
 }
 
-void CargoManager::timedOutputMessage(const QString& message, bool start) {
-    QString timedMessage = QString("<font color=%1>%2: %3</font>")
+void CargoManager::coloredOutputMessage(const QString& message, bool start) {
+    QString coloredMessage = QString("<font color=%1>%2</font>")
             .arg("#0000FF")
-            .arg(QTime::currentTime().toString("hh:mm:ss"))
             .arg(message);
-    emit consoleMessage(timedMessage, true, start);
+    emit consoleMessage(coloredMessage, true, start);
 }

@@ -23,7 +23,6 @@ SOURCES += \
     Core/Settings.cpp \
     Process/ProcessManager.cpp \
     Process/CargoManager.cpp \
-    Process/ApplicationManager.cpp \
     TextEditor/AutoCompleter.cpp \
     TextEditor/TextEditor.cpp \
     TextEditor/SyntaxHighlightManager.cpp
@@ -46,7 +45,6 @@ HEADERS += \
     Core/Singleton.h \
     Process/ProcessManager.h \
     Process/CargoManager.h \
-    Process/ApplicationManager.h \
     TextEditor/AutoCompleter.h \
     TextEditor/TextEditor.h \
     TextEditor/SyntaxHighlightManager.h

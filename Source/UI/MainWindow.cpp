@@ -6,7 +6,6 @@
 #include "NewProject.h"
 #include "Options.h"
 #include "Process/CargoManager.h"
-#include "Process/ApplicationManager.h"
 #include "ProjectTree.h"
 #include "ProjectProperties.h"
 #include "TextEditor/TextEditor.h"
@@ -29,9 +28,6 @@ MainWindow::MainWindow() :
     cargoManager = new CargoManager(projectProperties, this);
     connect(cargoManager, &CargoManager::projectCreated, this, &MainWindow::onProjectCreated);
     connect(cargoManager, &CargoManager::consoleMessage, this, &MainWindow::onCargoMessage);
-
-    applicationManager = new ApplicationManager(projectProperties);
-    connect(applicationManager, &ApplicationManager::consoleMessage, this, &MainWindow::onApplicationMessage);
 
     projectTree = new ProjectTree;
     connect(projectTree, &ProjectTree::openActivated, this, &MainWindow::addSourceTab);
@@ -62,15 +58,6 @@ MainWindow::MainWindow() :
     ui->toolButtonCargoClear->setFont(font);
     ui->toolButtonCargoClear->setText(Constants::ICON_TRASH_ALT);
 
-    ui->toolButtonAppRun->setFont(font);
-    ui->toolButtonAppRun->setText(Constants::ICON_PLAY);
-
-    ui->toolButtonAppStop->setFont(font);
-    ui->toolButtonAppStop->setText(Constants::ICON_STOP);
-
-    ui->toolButtonAppClear->setFont(font);
-    ui->toolButtonAppClear->setText(Constants::ICON_TRASH_ALT);
-
     completer = new AutoCompleter(this);
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -82,7 +69,6 @@ MainWindow::MainWindow() :
 
 MainWindow::~MainWindow() {
     delete ui;
-    applicationManager->release();
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
@@ -305,18 +291,6 @@ void MainWindow::on_toolButtonCargoStop_clicked() {
     cargoManager->stop();
 }
 
-void MainWindow::on_toolButtonAppClear_clicked() {
-    ui->plainTextEditApplication->clear();
-}
-
-void MainWindow::on_toolButtonAppStop_clicked() {
-    applicationManager->stop();
-}
-
-void MainWindow::on_toolButtonAppRun_clicked() {
-    applicationManager->start();
-}
-
 void MainWindow::onProjectCreated(const QString& path) {
     openProject(path, true);
 }
@@ -336,18 +310,6 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
     }
 
     ui->plainTextEditCargo->verticalScrollBar()->setValue(ui->plainTextEditCargo->verticalScrollBar()->maximum());
-}
-
-void MainWindow::onApplicationMessage(const QString& message, bool start) {
-    int index = static_cast<int>(OutputPane::Application);
-    ui->tabWidgetOutput->setCurrentIndex(index);
-
-    if (start && ui->plainTextEditApplication->toPlainText().size()) {
-        ui->plainTextEditApplication->insertPlainText("\n");
-    }
-
-    ui->plainTextEditApplication->appendHtml(message);
-    ui->plainTextEditApplication->verticalScrollBar()->setValue(ui->plainTextEditApplication->verticalScrollBar()->maximum());
 }
 
 void MainWindow::onFileCreated(const QString& filePath) {
@@ -753,7 +715,6 @@ void MainWindow::closeProject() {
     changeWindowTitle();
     updateMenuState();
     ui->plainTextEditCargo->clear();
-    ui->plainTextEditApplication->clear();
 }
 
 void MainWindow::changeWindowTitle(const QString& filePath) {

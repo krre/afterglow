@@ -46,10 +46,9 @@ private:
         Run
     };
 
-    void timedOutputMessage(const QString& message, bool start = false);
+    void coloredOutputMessage(const QString& message, bool start = false);
 
     ProjectProperties* projectProperties;
-    QTime measureTime;
     CommandStatus commandStatus = CommandStatus::None;
     QString projectPath;
 };
