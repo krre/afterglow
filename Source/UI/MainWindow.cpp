@@ -38,12 +38,13 @@ MainWindow::MainWindow() :
     ui->tabWidgetSide->addTab(projectTree, tr("Project"));
     ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
-    if (QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font-Awesome-5-Free-Solid-900.otf") < 0) {
+    int id = QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font-Awesome-5-Free-Solid-900.otf");
+    if (id < 0) {
         qWarning() << "Failed to load FontAwesome!";
     }
 
     QFont font;
-    font.setFamily("FontAwesome");
+    font.setFamily(QFontDatabase::applicationFontFamilies(id).at(0));
     font.setPixelSize(16);
 
     ui->toolButtonCargoBuild->setFont(font);
