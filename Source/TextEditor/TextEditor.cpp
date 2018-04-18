@@ -113,9 +113,7 @@ int TextEditor::getLineNumberAreaWidth() {
         ++digits;
     }
 
-    const int DEFAULT_DIGITS = 4;
-    digits = qMax(DEFAULT_DIGITS, digits);
-
+    digits = qMax(Settings::getValue("editor.numberAreaDigits").toInt(), digits);
     int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
 
     return space;
