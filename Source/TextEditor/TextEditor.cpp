@@ -224,8 +224,18 @@ void TextEditor::autoindent() {
 
 // Add white spaces to right
 void TextEditor::insertTabSpaces() {
+    QTextCursor cursor = textCursor();
+    QTextBlock block = cursor.block();
+    int charPos = cursor.position() - block.position();
     int tabSpaces = Settings::getValue("editor.tabSpaces").toInt();
-    insertPlainText(QString(tabSpaces, ' '));
+    int addSpaces = charPos % tabSpaces;
+    if (addSpaces) {
+        addSpaces = tabSpaces - addSpaces;
+    } else {
+        addSpaces = tabSpaces;
+    }
+
+    insertPlainText(QString(addSpaces, ' '));
 }
 
 // Remove white spaces to left
