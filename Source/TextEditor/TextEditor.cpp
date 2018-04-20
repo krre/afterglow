@@ -232,17 +232,34 @@ void TextEditor::autoindent() {
 // Add white spaces to right
 void TextEditor::insertTabSpaces() {
     QTextCursor cursor = textCursor();
-    QTextBlock block = cursor.block();
-    int charPos = cursor.position() - block.position();
-    int tabSpaces = Settings::getValue("editor.tabSpaces").toInt();
-    int addSpaces = charPos % tabSpaces;
-    if (addSpaces) {
-        addSpaces = tabSpaces - addSpaces;
-    } else {
-        addSpaces = tabSpaces;
+    int startRow = cursor.blockNumber();
+    int endRow = startRow;
+
+    if (cursor.hasSelection()) {
+        startRow = document()->findBlock(cursor.selectionStart()).blockNumber();
+        endRow = document()->findBlock(cursor.selectionEnd()).blockNumber();
     }
 
-    insertPlainText(QString(addSpaces, ' '));
+    cursor.beginEditBlock();
+
+    int tabSpacesCount = Settings::getValue("editor.tabSpaces").toInt();
+
+    for (int row = startRow; row <= endRow; row++) {
+        QTextBlock block = document()->findBlockByLineNumber(row);
+        cursor.setPosition(block.position());
+
+        int charPos = cursor.position() - block.position();
+        int addSpaces = charPos % tabSpacesCount;
+        if (addSpaces) {
+            addSpaces = tabSpacesCount - addSpaces;
+        } else {
+            addSpaces = tabSpacesCount;
+        }
+
+        cursor.insertText(QString(addSpaces, ' '));
+    }
+
+    cursor.endEditBlock();
 }
 
 // Remove white spaces to left
