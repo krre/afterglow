@@ -242,18 +242,18 @@ void TextEditor::insertTabSpaces() {
 
     cursor.beginEditBlock();
 
-    int tabSpacesCount = Settings::getValue("editor.indent").toInt();
+    int indent = Settings::getValue("editor.indent").toInt();
 
     for (int row = startRow; row <= endRow; row++) {
         QTextBlock block = document()->findBlockByLineNumber(row);
         cursor.setPosition(block.position());
 
         int charPos = cursor.position() - block.position();
-        int addSpaces = charPos % tabSpacesCount;
+        int addSpaces = charPos % indent;
         if (addSpaces) {
-            addSpaces = tabSpacesCount - addSpaces;
+            addSpaces = indent - addSpaces;
         } else {
-            addSpaces = tabSpacesCount;
+            addSpaces = indent;
         }
 
         cursor.insertText(QString(addSpaces, ' '));
@@ -267,11 +267,12 @@ void TextEditor::removeTabSpaces() {
     QTextCursor cursor = textCursor();
     QTextBlock block = cursor.block();
     int charPos = cursor.position() - block.position();
-    int tabSpaces = Settings::getValue("editor.indent").toInt();
+    int indent = Settings::getValue("editor.indent").toInt();
+
     if (charPos && block.text().at(charPos - 1) == ' ') {
-        int removeSpaces = charPos % tabSpaces;
+        int removeSpaces = charPos % indent;
         if (!removeSpaces) {
-            removeSpaces = tabSpaces;
+            removeSpaces = indent;
         }
 
         while (removeSpaces) {
