@@ -121,13 +121,21 @@ int TextEditor::getLineNumberAreaWidth() {
 
 void TextEditor::commentUncommentText() {
     QTextCursor cursor = textCursor();
-    int row = cursor.blockNumber();
-    QTextBlock block = document()->findBlockByLineNumber(row);
-    if (!block.text().size()) return;
+    int startRow = cursor.blockNumber();
+    int endRow = startRow;
+
+    if (cursor.hasSelection()) {
+        startRow = document()->findBlock(cursor.selectionStart()).blockNumber();
+        endRow = document()->findBlock(cursor.selectionEnd()).blockNumber();
+    }
 
     cursor.beginEditBlock();
 
-    commentUncommentBlock(&block, &cursor);
+    for (int i = startRow; i <= endRow; i++) {
+        QTextBlock block = document()->findBlockByLineNumber(i);
+        if (!block.text().size()) continue;
+        commentUncommentBlock(&block, &cursor);
+    }
 
     cursor.endEditBlock();
 }
