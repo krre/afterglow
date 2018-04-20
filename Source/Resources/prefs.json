@@ -40,7 +40,7 @@
             "family": "Consolas",
             "size": 10
         },
-        "tabSpaces": 4,
+        "indent": 4,
         "numberAreaDigits": 4
     }
 }
