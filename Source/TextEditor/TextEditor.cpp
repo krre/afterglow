@@ -131,10 +131,25 @@ void TextEditor::commentUncommentText() {
 
     cursor.beginEditBlock();
 
-    for (int i = startRow; i <= endRow; i++) {
-        QTextBlock block = document()->findBlockByLineNumber(i);
+    for (int row = startRow; row <= endRow; row++) {
+        QTextBlock block = document()->findBlockByLineNumber(row);
         if (!block.text().size()) continue;
-        commentUncommentBlock(&block, &cursor);
+
+        int pos = 0;
+        while (block.text().at(pos) == ' ') {
+            pos++;
+        };
+
+        if (block.text().at(pos) == '/' && block.text().at(pos + 1) == '/') {
+            // Uncomment
+            cursor.setPosition(block.position() + pos);
+            cursor.deleteChar();
+            cursor.deleteChar();
+        } else {
+            // Comment
+            cursor.setPosition(block.position());
+            cursor.insertText("//");
+        }
     }
 
     cursor.endEditBlock();
@@ -339,24 +354,6 @@ void TextEditor::readFile() {
         setPlainText(file.readAll());
     } else {
         qWarning() << "Failed to open file for reading" << filePath;
-    }
-}
-
-void TextEditor::commentUncommentBlock(QTextBlock* block, QTextCursor* cursor) {
-    int i = 0;
-    while (block->text().at(i) == ' ') {
-        i++;
-    };
-
-    if (block->text().at(i) == '/' && block->text().at(i + 1) == '/') {
-        // Uncomment
-        cursor->setPosition(block->position() + i);
-        cursor->deleteChar();
-        cursor->deleteChar();
-    } else {
-        // Comment
-        cursor->setPosition(block->position());
-        cursor->insertText("//");
     }
 }
 

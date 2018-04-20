@@ -51,7 +51,6 @@ private slots:
 
 private:
     void readFile();
-    void commentUncommentBlock(QTextBlock* block, QTextCursor* cursor);
 
     QWidget* lineNumberArea;
     Highlighter* highlighter;
