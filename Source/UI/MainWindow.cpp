@@ -202,7 +202,7 @@ void MainWindow::on_actionSelectAll_triggered() {
 }
 
 void MainWindow::on_actionComment_triggered() {
-    editor->commentUncommentLine();
+    editor->commentUncommentText();
 }
 
 void MainWindow::on_actionJoinLines_triggered() {

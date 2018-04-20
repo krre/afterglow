@@ -119,7 +119,7 @@ int TextEditor::getLineNumberAreaWidth() {
     return space;
 }
 
-void TextEditor::commentUncommentLine() {
+void TextEditor::commentUncommentText() {
     QTextCursor cursor = textCursor();
     int row = cursor.blockNumber();
     QTextBlock block = document()->findBlockByLineNumber(row);

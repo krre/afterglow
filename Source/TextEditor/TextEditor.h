@@ -28,7 +28,7 @@ public:
     QString textUnderCursor() const;
     int leftMargin() const;
 
-    void commentUncommentLine();
+    void commentUncommentText();
     void joinLines();
     void duplicateLine();
     void cutLine();
