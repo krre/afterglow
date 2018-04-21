@@ -32,7 +32,6 @@ public:
     void joinLines();
     void duplicateLine();
     void cutLine();
-    void autoindent();
     void insertTabSpaces();
     void removeTabSpaces();
 
@@ -51,6 +50,7 @@ private slots:
 
 private:
     void readFile();
+    void autoindent();
 
     QWidget* lineNumberArea;
     Highlighter* highlighter;
