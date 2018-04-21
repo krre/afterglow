@@ -265,26 +265,44 @@ void TextEditor::insertTabSpaces() {
 // Remove white spaces to left
 void TextEditor::removeTabSpaces() {
     QTextCursor cursor = textCursor();
-    QTextBlock block = cursor.block();
-    int charPos = cursor.position() - block.position();
+    int startRow = cursor.blockNumber();
+    int endRow = startRow;
+
+    if (cursor.hasSelection()) {
+        startRow = document()->findBlock(cursor.selectionStart()).blockNumber();
+        endRow = document()->findBlock(cursor.selectionEnd()).blockNumber();
+    }
+
+    cursor.beginEditBlock();
+
     int indent = Settings::getValue("editor.indent").toInt();
 
-    if (charPos && block.text().at(charPos - 1) == ' ') {
-        int removeSpaces = charPos % indent;
-        if (!removeSpaces) {
+    for (int row = startRow; row <= endRow; row++) {
+        QTextBlock block = document()->findBlockByLineNumber(row);
+        if (!block.text().size()) continue;
+
+        cursor.setPosition(block.position());
+
+        int count = 0;
+        for (; count < block.text().size(); count++) {
+            if (block.text().at(count) != ' ') {
+                break;
+            }
+        }
+
+        int removeSpaces = count % indent;
+
+        if (!removeSpaces && count) {
             removeSpaces = indent;
         }
 
         while (removeSpaces) {
-            cursor.movePosition(QTextCursor::PreviousCharacter);
             cursor.deleteChar();
-            charPos = cursor.position() - block.position();
-            if (charPos && block.text().at(charPos - 1) != ' ') {
-                break;
-            }
             removeSpaces--;
         }
     }
+
+    cursor.endEditBlock();
 }
 
 void TextEditor::keyPressEvent(QKeyEvent* event) {
