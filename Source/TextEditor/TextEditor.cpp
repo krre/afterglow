@@ -306,7 +306,11 @@ void TextEditor::removeTabSpaces() {
 }
 
 void TextEditor::goToLine(int line) {
-    qDebug() << line;
+    int row =  qMin(qMax(0, line - 1), blockCount() - 1);
+    QTextBlock block = document()->findBlockByLineNumber(row);
+    QTextCursor cursor = textCursor();
+    cursor.setPosition(block.position());
+    setTextCursor(cursor);
 }
 
 void TextEditor::keyPressEvent(QKeyEvent* event) {
