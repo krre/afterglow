@@ -46,14 +46,19 @@ private slots:
     // Edit
     void on_actionUndo_triggered();
     void on_actionRedo_triggered();
+
     void on_actionCut_triggered();
     void on_actionCopy_triggered();
     void on_actionPaste_triggered();
+
     void on_actionSelectAll_triggered();
+
     void on_actionComment_triggered();
     void on_actionJoinLines_triggered();
     void on_actionDuplicateLine_triggered();
     void on_actionCutLine_triggered();
+
+    void on_actionGoToLine_triggered();
 
     // Cargo
     void on_actionBuild_triggered();

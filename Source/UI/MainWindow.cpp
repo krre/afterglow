@@ -217,6 +217,10 @@ void MainWindow::on_actionCutLine_triggered() {
     editor->cutLine();
 }
 
+void MainWindow::on_actionGoToLine_triggered() {
+    qDebug() << "Go to Line";
+}
+
 void MainWindow::on_actionBuild_triggered() {
     on_actionSaveAll_triggered();
     cargoManager->build();
