@@ -4,6 +4,7 @@
 #include "Core/Constants.h"
 #include "Core/Settings.h"
 #include "NewProject.h"
+#include "GoToLine.h"
 #include "Options.h"
 #include "Process/CargoManager.h"
 #include "ProjectTree.h"
@@ -218,7 +219,10 @@ void MainWindow::on_actionCutLine_triggered() {
 }
 
 void MainWindow::on_actionGoToLine_triggered() {
-    qDebug() << "Go to Line";
+    GoToLine goToLine(this);
+    goToLine.exec();
+    int line = goToLine.getLine();
+    qDebug() << line;
 }
 
 void MainWindow::on_actionBuild_triggered() {

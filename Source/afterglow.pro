@@ -25,7 +25,8 @@ SOURCES += \
     Process/CargoManager.cpp \
     TextEditor/AutoCompleter.cpp \
     TextEditor/TextEditor.cpp \
-    TextEditor/SyntaxHighlightManager.cpp
+    TextEditor/SyntaxHighlightManager.cpp \
+    UI/GoToLine.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -47,7 +48,8 @@ HEADERS += \
     Process/CargoManager.h \
     TextEditor/AutoCompleter.h \
     TextEditor/TextEditor.h \
-    TextEditor/SyntaxHighlightManager.h
+    TextEditor/SyntaxHighlightManager.h \
+    UI/GoToLine.h
 
 FORMS += \
     UI/MainWindow.ui \
@@ -56,7 +58,8 @@ FORMS += \
     UI/NewProject.ui \
     UI/NewName.ui \
     UI/ProjectProperties.ui \
-    UI/Rename.ui
+    UI/Rename.ui \
+    UI/GoToLine.ui
 
 DISTFILES += \
     ../README.md \
