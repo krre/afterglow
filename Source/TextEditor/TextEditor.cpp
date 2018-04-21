@@ -246,6 +246,11 @@ void TextEditor::insertTabSpaces() {
 
     for (int row = startRow; row <= endRow; row++) {
         QTextBlock block = document()->findBlockByLineNumber(row);
+        if (block.blockNumber() == blockCount() - 1 && !block.text().size()) {
+            // Last line
+            break;
+        }
+
         cursor.setPosition(block.position());
 
         int charPos = cursor.position() - block.position();
