@@ -35,6 +35,8 @@ public:
     void insertTabSpaces();
     void removeTabSpaces();
 
+    void goToLine(int line);
+
 signals:
     void documentModified(TextEditor* editor);
 

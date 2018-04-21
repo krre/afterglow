@@ -15,9 +15,6 @@ GoToLine::~GoToLine() {
 }
 
 void GoToLine::on_lineEdit_textChanged(const QString& text) {
-    bool ok;
-    int value = text.toInt(&ok);
-    line = ok ? value : -1;
-
-    ui->buttonBox->buttons().at(0)->setEnabled(line != -1);
+    line = text.toInt(&valid);
+    ui->buttonBox->buttons().at(0)->setEnabled(valid);
 }

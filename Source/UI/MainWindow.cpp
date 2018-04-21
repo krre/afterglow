@@ -221,8 +221,10 @@ void MainWindow::on_actionCutLine_triggered() {
 void MainWindow::on_actionGoToLine_triggered() {
     GoToLine goToLine(this);
     goToLine.exec();
-    int line = goToLine.getLine();
-    qDebug() << line;
+
+    if (goToLine.isValid()) {
+        editor->goToLine(goToLine.getLine());
+    }
 }
 
 void MainWindow::on_actionBuild_triggered() {

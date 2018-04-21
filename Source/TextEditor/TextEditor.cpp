@@ -305,6 +305,10 @@ void TextEditor::removeTabSpaces() {
     cursor.endEditBlock();
 }
 
+void TextEditor::goToLine(int line) {
+    qDebug() << line;
+}
+
 void TextEditor::keyPressEvent(QKeyEvent* event) {
     if (completer && completer->popup()->isVisible()) {
         // The following keys are forwarded by the completer to the widget
