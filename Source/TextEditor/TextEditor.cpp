@@ -161,17 +161,15 @@ void TextEditor::toggleSingleLineComment() {
 
     cursor.endEditBlock();
 
+    // Add begin of comment chars to selection
     if (commented && selectionFromBeginOfBlock) {
-        cursor = textCursor();
-        int startCommentChars = cursor.selectionStart() - 2; // Move left to begin of /* chars
-        cursor.setPosition(cursor.selectionEnd());
-        cursor.setPosition(startCommentChars, QTextCursor::KeepAnchor);
-        setTextCursor(cursor);
+        extendSelectionToBeginOfComment();
     }
 }
 
 void TextEditor::toggleBlockComment() {
     QTextCursor cursor = textCursor();
+
     if (!cursor.hasSelection()) return;
 
     bool alreadyCommented = false;
@@ -205,6 +203,10 @@ void TextEditor::toggleBlockComment() {
     }
 
     cursor.endEditBlock();
+
+    if (!alreadyCommented) {
+        extendSelectionToBeginOfComment();
+    }
 }
 
 void TextEditor::openAutoCompleter() {
@@ -287,6 +289,15 @@ void TextEditor::autoindent() {
             insertPlainText(QString(count, ' '));
         }
     }
+}
+
+void TextEditor::extendSelectionToBeginOfComment() {
+    QTextCursor cursor = textCursor();
+    const int countOfCommentChars = 2; // or /*
+    int startCommentChars = cursor.selectionStart() - countOfCommentChars;
+    cursor.setPosition(cursor.selectionEnd());
+    cursor.setPosition(startCommentChars, QTextCursor::KeepAnchor);
+    setTextCursor(cursor);
 }
 
 void TextEditor::increaseIndent() {

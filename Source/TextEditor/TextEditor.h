@@ -57,6 +57,7 @@ private slots:
 private:
     void readFile();
     void autoindent();
+    void extendSelectionToBeginOfComment();
 
     QWidget* lineNumberArea;
     Highlighter* highlighter;
