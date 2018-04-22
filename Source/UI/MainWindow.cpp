@@ -202,8 +202,8 @@ void MainWindow::on_actionSelectAll_triggered() {
     editor->selectAll();
 }
 
-void MainWindow::on_actionComment_triggered() {
-    editor->commentUncommentText();
+void MainWindow::on_actionToggleSingleLineComment_triggered() {
+    editor->toggleSingleLineComment();
 }
 
 void MainWindow::on_actionAutoCompleter_triggered() {

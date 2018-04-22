@@ -279,6 +279,12 @@
      <addaction name="actionIncreaseIndent"/>
      <addaction name="actionDecreaseIndent"/>
     </widget>
+    <widget class="QMenu" name="menuComment">
+     <property name="title">
+      <string>Comment</string>
+     </property>
+     <addaction name="actionToggleSingleLineComment"/>
+    </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
@@ -290,7 +296,7 @@
     <addaction name="separator"/>
     <addaction name="menuLine"/>
     <addaction name="menuIndent"/>
-    <addaction name="actionComment"/>
+    <addaction name="menuComment"/>
     <addaction name="actionAutoCompleter"/>
     <addaction name="separator"/>
     <addaction name="actionGoToLine"/>
@@ -529,9 +535,9 @@
     <string>Clean</string>
    </property>
   </action>
-  <action name="actionComment">
+  <action name="actionToggleSingleLineComment">
    <property name="text">
-    <string>Comment/Uncomment Line</string>
+    <string>Toggle Single Line Comment</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+/</string>

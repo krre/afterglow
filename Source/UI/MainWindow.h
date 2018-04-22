@@ -60,7 +60,8 @@ private slots:
     void on_actionIncreaseIndent_triggered();
     void on_actionDecreaseIndent_triggered();
 
-    void on_actionComment_triggered();
+    void on_actionToggleSingleLineComment_triggered();
+
     void on_actionAutoCompleter_triggered();
     void on_actionGoToLine_triggered();
 
