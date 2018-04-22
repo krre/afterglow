@@ -53,10 +53,14 @@ private slots:
 
     void on_actionSelectAll_triggered();
 
-    void on_actionComment_triggered();
     void on_actionJoinLines_triggered();
     void on_actionDuplicateLine_triggered();
     void on_actionCutLine_triggered();
+
+    void on_actionIncreaseIndent_triggered();
+    void on_actionDecreaseIndent_triggered();
+
+    void on_actionComment_triggered();
 
     void on_actionGoToLine_triggered();
 

@@ -336,8 +336,6 @@ void TextEditor::keyPressEvent(QKeyEvent* event) {
 
     if (event->key() == Qt::Key_Tab) {
         increaseIndent();
-    } else if (event->key() == Qt::Key_Backtab) {
-        decreaseIndent();
     } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
         QPlainTextEdit::keyPressEvent(event);
         autoindent();

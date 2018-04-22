@@ -218,6 +218,14 @@ void MainWindow::on_actionCutLine_triggered() {
     editor->cutLine();
 }
 
+void MainWindow::on_actionIncreaseIndent_triggered() {
+    editor->increaseIndent();
+}
+
+void MainWindow::on_actionDecreaseIndent_triggered() {
+    editor->decreaseIndent();
+}
+
 void MainWindow::on_actionGoToLine_triggered() {
     GoToLine goToLine(this);
     goToLine.exec();

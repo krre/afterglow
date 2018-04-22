@@ -272,6 +272,13 @@
      <addaction name="actionJoinLines"/>
      <addaction name="actionCutLine"/>
     </widget>
+    <widget class="QMenu" name="menuIndent">
+     <property name="title">
+      <string>Indent</string>
+     </property>
+     <addaction name="actionIncreaseIndent"/>
+     <addaction name="actionDecreaseIndent"/>
+    </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
@@ -282,6 +289,7 @@
     <addaction name="actionSelectAll"/>
     <addaction name="separator"/>
     <addaction name="menuLine"/>
+    <addaction name="menuIndent"/>
     <addaction name="actionComment"/>
     <addaction name="separator"/>
     <addaction name="actionGoToLine"/>
@@ -563,6 +571,22 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="actionIncreaseIndent">
+   <property name="text">
+    <string>Increase Indent</string>
+   </property>
+   <property name="shortcut">
+    <string>Tab</string>
+   </property>
+  </action>
+  <action name="actionDecreaseIndent">
+   <property name="text">
+    <string>Decrease Indent</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+Tab</string>
    </property>
   </action>
  </widget>
