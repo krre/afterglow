@@ -166,7 +166,7 @@ void TextEditor::toggleBlockComment() {
 
     cursor.setPosition(start);
     cursor.insertText("/*");
-    cursor.setPosition(end + 2);
+    cursor.setPosition(end + 2); // End of selection plus inserted above two chars /*
     cursor.insertText("*/");
 
     setTextCursor(cursor);
