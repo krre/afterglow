@@ -159,17 +159,35 @@ void TextEditor::toggleBlockComment() {
     QTextCursor cursor = textCursor();
     if (!cursor.hasSelection()) return;
 
+    bool alreadyCommented = false;
+
+    int size = cursor.selectedText().size();
+    if (size >= 4 && cursor.selectedText().left(2) == "/*" &&
+            cursor.selectedText().right(2) == "*/") {
+        alreadyCommented = true;
+    }
+
     cursor.beginEditBlock();
 
     int start = cursor.selectionStart();
     int end = cursor.selectionEnd();
 
-    cursor.setPosition(start);
-    cursor.insertText("/*");
-    cursor.setPosition(end + 2); // End of selection plus inserted above two chars /*
-    cursor.insertText("*/");
+    if (alreadyCommented) {
+        // Remove comment chars in reverse order
+        cursor.setPosition(end);
+        cursor.deletePreviousChar();
+        cursor.deletePreviousChar();
 
-    setTextCursor(cursor);
+        cursor.setPosition(start);
+        cursor.deleteChar();
+        cursor.deleteChar();
+    } else {
+        // Insert comment chars
+        cursor.setPosition(start);
+        cursor.insertText("/*");
+        cursor.setPosition(end + 2); // End of selection plus inserted above two chars /*
+        cursor.insertText("*/");
+    }
 
     cursor.endEditBlock();
 }
