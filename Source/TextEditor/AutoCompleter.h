@@ -11,7 +11,7 @@ class AutoCompleter : public QCompleter {
 public:
     explicit AutoCompleter(QObject* parent = nullptr);
     void setTextEditor(TextEditor* editor);
-    void open(QKeyEvent* event);
+    void open();
 
 private slots:
     void onActivate(const QString& completion);

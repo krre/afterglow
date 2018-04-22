@@ -17,22 +17,8 @@ void AutoCompleter::setTextEditor(TextEditor* editor) {
     setWidget(editor);
 }
 
-void AutoCompleter::open(QKeyEvent* event) {
-    Q_UNUSED(event)
-//    const bool ctrlOrShift = event->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
-//    if (ctrlOrShift && event->text().isEmpty()) {
-//        return;
-//    }
-
-//    static QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
-//    bool hasModifier = (event->modifiers() != Qt::NoModifier) && !ctrlOrShift;
+void AutoCompleter::open() {
     QString prefix = editor->textUnderCursor();
-
-//    if ((hasModifier || event->text().isEmpty() || prefix.length() < 3
-//                      || eow.contains(event->text().right(1)))) {
-//        popup()->hide();
-//        return;
-//    }
 
     if (prefix != completionPrefix()) {
         setCompletionPrefix(prefix);

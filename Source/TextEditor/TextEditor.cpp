@@ -155,6 +155,10 @@ void TextEditor::commentUncommentText() {
     cursor.endEditBlock();
 }
 
+void TextEditor::openAutoCompleter() {
+    completer->open();
+}
+
 void TextEditor::joinLines() {
     QTextCursor cursor = textCursor();
     QTextBlock block = cursor.block();
@@ -341,8 +345,6 @@ void TextEditor::keyPressEvent(QKeyEvent* event) {
     } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
         QPlainTextEdit::keyPressEvent(event);
         autoindent();
-    } else if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Space && !event->isAutoRepeat()) {
-        completer->open(event);
     } else {
         QPlainTextEdit::keyPressEvent(event);
     }

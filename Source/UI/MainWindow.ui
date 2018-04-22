@@ -291,6 +291,7 @@
     <addaction name="menuLine"/>
     <addaction name="menuIndent"/>
     <addaction name="actionComment"/>
+    <addaction name="actionAutoCompleter"/>
     <addaction name="separator"/>
     <addaction name="actionGoToLine"/>
    </widget>
@@ -587,6 +588,14 @@
    </property>
    <property name="shortcut">
     <string>Shift+Tab</string>
+   </property>
+  </action>
+  <action name="actionAutoCompleter">
+   <property name="text">
+    <string>Auto-Completer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Space</string>
    </property>
   </action>
  </widget>

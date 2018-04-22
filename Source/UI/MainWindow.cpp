@@ -206,6 +206,10 @@ void MainWindow::on_actionComment_triggered() {
     editor->commentUncommentText();
 }
 
+void MainWindow::on_actionAutoCompleter_triggered() {
+    editor->openAutoCompleter();
+}
+
 void MainWindow::on_actionJoinLines_triggered() {
     editor->joinLines();
 }

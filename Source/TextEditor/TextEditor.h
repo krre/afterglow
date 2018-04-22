@@ -28,7 +28,6 @@ public:
     QString textUnderCursor() const;
     int leftMargin() const;
 
-    void commentUncommentText();
     void joinLines();
     void duplicateLine();
     void cutLine();
@@ -36,6 +35,8 @@ public:
     void increaseIndent();
     void decreaseIndent();
 
+    void commentUncommentText();
+    void openAutoCompleter();
     void goToLine(int line);
 
 signals:
