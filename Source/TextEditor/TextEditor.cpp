@@ -230,7 +230,7 @@ void TextEditor::autoindent() {
 }
 
 // Add white spaces to right
-void TextEditor::insertTabSpaces() {
+void TextEditor::increaseIndent() {
     QTextCursor cursor = textCursor();
     int startRow = cursor.blockNumber();
     int endRow = startRow;
@@ -335,7 +335,7 @@ void TextEditor::keyPressEvent(QKeyEvent* event) {
     }
 
     if (event->key() == Qt::Key_Tab) {
-        insertTabSpaces();
+        increaseIndent();
     } else if (event->key() == Qt::Key_Backtab) {
         removeTabSpaces();
     } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
