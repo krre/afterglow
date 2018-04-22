@@ -264,6 +264,14 @@
     <property name="title">
      <string>Edit</string>
     </property>
+    <widget class="QMenu" name="menuLine">
+     <property name="title">
+      <string>Line</string>
+     </property>
+     <addaction name="actionDuplicateLine"/>
+     <addaction name="actionJoinLines"/>
+     <addaction name="actionCutLine"/>
+    </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
@@ -273,10 +281,8 @@
     <addaction name="separator"/>
     <addaction name="actionSelectAll"/>
     <addaction name="separator"/>
+    <addaction name="menuLine"/>
     <addaction name="actionComment"/>
-    <addaction name="actionJoinLines"/>
-    <addaction name="actionDuplicateLine"/>
-    <addaction name="actionCutLine"/>
     <addaction name="separator"/>
     <addaction name="actionGoToLine"/>
    </widget>
