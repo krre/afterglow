@@ -41,6 +41,7 @@
             "size": 10
         },
         "indent": 4,
-        "numberAreaDigits": 4
+        "numberAreaDigits": 4,
+        "cleanTrailingWhitespaceOnSave": true
     }
 }

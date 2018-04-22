@@ -299,6 +299,7 @@
     <addaction name="menuIndent"/>
     <addaction name="menuComment"/>
     <addaction name="actionAutoCompleter"/>
+    <addaction name="actionCleanTrailingWhitespace"/>
     <addaction name="separator"/>
     <addaction name="actionGoToLine"/>
    </widget>
@@ -611,6 +612,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+/</string>
+   </property>
+  </action>
+  <action name="actionCleanTrailingWhitespace">
+   <property name="text">
+    <string>Clean Trailing Whitespace</string>
    </property>
   </action>
  </widget>

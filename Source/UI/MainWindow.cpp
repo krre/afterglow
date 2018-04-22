@@ -243,6 +243,10 @@ void MainWindow::on_actionGoToLine_triggered() {
     }
 }
 
+void MainWindow::on_actionCleanTrailingWhitespace_triggered() {
+    editor->cleanTrailingWhitespace();
+}
+
 void MainWindow::on_actionBuild_triggered() {
     on_actionSaveAll_triggered();
     cargoManager->build();

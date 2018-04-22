@@ -40,6 +40,7 @@ public:
 
     void openAutoCompleter();
     void goToLine(int line);
+    void cleanTrailingWhitespace();
 
 signals:
     void documentModified(TextEditor* editor);

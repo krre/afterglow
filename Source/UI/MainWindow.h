@@ -65,6 +65,7 @@ private slots:
 
     void on_actionAutoCompleter_triggered();
     void on_actionGoToLine_triggered();
+    void on_actionCleanTrailingWhitespace_triggered();
 
     // Cargo
     void on_actionBuild_triggered();

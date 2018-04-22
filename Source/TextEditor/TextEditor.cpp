@@ -53,6 +53,10 @@ void TextEditor::setAutoCompleter(AutoCompleter* completer) {
 void TextEditor::saveFile() {
     if (!document()->isModified()) return;
 
+    if (Settings::getValue("editor.cleanTrailingWhitespaceOnSave").toBool()) {
+       cleanTrailingWhitespace();
+    }
+
     QFile file(filePath);
     if (file.open(QFile::WriteOnly | QFile::Text)) {
         QTextStream out(&file);
@@ -398,6 +402,23 @@ void TextEditor::goToLine(int line) {
     QTextCursor cursor = textCursor();
     cursor.setPosition(block.position());
     setTextCursor(cursor);
+}
+
+void TextEditor::cleanTrailingWhitespace() {
+    QTextCursor cursor = textCursor();
+
+    for (int i = 0; i < blockCount(); i++) {
+        QTextBlock block = document()->findBlockByNumber(i);
+        int size = block.text().size();
+        if (!size) continue;
+
+        int pos = size - 1;
+        while (pos >= 0 && block.text().at(pos) == ' ') {
+            cursor.setPosition(block.position() + pos);
+            cursor.deleteChar();
+            pos--;
+        }
+    }
 }
 
 void TextEditor::keyPressEvent(QKeyEvent* event) {
