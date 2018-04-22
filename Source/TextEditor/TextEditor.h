@@ -36,6 +36,8 @@ public:
     void decreaseIndent();
 
     void toggleSingleLineComment();
+    void toggleBlockComment();
+
     void openAutoCompleter();
     void goToLine(int line);
 

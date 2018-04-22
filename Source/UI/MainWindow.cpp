@@ -206,6 +206,10 @@ void MainWindow::on_actionToggleSingleLineComment_triggered() {
     editor->toggleSingleLineComment();
 }
 
+void MainWindow::on_actionToggleBlockComment_triggered() {
+    editor->toggleBlockComment();
+}
+
 void MainWindow::on_actionAutoCompleter_triggered() {
     editor->openAutoCompleter();
 }

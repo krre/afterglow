@@ -155,6 +155,10 @@ void TextEditor::toggleSingleLineComment() {
     cursor.endEditBlock();
 }
 
+void TextEditor::toggleBlockComment() {
+    qDebug() << "toggleBlockComment";
+}
+
 void TextEditor::openAutoCompleter() {
     completer->open();
 }

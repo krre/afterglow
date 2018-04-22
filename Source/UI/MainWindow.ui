@@ -284,6 +284,7 @@
       <string>Comment</string>
      </property>
      <addaction name="actionToggleSingleLineComment"/>
+     <addaction name="actionToggleBlockComment"/>
     </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
@@ -602,6 +603,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Space</string>
+   </property>
+  </action>
+  <action name="actionToggleBlockComment">
+   <property name="text">
+    <string>Toggle Block Comment</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+/</string>
    </property>
   </action>
  </widget>
