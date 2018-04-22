@@ -124,9 +124,15 @@ void TextEditor::toggleSingleLineComment() {
     int startRow = cursor.blockNumber();
     int endRow = startRow;
 
+    bool selectionFromBeginOfBlock = false;
+    bool commented = false;
+
     if (cursor.hasSelection()) {
         startRow = document()->findBlock(cursor.selectionStart()).blockNumber();
         endRow = document()->findBlock(cursor.selectionEnd()).blockNumber();
+        if (cursor.selectionStart() == cursor.block().position()) {
+            selectionFromBeginOfBlock = true;
+        }
     }
 
     cursor.beginEditBlock();
@@ -149,10 +155,19 @@ void TextEditor::toggleSingleLineComment() {
             // Comment
             cursor.setPosition(block.position());
             cursor.insertText("//");
+            commented = true;
         }
     }
 
     cursor.endEditBlock();
+
+    if (commented && selectionFromBeginOfBlock) {
+        cursor = textCursor();
+        int startCommentChars = cursor.selectionStart() - 2; // Move left to begin of /* chars
+        cursor.setPosition(cursor.selectionEnd());
+        cursor.setPosition(startCommentChars, QTextCursor::KeepAnchor);
+        setTextCursor(cursor);
+    }
 }
 
 void TextEditor::toggleBlockComment() {
