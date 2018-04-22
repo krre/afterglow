@@ -229,7 +229,6 @@ void TextEditor::autoindent() {
     }
 }
 
-// Add white spaces to right
 void TextEditor::increaseIndent() {
     QTextCursor cursor = textCursor();
     int startRow = cursor.blockNumber();
@@ -267,7 +266,6 @@ void TextEditor::increaseIndent() {
     cursor.endEditBlock();
 }
 
-// Remove white spaces to left
 void TextEditor::decreaseIndent() {
     QTextCursor cursor = textCursor();
     int startRow = cursor.blockNumber();
