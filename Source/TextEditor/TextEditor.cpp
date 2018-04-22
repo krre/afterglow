@@ -205,8 +205,12 @@ void TextEditor::cutLine() {
 
     cursor.beginEditBlock();
 
-    cursor.select(QTextCursor::BlockUnderCursor);
-    cursor.removeSelectedText();
+    cursor.movePosition(QTextCursor::StartOfBlock);
+    cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+    cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
+
+    setTextCursor(cursor);
+    cut();
 
     cursor.endEditBlock();
 }
