@@ -125,7 +125,7 @@ void TextEditor::toggleSingleLineComment() {
     int endRow = startRow;
 
     bool selectionFromBeginOfBlock = false;
-    bool commented = false;
+    bool addCommentMode = false;
 
     if (cursor.hasSelection()) {
         startRow = document()->findBlock(cursor.selectionStart()).blockNumber();
@@ -135,11 +135,12 @@ void TextEditor::toggleSingleLineComment() {
         }
     }
 
-    cursor.beginEditBlock();
+    QVector<int> commentPositions(endRow - startRow + 1, -1);
 
-    for (int row = startRow; row <= endRow; row++) {
+    // Find commented lines and set add or remove comment mode.
+    for (int row = startRow, i = 0; row <= endRow; row++, i++) {
         QTextBlock block = document()->findBlockByLineNumber(row);
-        if (!block.text().size()) continue;
+        if (!block.text().size())  continue;
 
         int pos = 0;
         while (block.text().at(pos) == ' ') {
@@ -147,22 +148,34 @@ void TextEditor::toggleSingleLineComment() {
         };
 
         if (block.text().at(pos) == '/' && block.text().at(pos + 1) == '/') {
-            // Uncomment
-            cursor.setPosition(block.position() + pos);
-            cursor.deleteChar();
-            cursor.deleteChar();
+            commentPositions[i] = pos;
         } else {
-            // Comment
+            addCommentMode = true;
+        }
+    }
+
+    cursor.beginEditBlock();
+
+    for (int row = startRow, i = 0; row <= endRow; row++, i++) {
+        QTextBlock block = document()->findBlockByLineNumber(row);
+        if (!block.text().size()) continue;
+
+        if (addCommentMode) {
             cursor.setPosition(block.position());
             cursor.insertText("//");
-            commented = true;
+        } else {
+            if (commentPositions[i] != -1) {
+                cursor.setPosition(block.position() + commentPositions[i]);
+                cursor.deleteChar();
+                cursor.deleteChar();
+            }
         }
     }
 
     cursor.endEditBlock();
 
     // Add begin of comment chars to selection
-    if (commented && selectionFromBeginOfBlock) {
+    if (addCommentMode && selectionFromBeginOfBlock) {
         extendSelectionToBeginOfComment();
     }
 }
