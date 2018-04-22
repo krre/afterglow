@@ -156,7 +156,22 @@ void TextEditor::toggleSingleLineComment() {
 }
 
 void TextEditor::toggleBlockComment() {
-    qDebug() << "toggleBlockComment";
+    QTextCursor cursor = textCursor();
+    if (!cursor.hasSelection()) return;
+
+    cursor.beginEditBlock();
+
+    int start = cursor.selectionStart();
+    int end = cursor.selectionEnd();
+
+    cursor.setPosition(start);
+    cursor.insertText("/*");
+    cursor.setPosition(end + 2);
+    cursor.insertText("*/");
+
+    setTextCursor(cursor);
+
+    cursor.endEditBlock();
 }
 
 void TextEditor::openAutoCompleter() {
