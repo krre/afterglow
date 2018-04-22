@@ -32,8 +32,9 @@ public:
     void joinLines();
     void duplicateLine();
     void cutLine();
+
     void increaseIndent();
-    void removeTabSpaces();
+    void decreaseIndent();
 
     void goToLine(int line);
 

@@ -268,7 +268,7 @@ void TextEditor::increaseIndent() {
 }
 
 // Remove white spaces to left
-void TextEditor::removeTabSpaces() {
+void TextEditor::decreaseIndent() {
     QTextCursor cursor = textCursor();
     int startRow = cursor.blockNumber();
     int endRow = startRow;
@@ -337,7 +337,7 @@ void TextEditor::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Tab) {
         increaseIndent();
     } else if (event->key() == Qt::Key_Backtab) {
-        removeTabSpaces();
+        decreaseIndent();
     } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
         QPlainTextEdit::keyPressEvent(event);
         autoindent();
