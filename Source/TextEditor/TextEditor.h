@@ -44,11 +44,13 @@ public:
 
 signals:
     void documentModified(TextEditor* editor);
+    void focusChanged(bool focus);
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     void resizeEvent(QResizeEvent *event) override;
     void focusInEvent(QFocusEvent* event) override;
+    void focusOutEvent(QFocusEvent* event) override;
 
 private slots:
     void updateLineNumberAreaWidth(int newBlockCount);

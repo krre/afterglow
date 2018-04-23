@@ -455,9 +455,12 @@ void TextEditor::resizeEvent(QResizeEvent* event) {
 }
 
 void TextEditor::focusInEvent(QFocusEvent* event) {
-    if (event->gotFocus() && completer) {
-//        completer->setWidget(this);
-    }
+    focusChanged(event->gotFocus());
+    QPlainTextEdit::focusInEvent(event);
+}
+
+void TextEditor::focusOutEvent(QFocusEvent* event) {
+    focusChanged(event->gotFocus());
     QPlainTextEdit::focusInEvent(event);
 }
 
