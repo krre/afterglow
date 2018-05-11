@@ -2,9 +2,7 @@
 #include "UI/SelectWorkspace.h"
 #include "Core/Constants.h"
 #include "Core/Settings.h"
-#include "Core/Global.h"
 #include <QApplication>
-#include <QSettings>
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
