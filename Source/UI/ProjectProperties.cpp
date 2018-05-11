@@ -65,6 +65,8 @@ void ProjectProperties::updateMetadata() {
 
     QJsonArray targets = metadata["packages"].toArray().at(0).toObject()["targets"].toArray();
     for (int i = 0; i < targets.size(); i++) {
-        ui->comboBoxRun->addItem(targets.at(i).toObject()["name"].toString());
+        if (targets.at(i).toObject()["kind"].toArray().at(0).toString() == "bin") {
+            ui->comboBoxRun->addItem(targets.at(i).toObject()["name"].toString());
+        }
     }
 }
