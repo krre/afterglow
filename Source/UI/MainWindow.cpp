@@ -777,7 +777,7 @@ int MainWindow::findSource(const QString& filePath) {
 
 void MainWindow::updateMenuState() {
     ui->menuEdit->menuAction()->setVisible(!projectPath.isNull());
-    ui->menuCargo->menuAction()->setVisible(!projectPath.isNull());
+    ui->menuBuild->menuAction()->setVisible(!projectPath.isNull());
 
     int index = ui->tabWidgetSource->currentIndex();
 

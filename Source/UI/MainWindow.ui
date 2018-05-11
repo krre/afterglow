@@ -316,9 +316,9 @@
     <addaction name="actionShowSidebar"/>
     <addaction name="actionShowOutput"/>
    </widget>
-   <widget class="QMenu" name="menuCargo">
+   <widget class="QMenu" name="menuBuild">
     <property name="title">
-     <string>Cargo</string>
+     <string>Build</string>
     </property>
     <addaction name="actionBuild"/>
     <addaction name="actionRun"/>
@@ -327,7 +327,7 @@
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
-   <addaction name="menuCargo"/>
+   <addaction name="menuBuild"/>
    <addaction name="menuTools"/>
    <addaction name="menuView"/>
    <addaction name="menuHelp"/>
