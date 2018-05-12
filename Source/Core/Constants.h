@@ -29,4 +29,22 @@ namespace Constants {
         const char TRASH_ALT[] = "\uf2ed";
         const char PLAY[] = "\uf04b";
     }
+
+    namespace Action {
+        const char NEW_PROJECT[] = "NewProject";
+        const char NEW_RUST_FILE[] = "NewRustFile";
+        const char NEW_FILE[] = "NewFile";
+        const char NEW_DIRECTORY[] = "NewDirectory";
+
+        const char OPEN[] = "Open";
+        const char CLOSE_PROJECT[] = "CloseProject";
+
+        const char SAVE[] = "Save";
+        const char SAVE_AS[] = "SaveAs";
+        const char SAVE_ALL[] = "SaveAll";
+
+        const char CLOSE[] = "Close";
+        const char CLOSE_ALL[] = "CloseAll";
+        const char CLOSE_OTHER[] = "CloseOther";
+    }
 }

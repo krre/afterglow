@@ -27,6 +27,22 @@ MainWindow::MainWindow() :
 
     new ActionManager(this);
 
+    ActionManager::addAction(Constants::Action::NEW_PROJECT, ui->actionNewProject);
+    ActionManager::addAction(Constants::Action::NEW_RUST_FILE, ui->actionNewRustFile);
+    ActionManager::addAction(Constants::Action::NEW_FILE, ui->actionNewFile);
+    ActionManager::addAction(Constants::Action::NEW_DIRECTORY, ui->actionNewDirectory);
+
+    ActionManager::addAction(Constants::Action::OPEN, ui->actionOpen);
+    ActionManager::addAction(Constants::Action::CLOSE_PROJECT, ui->actionCloseProject);
+
+    ActionManager::addAction(Constants::Action::SAVE, ui->actionSave);
+    ActionManager::addAction(Constants::Action::SAVE_AS, ui->actionSaveAs);
+    ActionManager::addAction(Constants::Action::SAVE_ALL, ui->actionSaveAll);
+
+    ActionManager::addAction(Constants::Action::CLOSE, ui->actionClose);
+    ActionManager::addAction(Constants::Action::CLOSE_ALL, ui->actionCloseAll);
+    ActionManager::addAction(Constants::Action::CLOSE_OTHER, ui->actionCloseOther);
+
     projectProperties = new ProjectProperties;
 
     cargoManager = new CargoManager(projectProperties, this);
