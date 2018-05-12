@@ -2,26 +2,32 @@
 #include <QString>
 
 namespace Constants {
+    namespace App {
+        const char NAME[] = "Afterglow";
+        const char VERSION[] = "0.2.0";
+        const char STATUS[] = "Preview Alpha";
+        const char URL[] = "https://github.com/krre/afterglow";
+        const char SETTINGS_NAME[] = "afterglow.ini";
+        const char PREFS_NAME[] = "prefs.json";
+        const char COPYRIGHT[] = "Copyright © 2018, Vladimir Zarypov";
+    }
 
-const char APP_NAME[] = "Afterglow";
-const char APP_VERSION[] = "0.2.0";
-const char APP_STATUS[] = "Preview Alpha";
-const char APP_URL[] = "https://github.com/krre/afterglow";
-const char APP_SETTINGS_NAME[] = "afterglow.ini";
-const char APP_PREFS_NAME[] = "prefs.json";
-const char APP_COPYRIGHT[] = "Copyright © 2018, Vladimir Zarypov";
-const char WORKSPACE_DIRECTORY[] = "RustProjects";
-const char PROJECT_DATA_DIRECTORY[] = ".afterglow";
-const char PROJECT_SESSION_FILE[] = "session.json";
-const char PROJECT_PROPERTIES_FILE[] = "properties.json";
+    namespace Window {
+        const char WORKSPACE_DIRECTORY[] = "RustProjects";
+        const int MAX_RECENT_FILES = 10;
+        const int SEPARATOR_AND_MENU_CLEAR_COUNT = 2;
+    }
 
-const int MAX_RECENT_FILES = 10;
-const int SEPARATOR_AND_MENU_CLEAR_COUNT = 2;
+    namespace Project {
+        const char DATA_DIRECTORY[] = ".afterglow";
+        const char SESSION_FILE[] = "session.json";
+        const char PROPERTIES_FILE[] = "properties.json";
+    }
 
-// Font Awesome
-const char ICON_COG[] = "\uf013";
-const char ICON_STOP[] = "\uf04d";
-const char ICON_TRASH_ALT[] = "\uf2ed";
-const char ICON_PLAY[] = "\uf04b";
-
-} // Constants
+    namespace FontAwesome {
+        const char COG[] = "\uf013";
+        const char STOP[] = "\uf04d";
+        const char TRASH_ALT[] = "\uf2ed";
+        const char PLAY[] = "\uf04b";
+    }
+}

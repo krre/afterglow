@@ -5,5 +5,5 @@
 
 QString Global::getWorkspacePath() {
     QString workspace = Settings::getValue("workspace").toString();
-    return workspace.isEmpty() ? QDir::homePath() + "/" + Constants::WORKSPACE_DIRECTORY : workspace;
+    return workspace.isEmpty() ? QDir::homePath() + "/" + Constants::Window::WORKSPACE_DIRECTORY : workspace;
 }

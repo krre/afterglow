@@ -19,7 +19,7 @@ void Settings::init() {
         return;
     }
 
-    QFile workPrefsFile(QCoreApplication::applicationDirPath() + "/" + Constants::APP_PREFS_NAME);
+    QFile workPrefsFile(QCoreApplication::applicationDirPath() + "/" + Constants::App::PREFS_NAME);
     if (workPrefsFile.exists()) {
         if (!workPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qWarning() << "Failed to open file" << workPrefsFile.fileName();
@@ -45,7 +45,7 @@ void Settings::init() {
 }
 
 void Settings::flush() {
-    QFile file(QCoreApplication::applicationDirPath() + "/" + Constants::APP_PREFS_NAME);
+    QFile file(QCoreApplication::applicationDirPath() + "/" + Constants::App::PREFS_NAME);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qWarning() << "Failed to open file" << file.fileName();
         return;

@@ -52,16 +52,16 @@ MainWindow::MainWindow() :
     font.setPixelSize(16);
 
     ui->toolButtonCargoBuild->setFont(font);
-    ui->toolButtonCargoBuild->setText(Constants::ICON_COG);
+    ui->toolButtonCargoBuild->setText(Constants::FontAwesome::COG);
 
     ui->toolButtonCargoRun->setFont(font);
-    ui->toolButtonCargoRun->setText(Constants::ICON_PLAY);
+    ui->toolButtonCargoRun->setText(Constants::FontAwesome::PLAY);
 
     ui->toolButtonCargoStop->setFont(font);
-    ui->toolButtonCargoStop->setText(Constants::ICON_STOP);
+    ui->toolButtonCargoStop->setText(Constants::FontAwesome::STOP);
 
     ui->toolButtonCargoClear->setFont(font);
-    ui->toolButtonCargoClear->setText(Constants::ICON_TRASH_ALT);
+    ui->toolButtonCargoClear->setText(Constants::FontAwesome::TRASH_ALT);
 
     completer = new AutoCompleter(this);
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
@@ -119,7 +119,7 @@ void MainWindow::on_actionSaveAll_triggered() {
 }
 
 void MainWindow::on_actionClearMenuRecentFiles_triggered() {
-    for (int i = ui->menuRecentFiles->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT - 1; i >= 0; i--) {
+    for (int i = ui->menuRecentFiles->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT - 1; i >= 0; i--) {
         ui->menuRecentFiles->removeAction(ui->menuRecentFiles->actions().at(i));
     }
 
@@ -127,7 +127,7 @@ void MainWindow::on_actionClearMenuRecentFiles_triggered() {
 }
 
 void MainWindow::on_actionClearMenuRecentProjects_triggered() {
-    for (int i = ui->menuRecentProjects->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT - 1; i >= 0; i--) {
+    for (int i = ui->menuRecentProjects->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT - 1; i >= 0; i--) {
         ui->menuRecentProjects->removeAction(ui->menuRecentProjects->actions().at(i));
     }
 
@@ -274,16 +274,16 @@ void MainWindow::on_actionOptions_triggered() {
 }
 
 void MainWindow::on_actionAbout_triggered() {
-    QMessageBox::about(this, tr("About %1").arg(Constants::APP_NAME),
+    QMessageBox::about(this, tr("About %1").arg(Constants::App::NAME),
         tr("<h3>%1 %2 %3</h3>\
            Based on Qt %4<br> \
            Build on %5<br><br> \
            <a href=%6>%6</a><br><br>%7")
-            .arg(Constants::APP_NAME)
-            .arg(Constants::APP_VERSION).arg(Constants::APP_STATUS)
+            .arg(Constants::App::NAME)
+            .arg(Constants::App::VERSION).arg(Constants::App::STATUS)
             .arg(QT_VERSION_STR)
             .arg(__DATE__)
-            .arg(Constants::APP_URL).arg(Constants::APP_COPYRIGHT));
+            .arg(Constants::App::URL).arg(Constants::App::COPYRIGHT));
 }
 
 void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {
@@ -440,8 +440,8 @@ void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, co
     connect(fileAction, &QAction::triggered, callback);
     menu->insertAction(menu->actions().first(), fileAction);
 
-    if (menu->actions().size() > Constants::MAX_RECENT_FILES + Constants::SEPARATOR_AND_MENU_CLEAR_COUNT) {
-        menu->removeAction(menu->actions().at(menu->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT - 1));
+    if (menu->actions().size() > Constants::Window::MAX_RECENT_FILES + Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT) {
+        menu->removeAction(menu->actions().at(menu->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT - 1));
     }
 
     updateMenuState();
@@ -450,7 +450,7 @@ void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, co
 void MainWindow::saveProjectProperties() {
     if (projectPath.isEmpty()) return;
 
-    QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_PROPERTIES_FILE;
+    QString path = projectPath + "/" + Constants::Project::DATA_DIRECTORY + "/" + Constants::Project::PROPERTIES_FILE;
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open project properties file for writing" << path;
@@ -468,7 +468,7 @@ void MainWindow::saveProjectProperties() {
 void MainWindow::loadProjectProperties() {
     if (projectPath.isEmpty()) return;
 
-    QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_PROPERTIES_FILE;
+    QString path = projectPath + "/" + Constants::Project::DATA_DIRECTORY + "/" + Constants::Project::PROPERTIES_FILE;
     if (!QFileInfo::exists(path)) {
         return;
     }
@@ -596,14 +596,14 @@ void MainWindow::saveSettings() {
 
     // Recent projects
     QJsonArray recentProjects;
-    for (int i = 0; i < ui->menuRecentProjects->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
+    for (int i = 0; i < ui->menuRecentProjects->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
         recentProjects.append(ui->menuRecentProjects->actions().at(i)->text());
     }
     Settings::setValue("gui.recent.projects", recentProjects);
 
     // Recent files
     QJsonArray recentFiles;
-    for (int i = 0; i < ui->menuRecentFiles->actions().size() - Constants::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
+    for (int i = 0; i < ui->menuRecentFiles->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
         recentFiles.append(ui->menuRecentFiles->actions().at(i)->text());
     }
     Settings::setValue("gui.recent.files", recentFiles);
@@ -620,11 +620,11 @@ void MainWindow::saveSession() {
     }
 
     QDir dir(projectPath);
-    bool result = dir.mkdir(Constants::PROJECT_DATA_DIRECTORY);
+    bool result = dir.mkdir(Constants::Project::DATA_DIRECTORY);
 #ifdef Q_OS_WIN
     // Set hidden attribute on created directory (need only for Windows).
     if (result) {
-        QString directory = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY;
+        QString directory = projectPath + "/" + Constants::Project::DATA_DIRECTORY;
         wchar_t* charText = new wchar_t[directory.length() + 1];
         directory.toWCharArray(charText);
         charText[directory.length()] = 0; // append null terminator
@@ -637,7 +637,7 @@ void MainWindow::saveSession() {
     Q_UNUSED(result)
 #endif
 
-    QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_SESSION_FILE;
+    QString path = projectPath + "/" + Constants::Project::DATA_DIRECTORY + "/" + Constants::Project::SESSION_FILE;
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open session file for writing" << path;
@@ -673,7 +673,7 @@ void MainWindow::loadSession() {
         return;
     }
 
-    QString path = projectPath + "/" + Constants::PROJECT_DATA_DIRECTORY + "/" + Constants::PROJECT_SESSION_FILE;
+    QString path = projectPath + "/" + Constants::Project::DATA_DIRECTORY + "/" + Constants::Project::SESSION_FILE;
     if (!QFileInfo::exists(path)) {
         return;
     }
@@ -792,8 +792,8 @@ void MainWindow::updateMenuState() {
     ui->actionCloseOther->setEnabled(index >= 0);
     ui->actionCloseAll->setEnabled(index >= 0);
 
-    ui->menuRecentProjects->menuAction()->setEnabled(ui->menuRecentProjects->actions().size() > Constants::SEPARATOR_AND_MENU_CLEAR_COUNT);
-    ui->menuRecentFiles->menuAction()->setEnabled(ui->menuRecentFiles->actions().size() > Constants::SEPARATOR_AND_MENU_CLEAR_COUNT);
+    ui->menuRecentProjects->menuAction()->setEnabled(ui->menuRecentProjects->actions().size() > Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT);
+    ui->menuRecentFiles->menuAction()->setEnabled(ui->menuRecentFiles->actions().size() > Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT);
 
     ui->menuEdit->menuAction()->setEnabled(index >= 0);
 }
