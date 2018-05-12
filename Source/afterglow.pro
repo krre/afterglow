@@ -26,7 +26,8 @@ SOURCES += \
     TextEditor/AutoCompleter.cpp \
     TextEditor/TextEditor.cpp \
     TextEditor/SyntaxHighlightManager.cpp \
-    UI/GoToLine.cpp
+    UI/GoToLine.cpp \
+    UI/ActionManager.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -49,7 +50,8 @@ HEADERS += \
     TextEditor/AutoCompleter.h \
     TextEditor/TextEditor.h \
     TextEditor/SyntaxHighlightManager.h \
-    UI/GoToLine.h
+    UI/GoToLine.h \
+    UI/ActionManager.h
 
 FORMS += \
     UI/MainWindow.ui \

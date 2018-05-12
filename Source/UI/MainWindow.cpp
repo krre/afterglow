@@ -12,6 +12,7 @@
 #include "TextEditor/TextEditor.h"
 #include "TextEditor/AutoCompleter.h"
 #include "TextEditor/SyntaxHighlightManager.h"
+#include "ActionManager.h"
 #include "NewName.h"
 #ifdef Q_OS_WIN
     #include <windows.h>
@@ -23,6 +24,8 @@ MainWindow::MainWindow() :
     new SyntaxHighlightManager(this);
 
     ui->setupUi(this);
+
+    new ActionManager(this);
 
     projectProperties = new ProjectProperties;
 
