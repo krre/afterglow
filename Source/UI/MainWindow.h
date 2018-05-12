@@ -67,7 +67,7 @@ private slots:
     void on_actionGoToLine_triggered();
     void on_actionCleanTrailingWhitespace_triggered();
 
-    // Cargo
+    // Build
     void on_actionBuild_triggered();
     void on_actionRun_triggered();
     void on_actionStop_triggered();
