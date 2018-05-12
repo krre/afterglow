@@ -1,5 +1,4 @@
 #pragma once
-#include <QString>
 
 namespace Constants {
     namespace App {
