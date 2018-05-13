@@ -46,5 +46,10 @@ namespace Constants {
         const char CLOSE[] = "Close";
         const char CLOSE_ALL[] = "CloseAll";
         const char CLOSE_OTHER[] = "CloseOther";
+
+        const char BUILD[] = "Build";
+        const char RUN[] = "Run";
+        const char STOP[] = "Stop";
+        const char CLEAN[] = "Clean";
     }
 }

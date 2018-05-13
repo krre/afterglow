@@ -43,6 +43,11 @@ MainWindow::MainWindow() :
     ActionManager::addAction(Constants::Action::CLOSE_ALL, ui->actionCloseAll);
     ActionManager::addAction(Constants::Action::CLOSE_OTHER, ui->actionCloseOther);
 
+    ActionManager::addAction(Constants::Action::BUILD, ui->actionBuild);
+    ActionManager::addAction(Constants::Action::RUN, ui->actionRun);
+    ActionManager::addAction(Constants::Action::STOP, ui->actionStop);
+    ActionManager::addAction(Constants::Action::CLEAN, ui->actionClean);
+
     projectProperties = new ProjectProperties;
 
     cargoManager = new CargoManager(projectProperties, this);
