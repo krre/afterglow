@@ -27,7 +27,8 @@ SOURCES += \
     TextEditor/TextEditor.cpp \
     TextEditor/SyntaxHighlightManager.cpp \
     UI/GoToLine.cpp \
-    UI/ActionManager.cpp
+    UI/ActionManager.cpp \
+    UI/RustInstaller.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -51,7 +52,8 @@ HEADERS += \
     TextEditor/TextEditor.h \
     TextEditor/SyntaxHighlightManager.h \
     UI/GoToLine.h \
-    UI/ActionManager.h
+    UI/ActionManager.h \
+    UI/RustInstaller.h
 
 FORMS += \
     UI/MainWindow.ui \
@@ -61,7 +63,8 @@ FORMS += \
     UI/NewName.ui \
     UI/ProjectProperties.ui \
     UI/Rename.ui \
-    UI/GoToLine.ui
+    UI/GoToLine.ui \
+    UI/RustInstaller.ui
 
 DISTFILES += \
     ../README.md \

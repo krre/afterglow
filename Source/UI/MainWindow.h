@@ -74,6 +74,7 @@ private slots:
     void on_actionClean_triggered();
 
     // Tools
+    void on_actionRustInstaller_triggered();
     void on_actionOptions_triggered();
 
     // Help

@@ -208,7 +208,7 @@
      <x>0</x>
      <y>0</y>
      <width>1043</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -307,6 +307,7 @@
     <property name="title">
      <string>Tools</string>
     </property>
+    <addaction name="actionRustInstaller"/>
     <addaction name="actionOptions"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -617,6 +618,11 @@
   <action name="actionCleanTrailingWhitespace">
    <property name="text">
     <string>Clean Trailing Whitespace</string>
+   </property>
+  </action>
+  <action name="actionRustInstaller">
+   <property name="text">
+    <string>Rust Installer...</string>
    </property>
   </action>
  </widget>

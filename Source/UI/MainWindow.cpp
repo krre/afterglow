@@ -6,6 +6,7 @@
 #include "NewProject.h"
 #include "GoToLine.h"
 #include "Options.h"
+#include "RustInstaller.h"
 #include "Process/CargoManager.h"
 #include "ProjectTree.h"
 #include "ProjectProperties.h"
@@ -287,6 +288,11 @@ void MainWindow::on_actionStop_triggered() {
 
 void MainWindow::on_actionClean_triggered() {
     cargoManager->clean();
+}
+
+void MainWindow::on_actionRustInstaller_triggered() {
+    RustInstaller installer(this);
+    installer.exec();
 }
 
 void MainWindow::on_actionOptions_triggered() {
