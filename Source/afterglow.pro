@@ -1,4 +1,4 @@
-QT += core gui widgets
+QT += core gui widgets network
 
 CONFIG += c++11
 TARGET = afterglow
@@ -28,7 +28,8 @@ SOURCES += \
     TextEditor/SyntaxHighlightManager.cpp \
     UI/GoToLine.cpp \
     UI/ActionManager.cpp \
-    UI/RustInstaller.cpp
+    UI/RustInstaller.cpp \
+    Core/FileDownloader.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -53,7 +54,8 @@ HEADERS += \
     TextEditor/SyntaxHighlightManager.h \
     UI/GoToLine.h \
     UI/ActionManager.h \
-    UI/RustInstaller.h
+    UI/RustInstaller.h \
+    Core/FileDownloader.h
 
 FORMS += \
     UI/MainWindow.ui \
