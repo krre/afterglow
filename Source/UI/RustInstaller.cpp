@@ -16,16 +16,19 @@ RustInstaller::RustInstaller(QWidget* parent) :
         const QByteArray& data = process->readAllStandardOutput();
         QTextCodec::ConverterState outputCodecState;
         const QString& output = outputCodec->toUnicode(data.constData(), data.length(), &outputCodecState);
-        ui->plainTextEditConsole->insertPlainText(output);
-        ui->plainTextEditConsole->verticalScrollBar()->setValue(ui->plainTextEditConsole->verticalScrollBar()->maximum());
+        showAndScrollMessage(output);
     });
 
     connect(process, &QProcess::readyReadStandardError, [=] {
         const QByteArray& data = process->readAllStandardError();
         QTextCodec::ConverterState errorCodecState;
         const QString& output = outputCodec->toUnicode(data.constData(), data.length(), &errorCodecState);
-        ui->plainTextEditConsole->insertPlainText(output);
-        ui->plainTextEditConsole->verticalScrollBar()->setValue(ui->plainTextEditConsole->verticalScrollBar()->maximum());
+        showAndScrollMessage(output);
+    });
+
+    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=] (int exitCode, QProcess::ExitStatus exitStatus) {
+        Q_UNUSED(exitStatus)
+        showAndScrollMessage(QString(tr("Process finished with exit code %1\n\n")).arg(exitCode));
     });
 }
 
@@ -44,8 +47,25 @@ void RustInstaller::on_pushButtonBrowseRustup_clicked() {
 
 void RustInstaller::on_pushButtonDownloadRustup_clicked() {
 #ifdef Q_OS_LINUX
-    process->start("sh", QStringList() << "-c" << "curl https://sh.rustup.rs -sSf | sh -s -- -y");
+    runCommand("sh", QStringList() << "-c" << "curl https://sh.rustup.rs -sSf | sh -s -- -y");
 #elif Q_OS_WIN
 
 #endif
+}
+
+void RustInstaller::on_pushButtonUpdate_clicked() {
+    runCommand("rustup", QStringList() << "self" << "update");
+}
+
+void RustInstaller::runCommand(const QString &program, const QStringList &arguments) {
+    QString command = program + " " + arguments.join(" ");
+    showAndScrollMessage(command);
+    showAndScrollMessage("\n");
+
+    process->start(program, arguments);
+}
+
+void RustInstaller::showAndScrollMessage(const QString message) {
+    ui->plainTextEditConsole->insertPlainText(message);
+    ui->plainTextEditConsole->verticalScrollBar()->setValue(ui->plainTextEditConsole->verticalScrollBar()->maximum());
 }

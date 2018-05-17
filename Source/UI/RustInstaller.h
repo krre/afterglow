@@ -17,8 +17,12 @@ public:
 private slots:
     void on_pushButtonBrowseRustup_clicked();
     void on_pushButtonDownloadRustup_clicked();
+    void on_pushButtonUpdate_clicked();
 
 private:
+    void runCommand(const QString& program, const QStringList& arguments);
+    void showAndScrollMessage(const QString message);
+
     Ui::RustInstaller* ui;
     QProcess* process;
 };
