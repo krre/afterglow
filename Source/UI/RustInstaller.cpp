@@ -87,20 +87,16 @@ void RustInstaller::on_lineEditCommand_textChanged(const QString &text) {
 void RustInstaller::onDownloaded() {
     showAndScrollMessage(QString("Downloaded %1 bytes").arg(fileDownloader->getDownloadedData().size()));
 
-    QTemporaryDir dir;
-    if (dir.isValid()) {
-        QString filePath = dir.path() + "/" + "rustup-init.exe";
-        QFile file(filePath);
-        file.open(QIODevice::WriteOnly);
-        file.write(fileDownloader->getDownloadedData());
-        file.close();
+    QString filePath = tmpDir.path() + "/" + "rustup-init.exe";
+    QFile file(filePath);
+    file.open(QIODevice::WriteOnly);
+    file.write(fileDownloader->getDownloadedData());
+    file.close();
 
-        QStringList arguments;
-        arguments << "-y";
-        showAndScrollMessage(filePath + " " + arguments.join(" "));
-        process->start(filePath, arguments);
-        process->waitForFinished();
-    }
+    QStringList arguments;
+    arguments << "-y";
+    showAndScrollMessage(filePath + " " + arguments.join(" "));
+    process->start(filePath, arguments);
 }
 
 void RustInstaller::runCommand(const QString &program, const QStringList &arguments) {

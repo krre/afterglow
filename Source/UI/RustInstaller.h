@@ -1,5 +1,6 @@
 #pragma once
 #include <QDialog>
+#include <QTemporaryDir>
 
 namespace Ui {
     class RustInstaller;
@@ -33,4 +34,5 @@ private:
     Ui::RustInstaller* ui;
     QProcess* process;
     FileDownloader* fileDownloader;
+    QTemporaryDir tmpDir;
 };
