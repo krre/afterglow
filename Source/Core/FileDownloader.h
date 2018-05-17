@@ -8,9 +8,12 @@
 class FileDownloader : public QObject {
     Q_OBJECT
 public:
-    explicit FileDownloader(const QUrl& url, QObject* parent = nullptr);
+    explicit FileDownloader(QObject* parent = nullptr);
+
+    void load(const QUrl& url);
 
     QByteArray getDownloadedData() const;
+    void checkSSLSupport();
 
 signals:
     void downloaded();

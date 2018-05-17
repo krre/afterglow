@@ -1,6 +1,7 @@
 #include "RustInstaller.h"
 #include "ui_RustInstaller.h"
 #include "Core/Settings.h"
+#include "Core/FileDownloader.h"
 #include <QtWidgets>
 
 RustInstaller::RustInstaller(QWidget* parent) :
@@ -31,6 +32,11 @@ RustInstaller::RustInstaller(QWidget* parent) :
         Q_UNUSED(exitStatus)
         showAndScrollMessage(QString(tr("Process finished with exit code %1\n\n")).arg(exitCode));
     });
+
+    fileDownloader = new FileDownloader(this);
+    connect(fileDownloader, &FileDownloader::downloaded, [=]() {
+        showAndScrollMessage(QString("Downloaded %1 bytes").arg(fileDownloader->getDownloadedData().size()));
+    });
 }
 
 RustInstaller::~RustInstaller() {
@@ -47,10 +53,12 @@ void RustInstaller::on_pushButtonBrowseRustup_clicked() {
 }
 
 void RustInstaller::on_pushButtonDownloadRustup_clicked() {
-#ifdef Q_OS_LINUX
+#if defined(Q_OS_LINUX)
     runCommand("sh", QStringList() << "-c" << "curl https://sh.rustup.rs -sSf | sh -s -- -y");
-#elif Q_OS_WIN
-
+#elif defined(Q_OS_WIN)
+    QUrl url("https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-gnu/rustup-init.exe");
+    showAndScrollMessage("Download " + url.toString() + "\n");
+    fileDownloader->load(url);
 #endif
 }
 

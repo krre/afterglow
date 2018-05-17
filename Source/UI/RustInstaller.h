@@ -6,6 +6,7 @@ namespace Ui {
 }
 
 class QProcess;
+class FileDownloader;
 
 class RustInstaller : public QDialog {
     Q_OBJECT
@@ -29,4 +30,5 @@ private:
 
     Ui::RustInstaller* ui;
     QProcess* process;
+    FileDownloader* fileDownloader;
 };
