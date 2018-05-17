@@ -8,6 +8,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
         ui(new Ui::RustInstaller) {
     ui->setupUi(this);
     ui->lineEditRustup->setText(Settings::getValue("rustup.path").toString());
+    ui->pushButtonRun->setEnabled(false);
 
     process = new QProcess(this);
     QTextCodec* outputCodec = QTextCodec::codecForLocale();
@@ -64,6 +65,17 @@ void RustInstaller::on_pushButtonUninstall_clicked() {
     if (button == QMessageBox::Ok) {
         runCommand("rustup", QStringList() << "self" << "uninstall" << "-y");
     }
+}
+
+void RustInstaller::on_pushButtonRun_clicked() {
+    QStringList command = ui->lineEditCommand->text().split(' ');
+    QString program = command.first();
+    command.removeFirst();
+    runCommand(program, command);
+}
+
+void RustInstaller::on_lineEditCommand_textChanged(const QString &text) {
+    ui->pushButtonRun->setEnabled(!text.isEmpty());
 }
 
 void RustInstaller::runCommand(const QString &program, const QStringList &arguments) {

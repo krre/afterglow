@@ -20,6 +20,9 @@ private slots:
     void on_pushButtonUpdate_clicked();
     void on_pushButtonUninstall_clicked();
 
+    void on_pushButtonRun_clicked();
+    void on_lineEditCommand_textChanged(const QString& text);
+
 private:
     void runCommand(const QString& program, const QStringList& arguments);
     void showAndScrollMessage(const QString message);
