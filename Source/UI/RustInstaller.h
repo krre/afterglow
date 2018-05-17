@@ -5,6 +5,8 @@ namespace Ui {
     class RustInstaller;
 }
 
+class QProcess;
+
 class RustInstaller : public QDialog {
     Q_OBJECT
 
@@ -14,7 +16,9 @@ public:
 
 private slots:
     void on_pushButtonBrowseRustup_clicked();
+    void on_pushButtonDownloadRustup_clicked();
 
 private:
     Ui::RustInstaller* ui;
+    QProcess* process;
 };
