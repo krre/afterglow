@@ -33,14 +33,14 @@
          <widget class="QLineEdit" name="lineEditRustup"/>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButtonBrowse">
+         <widget class="QPushButton" name="pushButtonBrowseRustup">
           <property name="text">
            <string>Browse...</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButtonDownload">
+         <widget class="QPushButton" name="pushButtonDownloadRustup">
           <property name="text">
            <string>Download</string>
           </property>

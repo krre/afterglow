@@ -12,6 +12,9 @@ public:
     explicit RustInstaller(QWidget* parent = 0);
     ~RustInstaller();
 
+private slots:
+    void on_pushButtonBrowseRustup_clicked();
+
 private:
     Ui::RustInstaller* ui;
 };

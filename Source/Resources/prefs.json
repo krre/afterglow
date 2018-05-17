@@ -1,6 +1,9 @@
 {
     "version": "0.1.0",
     "workspace": "",
+    "rustup": {
+        "path": ""
+    },
     "cargo": {
         "path": ""
     },
