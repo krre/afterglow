@@ -24,9 +24,11 @@ private slots:
     void on_pushButtonRun_clicked();
     void on_lineEditCommand_textChanged(const QString& text);
 
+    void onDownloaded();
+
 private:
     void runCommand(const QString& program, const QStringList& arguments);
-    void showAndScrollMessage(const QString message);
+    void showAndScrollMessage(const QString message, bool newLine = true);
 
     Ui::RustInstaller* ui;
     QProcess* process;
