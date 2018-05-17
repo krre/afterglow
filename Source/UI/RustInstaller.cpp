@@ -57,6 +57,15 @@ void RustInstaller::on_pushButtonUpdate_clicked() {
     runCommand("rustup", QStringList() << "self" << "update");
 }
 
+void RustInstaller::on_pushButtonUninstall_clicked() {
+    int button = QMessageBox::question(this, tr("Uninstall Rust"), tr("Rust will be uninstall. Are you sure?"),
+                          QMessageBox::Ok,
+                          QMessageBox::Cancel);
+    if (button == QMessageBox::Ok) {
+        runCommand("rustup", QStringList() << "self" << "uninstall" << "-y");
+    }
+}
+
 void RustInstaller::runCommand(const QString &program, const QStringList &arguments) {
     QString command = program + " " + arguments.join(" ");
     showAndScrollMessage(command);

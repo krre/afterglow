@@ -18,6 +18,7 @@ private slots:
     void on_pushButtonBrowseRustup_clicked();
     void on_pushButtonDownloadRustup_clicked();
     void on_pushButtonUpdate_clicked();
+    void on_pushButtonUninstall_clicked();
 
 private:
     void runCommand(const QString& program, const QStringList& arguments);
