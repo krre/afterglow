@@ -12,6 +12,7 @@ public:
     static void send(const QString& method, const QJsonObject& params);
 
 signals:
+    void answer(const QJsonObject& message);
 
 protected slots:
     void onReadyReadStandardOutput(const QString& data) override;
