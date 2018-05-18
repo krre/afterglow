@@ -14,6 +14,7 @@
 #include "TextEditor/AutoCompleter.h"
 #include "TextEditor/SyntaxHighlightManager.h"
 #include "ActionManager.h"
+#include "Process/RlsManager.h"
 #include "NewName.h"
 #ifdef Q_OS_WIN
     #include <windows.h>
@@ -89,6 +90,9 @@ MainWindow::MainWindow() :
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setWrapAround(false);
+
+    new RlsManager(this);
+    RlsManager::start();
 
     loadSettings();
     updateMenuState();
