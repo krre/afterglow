@@ -11,10 +11,9 @@ Early stage of development.
 https://github.com/krre/afterglow/releases
 
 ## Usage
-1. Install Rust from https://www.rust-lang.org/en-US/install.html
-2. Install Racer for code completion:
-    ```cargo install racer```
-3. Run Afterglow.
+1. Run Afterglow.
+2. Install or update Rust and components by Tools -> Rust Installer dialog.
+3. Create Rust project by File -> New -> Project dialog.
 
 ## Screenshots
 ![Screenshot](/Images/Screenshot-1.png?raw=true)
