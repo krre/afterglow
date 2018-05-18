@@ -92,6 +92,7 @@ MainWindow::MainWindow() :
     completer->setWrapAround(false);
 
     new RlsManager(this);
+    RlsManager::setShowDebug(true);
     RlsManager::start();
 
     loadSettings();

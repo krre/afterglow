@@ -8,11 +8,14 @@ public:
 
     static RlsManager* getInstance();
     static void start();
+    static void setShowDebug(bool showDebug);
 
 signals:
-
 
 protected slots:
     void onReadyReadStandardOutput(const QString& data) override;
     void onReadyReadStandardError(const QString& data) override;
+
+private:
+    bool showDebug = false;
 };
