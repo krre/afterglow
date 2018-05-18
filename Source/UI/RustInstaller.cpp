@@ -31,6 +31,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=] (int exitCode, QProcess::ExitStatus exitStatus) {
         Q_UNUSED(exitStatus)
         showAndScrollMessage(QString(tr("Process finished with exit code %1\n")).arg(exitCode));
+        runFromQueue();
     });
 
     fileDownloader = new FileDownloader(this);
@@ -58,6 +59,9 @@ void RustInstaller::on_pushButtonDownloadRustup_clicked() {
     showAndScrollMessage("Download " + url.toString());
     fileDownloader->load(url);
 #endif
+
+    runCommand("rustup", QStringList() << "component" << "add" << "rls-preview" << "rust-analysis" << "rust-src");
+    runCommand("cargo", QStringList() << "install" << "racer");
 }
 
 void RustInstaller::on_pushButtonUpdate_clicked() {
@@ -100,10 +104,8 @@ void RustInstaller::onDownloaded() {
 }
 
 void RustInstaller::runCommand(const QString &program, const QStringList &arguments) {
-    QString command = program + " " + arguments.join(" ");
-    showAndScrollMessage(command);
-
-    process->start(program, arguments);
+    commandQueue.enqueue({ program, arguments });
+    runFromQueue();
 }
 
 void RustInstaller::showAndScrollMessage(const QString message, bool newLine) {
@@ -112,4 +114,12 @@ void RustInstaller::showAndScrollMessage(const QString message, bool newLine) {
         ui->plainTextEditConsole->insertPlainText("\n");
     }
     ui->plainTextEditConsole->verticalScrollBar()->setValue(ui->plainTextEditConsole->verticalScrollBar()->maximum());
+}
+
+void RustInstaller::runFromQueue() {
+    if (!commandQueue.isEmpty() && process->state() == QProcess::NotRunning) {
+        Command command = commandQueue.dequeue();
+        showAndScrollMessage(command.program + " " + command.arguments.join(" "));
+        process->start(command.program, command.arguments);
+    }
 }

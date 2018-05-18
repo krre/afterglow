@@ -1,6 +1,7 @@
 #pragma once
 #include <QDialog>
 #include <QTemporaryDir>
+#include <QQueue>
 
 namespace Ui {
     class RustInstaller;
@@ -30,9 +31,16 @@ private slots:
 private:
     void runCommand(const QString& program, const QStringList& arguments);
     void showAndScrollMessage(const QString message, bool newLine = true);
+    void runFromQueue();
+
+    struct Command {
+        QString program;
+        QStringList arguments;
+    };
 
     Ui::RustInstaller* ui;
     QProcess* process;
     FileDownloader* fileDownloader;
     QTemporaryDir tmpDir;
+    QQueue<Command> commandQueue;
 };
