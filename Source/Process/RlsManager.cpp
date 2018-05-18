@@ -18,8 +18,6 @@ RlsManager* RlsManager::getInstance() {
 void RlsManager::start() {
     instance->getProcess()->start("rls");
 
-    QJsonDocument doc;
-
     QJsonObject capabilities = {
         {}
     };
@@ -28,13 +26,22 @@ void RlsManager::start() {
         { "capabilities", capabilities }
     };
 
+    instance->send("initialize", params);
+}
+
+void RlsManager::setShowDebug(bool showDebug) {
+    instance->showDebug = showDebug;
+}
+
+void RlsManager::send(const QString& method, const QJsonObject& params) {
     QJsonObject obj = {
         {"jsonrpc", "2.0"},
         { "id", instance->counter++ },
-        { "method", "initialize" },
+        { "method", method },
         { "params", params }
     };
 
+    QJsonDocument doc;
     doc.setObject(obj);
     QString jsonrpc = doc.toJson(QJsonDocument::Compact);
 
@@ -47,10 +54,6 @@ void RlsManager::start() {
     }
 
     instance->getProcess()->write(message.toUtf8());
-}
-
-void RlsManager::setShowDebug(bool showDebug) {
-    instance->showDebug = showDebug;
 }
 
 void RlsManager::onReadyReadStandardOutput(const QString& data) {

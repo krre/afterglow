@@ -9,6 +9,7 @@ public:
     static RlsManager* getInstance();
     static void start();
     static void setShowDebug(bool showDebug);
+    static void send(const QString& method, const QJsonObject& params);
 
 signals:
 
