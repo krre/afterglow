@@ -27,7 +27,7 @@ QProcess* ProcessManager::getProcess() {
 }
 
 void ProcessManager::stop() {
-    process->kill();
+    process->close();
 }
 
 void ProcessManager::onReadyReadStandardOutput(const QString& data) {
