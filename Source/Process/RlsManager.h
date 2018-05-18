@@ -8,6 +8,7 @@ public:
 
     static RlsManager* getInstance();
     static void start();
+    static void initialize(const QString& projectPath);
     static void setShowDebug(bool showDebug);
     static void send(const QString& method, const QJsonObject& params);
 

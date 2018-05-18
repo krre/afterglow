@@ -742,6 +742,7 @@ void MainWindow::openProject(const QString& path, bool isNew) {
     projectPath = path;
     projectTree->setRootPath(path);
     cargoManager->setProjectPath(path);
+    RlsManager::initialize(path);
 
     if (isNew) {
         QString filePath = projectPath + "/src/main.rs";

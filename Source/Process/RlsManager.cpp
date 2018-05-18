@@ -17,12 +17,15 @@ RlsManager* RlsManager::getInstance() {
 
 void RlsManager::start() {
     instance->getProcess()->start("rls");
+}
 
+void RlsManager::initialize(const QString& projectPath) {
     QJsonObject capabilities = {
         {}
     };
 
     QJsonObject params = {
+        { "rootPath", projectPath },
         { "capabilities", capabilities }
     };
 
