@@ -1,4 +1,5 @@
 #include "ProcessManager.h"
+#include <QJsonObject>
 
 class RlsManager : public ProcessManager {
     Q_OBJECT
@@ -9,8 +10,9 @@ public:
     static RlsManager* getInstance();
     static void start();
     static void initialize(const QString& projectPath);
+    static void shutdown();
     static void setShowDebug(bool showDebug);
-    static void send(const QString& method, const QJsonObject& params);
+    static void send(const QString& method, const QJsonObject& params = QJsonObject());
 
 signals:
     void answer(const QJsonObject& message);

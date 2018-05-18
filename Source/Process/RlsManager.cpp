@@ -32,6 +32,10 @@ void RlsManager::initialize(const QString& projectPath) {
     instance->send("initialize", params);
 }
 
+void RlsManager::shutdown() {
+    send("shutdown");
+}
+
 void RlsManager::setShowDebug(bool showDebug) {
     instance->showDebug = showDebug;
 }
@@ -41,8 +45,12 @@ void RlsManager::send(const QString& method, const QJsonObject& params) {
         {"jsonrpc", "2.0"},
         { "id", instance->counter++ },
         { "method", method },
-        { "params", params }
     };
+
+
+    if (!params.isEmpty()) {
+        obj["params"] = params;
+    }
 
     QJsonDocument doc;
     doc.setObject(obj);
