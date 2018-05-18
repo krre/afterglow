@@ -18,4 +18,5 @@ protected slots:
 
 private:
     bool showDebug = false;
+    int counter = 0;
 };

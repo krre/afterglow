@@ -30,7 +30,7 @@ void RlsManager::start() {
 
     QJsonObject obj = {
         {"jsonrpc", "2.0"},
-        { "id", 1 },
+        { "id", instance->counter++ },
         { "method", "initialize" },
         { "params", params }
     };
