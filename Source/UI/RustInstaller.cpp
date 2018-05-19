@@ -90,6 +90,7 @@ void RustInstaller::on_pushButtonRun_clicked() {
     QString program = command.first();
     command.removeFirst();
     runCommand(program, command);
+    commandLine->run();
 }
 
 void RustInstaller::onCommandLineTextChanged(const QString &text) {
