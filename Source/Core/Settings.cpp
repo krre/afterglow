@@ -3,8 +3,11 @@
 #include <QtCore>
 
 QJsonObject Settings::storage = QJsonObject();
+QString Settings::prefsPath = QString();
 
 void Settings::init() {
+    prefsPath = QCoreApplication::applicationDirPath() + "/" + Constants::App::PREFS_NAME;
+
     QFile resPrefsFile(":/Resources/prefs.json");
     if (!resPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Failed to open file" << resPrefsFile.fileName();
@@ -19,7 +22,7 @@ void Settings::init() {
         return;
     }
 
-    QFile workPrefsFile(QCoreApplication::applicationDirPath() + "/" + Constants::App::PREFS_NAME);
+    QFile workPrefsFile(prefsPath);
     if (workPrefsFile.exists()) {
         if (!workPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qWarning() << "Failed to open file" << workPrefsFile.fileName();
@@ -71,6 +74,10 @@ QJsonValue Settings::getValue(const QString& path) {
     }
 
     return obj[keys.last()];
+}
+
+QString Settings::getPrefsPath() {
+    return prefsPath;
 }
 
 void Settings::cleanupDeprecated(QJsonObject& src, QJsonObject& dst) {
