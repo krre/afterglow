@@ -12,8 +12,12 @@ public:
     explicit Options(QWidget* parent = 0);
     ~Options();
 
+signals:
+    void openPrefs();
+
 private slots:
     void on_pushButtonWorkspace_clicked();
+    void on_pushButtonOpenPrefs_clicked();
     void on_buttonBox_accepted();
 
 private:

@@ -302,6 +302,9 @@ void MainWindow::on_actionRustInstaller_triggered() {
 
 void MainWindow::on_actionOptions_triggered() {
     Options options(this);
+    connect(&options, &Options::openPrefs, [this] {
+        addSourceTab(Settings::getPrefsPath());
+    });
     options.exec();
 }
 

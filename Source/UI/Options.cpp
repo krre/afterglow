@@ -1,5 +1,6 @@
 #include "Options.h"
 #include "ui_Options.h"
+#include "Core/Constants.h"
 #include "Core/Global.h"
 #include "Core/Settings.h"
 #include <QtWidgets>
@@ -8,6 +9,8 @@ Options::Options(QWidget* parent) :
         QDialog(parent),
         ui(new Ui::Options) {
     ui->setupUi(this);
+    ui->pushButtonOpenPrefs->setText(tr("Open %1 for editing").arg(Constants::App::PREFS_NAME));
+
     adjustSize();
     resize(600, height());
     readSettings();
@@ -22,6 +25,10 @@ void Options::on_pushButtonWorkspace_clicked() {
     if (!dirPath.isEmpty()) {
         ui->lineEditWorkspace->setText(dirPath);
     }
+}
+
+void Options::on_pushButtonOpenPrefs_clicked() {
+    emit openPrefs();
 }
 
 void Options::on_buttonBox_accepted() {
