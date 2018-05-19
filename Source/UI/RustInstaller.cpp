@@ -12,6 +12,9 @@ RustInstaller::RustInstaller(QWidget* parent) :
     commandLine = new CommandLine(this);
     ui->horizontalLayoutCommandLine->addWidget(commandLine);
     connect(commandLine, &QLineEdit::textChanged, this, &RustInstaller::onCommandLineTextChanged);
+    connect(commandLine, &CommandLine::focusReceived, [this] () {
+        ui->pushButtonRun->setDefault(true);
+    });
 
     ui->lineEditRustup->setText(Settings::getValue("rustup.path").toString());
     ui->pushButtonRun->setEnabled(false);

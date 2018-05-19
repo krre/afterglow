@@ -5,4 +5,9 @@ class CommandLine : public QLineEdit {
 public:
     explicit CommandLine(QWidget* parent = nullptr);
 
+signals:
+    void focusReceived();
+
+protected:
+    void focusInEvent(QFocusEvent* event) override;
 };
