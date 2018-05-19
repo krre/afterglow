@@ -152,6 +152,16 @@ void RustInstaller::loadToolchainList() {
 
 void RustInstaller::loadComponentList() {
     QStringList componentList = Utils::listFromConsole("rustup component list");
+    for (int i = componentList.count() - 1; i >= 0; i--) {
+        if (componentList.at(i).contains("(default)")) {
+            continue;
+        } else if (componentList.at(i).contains("(installed)")) {
+            QString component = componentList.at(i);
+            componentList[i] = component.replace("(installed)", "");
+        } else {
+            componentList.removeAt(i);
+        }
+    }
 
     QItemSelectionModel* oldModel = ui->listViewComponents->selectionModel();
     QAbstractItemModel* model = new StringListModel(componentList, this);
