@@ -6,7 +6,12 @@ QStringList Utils::listFromConsole(const QString& command) {
     QProcess process;
     QStringList list;
     QObject::connect(&process, QProcess::readyReadStandardOutput, [&] () {
-       list << process.readAllStandardOutput();
+        QString output = process.readAllStandardOutput();
+        list = output.split("\n");
+        // Cleanup last empty string
+        if (list.count() && list.last().isEmpty()) {
+            list.removeLast();
+        }
     });
 
     QStringList arguments = command.split(" ");
