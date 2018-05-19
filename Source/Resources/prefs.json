@@ -4,6 +4,9 @@
     "rustup": {
         "path": ""
     },
+    "rls": {
+        "showDebugMessages": false
+    },
     "window": {
         "geometry": {
             "width": 1280,
