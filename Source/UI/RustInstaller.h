@@ -34,6 +34,7 @@ private:
     void showAndScrollMessage(const QString message, bool newLine = true);
     void runFromQueue();
     void loadToolchainList();
+    void loadComponentList();
 
     struct Command {
         QString program;

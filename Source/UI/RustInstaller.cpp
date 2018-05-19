@@ -49,6 +49,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
     loadToolchainList();
+    loadComponentList();
 }
 
 RustInstaller::~RustInstaller() {
@@ -144,6 +145,17 @@ void RustInstaller::loadToolchainList() {
     QItemSelectionModel* oldModel = ui->listViewToolchains->selectionModel();
     QAbstractItemModel* model = new StringListModel(toolchainList, this);
     ui->listViewToolchains->setModel(model);
+    if (oldModel) {
+        delete oldModel;
+    }
+}
+
+void RustInstaller::loadComponentList() {
+    QStringList componentList = Utils::listFromConsole("rustup component list");
+
+    QItemSelectionModel* oldModel = ui->listViewComponents->selectionModel();
+    QAbstractItemModel* model = new StringListModel(componentList, this);
+    ui->listViewComponents->setModel(model);
     if (oldModel) {
         delete oldModel;
     }
