@@ -3,12 +3,14 @@
 #include "Core/Settings.h"
 #include "Core/FileDownloader.h"
 #include "CommandLine.h"
+#include "StringListModel.h"
 #include <QtWidgets>
 
 RustInstaller::RustInstaller(QWidget* parent) :
         QDialog(parent),
         ui(new Ui::RustInstaller) {
     ui->setupUi(this);
+
     commandLine = new CommandLine(this);
     ui->horizontalLayoutCommandLine->addWidget(commandLine);
     connect(commandLine, &QLineEdit::textChanged, this, &RustInstaller::onCommandLineTextChanged);
@@ -44,6 +46,8 @@ RustInstaller::RustInstaller(QWidget* parent) :
 
     fileDownloader = new FileDownloader(this);
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
+
+    loadToolchainList();
 }
 
 RustInstaller::~RustInstaller() {
@@ -130,5 +134,22 @@ void RustInstaller::runFromQueue() {
         Command command = commandQueue.dequeue();
         showAndScrollMessage(command.program + " " + command.arguments.join(" "));
         process->start(command.program, command.arguments);
+    }
+}
+
+void RustInstaller::loadToolchainList() {
+    QProcess toolchainProcess;
+    QStringList toolchainList;
+    connect(&toolchainProcess, QProcess::readyReadStandardOutput, [&] () {
+       toolchainList << toolchainProcess.readAllStandardOutput();
+    });
+    toolchainProcess.start("rustup", QStringList() << "toolchain" << "list");
+    toolchainProcess.waitForFinished();
+
+    QItemSelectionModel* oldModel = ui->listViewToolchains->selectionModel();
+    QAbstractItemModel* model = new StringListModel(toolchainList, this);
+    ui->listViewToolchains->setModel(model);
+    if (oldModel) {
+        delete oldModel;
     }
 }
