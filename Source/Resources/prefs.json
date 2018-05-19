@@ -4,9 +4,6 @@
     "rustup": {
         "path": ""
     },
-    "cargo": {
-        "path": ""
-    },
     "window": {
         "geometry": {
             "width": 1280,
