@@ -9,6 +9,7 @@ namespace Ui {
 
 class QProcess;
 class FileDownloader;
+class CommandLine;
 
 class RustInstaller : public QDialog {
     Q_OBJECT
@@ -24,7 +25,7 @@ private slots:
     void on_pushButtonUninstall_clicked();
 
     void on_pushButtonRun_clicked();
-    void on_lineEditCommand_textChanged(const QString& text);
+    void onCommandLineTextChanged(const QString& text);
 
     void onDownloaded();
 
@@ -41,6 +42,7 @@ private:
     Ui::RustInstaller* ui;
     QProcess* process;
     FileDownloader* fileDownloader;
+    CommandLine* commandLine;
     QTemporaryDir tmpDir;
     QQueue<Command> commandQueue;
 };

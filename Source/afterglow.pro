@@ -30,7 +30,8 @@ SOURCES += \
     UI/ActionManager.cpp \
     UI/RustInstaller.cpp \
     Core/FileDownloader.cpp \
-    Process/RlsManager.cpp
+    Process/RlsManager.cpp \
+    UI/CommandLine.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -57,7 +58,8 @@ HEADERS += \
     UI/ActionManager.h \
     UI/RustInstaller.h \
     Core/FileDownloader.h \
-    Process/RlsManager.h
+    Process/RlsManager.h \
+    UI/CommandLine.h
 
 FORMS += \
     UI/MainWindow.ui \

@@ -2,12 +2,17 @@
 #include "ui_RustInstaller.h"
 #include "Core/Settings.h"
 #include "Core/FileDownloader.h"
+#include "CommandLine.h"
 #include <QtWidgets>
 
 RustInstaller::RustInstaller(QWidget* parent) :
         QDialog(parent),
         ui(new Ui::RustInstaller) {
     ui->setupUi(this);
+    commandLine = new CommandLine(this);
+    ui->horizontalLayoutCommandLine->addWidget(commandLine);
+    connect(commandLine, &QLineEdit::textChanged, this, &RustInstaller::onCommandLineTextChanged);
+
     ui->lineEditRustup->setText(Settings::getValue("rustup.path").toString());
     ui->pushButtonRun->setEnabled(false);
 
@@ -78,13 +83,13 @@ void RustInstaller::on_pushButtonUninstall_clicked() {
 }
 
 void RustInstaller::on_pushButtonRun_clicked() {
-    QStringList command = ui->lineEditCommand->text().split(' ');
+    QStringList command = commandLine->text().split(' ');
     QString program = command.first();
     command.removeFirst();
     runCommand(program, command);
 }
 
-void RustInstaller::on_lineEditCommand_textChanged(const QString &text) {
+void RustInstaller::onCommandLineTextChanged(const QString &text) {
     ui->pushButtonRun->setEnabled(!text.isEmpty());
 }
 
