@@ -4,6 +4,7 @@
 #include "Core/FileDownloader.h"
 #include "CommandLine.h"
 #include "StringListModel.h"
+#include "Core/Utils.h"
 #include <QtWidgets>
 
 RustInstaller::RustInstaller(QWidget* parent) :
@@ -138,13 +139,7 @@ void RustInstaller::runFromQueue() {
 }
 
 void RustInstaller::loadToolchainList() {
-    QProcess toolchainProcess;
-    QStringList toolchainList;
-    connect(&toolchainProcess, QProcess::readyReadStandardOutput, [&] () {
-       toolchainList << toolchainProcess.readAllStandardOutput();
-    });
-    toolchainProcess.start("rustup", QStringList() << "toolchain" << "list");
-    toolchainProcess.waitForFinished();
+    QStringList toolchainList = Utils::listFromConsole("rustup toolchain list");
 
     QItemSelectionModel* oldModel = ui->listViewToolchains->selectionModel();
     QAbstractItemModel* model = new StringListModel(toolchainList, this);

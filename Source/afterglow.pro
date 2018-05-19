@@ -32,7 +32,8 @@ SOURCES += \
     Core/FileDownloader.cpp \
     Process/RlsManager.cpp \
     UI/CommandLine.cpp \
-    UI/StringListModel.cpp
+    UI/StringListModel.cpp \
+    Core/Utils.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -61,7 +62,8 @@ HEADERS += \
     Core/FileDownloader.h \
     Process/RlsManager.h \
     UI/CommandLine.h \
-    UI/StringListModel.h
+    UI/StringListModel.h \
+    Core/Utils.h
 
 FORMS += \
     UI/MainWindow.ui \
