@@ -33,7 +33,8 @@ SOURCES += \
     Process/RlsManager.cpp \
     UI/CommandLine.cpp \
     UI/StringListModel.cpp \
-    Core/Utils.cpp
+    Core/Utils.cpp \
+    UI/AddComponent.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -63,7 +64,8 @@ HEADERS += \
     Process/RlsManager.h \
     UI/CommandLine.h \
     UI/StringListModel.h \
-    Core/Utils.h
+    Core/Utils.h \
+    UI/AddComponent.h
 
 FORMS += \
     UI/MainWindow.ui \
@@ -74,7 +76,8 @@ FORMS += \
     UI/ProjectProperties.ui \
     UI/Rename.ui \
     UI/GoToLine.ui \
-    UI/RustInstaller.ui
+    UI/RustInstaller.ui \
+    UI/AddComponent.ui
 
 DISTFILES += \
     ../README.md \

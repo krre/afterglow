@@ -3,6 +3,7 @@
 #include "Core/Settings.h"
 #include "Core/FileDownloader.h"
 #include "CommandLine.h"
+#include "AddComponent.h"
 #include "StringListModel.h"
 #include "Core/Utils.h"
 #include <QtWidgets>
@@ -89,6 +90,11 @@ void RustInstaller::on_pushButtonUninstall_clicked() {
     if (button == QMessageBox::Ok) {
         runCommand("rustup", QStringList() << "self" << "uninstall" << "-y");
     }
+}
+
+void RustInstaller::on_pushButtonAddComponent_clicked() {
+    AddComponent addComponent(this);
+    addComponent.exec();
 }
 
 void RustInstaller::on_pushButtonRun_clicked() {
