@@ -95,6 +95,11 @@ void RustInstaller::on_pushButtonUninstall_clicked() {
 void RustInstaller::on_pushButtonAddComponent_clicked() {
     AddComponent addComponent(this);
     addComponent.exec();
+
+    QStringList components = addComponent.getComponents();
+    if (components.count()) {
+        runCommand("rustup", QStringList() << "component" << "add" << components);
+    }
 }
 
 void RustInstaller::on_pushButtonRun_clicked() {

@@ -2,6 +2,7 @@
 #include "ui_AddComponent.h"
 #include "Core/Utils.h"
 #include "StringListModel.h"
+#include <QtCore>
 
 AddComponent::AddComponent(QWidget *parent) :
         QDialog(parent),
@@ -23,4 +24,13 @@ AddComponent::AddComponent(QWidget *parent) :
 
 AddComponent::~AddComponent() {
     delete ui;
+}
+
+void AddComponent::on_buttonBox_accepted() {
+    QModelIndexList indices = ui->listView->selectionModel()->selectedIndexes();
+    StringListModel* model = static_cast<StringListModel*>(ui->listView->model());
+
+    for (int i = 0; i < indices.count(); i++) {
+        components.append(model->data(indices.at(i), Qt::DisplayRole).toString());
+    }
 }
