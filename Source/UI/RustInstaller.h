@@ -25,6 +25,7 @@ private slots:
     void on_pushButtonUninstall_clicked();
 
     void on_pushButtonAddComponent_clicked();
+    void on_pushButtonRemoveComponent_clicked();
 
     void on_pushButtonRun_clicked();
     void onCommandLineTextChanged(const QString& text);

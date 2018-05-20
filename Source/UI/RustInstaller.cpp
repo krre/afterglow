@@ -22,6 +22,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
 
     ui->lineEditRustup->setText(Settings::getValue("rustup.path").toString());
     ui->pushButtonRun->setEnabled(false);
+    ui->listViewComponents->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     process = new QProcess(this);
     QTextCodec* outputCodec = QTextCodec::codecForLocale();
@@ -99,6 +100,24 @@ void RustInstaller::on_pushButtonAddComponent_clicked() {
     QStringList components = addComponent.getComponents();
     if (components.count()) {
         runCommand("rustup", QStringList() << "component" << "add" << components);
+    }
+}
+
+void RustInstaller::on_pushButtonRemoveComponent_clicked() {
+    int button = QMessageBox::question(this, tr("Remove components"), tr("Components will be removed. Are you sure?"),
+                          QMessageBox::Ok,
+                          QMessageBox::Cancel);
+    if (button == QMessageBox::Ok) {
+        QStringList components;
+
+        QModelIndexList indices = ui->listViewComponents->selectionModel()->selectedIndexes();
+        StringListModel* model = static_cast<StringListModel*>(ui->listViewComponents->model());
+
+        for (int i = 0; i < indices.count(); i++) {
+            components.append(model->data(indices.at(i), Qt::DisplayRole).toString());
+        }
+
+        runCommand("rustup", QStringList() << "component" << "remove" << components);
     }
 }
 
