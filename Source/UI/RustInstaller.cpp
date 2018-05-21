@@ -24,6 +24,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
     ui->lineEditRustup->setText(Settings::getValue("rustup.path").toString());
     ui->pushButtonRun->setEnabled(false);
     ui->listViewToolchains->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    ui->listViewTargets->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listViewComponents->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     process = new QProcess(this);
@@ -53,6 +54,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
     loadToolchainList();
+    loadTargetsList();
     loadComponentList();
 }
 
@@ -200,6 +202,17 @@ void RustInstaller::loadToolchainList() {
     QItemSelectionModel* oldModel = ui->listViewToolchains->selectionModel();
     QAbstractItemModel* model = new StringListModel(toolchainList, this);
     ui->listViewToolchains->setModel(model);
+    if (oldModel) {
+        delete oldModel;
+    }
+}
+
+void RustInstaller::loadTargetsList() {
+    QStringList targetList = Utils::listFromConsole("rustup target list");
+
+    QItemSelectionModel* oldModel = ui->listViewTargets->selectionModel();
+    QAbstractItemModel* model = new StringListModel(targetList, this);
+    ui->listViewTargets->setModel(model);
     if (oldModel) {
         delete oldModel;
     }

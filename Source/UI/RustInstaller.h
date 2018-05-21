@@ -40,6 +40,7 @@ private:
     void showAndScrollMessage(const QString message, bool newLine = true);
     void runFromQueue();
     void loadToolchainList();
+    void loadTargetsList();
     void loadComponentList();
 
     struct Command {
