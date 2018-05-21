@@ -106,7 +106,7 @@
         <item>
          <widget class="QPushButton" name="pushButtonUninstallToolchain">
           <property name="text">
-           <string>Uninstall</string>
+           <string>Uninstall...</string>
           </property>
          </widget>
         </item>

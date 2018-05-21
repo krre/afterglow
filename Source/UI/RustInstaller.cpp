@@ -6,6 +6,7 @@
 #include "AddComponent.h"
 #include "StringListModel.h"
 #include "Core/Utils.h"
+#include "InstallToolchain.h"
 #include <QtWidgets>
 
 RustInstaller::RustInstaller(QWidget* parent) :
@@ -91,6 +92,15 @@ void RustInstaller::on_pushButtonUninstall_clicked() {
     if (button == QMessageBox::Ok) {
         runCommand("rustup", QStringList() << "self" << "uninstall" << "-y");
     }
+}
+
+void RustInstaller::on_pushButtonInstallToolchain_clicked() {
+    InstallToolchain installToolchain(this);
+    installToolchain.exec();
+}
+
+void RustInstaller::on_pushButtonUninstallToolchain_clicked() {
+
 }
 
 void RustInstaller::on_pushButtonAddComponent_clicked() {
