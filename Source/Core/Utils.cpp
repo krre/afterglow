@@ -5,7 +5,7 @@
 QStringList Utils::listFromConsole(const QString& command) {
     QProcess process;
     QStringList list;
-    QObject::connect(&process, QProcess::readyReadStandardOutput, [&] () {
+    QObject::connect(&process, &QProcess::readyReadStandardOutput, [&] () {
         QString output = process.readAllStandardOutput();
         list = output.split("\n");
         // Cleanup last empty string
