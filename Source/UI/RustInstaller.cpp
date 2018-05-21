@@ -91,7 +91,7 @@ void RustInstaller::on_pushButtonUpdate_clicked() {
 }
 
 void RustInstaller::on_pushButtonUninstall_clicked() {
-    int button = QMessageBox::question(this, tr("Uninstall Rust"), tr("Rust will be uninstall. Are you sure?"),
+    int button = QMessageBox::question(this, tr("Uninstall Rust"), tr("Rust will be uninstalled. Are you sure?"),
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
