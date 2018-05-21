@@ -42,6 +42,7 @@ private:
     void loadToolchainList();
     void loadTargetList();
     void loadComponentList();
+    void loadOverrideList();
 
     struct Command {
         QString program;

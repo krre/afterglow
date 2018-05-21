@@ -26,6 +26,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
     ui->listViewToolchains->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listViewTargets->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listViewComponents->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    ui->listViewOverrides->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     process = new QProcess(this);
     QTextCodec* outputCodec = QTextCodec::codecForLocale();
@@ -56,6 +57,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
     loadToolchainList();
     loadTargetList();
     loadComponentList();
+    loadOverrideList();
 }
 
 RustInstaller::~RustInstaller() {
@@ -234,6 +236,17 @@ void RustInstaller::loadComponentList() {
     QItemSelectionModel* oldModel = ui->listViewComponents->selectionModel();
     QAbstractItemModel* model = new StringListModel(componentList, this);
     ui->listViewComponents->setModel(model);
+    if (oldModel) {
+        delete oldModel;
+    }
+}
+
+void RustInstaller::loadOverrideList() {
+    QStringList overrideList = Utils::listFromConsole("rustup override list");
+
+    QItemSelectionModel* oldModel = ui->listViewOverrides->selectionModel();
+    QAbstractItemModel* model = new StringListModel(overrideList, this);
+    ui->listViewOverrides->setModel(model);
     if (oldModel) {
         delete oldModel;
     }
