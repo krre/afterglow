@@ -37,7 +37,7 @@ private slots:
 
 private:
     void runCommand(const QString& program, const QStringList& arguments);
-    void showAndScrollMessage(const QString message, bool newLine = true);
+    void showAndScrollMessage(const QString message, bool newLine = false);
     void runFromQueue();
     void loadToolchainList();
     void loadTargetList();

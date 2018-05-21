@@ -47,7 +47,8 @@ RustInstaller::RustInstaller(QWidget* parent) :
 
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=] (int exitCode, QProcess::ExitStatus exitStatus) {
         Q_UNUSED(exitStatus)
-        showAndScrollMessage(QString(tr("Process finished with exit code %1\n")).arg(exitCode));
+        Q_UNUSED(exitCode)
+        showAndScrollMessage(tr("Command finished"));
         runFromQueue();
     });
 
@@ -193,7 +194,11 @@ void RustInstaller::showAndScrollMessage(const QString message, bool newLine) {
 void RustInstaller::runFromQueue() {
     if (!commandQueue.isEmpty() && process->state() == QProcess::NotRunning) {
         Command command = commandQueue.dequeue();
-        showAndScrollMessage(command.program + " " + command.arguments.join(" "));
+        if (ui->plainTextEditConsole->document()->blockCount() > 1) {
+            showAndScrollMessage("\n");
+            showAndScrollMessage("\n");
+        }
+        showAndScrollMessage(tr("Run command: %1 %2").arg(command.program).arg(command.arguments.join(" ")), true);
         process->start(command.program, command.arguments);
     }
 }
