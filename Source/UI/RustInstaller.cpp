@@ -54,7 +54,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
     loadToolchainList();
-    loadTargetsList();
+    loadTargetList();
     loadComponentList();
 }
 
@@ -207,7 +207,7 @@ void RustInstaller::loadToolchainList() {
     }
 }
 
-void RustInstaller::loadTargetsList() {
+void RustInstaller::loadTargetList() {
     QStringList targetList = Utils::listFromConsole("rustup target list");
 
     QItemSelectionModel* oldModel = ui->listViewTargets->selectionModel();
