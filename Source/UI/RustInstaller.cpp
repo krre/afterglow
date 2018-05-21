@@ -23,6 +23,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
 
     ui->lineEditRustup->setText(Settings::getValue("rustup.path").toString());
     ui->pushButtonRun->setEnabled(false);
+    ui->listViewToolchains->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listViewComponents->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     process = new QProcess(this);
@@ -100,7 +101,21 @@ void RustInstaller::on_pushButtonInstallToolchain_clicked() {
 }
 
 void RustInstaller::on_pushButtonUninstallToolchain_clicked() {
+    int button = QMessageBox::question(this, tr("Uninstall Toolchain"), tr("Toolchains will be uninstalled. Are you sure?"),
+                          QMessageBox::Ok,
+                          QMessageBox::Cancel);
+    if (button == QMessageBox::Ok) {
+        QStringList toolchains;
 
+        QModelIndexList indices = ui->listViewToolchains->selectionModel()->selectedIndexes();
+        StringListModel* model = static_cast<StringListModel*>(ui->listViewToolchains->model());
+
+        for (int i = 0; i < indices.count(); i++) {
+            toolchains.append(model->data(indices.at(i), Qt::DisplayRole).toString());
+        }
+
+        runCommand("rustup", QStringList() << "toolchain" << "uninstall" << toolchains);
+    }
 }
 
 void RustInstaller::on_pushButtonAddComponent_clicked() {
@@ -114,7 +129,7 @@ void RustInstaller::on_pushButtonAddComponent_clicked() {
 }
 
 void RustInstaller::on_pushButtonRemoveComponent_clicked() {
-    int button = QMessageBox::question(this, tr("Remove components"), tr("Components will be removed. Are you sure?"),
+    int button = QMessageBox::question(this, tr("Remove Components"), tr("Components will be removed. Are you sure?"),
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
