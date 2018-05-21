@@ -49,7 +49,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
         Q_UNUSED(exitStatus)
         Q_UNUSED(exitCode)
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF").arg(tr("Command finished"));
-        showAndScrollMessage(message);
+        showAndScrollMessage(message, true);
         runFromQueue();
     });
 
@@ -184,24 +184,30 @@ void RustInstaller::runCommand(const QString &program, const QStringList &argume
     runFromQueue();
 }
 
-void RustInstaller::showAndScrollMessage(const QString message) {
-    ui->plainTextEditConsole->appendHtml(message);
+void RustInstaller::showAndScrollMessage(const QString message, bool html) {
+    if (html) {
+        ui->plainTextEditConsole->appendHtml(message);
+    } else {
+        ui->plainTextEditConsole->appendPlainText(message);
+    }
+
     ui->plainTextEditConsole->verticalScrollBar()->setValue(ui->plainTextEditConsole->verticalScrollBar()->maximum());
 }
 
 void RustInstaller::runFromQueue() {
     if (!commandQueue.isEmpty() && process->state() == QProcess::NotRunning) {
-        Command command = commandQueue.dequeue();
         if (ui->plainTextEditConsole->document()->blockCount() > 1) {
-            showAndScrollMessage("\n");
+            showAndScrollMessage("");
         }
+
+        Command command = commandQueue.dequeue();
         QString message = QString("<font color=%1>%2</font>: <font color=%3>%4 %5</font>")
                     .arg("#0000FF")
                     .arg(tr("Run command"))
                     .arg("#FF0000")
                     .arg(command.program)
                     .arg(command.arguments.join(" "));
-        showAndScrollMessage(message);
+        showAndScrollMessage(message, true);
         process->start(command.program, command.arguments);
     }
 }
