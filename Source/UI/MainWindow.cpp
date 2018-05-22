@@ -535,7 +535,7 @@ void MainWindow::loadSettings() {
     if (x.isNull() || y.isNull()) {
         // Center window in screen.
         resize(width, height);
-        setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), qApp->desktop()->availableGeometry()));
+        setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QGuiApplication::screens().at(0)->availableGeometry()));
     } else {
         setGeometry(x.toInt(), y.toInt(), width, height);
     }
