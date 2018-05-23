@@ -2,7 +2,7 @@
 #include <QtWidgets>
 
 
-QStringList Utils::listFromConsole(const QString& command) {
+QStringList Utils::getListFromConsole(const QString& command) {
     QProcess process;
     QStringList list;
     QObject::connect(&process, &QProcess::readyReadStandardOutput, [&] () {

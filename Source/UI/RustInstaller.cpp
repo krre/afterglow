@@ -212,7 +212,7 @@ void RustInstaller::runFromQueue() {
 }
 
 void RustInstaller::loadToolchainList() {
-    QStringList toolchainList = Utils::listFromConsole("rustup toolchain list");
+    QStringList toolchainList = Utils::getListFromConsole("rustup toolchain list");
 
     QItemSelectionModel* oldModel = ui->listViewToolchains->selectionModel();
     QAbstractItemModel* model = new StringListModel(toolchainList, this);
@@ -223,7 +223,7 @@ void RustInstaller::loadToolchainList() {
 }
 
 void RustInstaller::loadTargetList() {
-    QStringList targetList = Utils::listFromConsole("rustup target list");
+    QStringList targetList = Utils::getListFromConsole("rustup target list");
 
     QItemSelectionModel* oldModel = ui->listViewTargets->selectionModel();
     QAbstractItemModel* model = new StringListModel(targetList, this);
@@ -234,7 +234,7 @@ void RustInstaller::loadTargetList() {
 }
 
 void RustInstaller::loadComponentList() {
-    QStringList componentList = Utils::listFromConsole("rustup component list");
+    QStringList componentList = Utils::getListFromConsole("rustup component list");
     for (int i = componentList.count() - 1; i >= 0; i--) {
         if (componentList.at(i).contains("(default)")) {
             continue;
@@ -255,7 +255,7 @@ void RustInstaller::loadComponentList() {
 }
 
 void RustInstaller::loadOverrideList() {
-    QStringList overrideList = Utils::listFromConsole("rustup override list");
+    QStringList overrideList = Utils::getListFromConsole("rustup override list");
 
     QItemSelectionModel* oldModel = ui->listViewOverrides->selectionModel();
     QAbstractItemModel* model = new StringListModel(overrideList, this);

@@ -9,7 +9,7 @@ AddComponent::AddComponent(QWidget *parent) :
         ui(new Ui::AddComponent) {
     ui->setupUi(this);
 
-    QStringList componentList = Utils::listFromConsole("rustup component list");
+    QStringList componentList = Utils::getListFromConsole("rustup component list");
     for (int i = componentList.count() - 1; i >= 0; i--) {
         if (componentList.at(i).contains("(default)") || componentList.at(i).contains("(installed)")) {
             componentList.removeAt(i);

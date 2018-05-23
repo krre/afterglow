@@ -6,6 +6,6 @@ class QListView;
 class Utils {
 
 public:
-    static QStringList listFromConsole(const QString& command);
+    static QStringList getListFromConsole(const QString& command);
     static QStringList getSelectedRowsFromListView(QListView* listView);
 };
