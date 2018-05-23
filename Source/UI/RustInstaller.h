@@ -2,6 +2,7 @@
 #include <QDialog>
 #include <QTemporaryDir>
 #include <QQueue>
+#include <functional>
 
 namespace Ui {
     class RustInstaller;
@@ -37,7 +38,7 @@ private slots:
     void onDownloaded();
 
 private:
-    void runCommand(const QString& program, const QStringList& arguments);
+    void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr);
     void showAndScrollMessage(const QString message, bool html = false);
     void runFromQueue();
     void loadToolchainList();
@@ -48,6 +49,7 @@ private:
     struct Command {
         QString program;
         QStringList arguments;
+        std::function<void()> postWork;
     };
 
     Ui::RustInstaller* ui;

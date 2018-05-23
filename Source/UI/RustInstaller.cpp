@@ -51,6 +51,11 @@ RustInstaller::RustInstaller(QWidget* parent) :
         Q_UNUSED(exitCode)
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF").arg(tr("Command finished"));
         showAndScrollMessage(message, true);
+        Command command = commandQueue.dequeue();
+        if (command.postWork) {
+            command.postWork();
+        }
+
         runFromQueue();
     });
 
@@ -124,7 +129,9 @@ void RustInstaller::on_pushButtonUninstallToolchain_clicked() {
 
 void RustInstaller::on_pushButtonSetDefaultToolchain_clicked() {
     runCommand("rustup", QStringList() << "default"
-               << Utils::getSelectedRowsFromListView(ui->listViewToolchains).at(0));
+               << Utils::getSelectedRowsFromListView(ui->listViewToolchains).at(0), [this] {
+        loadToolchainList();
+    });
 }
 
 void RustInstaller::on_pushButtonAddComponent_clicked() {
@@ -174,8 +181,8 @@ void RustInstaller::onDownloaded() {
     process->start(filePath, arguments);
 }
 
-void RustInstaller::runCommand(const QString &program, const QStringList &arguments) {
-    commandQueue.enqueue({ program, arguments });
+void RustInstaller::runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork) {
+    commandQueue.enqueue({ program, arguments, postWork });
     runFromQueue();
 }
 
@@ -195,7 +202,7 @@ void RustInstaller::runFromQueue() {
             showAndScrollMessage("");
         }
 
-        Command command = commandQueue.dequeue();
+        Command command = commandQueue.head();
         QString message = QString("<font color=%1>%2</font>: <font color=%3>%4 %5</font>")
                     .arg("#0000FF")
                     .arg(tr("Run command"))
