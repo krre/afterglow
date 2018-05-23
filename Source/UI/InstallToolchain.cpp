@@ -1,5 +1,6 @@
 #include "InstallToolchain.h"
 #include "ui_InstallToolchain.h"
+#include <QtCore>
 
 InstallToolchain::InstallToolchain(QWidget* parent) :
         QDialog(parent),
@@ -14,6 +15,15 @@ InstallToolchain::~InstallToolchain() {
     delete ui;
 }
 
+void InstallToolchain::on_comboBoxChannel_currentIndexChanged(int index) {
+    ui->lineEditChannel->setEnabled(index == ui->comboBoxChannel->count() - 1);
+}
+
+void InstallToolchain::on_comboBoxHost_currentIndexChanged(int index) {
+    ui->lineEditHost->setEnabled(index == ui->comboBoxHost->count() - 1);
+
+}
+
 void InstallToolchain::loadHosts() {
 #if defined(Q_OS_LINUX)
     ui->comboBoxHost->addItem("x86_64-unknown-linux-gnu");
@@ -25,4 +35,5 @@ void InstallToolchain::loadHosts() {
     ui->comboBoxHost->addItem("i686-pc-windows-msvc");
 #endif
     ui->comboBoxHost->addItem(tr("Custom"));
+    on_comboBoxHost_currentIndexChanged(0);
 }

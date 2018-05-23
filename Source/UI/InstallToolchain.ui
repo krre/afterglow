@@ -63,7 +63,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEditChannel"/>
+        <widget class="QLineEdit" name="lineEditChannel">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -83,7 +87,11 @@
         <widget class="QComboBox" name="comboBoxHost"/>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEditHost"/>
+        <widget class="QLineEdit" name="lineEditHost">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
