@@ -24,6 +24,11 @@ RustInstaller::RustInstaller(QWidget* parent) :
     ui->lineEditRustup->setText(Settings::getValue("rustup.path").toString());
     ui->pushButtonRun->setEnabled(false);
 
+    ui->listViewToolchains->setModel(new StringListModel(this));
+    ui->listViewTargets->setModel(new StringListModel(this));
+    ui->listViewComponents->setModel(new StringListModel(this));
+    ui->listViewOverrides->setModel(new StringListModel(this));
+
     process = new QProcess(this);
     QTextCodec* outputCodec = QTextCodec::codecForLocale();
 
@@ -118,15 +123,6 @@ void RustInstaller::on_pushButtonUninstallToolchain_clicked() {
 }
 
 void RustInstaller::on_pushButtonSetDefaultToolchain_clicked() {
-    QStringList toolchains;
-
-    QModelIndexList indices = ui->listViewToolchains->selectionModel()->selectedIndexes();
-    StringListModel* model = static_cast<StringListModel*>(ui->listViewToolchains->model());
-
-    for (int i = 0; i < indices.count(); i++) {
-        toolchains.append(model->data(indices.at(i), Qt::DisplayRole).toString());
-    }
-
     runCommand("rustup", QStringList() << "default"
                << Utils::getSelectedRowsFromListView(ui->listViewToolchains).at(0));
 }
@@ -212,25 +208,13 @@ void RustInstaller::runFromQueue() {
 }
 
 void RustInstaller::loadToolchainList() {
-    QStringList toolchainList = Utils::getListFromConsole("rustup toolchain list");
-
-    QItemSelectionModel* oldModel = ui->listViewToolchains->selectionModel();
-    QAbstractItemModel* model = new StringListModel(toolchainList, this);
-    ui->listViewToolchains->setModel(model);
-    if (oldModel) {
-        delete oldModel;
-    }
+    StringListModel* model = static_cast<StringListModel*>(ui->listViewToolchains->model());
+    model->setStrings(Utils::getListFromConsole("rustup toolchain list"));
 }
 
 void RustInstaller::loadTargetList() {
-    QStringList targetList = Utils::getListFromConsole("rustup target list");
-
-    QItemSelectionModel* oldModel = ui->listViewTargets->selectionModel();
-    QAbstractItemModel* model = new StringListModel(targetList, this);
-    ui->listViewTargets->setModel(model);
-    if (oldModel) {
-        delete oldModel;
-    }
+    StringListModel* model = static_cast<StringListModel*>(ui->listViewTargets->model());
+    model->setStrings(Utils::getListFromConsole("rustup target list"));
 }
 
 void RustInstaller::loadComponentList() {
@@ -246,21 +230,11 @@ void RustInstaller::loadComponentList() {
         }
     }
 
-    QItemSelectionModel* oldModel = ui->listViewComponents->selectionModel();
-    QAbstractItemModel* model = new StringListModel(componentList, this);
-    ui->listViewComponents->setModel(model);
-    if (oldModel) {
-        delete oldModel;
-    }
+    StringListModel* model = static_cast<StringListModel*>(ui->listViewComponents->model());
+    model->setStrings(componentList);
 }
 
 void RustInstaller::loadOverrideList() {
-    QStringList overrideList = Utils::getListFromConsole("rustup override list");
-
-    QItemSelectionModel* oldModel = ui->listViewOverrides->selectionModel();
-    QAbstractItemModel* model = new StringListModel(overrideList, this);
-    ui->listViewOverrides->setModel(model);
-    if (oldModel) {
-        delete oldModel;
-    }
+    StringListModel* model = static_cast<StringListModel*>(ui->listViewOverrides->model());
+    model->setStrings(Utils::getListFromConsole("rustup override list"));
 }

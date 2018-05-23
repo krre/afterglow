@@ -5,8 +5,8 @@ class StringListModel : public QAbstractListModel {
     Q_OBJECT
 
 public:
-    StringListModel(const QStringList& strings, QObject* parent = 0)
-        : QAbstractListModel(parent), stringList(strings) {}
+    StringListModel(QObject* parent = 0);
+    StringListModel(const QStringList& strings = QStringList(), QObject* parent = 0);
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
     QVariant data(const QModelIndex& index, int role) const;
@@ -19,6 +19,9 @@ public:
 
     bool insertRows(int position, int rows, const QModelIndex& index = QModelIndex());
     bool removeRows(int position, int rows, const QModelIndex& index = QModelIndex());
+
+    void setStrings(const QStringList& strings);
+    void clear();
 
 private:
     QStringList stringList;

@@ -1,5 +1,12 @@
 #include "StringListModel.h"
 
+StringListModel::StringListModel(QObject* parent) : QAbstractListModel(parent) {
+
+}
+
+StringListModel::StringListModel(const QStringList& strings, QObject* parent)
+    : QAbstractListModel(parent), stringList(strings) {}
+
 int StringListModel::rowCount(const QModelIndex& parent) const {
     Q_UNUSED(parent)
     return stringList.count();
@@ -75,4 +82,16 @@ bool StringListModel::removeRows(int position, int rows, const QModelIndex& pare
 
     endRemoveRows();
     return true;
+}
+
+void StringListModel::setStrings(const QStringList& strings) {
+    beginResetModel();
+    stringList = strings;
+    endResetModel();
+}
+
+void StringListModel::clear() {
+    beginResetModel();
+    stringList.clear();
+    endResetModel();
 }
