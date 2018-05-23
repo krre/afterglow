@@ -13,5 +13,7 @@ public:
     ~InstallToolchain();
 
 private:
+    void loadHosts();
+
     Ui::InstallToolchain* ui;
 };
