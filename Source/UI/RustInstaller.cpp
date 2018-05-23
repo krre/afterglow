@@ -112,16 +112,8 @@ void RustInstaller::on_pushButtonUninstallToolchain_clicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        QStringList toolchains;
-
-        QModelIndexList indices = ui->listViewToolchains->selectionModel()->selectedIndexes();
-        StringListModel* model = static_cast<StringListModel*>(ui->listViewToolchains->model());
-
-        for (int i = 0; i < indices.count(); i++) {
-            toolchains.append(model->data(indices.at(i), Qt::DisplayRole).toString());
-        }
-
-        runCommand("rustup", QStringList() << "toolchain" << "uninstall" << toolchains);
+        runCommand("rustup", QStringList() << "toolchain" << "uninstall"
+                   << Utils::getSelectedRowsFromListView(ui->listViewToolchains));
     }
 }
 
@@ -135,7 +127,8 @@ void RustInstaller::on_pushButtonSetDefaultToolchain_clicked() {
         toolchains.append(model->data(indices.at(i), Qt::DisplayRole).toString());
     }
 
-    runCommand("rustup", QStringList() << "default" << toolchains.at(0));
+    runCommand("rustup", QStringList() << "default"
+               << Utils::getSelectedRowsFromListView(ui->listViewToolchains).at(0));
 }
 
 void RustInstaller::on_pushButtonAddComponent_clicked() {
@@ -153,16 +146,8 @@ void RustInstaller::on_pushButtonRemoveComponent_clicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        QStringList components;
-
-        QModelIndexList indices = ui->listViewComponents->selectionModel()->selectedIndexes();
-        StringListModel* model = static_cast<StringListModel*>(ui->listViewComponents->model());
-
-        for (int i = 0; i < indices.count(); i++) {
-            components.append(model->data(indices.at(i), Qt::DisplayRole).toString());
-        }
-
-        runCommand("rustup", QStringList() << "component" << "remove" << components);
+        runCommand("rustup", QStringList() << "component" << "remove"
+                   << Utils::getSelectedRowsFromListView(ui->listViewComponents));
     }
 }
 

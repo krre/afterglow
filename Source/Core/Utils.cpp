@@ -1,5 +1,5 @@
 #include "Utils.h"
-#include <QtCore>
+#include <QtWidgets>
 
 
 QStringList Utils::listFromConsole(const QString& command) {
@@ -21,4 +21,15 @@ QStringList Utils::listFromConsole(const QString& command) {
     process.waitForFinished();
 
     return list;
+}
+
+QStringList Utils::getSelectedRowsFromListView(QListView* listView) {
+    QStringList rows;
+
+    QModelIndexList indices = listView->selectionModel()->selectedIndexes();
+    for (int i = 0; i < indices.count(); i++) {
+        rows.append(listView->model()->data(indices.at(i), Qt::DisplayRole).toString());
+    }
+
+    return rows;
 }
