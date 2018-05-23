@@ -125,6 +125,19 @@ void RustInstaller::on_pushButtonUninstallToolchain_clicked() {
     }
 }
 
+void RustInstaller::on_pushButtonSetDefaultToolchain_clicked() {
+    QStringList toolchains;
+
+    QModelIndexList indices = ui->listViewToolchains->selectionModel()->selectedIndexes();
+    StringListModel* model = static_cast<StringListModel*>(ui->listViewToolchains->model());
+
+    for (int i = 0; i < indices.count(); i++) {
+        toolchains.append(model->data(indices.at(i), Qt::DisplayRole).toString());
+    }
+
+    runCommand("rustup", QStringList() << "default" << toolchains.at(0));
+}
+
 void RustInstaller::on_pushButtonAddComponent_clicked() {
     AddComponent addComponent(this);
     addComponent.exec();

@@ -26,6 +26,7 @@ private slots:
 
     void on_pushButtonInstallToolchain_clicked();
     void on_pushButtonUninstallToolchain_clicked();
+    void on_pushButtonSetDefaultToolchain_clicked();
 
     void on_pushButtonAddComponent_clicked();
     void on_pushButtonRemoveComponent_clicked();
