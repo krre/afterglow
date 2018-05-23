@@ -17,11 +17,16 @@ InstallToolchain::~InstallToolchain() {
 
 void InstallToolchain::on_comboBoxChannel_currentIndexChanged(int index) {
     ui->lineEditChannel->setEnabled(index == ui->comboBoxChannel->count() - 1);
+    if (ui->lineEditChannel->isEnabled()) {
+        ui->lineEditChannel->setFocus();
+    }
 }
 
 void InstallToolchain::on_comboBoxHost_currentIndexChanged(int index) {
     ui->lineEditHost->setEnabled(index == ui->comboBoxHost->count() - 1);
-
+    if (ui->lineEditHost->isEnabled()) {
+        ui->lineEditHost->setFocus();
+    }
 }
 
 void InstallToolchain::on_buttonBox_accepted() {
