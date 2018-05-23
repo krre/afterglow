@@ -11,13 +11,17 @@ class InstallToolchain : public QDialog {
 public:
     explicit InstallToolchain(QWidget* parent = 0);
     ~InstallToolchain();
+    const QString& getToolchain() const { return toolchain; }
 
 private slots:
     void on_comboBoxChannel_currentIndexChanged(int index);
     void on_comboBoxHost_currentIndexChanged(int index);
 
+    void on_buttonBox_accepted();
+
 private:
     void loadHosts();
 
     Ui::InstallToolchain* ui;
+    QString toolchain;
 };

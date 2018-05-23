@@ -100,6 +100,11 @@ void RustInstaller::on_pushButtonUninstall_clicked() {
 void RustInstaller::on_pushButtonInstallToolchain_clicked() {
     InstallToolchain installToolchain(this);
     installToolchain.exec();
+
+    QString toolchain = installToolchain.getToolchain();
+    if (!toolchain.isEmpty()) {
+        runCommand("rustup", QStringList() << "toolchain" << "install" << toolchain);
+    }
 }
 
 void RustInstaller::on_pushButtonUninstallToolchain_clicked() {

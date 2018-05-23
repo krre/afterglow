@@ -42,22 +42,22 @@
         <widget class="QComboBox" name="comboBoxChannel">
          <item>
           <property name="text">
-           <string>Stable</string>
+           <string>stable</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Beta</string>
+           <string>beta</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Nightly</string>
+           <string>nightly</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Version</string>
+           <string>version</string>
           </property>
          </item>
         </widget>

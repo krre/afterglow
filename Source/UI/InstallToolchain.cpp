@@ -24,6 +24,22 @@ void InstallToolchain::on_comboBoxHost_currentIndexChanged(int index) {
 
 }
 
+void InstallToolchain::on_buttonBox_accepted() {
+    QString channel = ui->comboBoxChannel->currentText();
+    if (ui->comboBoxChannel->currentIndex() == ui->comboBoxChannel->count() - 1) {
+        channel = ui->lineEditChannel->text();
+    }
+
+    QString date = ui->lineEditDate->text();
+
+    QString host = ui->comboBoxHost->currentText();
+    if (ui->comboBoxHost->currentIndex() == ui->comboBoxHost->count() - 1) {
+        host = ui->lineEditHost->text();
+    }
+
+    toolchain = channel + "-" + (!date.isEmpty() ? QString("%1-").arg(date) : "") + host;
+}
+
 void InstallToolchain::loadHosts() {
 #if defined(Q_OS_LINUX)
     ui->comboBoxHost->addItem("x86_64-unknown-linux-gnu");
