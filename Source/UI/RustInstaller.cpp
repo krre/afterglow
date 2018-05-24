@@ -225,17 +225,7 @@ void RustInstaller::runFromQueue() {
 }
 
 void RustInstaller::loadToolchainList() {
-    StringListModel* model = static_cast<StringListModel*>(ui->listViewToolchains->model());
-    QStringList list = Utils::getListFromConsole("rustup toolchain list");
-    if (list.count() == 1 && list.at(0).left(2) == "no") {
-        list.removeFirst();
-    }
-
-    model->setStrings(list);
-    if (model->rowCount()) {
-        ui->listViewToolchains->setCurrentIndex(model->index(0, 0));
-    }
-
+    loadAndFilterList("rustup toolchain list", ui->listViewToolchains);
     updateToolchainButtonsState();
 }
 
@@ -246,38 +236,43 @@ void RustInstaller::updateToolchainButtonsState() {
 }
 
 void RustInstaller::loadTargetList() {
-    StringListModel* model = static_cast<StringListModel*>(ui->listViewTargets->model());
-    model->setStrings(Utils::getListFromConsole("rustup target list"));
-    if (model->rowCount()) {
-        ui->listViewTargets->setCurrentIndex(model->index(0, 0));
-    }
+    loadAndFilterList("rustup target list", ui->listViewTargets);
 }
 
 void RustInstaller::loadComponentList() {
-    QStringList componentList = Utils::getListFromConsole("rustup component list");
-    for (int i = componentList.count() - 1; i >= 0; i--) {
-        if (componentList.at(i).contains("(default)")) {
-            continue;
-        } else if (componentList.at(i).contains("(installed)")) {
-            QString component = componentList.at(i);
-            componentList[i] = component.replace("(installed)", "");
-        } else {
-            componentList.removeAt(i);
+    loadAndFilterList("rustup component list", ui->listViewComponents, [this] (QStringList& list) {
+        for (int i = list.count() - 1; i >= 0; i--) {
+            if (list.at(i).contains("(default)")) {
+                continue;
+            } else if (list.at(i).contains("(installed)")) {
+                QString component = list.at(i);
+                list[i] = component.replace("(installed)", "");
+            } else {
+                list.removeAt(i);
+            }
         }
-    }
-
-    StringListModel* model = static_cast<StringListModel*>(ui->listViewComponents->model());
-    model->setStrings(componentList);
-    if (model->rowCount()) {
-        ui->listViewComponents->setCurrentIndex(model->index(0, 0));
-    }
+    });
 }
 
 void RustInstaller::loadOverrideList() {
-    StringListModel* model = static_cast<StringListModel*>(ui->listViewOverrides->model());
-    model->setStrings(Utils::getListFromConsole("rustup override list"));
+    loadAndFilterList("rustup override list", ui->listViewOverrides);
+}
+
+void RustInstaller::loadAndFilterList(const QString& command, QListView* listView, const std::function<void(QStringList&)>& filter) {
+    StringListModel* model = static_cast<StringListModel*>(listView->model());
+    QStringList list = Utils::getListFromConsole(command);
+
+    if (list.count() == 1 && list.at(0).left(2) == "no") {
+        list.removeFirst();
+    }
+
+    if (filter) {
+        filter(list);
+    }
+
+    model->setStrings(list);
     if (model->rowCount()) {
-        ui->listViewOverrides->setCurrentIndex(model->index(0, 0));
+        listView->setCurrentIndex(model->index(0, 0));
     }
 }
 

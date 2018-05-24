@@ -9,6 +9,7 @@ namespace Ui {
 }
 
 class QProcess;
+class QListView;
 class FileDownloader;
 class CommandLine;
 
@@ -48,6 +49,8 @@ private:
     void loadTargetList();
     void loadComponentList();
     void loadOverrideList();
+
+    void loadAndFilterList(const QString& command, QListView* listView, const std::function<void(QStringList&)>& filter = nullptr);
 
     void readSettings();
     void writeSettings();
