@@ -113,7 +113,9 @@ void RustInstaller::on_pushButtonInstallToolchain_clicked() {
 
     QString toolchain = installToolchain.getToolchain();
     if (!toolchain.isEmpty()) {
-        runCommand("rustup", QStringList() << "toolchain" << "install" << toolchain);
+        runCommand("rustup", QStringList() << "toolchain" << "install" << toolchain, [this] {
+            loadToolchainList();
+        });
     }
 }
 
@@ -123,7 +125,9 @@ void RustInstaller::on_pushButtonUninstallToolchain_clicked() {
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
         runCommand("rustup", QStringList() << "toolchain" << "uninstall"
-                   << Utils::getSelectedRowsFromListView(ui->listViewToolchains));
+                   << Utils::getSelectedRowsFromListView(ui->listViewToolchains), [this] {
+            loadToolchainList();
+        });
     }
 }
 
