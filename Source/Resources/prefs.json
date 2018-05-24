@@ -38,6 +38,9 @@
                 "restore": true,
                 "project": ""
             }
+        },
+        "rustInstaller": {
+            "currentTab": 0
         }
     },
 

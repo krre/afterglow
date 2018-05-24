@@ -7,6 +7,7 @@
 #include "StringListModel.h"
 #include "Core/Utils.h"
 #include "InstallToolchain.h"
+#include "Core/Settings.h"
 #include <QtWidgets>
 
 RustInstaller::RustInstaller(QWidget* parent) :
@@ -66,9 +67,12 @@ RustInstaller::RustInstaller(QWidget* parent) :
     loadTargetList();
     loadComponentList();
     loadOverrideList();
+
+    readSettings();
 }
 
 RustInstaller::~RustInstaller() {
+    writeSettings();
     delete ui;
 }
 
@@ -275,4 +279,12 @@ void RustInstaller::loadOverrideList() {
     if (model->rowCount()) {
         ui->listViewOverrides->setCurrentIndex(model->index(0, 0));
     }
+}
+
+void RustInstaller::readSettings() {
+    ui->tabWidget->setCurrentIndex(Settings::getValue("gui.rustInstaller.currentTab").toInt());
+}
+
+void RustInstaller::writeSettings() {
+    Settings::setValue("gui.rustInstaller.currentTab", ui->tabWidget->currentIndex());
 }

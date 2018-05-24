@@ -49,6 +49,9 @@ private:
     void loadComponentList();
     void loadOverrideList();
 
+    void readSettings();
+    void writeSettings();
+
     struct Command {
         QString program;
         QStringList arguments;
