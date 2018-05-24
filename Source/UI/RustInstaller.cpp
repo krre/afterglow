@@ -128,18 +128,16 @@ void RustInstaller::on_pushButtonUninstallToolchain_clicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        QStringList list = Utils::getSelectedRowsFromListView(ui->listViewToolchains);
-        list.replaceInStrings(" (default)", "");
-        runCommand("rustup", QStringList() << "toolchain" << "uninstall" << list, [this] {
+        runCommand("rustup", QStringList() << "toolchain" << "uninstall"
+                   << Utils::getSelectedRowsFromListView(ui->listViewToolchains), [this] {
             loadToolchainList();
         });
     }
 }
 
 void RustInstaller::on_pushButtonSetDefaultToolchain_clicked() {
-    QStringList list = Utils::getSelectedRowsFromListView(ui->listViewToolchains);
-    list.replaceInStrings(" (default)", "");
-    runCommand("rustup", QStringList() << "default" << list.at(0), [this] {
+    runCommand("rustup", QStringList() << "default"
+               << Utils::getSelectedRowsFromListView(ui->listViewToolchains).at(0), [this] {
         loadToolchainList();
     });
 }
@@ -150,7 +148,9 @@ void RustInstaller::on_pushButtonAddComponent_clicked() {
 
     QStringList components = addComponent.getComponents();
     if (components.count()) {
-        runCommand("rustup", QStringList() << "component" << "add" << components);
+        runCommand("rustup", QStringList() << "component" << "add" << components, [this] {
+            loadComponentList();
+        });
     }
 }
 
@@ -160,7 +160,9 @@ void RustInstaller::on_pushButtonRemoveComponent_clicked() {
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
         runCommand("rustup", QStringList() << "component" << "remove"
-                   << Utils::getSelectedRowsFromListView(ui->listViewComponents));
+                   << Utils::getSelectedRowsFromListView(ui->listViewComponents), [this] {
+            loadComponentList();
+        });
     }
 }
 

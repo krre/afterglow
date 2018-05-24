@@ -23,13 +23,17 @@ QStringList Utils::getListFromConsole(const QString& command) {
     return list;
 }
 
-QStringList Utils::getSelectedRowsFromListView(QListView* listView) {
-    QStringList rows;
+QStringList Utils::getSelectedRowsFromListView(QListView* listView, bool removeDefaultSuffix) {
+    QStringList list;
 
     QModelIndexList indices = listView->selectionModel()->selectedIndexes();
     for (int i = 0; i < indices.count(); i++) {
-        rows.append(listView->model()->data(indices.at(i), Qt::DisplayRole).toString());
+        list.append(listView->model()->data(indices.at(i), Qt::DisplayRole).toString());
     }
 
-    return rows;
+    if (removeDefaultSuffix) {
+        list.replaceInStrings(" (default)", "");
+    }
+
+    return list;
 }
