@@ -217,11 +217,17 @@ void RustInstaller::runFromQueue() {
 void RustInstaller::loadToolchainList() {
     StringListModel* model = static_cast<StringListModel*>(ui->listViewToolchains->model());
     model->setStrings(Utils::getListFromConsole("rustup toolchain list"));
+    if (model->rowCount()) {
+        ui->listViewToolchains->setCurrentIndex(model->index(0, 0));
+    }
 }
 
 void RustInstaller::loadTargetList() {
     StringListModel* model = static_cast<StringListModel*>(ui->listViewTargets->model());
     model->setStrings(Utils::getListFromConsole("rustup target list"));
+    if (model->rowCount()) {
+        ui->listViewTargets->setCurrentIndex(model->index(0, 0));
+    }
 }
 
 void RustInstaller::loadComponentList() {
@@ -239,9 +245,15 @@ void RustInstaller::loadComponentList() {
 
     StringListModel* model = static_cast<StringListModel*>(ui->listViewComponents->model());
     model->setStrings(componentList);
+    if (model->rowCount()) {
+        ui->listViewComponents->setCurrentIndex(model->index(0, 0));
+    }
 }
 
 void RustInstaller::loadOverrideList() {
     StringListModel* model = static_cast<StringListModel*>(ui->listViewOverrides->model());
     model->setStrings(Utils::getListFromConsole("rustup override list"));
+    if (model->rowCount()) {
+        ui->listViewOverrides->setCurrentIndex(model->index(0, 0));
+    }
 }
