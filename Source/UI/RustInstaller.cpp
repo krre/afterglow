@@ -221,7 +221,12 @@ void RustInstaller::runFromQueue() {
 
 void RustInstaller::loadToolchainList() {
     StringListModel* model = static_cast<StringListModel*>(ui->listViewToolchains->model());
-    model->setStrings(Utils::getListFromConsole("rustup toolchain list"));
+    QStringList list = Utils::getListFromConsole("rustup toolchain list");
+    if (list.count() == 1 && list.at(0).left(2) == "no") {
+        list.removeFirst();
+    }
+
+    model->setStrings(list);
     if (model->rowCount()) {
         ui->listViewToolchains->setCurrentIndex(model->index(0, 0));
     }
