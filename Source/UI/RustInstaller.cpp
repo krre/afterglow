@@ -124,8 +124,9 @@ void RustInstaller::on_pushButtonUninstallToolchain_clicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        runCommand("rustup", QStringList() << "toolchain" << "uninstall"
-                   << Utils::getSelectedRowsFromListView(ui->listViewToolchains), [this] {
+        QStringList list = Utils::getSelectedRowsFromListView(ui->listViewToolchains);
+        list.replaceInStrings(" (default)", "");
+        runCommand("rustup", QStringList() << "toolchain" << "uninstall" << list, [this] {
             loadToolchainList();
         });
     }
