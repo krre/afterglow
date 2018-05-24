@@ -17,27 +17,30 @@
         "state": 0
     },
     "gui": {
-        "splitters": {
-            "main": [100, 500],
-            "side": [450, 100]
-        },
-        "sidebar": {
-            "visible": true,
-            "tab": 0
-        },
-        "output": {
-            "visible": true,
-            "tab": 0
-        },
-        "recent": {
-            "projects": [],
-            "files": []
-        },
-        "session": {
-            "restore": true,
-            "project": ""
+        "mainWindow": {
+            "splitters": {
+                "main": [100, 500],
+                "side": [450, 100]
+            },
+            "sidebar": {
+                "visible": true,
+                "tab": 0
+            },
+            "output": {
+                "visible": true,
+                "tab": 0
+            },
+            "recent": {
+                "projects": [],
+                "files": []
+            },
+            "session": {
+                "restore": true,
+                "project": ""
+            }
         }
     },
+
     "editor": {
         "font": {
             "family": "Consolas",

@@ -549,13 +549,13 @@ void MainWindow::loadSettings() {
 
     // Splitter sizes
     QList<int> sizes;
-    QJsonArray sizesArray = Settings::getValue("gui.splitters.main").toArray();
+    QJsonArray sizesArray = Settings::getValue("gui.mainWindow.splitters.main").toArray();
     for (const auto& size : sizesArray) {
         sizes.append(size.toInt());
     }
     ui->splitterMain->setSizes(sizes);
 
-    sizesArray = Settings::getValue("gui.splitters.side").toArray();
+    sizesArray = Settings::getValue("gui.mainWindow.splitters.side").toArray();
     sizes.clear();
 
     for (const auto& size : sizesArray) {
@@ -564,29 +564,29 @@ void MainWindow::loadSettings() {
     ui->splitterSide->setSizes(sizes);
 
     // Sidebar
-    ui->actionShowSidebar->setChecked(Settings::getValue("gui.sidebar.visible").toBool());
-    ui->tabWidgetSide->setCurrentIndex(Settings::getValue("gui.sidebar.tab").toInt());
+    ui->actionShowSidebar->setChecked(Settings::getValue("gui.mainWindow.sidebar.visible").toBool());
+    ui->tabWidgetSide->setCurrentIndex(Settings::getValue("gui.mainWindow.sidebar.tab").toInt());
 
     // Output pane
-    ui->actionShowOutput->setChecked(Settings::getValue("gui.output.visible").toBool());
-    ui->tabWidgetOutput->setCurrentIndex(Settings::getValue("gui.output.tab").toInt());
+    ui->actionShowOutput->setChecked(Settings::getValue("gui.mainWindow.output.visible").toBool());
+    ui->tabWidgetOutput->setCurrentIndex(Settings::getValue("gui.mainWindow.output.tab").toInt());
 
     // Recent projects
-    QJsonArray recentProjects = Settings::getValue("gui.recent.projects").toArray();
+    QJsonArray recentProjects = Settings::getValue("gui.mainWindow.recent.projects").toArray();
     for (int i = recentProjects.size() - 1; i >= 0; --i) {
         QString projectPath = recentProjects.at(i).toString();
         addRecentProject(projectPath);
     }
 
     // Recent files
-    QJsonArray recentFiles = Settings::getValue("gui.recent.files").toArray();
+    QJsonArray recentFiles = Settings::getValue("gui.mainWindow.recent.files").toArray();
     for (int i = recentFiles.size() - 1; i >= 0; --i) {
         QString filePath = recentFiles.at(i).toString();
         addRecentFile(filePath);
     }
 
     // Last project
-    QString lastProject = Settings::getValue("gui.session.project").toString();
+    QString lastProject = Settings::getValue("gui.mainWindow.session.project").toString();
     if (QFileInfo::exists(lastProject + "/Cargo.toml")) {
         openProject(lastProject);
     }
@@ -610,7 +610,7 @@ void MainWindow::saveSettings() {
         for (int size : ui->splitterMain->sizes()) {
             sizesArray.append(QJsonValue(size));
         }
-        Settings::setValue("gui.splitters.main", sizesArray);
+        Settings::setValue("gui.mainWindow.splitters.main", sizesArray);
     }
 
     if (ui->actionShowOutput->isChecked()) {
@@ -618,39 +618,39 @@ void MainWindow::saveSettings() {
         for (int size : ui->splitterSide->sizes()) {
             sizesArray.append(QJsonValue(size));
         }
-        Settings::setValue("gui.splitters.side", sizesArray);
+        Settings::setValue("gui.mainWindow.splitters.side", sizesArray);
     }
 
     // Sidebar
-    Settings::setValue("gui.sidebar.visible", ui->actionShowSidebar->isChecked());
-    Settings::setValue("gui.sidebar.tab", ui->tabWidgetSide->currentIndex());
+    Settings::setValue("gui.mainWindow.sidebar.visible", ui->actionShowSidebar->isChecked());
+    Settings::setValue("gui.mainWindow.sidebar.tab", ui->tabWidgetSide->currentIndex());
 
     // Output pane
-    Settings::setValue("gui.output.visible", ui->actionShowOutput->isChecked());
-    Settings::setValue("gui.output.tab", ui->tabWidgetOutput->currentIndex());
+    Settings::setValue("gui.mainWindow.output.visible", ui->actionShowOutput->isChecked());
+    Settings::setValue("gui.mainWindow.output.tab", ui->tabWidgetOutput->currentIndex());
 
     // Recent projects
     QJsonArray recentProjects;
     for (int i = 0; i < ui->menuRecentProjects->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
         recentProjects.append(ui->menuRecentProjects->actions().at(i)->text());
     }
-    Settings::setValue("gui.recent.projects", recentProjects);
+    Settings::setValue("gui.mainWindow.recent.projects", recentProjects);
 
     // Recent files
     QJsonArray recentFiles;
     for (int i = 0; i < ui->menuRecentFiles->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
         recentFiles.append(ui->menuRecentFiles->actions().at(i)->text());
     }
-    Settings::setValue("gui.recent.files", recentFiles);
+    Settings::setValue("gui.mainWindow.recent.files", recentFiles);
 
     // Last project
-    Settings::setValue("gui.session.project", projectPath);
+    Settings::setValue("gui.mainWindow.session.project", projectPath);
 
     Settings::flush();
 }
 
 void MainWindow::saveSession() {
-    if (!Settings::getValue("gui.session.restore").toBool() || projectPath.isEmpty()) {
+    if (!Settings::getValue("gui.mainWindow.session.restore").toBool() || projectPath.isEmpty()) {
         return;
     }
 
@@ -704,7 +704,7 @@ void MainWindow::saveSession() {
 }
 
 void MainWindow::loadSession() {
-    if (!Settings::getValue("gui.session.restore").toBool() || projectPath.isEmpty()) {
+    if (!Settings::getValue("gui.mainWindow.session.restore").toBool() || projectPath.isEmpty()) {
         return;
     }
 
