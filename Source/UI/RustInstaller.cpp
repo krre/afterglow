@@ -3,6 +3,7 @@
 #include "Core/Settings.h"
 #include "Core/FileDownloader.h"
 #include "CommandLine.h"
+#include "AddTarget.h"
 #include "AddComponent.h"
 #include "StringListModel.h"
 #include "Core/Utils.h"
@@ -142,6 +143,30 @@ void RustInstaller::on_pushButtonSetDefaultToolchain_clicked() {
                << Utils::getSelectedRowsFromListView(ui->listViewToolchains).at(0), [this] {
         loadToolchainList();
     });
+}
+
+void RustInstaller::on_pushButtonAddTarget_clicked() {
+    AddTarget addTarget(this);
+    addTarget.exec();
+
+    QStringList targets = addTarget.getTargets();
+    if (targets.count()) {
+        runCommand("rustup", QStringList() << "target" << "add" << targets, [this] {
+            loadTargetList();
+        });
+    }
+}
+
+void RustInstaller::on_pushButtonRemoveTarget_clicked() {
+    int button = QMessageBox::question(this, tr("Remove Targets"), tr("Targets will be removed. Are you sure?"),
+                          QMessageBox::Ok,
+                          QMessageBox::Cancel);
+    if (button == QMessageBox::Ok) {
+        runCommand("rustup", QStringList() << "target" << "remove"
+                   << Utils::getSelectedRowsFromListView(ui->listViewTargets), [this] {
+            loadTargetList();
+        });
+    }
 }
 
 void RustInstaller::on_pushButtonAddComponent_clicked() {
