@@ -10,6 +10,8 @@
 #include "Core/Settings.h"
 #include <QtWidgets>
 
+using namespace std::placeholders;
+
 RustInstaller::RustInstaller(QWidget* parent) :
         QDialog(parent),
         ui(new Ui::RustInstaller) {
@@ -238,22 +240,11 @@ void RustInstaller::updateToolchainButtonsState() {
 }
 
 void RustInstaller::loadTargetList() {
-    loadAndFilterList("rustup target list", ui->listViewTargets);
+    loadAndFilterList("rustup target list", ui->listViewTargets, std::bind(&RustInstaller::defaultInstalledFilter, this, _1));
 }
 
 void RustInstaller::loadComponentList() {
-    loadAndFilterList("rustup component list", ui->listViewComponents, [this] (QStringList& list) {
-        for (int i = list.count() - 1; i >= 0; i--) {
-            if (list.at(i).contains("(default)")) {
-                continue;
-            } else if (list.at(i).contains("(installed)")) {
-                QString component = list.at(i);
-                list[i] = component.replace("(installed)", "");
-            } else {
-                list.removeAt(i);
-            }
-        }
-    });
+    loadAndFilterList("rustup component list", ui->listViewComponents, std::bind(&RustInstaller::defaultInstalledFilter, this, _1));
 }
 
 void RustInstaller::loadOverrideList() {
@@ -275,6 +266,19 @@ void RustInstaller::loadAndFilterList(const QString& command, QListView* listVie
     model->setStrings(list);
     if (model->rowCount()) {
         listView->setCurrentIndex(model->index(0, 0));
+    }
+}
+
+void RustInstaller::defaultInstalledFilter(QStringList& list) {
+    for (int i = list.count() - 1; i >= 0; i--) {
+        if (list.at(i).contains("(default)")) {
+            continue;
+        } else if (list.at(i).contains("(installed)")) {
+            QString value = list.at(i);
+            list[i] = value.replace("(installed)", "");
+        } else {
+            list.removeAt(i);
+        }
     }
 }
 

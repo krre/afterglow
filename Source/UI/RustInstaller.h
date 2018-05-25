@@ -51,6 +51,7 @@ private:
     void loadOverrideList();
 
     void loadAndFilterList(const QString& command, QListView* listView, const std::function<void(QStringList&)>& filter = nullptr);
+    void defaultInstalledFilter(QStringList& list);
 
     void readSettings();
     void writeSettings();
