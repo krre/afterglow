@@ -1,15 +1,16 @@
-#include "AddTarget.h"
-#include "ui_AddTarget.h"
+#include "AddComponentOrTarget.h"
+#include "ui_AddComponentOrTarget.h"
 #include "Core/Utils.h"
 #include "StringListModel.h"
 #include <QtCore>
 
-AddTarget::AddTarget(QWidget *parent) :
+AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& command, QWidget *parent) :
         QDialog(parent),
-        ui(new Ui::AddTarget) {
+        ui(new Ui::AddComponentOrTarget) {
     ui->setupUi(this);
+    setWindowTitle(title);
 
-    QStringList list = Utils::getListFromConsole("rustup component list");
+    QStringList list = Utils::getListFromConsole(command);
     for (int i = list.count() - 1; i >= 0; i--) {
         if (list.at(i).contains("(default)") || list.at(i).contains("(installed)")) {
             list.removeAt(i);
@@ -22,15 +23,15 @@ AddTarget::AddTarget(QWidget *parent) :
     ui->listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
 
-AddTarget::~AddTarget() {
+AddComponentOrTarget::~AddComponentOrTarget() {
     delete ui;
 }
 
-void AddTarget::on_buttonBox_accepted() {
+void AddComponentOrTarget::on_buttonBox_accepted() {
     QModelIndexList indices = ui->listView->selectionModel()->selectedIndexes();
     StringListModel* model = static_cast<StringListModel*>(ui->listView->model());
 
     for (int i = 0; i < indices.count(); i++) {
-        targets.append(model->data(indices.at(i), Qt::DisplayRole).toString());
+        list.append(model->data(indices.at(i), Qt::DisplayRole).toString());
     }
 }

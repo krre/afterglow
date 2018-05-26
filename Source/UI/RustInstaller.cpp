@@ -3,8 +3,7 @@
 #include "Core/Settings.h"
 #include "Core/FileDownloader.h"
 #include "CommandLine.h"
-#include "AddTarget.h"
-#include "AddComponent.h"
+#include "AddComponentOrTarget.h"
 #include "StringListModel.h"
 #include "Core/Utils.h"
 #include "InstallToolchain.h"
@@ -146,10 +145,10 @@ void RustInstaller::on_pushButtonSetDefaultToolchain_clicked() {
 }
 
 void RustInstaller::on_pushButtonAddTarget_clicked() {
-    AddTarget addTarget(this);
+    AddComponentOrTarget addTarget(tr("Add Target"), "rustup target list", this);
     addTarget.exec();
 
-    QStringList targets = addTarget.getTargets();
+    QStringList targets = addTarget.getList();
     if (targets.count()) {
         runCommand("rustup", QStringList() << "target" << "add" << targets, [this] {
             loadTargetList();
@@ -170,10 +169,10 @@ void RustInstaller::on_pushButtonRemoveTarget_clicked() {
 }
 
 void RustInstaller::on_pushButtonAddComponent_clicked() {
-    AddComponent addComponent(this);
+    AddComponentOrTarget addComponent(tr("Add Component"), "rustup component list", this);
     addComponent.exec();
 
-    QStringList components = addComponent.getComponents();
+    QStringList components = addComponent.getList();
     if (components.count()) {
         runCommand("rustup", QStringList() << "component" << "add" << components, [this] {
             loadComponentList();

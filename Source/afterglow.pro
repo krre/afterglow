@@ -34,9 +34,8 @@ SOURCES += \
     UI/CommandLine.cpp \
     UI/StringListModel.cpp \
     Core/Utils.cpp \
-    UI/AddComponent.cpp \
     UI/InstallToolchain.cpp \
-    UI/AddTarget.cpp
+    UI/AddComponentOrTarget.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -67,9 +66,8 @@ HEADERS += \
     UI/CommandLine.h \
     UI/StringListModel.h \
     Core/Utils.h \
-    UI/AddComponent.h \
     UI/InstallToolchain.h \
-    UI/AddTarget.h
+    UI/AddComponentOrTarget.h
 
 FORMS += \
     UI/MainWindow.ui \
@@ -81,9 +79,8 @@ FORMS += \
     UI/Rename.ui \
     UI/GoToLine.ui \
     UI/RustInstaller.ui \
-    UI/AddComponent.ui \
     UI/InstallToolchain.ui \
-    UI/AddTarget.ui
+    UI/AddComponentOrTarget.ui
 
 DISTFILES += \
     ../README.md \
