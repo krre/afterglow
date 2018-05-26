@@ -52,7 +52,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=] (int exitCode, QProcess::ExitStatus exitStatus) {
         Q_UNUSED(exitStatus)
         Q_UNUSED(exitCode)
-        QString message = QString("<font color=%1>%2</font>").arg("#0000FF").arg(tr("Command finished"));
+        QString message = QString("<font color=%1>%2</font>").arg("#0000FF").arg(tr("Command finished successfully"));
         showAndScrollMessage(message, true);
         Command command = commandQueue.dequeue();
         if (command.postWork) {
@@ -60,6 +60,13 @@ RustInstaller::RustInstaller(QWidget* parent) :
         }
 
         runFromQueue();
+    });
+
+    connect(process, &QProcess::errorOccurred, [=] (QProcess::ProcessError error){
+        Q_UNUSED(error)
+        QString message = QString("<font color=%1>%2</font>").arg("#0000FF").arg(tr("Command finished with error"));
+        showAndScrollMessage(message, true);
+        commandQueue.clear();
     });
 
     fileDownloader = new FileDownloader(this);
