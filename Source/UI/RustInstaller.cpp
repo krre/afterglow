@@ -2,7 +2,6 @@
 #include "ui_RustInstaller.h"
 #include "Core/Settings.h"
 #include "Core/FileDownloader.h"
-#include "CommandLine.h"
 #include "AddComponentOrTarget.h"
 #include "StringListModel.h"
 #include "Core/Utils.h"
@@ -17,15 +16,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
         ui(new Ui::RustInstaller) {
     ui->setupUi(this);
 
-    commandLine = new CommandLine(this);
-    ui->horizontalLayoutCommandLine->addWidget(commandLine);
-    connect(commandLine, &QLineEdit::textChanged, this, &RustInstaller::onCommandLineTextChanged);
-    connect(commandLine, &CommandLine::focusReceived, [this] () {
-        ui->pushButtonRun->setDefault(true);
-    });
-
     ui->lineEditRustup->setText(Settings::getValue("rustup.path").toString());
-    ui->pushButtonRun->setEnabled(false);
 
     ui->listViewToolchains->setModel(new StringListModel(this));
     ui->listViewTargets->setModel(new StringListModel(this));
@@ -197,18 +188,6 @@ void RustInstaller::on_pushButtonRemoveComponent_clicked() {
             loadComponentList();
         });
     }
-}
-
-void RustInstaller::on_pushButtonRun_clicked() {
-    QStringList command = commandLine->text().split(' ');
-    QString program = command.first();
-    command.removeFirst();
-    runCommand(program, command);
-    commandLine->run();
-}
-
-void RustInstaller::onCommandLineTextChanged(const QString &text) {
-    ui->pushButtonRun->setEnabled(!text.isEmpty());
 }
 
 void RustInstaller::onDownloaded() {

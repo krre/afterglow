@@ -36,9 +36,6 @@ private slots:
     void on_pushButtonAddComponent_clicked();
     void on_pushButtonRemoveComponent_clicked();
 
-    void on_pushButtonRun_clicked();
-    void onCommandLineTextChanged(const QString& text);
-
     void onDownloaded();
 
 private:
@@ -68,7 +65,6 @@ private:
     Ui::RustInstaller* ui;
     QProcess* process;
     FileDownloader* fileDownloader;
-    CommandLine* commandLine;
     QTemporaryDir tmpDir;
     QQueue<Command> commandQueue;
 };
