@@ -40,7 +40,7 @@ private slots:
 
 private:
     void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr);
-    void showAndScrollMessage(const QString message, bool html = false);
+    void showAndScrollMessage(const QString message);
     void runFromQueue();
 
     void loadToolchainList();
