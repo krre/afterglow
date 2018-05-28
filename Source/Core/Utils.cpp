@@ -35,6 +35,8 @@ QStringList Utils::getSelectedRowsFromListView(QListView* listView, bool removeD
         list.replaceInStrings(" (default)", "");
     }
 
+    list.replaceInStrings(" ", "");
+
     return list;
 }
 
