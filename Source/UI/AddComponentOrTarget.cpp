@@ -19,8 +19,11 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
 
     QAbstractItemModel* model = new StringListModel(list, this);
     ui->listView->setModel(model);
-
     ui->listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    if (model->rowCount()) {
+        ui->listView->setCurrentIndex(model->index(0, 0));
+    }
 }
 
 AddComponentOrTarget::~AddComponentOrTarget() {
