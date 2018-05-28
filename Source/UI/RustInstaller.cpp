@@ -139,6 +139,8 @@ void RustInstaller::on_pushButtonSetDefaultToolchain_clicked() {
     runCommand("rustup", QStringList() << "default"
                << Utils::getSelectedRowsFromListView(ui->listViewToolchains).at(0), [this] {
         loadToolchainList();
+        loadTargetList();
+        loadComponentList();
     });
 }
 
