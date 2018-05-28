@@ -186,6 +186,7 @@ void RustInstaller::on_pushButtonAddComponent_clicked() {
     QStringList components = addComponent.getList();
 
     if (components.count()) {
+        cleanupTarget(components);
         runCommand("rustup", QStringList() << "component" << "add" << components, [this] {
             loadComponentList();
         });
@@ -197,8 +198,9 @@ void RustInstaller::on_pushButtonRemoveComponent_clicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        runCommand("rustup", QStringList() << "component" << "remove"
-                   << Utils::getSelectedRowsFromListView(ui->listViewComponents), [this] {
+        QStringList components = Utils::getSelectedRowsFromListView(ui->listViewComponents);
+        cleanupTarget(components);
+        runCommand("rustup", QStringList() << "component" << "remove" << components, [this] {
             loadComponentList();
         });
     }
@@ -352,6 +354,11 @@ QString RustInstaller::findDefault(QListView* listView) const {
     }
 
     return QString();
+}
+
+void RustInstaller::cleanupTarget(QStringList& components) const {
+    QString search = "-" + defaultTarget;
+    components.replaceInStrings(search, "");
 }
 
 void RustInstaller::readSettings() {

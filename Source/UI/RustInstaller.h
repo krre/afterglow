@@ -58,6 +58,7 @@ private:
     void rustStdFilter(QStringList& list);
     QListView* getCurrentListView() const;
     QString findDefault(QListView* listView) const;
+    void cleanupTarget(QStringList& components) const;
 
     void readSettings();
     void writeSettings();
