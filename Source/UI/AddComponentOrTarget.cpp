@@ -18,11 +18,8 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
 
     QStringList list = Utils::getListFromConsole(command);
     for (int i = list.count() - 1; i >= 0; i--) {
-        if (list.at(i).contains("(default)") || list.at(i).contains("(installed)")) {
-            list.removeAt(i);
-        }
-
-        if (command.contains("component") && list.at(i).left(8) == "rust-std") {
+        if (list.at(i).contains("(default)") || list.at(i).contains("(installed)")
+                || (command.contains("component") && list.at(i).left(8) == "rust-std")) {
             list.removeAt(i);
         }
     }
