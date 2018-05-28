@@ -161,6 +161,7 @@ void RustInstaller::on_pushButtonAddTarget_clicked() {
     if (targets.count()) {
         runCommand("rustup", QStringList() << "target" << "add" << targets, [this] {
             loadTargetList();
+            loadComponentList();
         });
     }
 }
@@ -173,6 +174,7 @@ void RustInstaller::on_pushButtonRemoveTarget_clicked() {
         runCommand("rustup", QStringList() << "target" << "remove"
                    << Utils::getSelectedRowsFromListView(ui->listViewTargets), [this] {
             loadTargetList();
+            loadComponentList();
         });
     }
 }
