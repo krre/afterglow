@@ -57,6 +57,7 @@ private:
     void defaultInstalledFilter(QStringList& list);
     void rustStdFilter(QStringList& list);
     QListView* getCurrentListView() const;
+    QString findDefault(QListView* listView) const;
 
     void readSettings();
     void writeSettings();
@@ -82,4 +83,5 @@ private:
     QQueue<Command> commandQueue;
     QMenu* contextMenu;
     QString defaultToolchain;
+    QString defaultTarget;
 };

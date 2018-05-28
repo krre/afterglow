@@ -262,13 +262,7 @@ void RustInstaller::runFromQueue() {
 void RustInstaller::loadToolchainList() {
     loadAndFilterList("rustup toolchain list", ui->listViewToolchains);
     updateToolchainButtonsState();
-
-    StringListModel* model = static_cast<StringListModel*>(ui->listViewToolchains->model());
-    for (int i = 0; i < model->getCount(); i++) {
-        if (model->getData(i).contains("default")) {
-            defaultToolchain = model->getData(i).replace(" (default)", "");
-        }
-    }
+    defaultToolchain = findDefault(ui->listViewToolchains);
 }
 
 void RustInstaller::updateToolchainButtonsState() {
@@ -279,6 +273,7 @@ void RustInstaller::updateToolchainButtonsState() {
 
 void RustInstaller::loadTargetList() {
     loadAndFilterList("rustup target list", ui->listViewTargets, std::bind(&RustInstaller::defaultInstalledFilter, this, _1));
+    defaultTarget = findDefault(ui->listViewTargets);
 }
 
 void RustInstaller::loadComponentList() {
@@ -346,6 +341,17 @@ QListView* RustInstaller::getCurrentListView() const {
     Q_ASSERT(listView != nullptr);
 
     return listView;
+}
+
+QString RustInstaller::findDefault(QListView* listView) const {
+    StringListModel* model = static_cast<StringListModel*>(listView->model());
+    for (int i = 0; i < model->getCount(); i++) {
+        if (model->getData(i).contains("default")) {
+            return model->getData(i).replace(" (default)", "");
+        }
+    }
+
+    return QString();
 }
 
 void RustInstaller::readSettings() {
