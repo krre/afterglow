@@ -8,4 +8,5 @@ class Utils {
 public:
     static QStringList getListFromConsole(const QString& command);
     static QStringList getSelectedRowsFromListView(QListView* listView, bool removeDefaultSuffix = true);
+    static void copySelectedRowsFromListViewToClipboard(QListView* listView);
 };

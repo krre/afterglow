@@ -225,10 +225,7 @@ void RustInstaller::onCustomContextMenu(const QPoint& point) {
 }
 
 void RustInstaller::onCopyAction() {
-    QStringList list = Utils::getSelectedRowsFromListView(getCurrentListView());
-    list.replaceInStrings(" ", "");
-    QClipboard* clipboard = QGuiApplication::clipboard();
-    clipboard->setText(list.join('\n'));
+    Utils::copySelectedRowsFromListViewToClipboard(getCurrentListView());
 }
 
 void RustInstaller::runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork) {

@@ -37,3 +37,10 @@ QStringList Utils::getSelectedRowsFromListView(QListView* listView, bool removeD
 
     return list;
 }
+
+void Utils::copySelectedRowsFromListViewToClipboard(QListView* listView) {
+    QStringList list = Utils::getSelectedRowsFromListView(listView);
+    list.replaceInStrings(" ", "");
+    QClipboard* clipboard = QGuiApplication::clipboard();
+    clipboard->setText(list.join('\n'));
+}
