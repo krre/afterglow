@@ -6,6 +6,8 @@ namespace Ui {
     class AddComponentOrTarget;
 }
 
+class QMenu;
+
 class AddComponentOrTarget : public QDialog {
     Q_OBJECT
 
@@ -16,8 +18,11 @@ public:
 
 private slots:
     void on_buttonBox_accepted();
+    void onCopyAction();
+    void onCustomContextMenu(const QPoint& point);
 
 private:
     Ui::AddComponentOrTarget* ui;
     QStringList list;
+    QMenu* contextMenu;
 };
