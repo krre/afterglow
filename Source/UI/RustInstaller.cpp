@@ -295,7 +295,7 @@ void RustInstaller::loadAndFilterList(const QString& command, QListView* listVie
     }
 
     model->setStrings(list);
-    if (model->rowCount()) {
+    if (model->getCount()) {
         listView->setCurrentIndex(model->index(0, 0));
     }
 }

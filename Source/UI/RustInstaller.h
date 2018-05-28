@@ -46,9 +46,9 @@ private:
     void showAndScrollMessage(const QString message);
     void runFromQueue();
 
-    void loadToolchainList();
     void updateToolchainButtonsState();
 
+    void loadToolchainList();
     void loadTargetList();
     void loadComponentList();
     void loadOverrideList();

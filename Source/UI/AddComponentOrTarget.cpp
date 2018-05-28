@@ -44,7 +44,7 @@ void AddComponentOrTarget::on_buttonBox_accepted() {
     StringListModel* model = static_cast<StringListModel*>(ui->listView->model());
 
     for (int i = 0; i < indices.count(); i++) {
-        list.append(model->data(indices.at(i), Qt::DisplayRole).toString());
+        list.append(model->getData(indices.at(i).row()));
     }
 }
 
