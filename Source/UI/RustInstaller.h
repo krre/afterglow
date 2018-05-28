@@ -55,6 +55,7 @@ private:
 
     void loadAndFilterList(const QString& command, QListView* listView, const std::function<void(QStringList&)>& filter = nullptr);
     void defaultInstalledFilter(QStringList& list);
+    void rustStdFilter(QStringList& list);
     QListView* getCurrentListView() const;
 
     void readSettings();

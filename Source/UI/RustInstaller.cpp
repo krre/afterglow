@@ -282,7 +282,7 @@ void RustInstaller::loadTargetList() {
 }
 
 void RustInstaller::loadComponentList() {
-    loadAndFilterList("rustup component list", ui->listViewComponents, std::bind(&RustInstaller::defaultInstalledFilter, this, _1));
+    loadAndFilterList("rustup component list", ui->listViewComponents, std::bind(&RustInstaller::rustStdFilter, this, _1));
 }
 
 void RustInstaller::loadOverrideList() {
@@ -315,6 +315,16 @@ void RustInstaller::defaultInstalledFilter(QStringList& list) {
             QString value = list.at(i);
             list[i] = value.replace("(installed)", "");
         } else {
+            list.removeAt(i);
+        }
+    }
+}
+
+void RustInstaller::rustStdFilter(QStringList& list) {
+    defaultInstalledFilter(list);
+
+    for (int i = list.count() - 1; i >= 0; i--) {
+        if (list.at(i).left(8) == "rust-std") {
             list.removeAt(i);
         }
     }
