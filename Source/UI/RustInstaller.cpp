@@ -184,6 +184,7 @@ void RustInstaller::on_pushButtonAddComponent_clicked() {
     addComponent.exec();
 
     QStringList components = addComponent.getList();
+
     if (components.count()) {
         runCommand("rustup", QStringList() << "component" << "add" << components, [this] {
             loadComponentList();

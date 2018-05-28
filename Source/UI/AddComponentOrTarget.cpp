@@ -21,6 +21,10 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
         if (list.at(i).contains("(default)") || list.at(i).contains("(installed)")) {
             list.removeAt(i);
         }
+
+        if (command.contains("component") && list.at(i).left(8) == "rust-std") {
+            list.removeAt(i);
+        }
     }
 
     QAbstractItemModel* model = new StringListModel(list, this);
