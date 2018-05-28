@@ -262,6 +262,13 @@ void RustInstaller::runFromQueue() {
 void RustInstaller::loadToolchainList() {
     loadAndFilterList("rustup toolchain list", ui->listViewToolchains);
     updateToolchainButtonsState();
+
+    StringListModel* model = static_cast<StringListModel*>(ui->listViewToolchains->model());
+    for (int i = 0; i < model->getCount(); i++) {
+        if (model->getData(i).contains("default")) {
+            defaultToolchain = model->getData(i).replace(" (default)", "");
+        }
+    }
 }
 
 void RustInstaller::updateToolchainButtonsState() {

@@ -80,4 +80,5 @@ private:
     QTemporaryDir tmpDir;
     QQueue<Command> commandQueue;
     QMenu* contextMenu;
+    QString defaultToolchain;
 };
