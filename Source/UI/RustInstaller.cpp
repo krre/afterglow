@@ -23,6 +23,15 @@ RustInstaller::RustInstaller(QWidget* parent) :
     ui->listViewComponents->setModel(new StringListModel(this));
     ui->listViewOverrides->setModel(new StringListModel(this));
 
+    connect(ui->listViewToolchains, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
+    connect(ui->listViewTargets, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
+    connect(ui->listViewComponents, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
+    connect(ui->listViewOverrides, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
+
+    contextMenu = new QMenu(this);
+    QAction* copyAction = contextMenu->addAction(tr("Copy"));
+    connect(copyAction, &QAction::triggered, this, &RustInstaller::onCopyAction);
+
     process = new QProcess(this);
     QTextCodec* outputCodec = QTextCodec::codecForLocale();
 
@@ -207,6 +216,21 @@ void RustInstaller::onDownloaded() {
     process->start(filePath, arguments);
 }
 
+void RustInstaller::onCustomContextMenu(const QPoint& point) {
+    QListView* listView = getCurrentListView();
+
+    if (listView->indexAt(point).isValid()) {
+        contextMenu->exec(listView->mapToGlobal(point));
+    }
+}
+
+void RustInstaller::onCopyAction() {
+    QStringList list = Utils::getSelectedRowsFromListView(getCurrentListView());
+    list.replaceInStrings(" ", "");
+    QClipboard* clipboard = QGuiApplication::clipboard();
+    clipboard->setText(list.join('\n'));
+}
+
 void RustInstaller::runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork) {
     commandQueue.enqueue({ program, arguments, postWork });
     runFromQueue();
@@ -287,6 +311,24 @@ void RustInstaller::defaultInstalledFilter(QStringList& list) {
             list.removeAt(i);
         }
     }
+}
+
+QListView* RustInstaller::getCurrentListView() const {
+    QListView* listView = nullptr;
+    Tab currentTab = static_cast<Tab>(ui->tabWidget->currentIndex());
+    if (currentTab == Tab::Toolchain) {
+        listView = ui->listViewToolchains;
+    } else if (currentTab == Tab::Targets) {
+        listView = ui->listViewTargets;
+    } else if (currentTab == Tab::Components) {
+        listView = ui->listViewComponents;
+    } else if (currentTab == Tab::Overrides) {
+        listView = ui->listViewOverrides;
+    }
+
+    Q_ASSERT(listView != nullptr);
+
+    return listView;
 }
 
 void RustInstaller::readSettings() {

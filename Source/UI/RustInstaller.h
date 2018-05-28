@@ -10,6 +10,7 @@ namespace Ui {
 
 class QProcess;
 class QListView;
+class QMenu;
 class FileDownloader;
 class CommandLine;
 
@@ -37,6 +38,8 @@ private slots:
     void on_pushButtonRemoveComponent_clicked();
 
     void onDownloaded();
+    void onCustomContextMenu(const QPoint& point);
+    void onCopyAction();
 
 private:
     void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr);
@@ -52,6 +55,7 @@ private:
 
     void loadAndFilterList(const QString& command, QListView* listView, const std::function<void(QStringList&)>& filter = nullptr);
     void defaultInstalledFilter(QStringList& list);
+    QListView* getCurrentListView() const;
 
     void readSettings();
     void writeSettings();
@@ -62,9 +66,18 @@ private:
         std::function<void()> postWork;
     };
 
+    enum class Tab {
+        Rustup,
+        Toolchain,
+        Targets,
+        Components,
+        Overrides
+    };
+
     Ui::RustInstaller* ui;
     QProcess* process;
     FileDownloader* fileDownloader;
     QTemporaryDir tmpDir;
     QQueue<Command> commandQueue;
+    QMenu* contextMenu;
 };
