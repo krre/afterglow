@@ -17,7 +17,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
         ui(new Ui::RustInstaller) {
     ui->setupUi(this);
 
-    ui->lineEditRustup->setText(Settings::getValue("rustup.path").toString());
+    ui->lineEditLocation->setText(Settings::getValue("rustup.path").toString());
 
     ui->listViewToolchains->setModel(new StringListModel(this));
     ui->listViewTargets->setModel(new StringListModel(this));
@@ -73,6 +73,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
     fileDownloader = new FileDownloader(this);
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
+    loadVersion();
     loadToolchainList();
     loadTargetList();
     loadComponentList();
@@ -90,7 +91,7 @@ void RustInstaller::on_pushButtonBrowseRustup_clicked() {
     QString path = QFileDialog::getOpenFileName(this);
     if (!path.isEmpty()) {
 
-        ui->lineEditRustup->setText(path);
+        ui->lineEditLocation->setText(path);
         Settings::setValue("rustup.path", path);
     }
 }
@@ -109,7 +110,9 @@ void RustInstaller::on_pushButtonDownloadRustup_clicked() {
 }
 
 void RustInstaller::on_pushButtonUpdate_clicked() {
-    runCommand("rustup", QStringList() << "self" << "update");
+    runCommand("rustup", QStringList() << "self" << "update", [this] {
+        loadVersion();
+    });
 }
 
 void RustInstaller::on_pushButtonUninstall_clicked() {
@@ -307,6 +310,16 @@ void RustInstaller::updateToolchainButtonsState() {
     int selectedCount = ui->listViewToolchains->selectionModel()->selectedIndexes().count();
     ui->pushButtonUninstallToolchain->setEnabled(selectedCount);
     ui->pushButtonSetDefaultToolchain->setEnabled(selectedCount);
+}
+
+void RustInstaller::loadVersion() {
+    QStringList list = Utils::getListFromConsole("rustup show");
+    for (const QString& row : list) {
+        if (row.left(5) == "rustc") {
+            ui->lineEditVersion->setText(row);
+            break;
+        }
+    }
 }
 
 void RustInstaller::loadTargetList() {

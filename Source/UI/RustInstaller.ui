@@ -25,28 +25,42 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Location:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEditRustup"/>
-         </item>
-         <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="1" column="2">
           <widget class="QPushButton" name="pushButtonBrowseRustup">
            <property name="text">
             <string>Browse...</string>
            </property>
           </widget>
          </item>
-         <item>
+         <item row="1" column="3">
           <widget class="QPushButton" name="pushButtonDownloadRustup">
            <property name="text">
             <string>Download</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Version:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Location:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineEditLocation"/>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineEditVersion">
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>

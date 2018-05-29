@@ -52,6 +52,7 @@ private:
 
     void updateToolchainButtonsState();
 
+    void loadVersion();
     void loadToolchainList();
     void loadTargetList();
     void loadComponentList();
