@@ -99,14 +99,12 @@ void RustInstaller::on_pushButtonBrowseRustup_clicked() {
 void RustInstaller::on_pushButtonDownloadRustup_clicked() {
 #if defined(Q_OS_LINUX)
     runCommand("sh", QStringList() << "-c" << "curl https://sh.rustup.rs -sSf | sh -s -- -y");
+    installDefaultComponents();
 #elif defined(Q_OS_WIN)
     QUrl url("https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-gnu/rustup-init.exe");
     showAndScrollMessage("Download " + url.toString());
     fileDownloader->load(url);
 #endif
-
-    runCommand("rustup", QStringList() << "component" << "add" << "rls-preview" << "rust-analysis" << "rust-src");
-    runCommand("cargo", QStringList() << "install" << "racer");
 }
 
 void RustInstaller::on_pushButtonUpdate_clicked() {
@@ -254,10 +252,8 @@ void RustInstaller::onDownloaded() {
     file.write(fileDownloader->getDownloadedData());
     file.close();
 
-    QStringList arguments;
-    arguments << "-y";
-    showAndScrollMessage(filePath + " " + arguments.join(" "));
-    process->start(filePath, arguments);
+    runCommand(filePath, QStringList() << "-y");
+    installDefaultComponents();
 }
 
 void RustInstaller::onCustomContextMenu(const QPoint& point) {
@@ -298,6 +294,11 @@ void RustInstaller::runFromQueue() {
         showAndScrollMessage(message);
         process->start(command.program, command.arguments);
     }
+}
+
+void RustInstaller::installDefaultComponents() {
+    runCommand("rustup", QStringList() << "component" << "add" << "rls-preview" << "rust-analysis" << "rust-src");
+    runCommand("cargo", QStringList() << "install" << "racer");
 }
 
 void RustInstaller::loadToolchainList() {

@@ -49,6 +49,7 @@ private:
     void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr);
     void showAndScrollMessage(const QString message);
     void runFromQueue();
+    void installDefaultComponents();
 
     void updateToolchainButtonsState();
 
