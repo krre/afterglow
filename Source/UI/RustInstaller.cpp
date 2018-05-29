@@ -236,6 +236,12 @@ void RustInstaller::on_pushButtonUnsetOverride_clicked() {
     }
 }
 
+void RustInstaller::on_pushButtonCleanupOverride_clicked() {
+    runCommand("rustup", QStringList() << "override" << "unset" << "--nonexistent", [this] {
+        loadOverrideList();
+    });
+}
+
 void RustInstaller::onDownloaded() {
     showAndScrollMessage(QString("Downloaded %1 bytes").arg(fileDownloader->getDownloadedData().size()));
 
