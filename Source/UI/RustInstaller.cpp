@@ -223,7 +223,17 @@ void RustInstaller::on_pushButtonSetOverride_clicked() {
 }
 
 void RustInstaller::on_pushButtonUnsetOverride_clicked() {
-
+    int button = QMessageBox::question(this, tr("Unset Override"), tr("Override will be unsetted. Are you sure?"),
+                          QMessageBox::Ok,
+                          QMessageBox::Cancel);
+    if (button == QMessageBox::Ok) {
+        QStringList overrides = Utils::getSelectedRowsFromListView(ui->listViewOverrides);
+        for (const QString& override : overrides) {
+            runCommand("rustup", QStringList() << "override" << "unset" << "--path" << override.split('\t').at(0), [this] {
+                loadOverrideList();
+            });
+        }
+    }
 }
 
 void RustInstaller::onDownloaded() {
