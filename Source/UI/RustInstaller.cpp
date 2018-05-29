@@ -3,6 +3,7 @@
 #include "Core/Settings.h"
 #include "Core/FileDownloader.h"
 #include "AddComponentOrTarget.h"
+#include "SetOverride.h"
 #include "StringListModel.h"
 #include "Core/Utils.h"
 #include "InstallToolchain.h"
@@ -204,6 +205,16 @@ void RustInstaller::on_pushButtonRemoveComponent_clicked() {
             loadComponentList();
         });
     }
+}
+
+void RustInstaller::on_pushButtonSetOverride_clicked() {
+    SetOverride setOverride(this);
+    setOverride.exec();
+    qDebug() << setOverride.getDirectory() << setOverride.getToolchain();
+}
+
+void RustInstaller::on_pushButtonUnsetOverride_clicked() {
+
 }
 
 void RustInstaller::onDownloaded() {

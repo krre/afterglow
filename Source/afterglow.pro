@@ -35,7 +35,8 @@ SOURCES += \
     UI/StringListModel.cpp \
     Core/Utils.cpp \
     UI/InstallToolchain.cpp \
-    UI/AddComponentOrTarget.cpp
+    UI/AddComponentOrTarget.cpp \
+    UI/SetOverride.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -67,7 +68,8 @@ HEADERS += \
     UI/StringListModel.h \
     Core/Utils.h \
     UI/InstallToolchain.h \
-    UI/AddComponentOrTarget.h
+    UI/AddComponentOrTarget.h \
+    UI/SetOverride.h
 
 FORMS += \
     UI/MainWindow.ui \
@@ -80,7 +82,8 @@ FORMS += \
     UI/GoToLine.ui \
     UI/RustInstaller.ui \
     UI/InstallToolchain.ui \
-    UI/AddComponentOrTarget.ui
+    UI/AddComponentOrTarget.ui \
+    UI/SetOverride.ui
 
 DISTFILES += \
     ../README.md \

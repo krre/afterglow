@@ -37,6 +37,9 @@ private slots:
     void on_pushButtonAddComponent_clicked();
     void on_pushButtonRemoveComponent_clicked();
 
+    void on_pushButtonSetOverride_clicked();
+    void on_pushButtonUnsetOverride_clicked();
+
     void onDownloaded();
     void onCustomContextMenu(const QPoint& point);
     void onCopyAction();
