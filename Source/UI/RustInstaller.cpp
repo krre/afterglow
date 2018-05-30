@@ -89,6 +89,12 @@ void RustInstaller::on_pushButtonBrowseRustupHome_clicked() {
     QString dirPath = QFileDialog::getExistingDirectory(this);
     if (!dirPath.isEmpty()) {
         ui->lineEditRustupHome->setText(dirPath);
+    }
+}
+
+void RustInstaller::on_lineEditRustupHome_textChanged(const QString& text) {
+    Q_UNUSED(text)
+    if (settingsLoaded) {
         writeSettings();
     }
 }
@@ -97,6 +103,12 @@ void RustInstaller::on_pushButtonBrowseCargoHome_clicked() {
     QString dirPath = QFileDialog::getExistingDirectory(this);
     if (!dirPath.isEmpty()) {
         ui->lineEditCargoHome->setText(dirPath);
+    }
+}
+
+void RustInstaller::on_lineEditCargoHome_textChanged(const QString& text) {
+    Q_UNUSED(text)
+    if (settingsLoaded) {
         writeSettings();
     }
 }
@@ -420,6 +432,7 @@ void RustInstaller::readSettings() {
     ui->lineEditRustupHome->setText(Settings::getValue("environment.rustupHome").toString());
     ui->lineEditCargoHome->setText(Settings::getValue("environment.cargoHome").toString());
     ui->tabWidget->setCurrentIndex(Settings::getValue("gui.rustInstaller.currentTab").toInt());
+    settingsLoaded = true;
 }
 
 void RustInstaller::writeSettings() {

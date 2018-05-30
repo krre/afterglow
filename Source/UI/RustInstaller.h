@@ -23,7 +23,9 @@ public:
 
 private slots:
     void on_pushButtonBrowseRustupHome_clicked();
+    void on_lineEditRustupHome_textChanged(const QString& text);
     void on_pushButtonBrowseCargoHome_clicked();
+    void on_lineEditCargoHome_textChanged(const QString& text);
 
     void on_pushButtonDownloadRustup_clicked();
     void on_pushButtonUpdate_clicked();
@@ -93,4 +95,5 @@ private:
     QMenu* contextMenu;
     QString defaultToolchain;
     QString defaultTarget;
+    bool settingsLoaded = false;
 };
