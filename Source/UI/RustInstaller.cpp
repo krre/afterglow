@@ -116,7 +116,9 @@ void RustInstaller::on_lineEditCargoHome_textChanged(const QString& text) {
 
 void RustInstaller::on_pushButtonDownloadRustup_clicked() {
 #if defined(Q_OS_LINUX)
-    runCommand("sh", QStringList() << "-c" << "curl https://sh.rustup.rs -sSf | sh -s -- -y");
+    runCommand("sh", QStringList() << "-c" << "curl https://sh.rustup.rs -sSf | sh -s -- -y", [this] {
+        loadVersion();
+    });
     installDefaultComponents();
 #elif defined(Q_OS_WIN)
     QUrl url("https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-gnu/rustup-init.exe");
@@ -270,7 +272,9 @@ void RustInstaller::onDownloaded() {
     file.write(fileDownloader->getDownloadedData());
     file.close();
 
-    runCommand(filePath, QStringList() << "-y");
+    runCommand(filePath, QStringList() << "-y", [this] {
+        loadVersion();
+    });
     installDefaultComponents();
 }
 
