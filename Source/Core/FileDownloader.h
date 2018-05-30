@@ -14,6 +14,7 @@ public:
 
     QByteArray getDownloadedData() const;
     void checkSSLSupport();
+    void abort();
     bool isBusy() const { return busy; }
 
 signals:
@@ -26,4 +27,5 @@ private:
     QNetworkAccessManager networkAccessManager;
     QByteArray downloadedData;
     bool busy = false;
+    QNetworkReply* reply = nullptr;
 };

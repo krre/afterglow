@@ -9,12 +9,13 @@ FileDownloader::FileDownloader(QObject* parent) : QObject(parent) {
 void FileDownloader::load(const QUrl& url) {
     busy = true;
     QNetworkRequest request(url);
-    networkAccessManager.get(request);
+    reply = networkAccessManager.get(request);
 }
 
 void FileDownloader::fileDownloaded(QNetworkReply* reply) {
     downloadedData = reply->readAll();
     reply->deleteLater();
+    this->reply = nullptr;
     busy = false;
     emit downloaded();
 }
@@ -29,4 +30,10 @@ void FileDownloader::checkSSLSupport() {
             << "\nLib Version String: " << QSslSocket::sslLibraryVersionString()
             << "\nLib Build Version Number: " << QSslSocket::sslLibraryBuildVersionNumber()
             << "\nLib Build Version String: " << QSslSocket::sslLibraryBuildVersionString();
+}
+
+void FileDownloader::abort() {
+    if (reply) {
+        reply->abort();
+    }
 }
