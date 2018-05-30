@@ -17,7 +17,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
         ui(new Ui::RustInstaller) {
     ui->setupUi(this);
 
-    ui->lineEditLocation->setText(Settings::getValue("rustup.path").toString());
+    ui->lineEditRustupHome->setText(Settings::getValue("rustup.path").toString());
 
     ui->listViewToolchains->setModel(new StringListModel(this));
     ui->listViewTargets->setModel(new StringListModel(this));
@@ -91,7 +91,7 @@ void RustInstaller::on_pushButtonBrowseRustup_clicked() {
     QString path = QFileDialog::getOpenFileName(this);
     if (!path.isEmpty()) {
 
-        ui->lineEditLocation->setText(path);
+        ui->lineEditRustupHome->setText(path);
         Settings::setValue("rustup.path", path);
     }
 }
