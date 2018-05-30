@@ -17,8 +17,6 @@ RustInstaller::RustInstaller(QWidget* parent) :
         ui(new Ui::RustInstaller) {
     ui->setupUi(this);
 
-    ui->lineEditRustupHome->setText(Settings::getValue("rustup.path").toString());
-
     ui->listViewToolchains->setModel(new StringListModel(this));
     ui->listViewTargets->setModel(new StringListModel(this));
     ui->listViewComponents->setModel(new StringListModel(this));
@@ -88,11 +86,16 @@ RustInstaller::~RustInstaller() {
 }
 
 void RustInstaller::on_pushButtonBrowseRustupHome_clicked() {
-    QString path = QFileDialog::getOpenFileName(this);
-    if (!path.isEmpty()) {
+    QString dirPath = QFileDialog::getExistingDirectory(this);
+    if (!dirPath.isEmpty()) {
+        ui->lineEditRustupHome->setText(dirPath);
+    }
+}
 
-        ui->lineEditRustupHome->setText(path);
-        Settings::setValue("rustup.path", path);
+void RustInstaller::on_pushButtonBrowseCargoHome_clicked() {
+    QString dirPath = QFileDialog::getExistingDirectory(this);
+    if (!dirPath.isEmpty()) {
+        ui->lineEditCargoHome->setText(dirPath);
     }
 }
 
@@ -412,9 +415,13 @@ void RustInstaller::cleanupTarget(QStringList& components) const {
 }
 
 void RustInstaller::readSettings() {
+    ui->lineEditRustupHome->setText(Settings::getValue("environment.rustupHome").toString());
+    ui->lineEditCargoHome->setText(Settings::getValue("environment.cargoHome").toString());
     ui->tabWidget->setCurrentIndex(Settings::getValue("gui.rustInstaller.currentTab").toInt());
 }
 
 void RustInstaller::writeSettings() {
+    Settings::setValue("environment.rustupHome", ui->lineEditRustupHome->text());
+    Settings::setValue("environment.cargoHome", ui->lineEditCargoHome->text());
     Settings::setValue("gui.rustInstaller.currentTab", ui->tabWidget->currentIndex());
 }
