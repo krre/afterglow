@@ -133,6 +133,12 @@ void RustInstaller::on_pushButtonUpdateRustup_clicked() {
     });
 }
 
+void RustInstaller::on_pushButtonUpdateAll_clicked() {
+    runCommand("rustup", QStringList() << "update", [this] {
+        loadVersion();
+    });
+}
+
 void RustInstaller::on_pushButtonUninstallRustup_clicked() {
     int button = QMessageBox::question(this, tr("Uninstall Rust"), tr("Rust will be uninstalled. Are you sure?"),
                           QMessageBox::Ok,

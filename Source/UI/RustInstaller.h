@@ -29,6 +29,7 @@ private slots:
 
     void on_pushButtonDownloadRustup_clicked();
     void on_pushButtonUpdateRustup_clicked();
+    void on_pushButtonUpdateAll_clicked();
     void on_pushButtonUninstallRustup_clicked();
 
     void on_pushButtonInstallToolchain_clicked();

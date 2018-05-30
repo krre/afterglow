@@ -102,6 +102,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="pushButtonUpdateAll">
+           <property name="text">
+            <string>Update All</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="pushButtonUninstallRustup">
            <property name="text">
             <string>Uninstall...</string>
