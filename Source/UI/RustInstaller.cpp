@@ -166,6 +166,10 @@ void RustInstaller::on_pushButtonUninstallToolchain_clicked() {
     }
 }
 
+void RustInstaller::on_pushButtonUpdateToolchain_clicked() {
+    runCommand("rustup", QStringList() << "update" << Utils::getSelectedRowsFromListView(ui->listViewToolchains));
+}
+
 void RustInstaller::on_pushButtonSetDefaultToolchain_clicked() {
     runCommand("rustup", QStringList() << "default"
                << Utils::getSelectedRowsFromListView(ui->listViewToolchains).at(0), [this] {
@@ -332,6 +336,7 @@ void RustInstaller::loadToolchainList() {
 void RustInstaller::updateToolchainButtonsState() {
     int selectedCount = ui->listViewToolchains->selectionModel()->selectedIndexes().count();
     ui->pushButtonUninstallToolchain->setEnabled(selectedCount);
+    ui->pushButtonUpdateToolchain->setEnabled(selectedCount);
     ui->pushButtonSetDefaultToolchain->setEnabled(selectedCount);
 }
 

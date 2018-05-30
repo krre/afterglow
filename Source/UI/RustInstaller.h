@@ -33,6 +33,7 @@ private slots:
 
     void on_pushButtonInstallToolchain_clicked();
     void on_pushButtonUninstallToolchain_clicked();
+    void on_pushButtonUpdateToolchain_clicked();
     void on_pushButtonSetDefaultToolchain_clicked();
 
     void on_pushButtonAddTarget_clicked();
