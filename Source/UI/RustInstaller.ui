@@ -95,14 +95,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButtonUpdate">
+          <widget class="QPushButton" name="pushButtonUpdateRustup">
            <property name="text">
             <string>Update</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButtonUninstall">
+          <widget class="QPushButton" name="pushButtonUninstallRustup">
            <property name="text">
             <string>Uninstall...</string>
            </property>

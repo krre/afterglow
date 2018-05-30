@@ -28,8 +28,8 @@ private slots:
     void on_lineEditCargoHome_textChanged(const QString& text);
 
     void on_pushButtonDownloadRustup_clicked();
-    void on_pushButtonUpdate_clicked();
-    void on_pushButtonUninstall_clicked();
+    void on_pushButtonUpdateRustup_clicked();
+    void on_pushButtonUninstallRustup_clicked();
 
     void on_pushButtonInstallToolchain_clicked();
     void on_pushButtonUninstallToolchain_clicked();
