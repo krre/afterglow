@@ -22,7 +22,7 @@ public:
     ~RustInstaller();
 
 private slots:
-    void on_pushButtonBrowseRustup_clicked();
+    void on_pushButtonBrowseRustupHome_clicked();
     void on_pushButtonDownloadRustup_clicked();
     void on_pushButtonUpdate_clicked();
     void on_pushButtonUninstall_clicked();

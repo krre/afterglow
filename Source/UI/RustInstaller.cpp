@@ -87,7 +87,7 @@ RustInstaller::~RustInstaller() {
     delete ui;
 }
 
-void RustInstaller::on_pushButtonBrowseRustup_clicked() {
+void RustInstaller::on_pushButtonBrowseRustupHome_clicked() {
     QString path = QFileDialog::getOpenFileName(this);
     if (!path.isEmpty()) {
 
