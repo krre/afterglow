@@ -54,12 +54,14 @@ RustInstaller::RustInstaller(QWidget* parent) :
         Q_UNUSED(exitCode)
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF").arg(tr("Command finished successfully"));
         showAndScrollMessage(message);
-        Command command = commandQueue.dequeue();
-        if (command.postWork) {
-            command.postWork();
-        }
+        if (commandQueue.count()) {
+            Command command = commandQueue.dequeue();
+            if (command.postWork) {
+                command.postWork();
+            }
 
-        runFromQueue();
+            runFromQueue();
+        }
     });
 
     connect(process, &QProcess::errorOccurred, [=] (QProcess::ProcessError error){
@@ -277,6 +279,12 @@ void RustInstaller::on_pushButtonCleanupOverride_clicked() {
     });
 }
 
+void RustInstaller::on_pushButtonBreak_clicked() {
+    commandQueue.clear();
+    fileDownloader->abort();
+    process->close();
+}
+
 void RustInstaller::onDownloaded() {
     updateAllButtonsState();
     showAndScrollMessage(QString("Downloaded %1 bytes").arg(fileDownloader->getDownloadedData().size()));
@@ -388,6 +396,8 @@ void RustInstaller::updateOverrideButtonsState() {
 }
 
 void RustInstaller::updateAllButtonsState() {
+    bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
+    ui->pushButtonBreak->setEnabled(!processesFree);
     updateRustupButtonsState();
     updateToolchainButtonsState();
     updateTargetButtonsState();
