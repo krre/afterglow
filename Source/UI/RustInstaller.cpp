@@ -182,6 +182,7 @@ void RustInstaller::on_pushButtonSetDefaultToolchain_clicked() {
         loadToolchainList();
         loadTargetList();
         loadComponentList();
+        loadVersion();
     });
 }
 
