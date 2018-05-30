@@ -14,6 +14,7 @@ public:
 
     QByteArray getDownloadedData() const;
     void checkSSLSupport();
+    bool isBusy() const { return busy; }
 
 signals:
     void downloaded();
@@ -24,4 +25,5 @@ private slots:
 private:
     QNetworkAccessManager networkAccessManager;
     QByteArray downloadedData;
+    bool busy = false;
 };

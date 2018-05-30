@@ -2,13 +2,13 @@
 #include <QDialog>
 #include <QTemporaryDir>
 #include <QQueue>
+#include <QProcess>
 #include <functional>
 
 namespace Ui {
     class RustInstaller;
 }
 
-class QProcess;
 class QListView;
 class QMenu;
 class FileDownloader;
@@ -50,6 +50,7 @@ private slots:
     void onDownloaded();
     void onCustomContextMenu(const QPoint& point);
     void onCopyAction();
+    void onProcessStateChainged(QProcess::ProcessState newState);
 
 private:
     void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr);
@@ -57,7 +58,12 @@ private:
     void runFromQueue();
     void installDefaultComponents();
 
+    void updateRustupButtonsState();
     void updateToolchainButtonsState();
+    void updateTargetButtonsState();
+    void updateComponentButtonsState();
+    void updateOverrideButtonsState();
+    void updateAllButtonsState();
 
     void loadVersion();
     void loadToolchainList();

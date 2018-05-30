@@ -69,6 +69,8 @@ RustInstaller::RustInstaller(QWidget* parent) :
         commandQueue.clear();
     });
 
+    connect(process, &QProcess::stateChanged, this, &RustInstaller::onProcessStateChainged);
+
     fileDownloader = new FileDownloader(this);
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
@@ -124,6 +126,7 @@ void RustInstaller::on_pushButtonDownloadRustup_clicked() {
     QUrl url("https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-gnu/rustup-init.exe");
     showAndScrollMessage("Download " + url.toString());
     fileDownloader->load(url);
+    updateAllButtonsState();
 #endif
 }
 
@@ -275,6 +278,7 @@ void RustInstaller::on_pushButtonCleanupOverride_clicked() {
 }
 
 void RustInstaller::onDownloaded() {
+    updateAllButtonsState();
     showAndScrollMessage(QString("Downloaded %1 bytes").arg(fileDownloader->getDownloadedData().size()));
 
     QString filePath = tmpDir.path() + "/" + "rustup-init.exe";
@@ -299,6 +303,12 @@ void RustInstaller::onCustomContextMenu(const QPoint& point) {
 
 void RustInstaller::onCopyAction() {
     Utils::copySelectedRowsFromListViewToClipboard(getCurrentListView());
+}
+
+void RustInstaller::onProcessStateChainged(QProcess::ProcessState newState) {
+    if (newState == QProcess::Running || newState == QProcess::NotRunning) {
+        updateAllButtonsState();
+    }
 }
 
 void RustInstaller::runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork) {
@@ -334,17 +344,55 @@ void RustInstaller::installDefaultComponents() {
     runCommand("cargo", QStringList() << "install" << "racer");
 }
 
-void RustInstaller::loadToolchainList() {
-    loadAndFilterList("rustup toolchain list", ui->listViewToolchains);
-    updateToolchainButtonsState();
-    defaultToolchain = findDefault(ui->listViewToolchains);
+void RustInstaller::updateRustupButtonsState() {
+    bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
+    ui->pushButtonDownloadRustup->setEnabled(processesFree);
+    ui->pushButtonUpdateRustup->setEnabled(processesFree);
+    ui->pushButtonUpdateAll->setEnabled(processesFree);
+    ui->pushButtonUninstallRustup->setEnabled(processesFree);
 }
 
 void RustInstaller::updateToolchainButtonsState() {
-    int selectedCount = ui->listViewToolchains->selectionModel()->selectedIndexes().count();
-    ui->pushButtonUninstallToolchain->setEnabled(selectedCount);
-    ui->pushButtonUpdateToolchain->setEnabled(selectedCount);
-    ui->pushButtonSetDefaultToolchain->setEnabled(selectedCount);
+    bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
+    bool enabled = ui->listViewToolchains->selectionModel()->selectedIndexes().count()
+            && processesFree;
+    ui->pushButtonInstallToolchain->setEnabled(processesFree);
+    ui->pushButtonUninstallToolchain->setEnabled(enabled);
+    ui->pushButtonUpdateToolchain->setEnabled(enabled);
+    ui->pushButtonSetDefaultToolchain->setEnabled(enabled);
+}
+
+void RustInstaller::updateTargetButtonsState() {
+    bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
+    bool enabled = ui->listViewTargets->selectionModel()->selectedIndexes().count()
+            && processesFree;
+    ui->pushButtonAddTarget->setEnabled(processesFree);
+    ui->pushButtonRemoveTarget->setEnabled(enabled);
+}
+
+void RustInstaller::updateComponentButtonsState() {
+    bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
+    bool enabled = ui->listViewComponents->selectionModel()->selectedIndexes().count()
+            && processesFree;
+    ui->pushButtonAddComponent->setEnabled(processesFree);
+    ui->pushButtonRemoveComponent->setEnabled(enabled);
+}
+
+void RustInstaller::updateOverrideButtonsState() {
+    bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
+    bool enabled = ui->listViewOverrides->selectionModel()->selectedIndexes().count()
+            && processesFree;
+    ui->pushButtonSetOverride->setEnabled(processesFree);
+    ui->pushButtonUnsetOverride->setEnabled(enabled);
+    ui->pushButtonCleanupOverride->setEnabled(enabled);
+}
+
+void RustInstaller::updateAllButtonsState() {
+    updateRustupButtonsState();
+    updateToolchainButtonsState();
+    updateTargetButtonsState();
+    updateComponentButtonsState();
+    updateOverrideButtonsState();
 }
 
 void RustInstaller::loadVersion() {
@@ -357,17 +405,26 @@ void RustInstaller::loadVersion() {
     }
 }
 
+void RustInstaller::loadToolchainList() {
+    loadAndFilterList("rustup toolchain list", ui->listViewToolchains);
+    updateToolchainButtonsState();
+    defaultToolchain = findDefault(ui->listViewToolchains);
+}
+
 void RustInstaller::loadTargetList() {
     loadAndFilterList("rustup target list", ui->listViewTargets, std::bind(&RustInstaller::defaultInstalledFilter, this, _1));
+    updateTargetButtonsState();
     defaultTarget = findDefault(ui->listViewTargets);
 }
 
 void RustInstaller::loadComponentList() {
     loadAndFilterList("rustup component list", ui->listViewComponents, std::bind(&RustInstaller::rustStdFilter, this, _1));
+    updateComponentButtonsState();
 }
 
 void RustInstaller::loadOverrideList() {
     loadAndFilterList("rustup override list", ui->listViewOverrides);
+    updateOverrideButtonsState();
 }
 
 void RustInstaller::loadAndFilterList(const QString& command, QListView* listView, const std::function<void(QStringList&)>& filter) {
