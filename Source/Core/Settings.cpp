@@ -45,6 +45,8 @@ void Settings::init() {
     }
 
     flush();
+
+    updateRustEnvironmentVariables();
 }
 
 void Settings::flush() {
@@ -78,6 +80,34 @@ QJsonValue Settings::getValue(const QString& path) {
 
 QString Settings::getPrefsPath() {
     return prefsPath;
+}
+
+void Settings::updateRustEnvironmentVariables() {
+    QString homePath = QDir::homePath();
+
+    QString rustupHome = getValue("environment.rustupHome").toString();
+    if (!rustupHome.isEmpty()) {
+        qputenv(Constants::Environment::RUSTUP_HOME, rustupHome.toUtf8());
+    } else if (qEnvironmentVariableIsEmpty(Constants::Environment::RUSTUP_HOME)) {
+        qputenv(Constants::Environment::RUSTUP_HOME, QString(homePath + "/.rustup").toUtf8());
+    }
+
+    QString cargoHome = getValue("environment.cargoHome").toString();
+    if (!cargoHome.isEmpty()) {
+        qputenv(Constants::Environment::CARGO_HOME, cargoHome.toUtf8());
+    } else if (qEnvironmentVariableIsEmpty(Constants::Environment::CARGO_HOME)) {
+        qputenv(Constants::Environment::CARGO_HOME, QString(homePath + "/.cargo").toUtf8());
+    }
+
+    QString path = qEnvironmentVariable(Constants::Environment::PATH);
+    QString separator;
+#if defined(Q_OS_WIN)
+    separator = ";";
+#else
+    separator = ":";
+#endif
+    path += separator + qEnvironmentVariable(Constants::Environment::CARGO_HOME) + "/bin";
+    qputenv(Constants::Environment::PATH, QDir::toNativeSeparators(path).toUtf8());
 }
 
 void Settings::cleanupDeprecated(QJsonObject& src, QJsonObject& dst) {

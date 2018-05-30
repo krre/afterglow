@@ -1,6 +1,12 @@
 #pragma once
 
 namespace Constants {
+    namespace Environment {
+        const char RUSTUP_HOME[] = "RUSTUP_HOME";
+        const char CARGO_HOME[] = "CARGO_HOME";
+        const char PATH[] = "PATH";
+    }
+
     namespace App {
         const char NAME[] = "Afterglow";
         const char VERSION[] = "0.2.0";

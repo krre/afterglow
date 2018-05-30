@@ -89,6 +89,7 @@ void RustInstaller::on_pushButtonBrowseRustupHome_clicked() {
     QString dirPath = QFileDialog::getExistingDirectory(this);
     if (!dirPath.isEmpty()) {
         ui->lineEditRustupHome->setText(dirPath);
+        writeSettings();
     }
 }
 
@@ -96,6 +97,7 @@ void RustInstaller::on_pushButtonBrowseCargoHome_clicked() {
     QString dirPath = QFileDialog::getExistingDirectory(this);
     if (!dirPath.isEmpty()) {
         ui->lineEditCargoHome->setText(dirPath);
+        writeSettings();
     }
 }
 
@@ -424,4 +426,5 @@ void RustInstaller::writeSettings() {
     Settings::setValue("environment.rustupHome", ui->lineEditRustupHome->text());
     Settings::setValue("environment.cargoHome", ui->lineEditCargoHome->text());
     Settings::setValue("gui.rustInstaller.currentTab", ui->tabWidget->currentIndex());
+    Settings::updateRustEnvironmentVariables();
 }
