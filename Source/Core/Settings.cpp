@@ -1,5 +1,6 @@
 #include "Settings.h"
 #include "Constants.h"
+#include "Global.h"
 #include <QtCore>
 
 QJsonObject Settings::storage = QJsonObject();
@@ -86,16 +87,17 @@ void Settings::updateRustEnvironmentVariables() {
     QString homePath = QDir::homePath();
 
     QString rustupHome = getValue("environment.rustupHome").toString();
+
     if (!rustupHome.isEmpty()) {
         qputenv(Constants::Environment::RUSTUP_HOME, rustupHome.toUtf8());
-    } else if (qEnvironmentVariableIsEmpty(Constants::Environment::RUSTUP_HOME)) {
+    } else if (Global::getSystemRustupHome().isEmpty()) {
         qputenv(Constants::Environment::RUSTUP_HOME, QString(homePath + "/.rustup").toUtf8());
     }
 
     QString cargoHome = getValue("environment.cargoHome").toString();
     if (!cargoHome.isEmpty()) {
         qputenv(Constants::Environment::CARGO_HOME, cargoHome.toUtf8());
-    } else if (qEnvironmentVariableIsEmpty(Constants::Environment::CARGO_HOME)) {
+    } else if (Global::getSystemCargoHome().isEmpty()) {
         qputenv(Constants::Environment::CARGO_HOME, QString(homePath + "/.cargo").toUtf8());
     }
 

@@ -7,6 +7,9 @@ class Global : public QObject {
 
 public:
     Global(QObject* parent = nullptr);
+    static void init();
 
     static QString getWorkspacePath();
+    static QString getSystemRustupHome();
+    static QString getSystemCargoHome();
 };
