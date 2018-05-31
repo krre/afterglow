@@ -86,6 +86,9 @@ MainWindow::MainWindow() :
     ui->toolButtonCargoClear->setFont(font);
     ui->toolButtonCargoClear->setText(Constants::FontAwesome::TRASH_ALT);
 
+    ui->toolButtonIssuesClear->setFont(font);
+    ui->toolButtonIssuesClear->setText(Constants::FontAwesome::TRASH_ALT);
+
     completer = new AutoCompleter(this);
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
