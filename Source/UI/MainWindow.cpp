@@ -15,6 +15,7 @@
 #include "TextEditor/SyntaxHighlightManager.h"
 #include "ActionManager.h"
 #include "Process/RlsManager.h"
+#include "IssuesListView.h"
 #include "NewName.h"
 #ifdef Q_OS_WIN
     #include <windows.h>
@@ -64,6 +65,8 @@ MainWindow::MainWindow() :
 
     ui->tabWidgetSide->addTab(projectTree, tr("Project"));
     ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
+
+    ui->horizontalLayoutIssues->addWidget(new IssuesListView);
 
     int id = QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font-Awesome-5-Free-Solid-900.otf");
     if (id < 0) {
