@@ -38,7 +38,7 @@ SOURCES += \
     UI/AddComponentOrTarget.cpp \
     UI/SetOverride.cpp \
     UI/IssuesListView.cpp \
-    UI/IssuesModel.cpp
+    UI/IssueModel.cpp
 
 HEADERS += \
     UI/MainWindow.h \
@@ -73,7 +73,7 @@ HEADERS += \
     UI/AddComponentOrTarget.h \
     UI/SetOverride.h \
     UI/IssuesListView.h \
-    UI/IssuesModel.h
+    UI/IssueModel.h
 
 FORMS += \
     UI/MainWindow.ui \
