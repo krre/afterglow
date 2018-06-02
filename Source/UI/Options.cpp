@@ -9,7 +9,7 @@ Options::Options(QWidget* parent) :
         QDialog(parent),
         ui(new Ui::Options) {
     ui->setupUi(this);
-    ui->pushButtonOpenPrefs->setText(tr("Open %1 for editing").arg(Constants::App::PREFS_NAME));
+    ui->pushButtonOpenPrefs->setText(tr("Open %1").arg(Constants::App::PREFS_NAME));
 
     adjustSize();
     resize(600, height());
