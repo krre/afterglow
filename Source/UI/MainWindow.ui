@@ -332,6 +332,7 @@
      <string>Help</string>
     </property>
     <addaction name="actionDocumentation"/>
+    <addaction name="actionStandardLibrary"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -703,6 +704,11 @@
   <action name="actionDocumentation">
    <property name="text">
     <string>Documentation</string>
+   </property>
+  </action>
+  <action name="actionStandardLibrary">
+   <property name="text">
+    <string>Standard Library</string>
    </property>
   </action>
  </widget>

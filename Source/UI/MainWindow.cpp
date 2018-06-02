@@ -319,6 +319,10 @@ void MainWindow::on_actionDocumentation_triggered() {
     Utils::runRustupCommand(QStringList() << "doc");
 }
 
+void MainWindow::on_actionStandardLibrary_triggered() {
+    Utils::runRustupCommand(QStringList() << "doc" << "--std");
+}
+
 void MainWindow::on_actionAbout_triggered() {
     QMessageBox::about(this, tr("About %1").arg(Constants::App::NAME),
         tr("<h3>%1 %2 %3</h3>\
