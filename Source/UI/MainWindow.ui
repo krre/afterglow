@@ -333,6 +333,7 @@
     </property>
     <addaction name="actionDocumentation"/>
     <addaction name="actionStandardLibrary"/>
+    <addaction name="actionTheBook"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -709,6 +710,11 @@
   <action name="actionStandardLibrary">
    <property name="text">
     <string>Standard Library</string>
+   </property>
+  </action>
+  <action name="actionTheBook">
+   <property name="text">
+    <string>The Book</string>
    </property>
   </action>
  </widget>

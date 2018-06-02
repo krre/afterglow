@@ -80,6 +80,7 @@ private slots:
     // Help
     void on_actionDocumentation_triggered();
     void on_actionStandardLibrary_triggered();
+    void on_actionTheBook_triggered();
     void on_actionAbout_triggered();
 
     // TabWidet
