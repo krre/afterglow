@@ -31,6 +31,17 @@ void Options::on_pushButtonOpenPrefs_clicked() {
     emit openPrefs();
 }
 
+void Options::on_pushButtonResetSettings_clicked() {
+    int button = QMessageBox::question(this, tr("Reset Settings"), tr("Settings will be reseted to default.\n"
+                                                                      "You are need restart application.\n"
+                                                                      "Continue?"),
+                          QMessageBox::Ok,
+                          QMessageBox::Cancel);
+    if (button == QMessageBox::Ok) {
+        Settings::reset();
+    }
+}
+
 void Options::on_buttonBox_accepted() {
     writeSettings();
 }

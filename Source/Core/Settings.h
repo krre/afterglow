@@ -12,6 +12,7 @@ public:
 
     static QString getPrefsPath();
     static void updateRustEnvironmentVariables();
+    static void reset();
 
 private:
     static void cleanupDeprecated(QJsonObject& src, QJsonObject& dst);

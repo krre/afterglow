@@ -5,6 +5,7 @@
 
 QJsonObject Settings::storage = QJsonObject();
 QString Settings::prefsPath = QString();
+static bool reseted = false;
 
 void Settings::init() {
     prefsPath = QCoreApplication::applicationDirPath() + "/" + Constants::App::PREFS_NAME;
@@ -51,6 +52,8 @@ void Settings::init() {
 }
 
 void Settings::flush() {
+    if (reseted) return;
+
     QFile file(QCoreApplication::applicationDirPath() + "/" + Constants::App::PREFS_NAME);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qWarning() << "Failed to open file" << file.fileName();
@@ -110,6 +113,11 @@ void Settings::updateRustEnvironmentVariables() {
 #endif
     path += separator + qEnvironmentVariable(Constants::Environment::CARGO_HOME) + "/bin";
     qputenv(Constants::Environment::PATH, QDir::toNativeSeparators(path).toUtf8());
+}
+
+void Settings::reset() {
+    QFile::remove(prefsPath);
+    reseted = true;
 }
 
 void Settings::cleanupDeprecated(QJsonObject& src, QJsonObject& dst) {

@@ -18,6 +18,7 @@ signals:
 private slots:
     void on_pushButtonWorkspace_clicked();
     void on_pushButtonOpenPrefs_clicked();
+    void on_pushButtonResetSettings_clicked();
     void on_buttonBox_accepted();
 
 private:
