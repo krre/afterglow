@@ -52,7 +52,10 @@ void Settings::init() {
 }
 
 void Settings::flush() {
-    if (reseted) return;
+    if (reseted) {
+        QFile::remove(prefsPath);
+        return;
+    }
 
     QFile file(QCoreApplication::applicationDirPath() + "/" + Constants::App::PREFS_NAME);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -116,7 +119,6 @@ void Settings::updateRustEnvironmentVariables() {
 }
 
 void Settings::reset() {
-    QFile::remove(prefsPath);
     reseted = true;
 }
 
