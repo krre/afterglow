@@ -18,7 +18,4 @@ private:
     static void cleanupDeprecated(QJsonObject& src, QJsonObject& dst);
     static void appendNew(QJsonObject& src, QJsonObject& dst);
     static void modifyJsonValue(QJsonObject& obj, const QString& path, const QJsonValue& newValue);
-
-    static QJsonObject storage;
-    static QString prefsPath;
 };

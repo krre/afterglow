@@ -3,8 +3,8 @@
 #include "Global.h"
 #include <QtCore>
 
-QJsonObject Settings::storage = QJsonObject();
-QString Settings::prefsPath = QString();
+static QJsonObject storage = QJsonObject();
+static QString prefsPath = QString();
 static bool reseted = false;
 
 void Settings::init() {
