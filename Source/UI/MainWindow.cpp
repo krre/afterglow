@@ -330,6 +330,7 @@ void MainWindow::on_actionTheBook_triggered() {
 void MainWindow::on_actionAbout_triggered() {
     QMessageBox::about(this, tr("About %1").arg(Constants::App::NAME),
         tr("<h3>%1 %2 %3</h3>\
+           IDE for Rust programming language<br><br> \
            Based on Qt %4<br> \
            Build on %5<br><br> \
            <a href=%6>%6</a><br><br>%7")
