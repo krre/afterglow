@@ -46,3 +46,9 @@ void Utils::copySelectedRowsFromListViewToClipboard(QListView* listView) {
     QClipboard* clipboard = QGuiApplication::clipboard();
     clipboard->setText(list.join('\n'));
 }
+
+void Utils::runRustupCommand(const QStringList& arguments) {
+    QProcess process;
+    process.start("rustup", arguments);
+    process.waitForFinished();
+}

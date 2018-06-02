@@ -3,6 +3,7 @@
 #include "Core/Global.h"
 #include "Core/Constants.h"
 #include "Core/Settings.h"
+#include "Core/Utils.h"
 #include "NewProject.h"
 #include "GoToLine.h"
 #include "Options.h"
@@ -312,6 +313,10 @@ void MainWindow::on_actionOptions_triggered() {
         addSourceTab(Settings::getPrefsPath());
     });
     options.exec();
+}
+
+void MainWindow::on_actionDocumentation_triggered() {
+    Utils::runRustupCommand(QStringList() << "doc");
 }
 
 void MainWindow::on_actionAbout_triggered() {
