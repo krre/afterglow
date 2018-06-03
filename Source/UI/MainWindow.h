@@ -8,6 +8,7 @@ class ProjectTree;
 class ProjectProperties;
 class TextEditor;
 class AutoCompleter;
+class IssueModel;
 
 namespace Ui {
     class MainWindow;
@@ -142,4 +143,5 @@ private:
     QString projectPath;
     TextEditor* editor = nullptr;
     AutoCompleter* completer;
+    IssueModel* issueModel;
 };

@@ -41,6 +41,8 @@ public:
     explicit IssueModel(QObject* parent = nullptr);
     ~IssueModel();
 
+    void appendMessage(const QJsonObject& message);
+
     QVariant data(const QModelIndex& index, int role) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
     QVariant headerData(int section, Qt::Orientation orientation,
@@ -52,7 +54,7 @@ public:
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
 private:
-    IssueItem *rootItem;
+    IssueItem* rootItem;
 
 signals:
 

@@ -1,4 +1,5 @@
 #include "IssueModel.h"
+#include <QtCore>
 
 IssueItem::IssueItem(const QList<QVariant>& data, IssueItem* parentItem) {
     this->parentItem = parentItem;
@@ -47,6 +48,10 @@ IssueModel::IssueModel(QObject* parent) : QAbstractItemModel(parent) {
 
 IssueModel::~IssueModel() {
     delete rootItem;
+}
+
+void IssueModel::appendMessage(const QJsonObject& message) {
+    qDebug() << message;
 }
 
 int IssueModel::columnCount(const QModelIndex& parent) const {

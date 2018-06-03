@@ -17,6 +17,7 @@
 #include "ActionManager.h"
 #include "Process/RlsManager.h"
 #include "IssueTreeView.h"
+#include "IssueModel.h"
 #include "NewName.h"
 #ifdef Q_OS_WIN
     #include <windows.h>
@@ -67,7 +68,10 @@ MainWindow::MainWindow() :
     ui->tabWidgetSide->addTab(projectTree, tr("Project"));
     ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
-    ui->horizontalLayoutIssues->addWidget(new IssueTreeView);
+    IssueTreeView* issueTreeView = new IssueTreeView;
+    issueModel = new IssueModel(this);
+//    issueTreeView->setModel(issueModel);
+    ui->horizontalLayoutIssues->addWidget(issueTreeView);
 
     int id = QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font-Awesome-5-Free-Solid-900.otf");
     if (id < 0) {
@@ -390,6 +394,17 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
 
     if (start) {
         ui->plainTextEditCargo->clear();
+    }
+
+    if (message.left(1) == "{") {
+        QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
+        if (!doc.isNull() && doc.isObject()) {
+            QJsonObject obj = doc.object();
+            if (obj.contains("reason") && obj["reason"].toString() == "compiler-message") {
+                issueModel->appendMessage(obj);
+            }
+            return;
+        }
     }
 
     if (html) {
