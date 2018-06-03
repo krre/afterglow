@@ -400,9 +400,16 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
         QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
         if (!doc.isNull() && doc.isObject()) {
             QJsonObject obj = doc.object();
-            if (obj.contains("reason") && obj["reason"].toString() == "compiler-message") {
-                issueModel->appendMessage(obj);
+            if (obj.contains("reason")) {
+                if (obj["reason"].toString() == "compiler-message") {
+                    issueModel->appendMessage(obj);
+                }
+
+                if (Settings::getValue("debug.dump.compileMessages").toBool()) {
+                    qDebug() << message;
+                }
             }
+
             return;
         }
     }

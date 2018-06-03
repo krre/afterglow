@@ -53,5 +53,10 @@
         "indent": 4,
         "numberAreaDigits": 4,
         "cleanTrailingWhitespaceOnSave": true
+    },
+    "debug": {
+        "dump": {
+            "compileMessages": false
+        }
     }
 }
