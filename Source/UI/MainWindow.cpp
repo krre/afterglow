@@ -405,7 +405,7 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
                     issueModel->appendMessage(obj);
                 }
 
-                if (Settings::getValue("debug.dump.compileMessages").toBool()) {
+                if (Settings::getValue("debug.dump.compilerMessages").toBool()) {
                     qDebug() << message;
                 }
             }

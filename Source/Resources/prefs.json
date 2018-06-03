@@ -56,7 +56,7 @@
     },
     "debug": {
         "dump": {
-            "compileMessages": false
+            "compilerMessages": false
         }
     }
 }
