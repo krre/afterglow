@@ -1,4 +1,4 @@
-#include <QListView>
+#include <QTreeView>
 #include <QStyledItemDelegate>
 
 class IssueDelegate : public QStyledItemDelegate {
@@ -8,9 +8,9 @@ public:
 
 };
 
-class IssueListView : public QListView {
+class IssueTreeView : public QTreeView {
     Q_OBJECT
 public:
-    explicit IssueListView(QWidget* parent = nullptr);
+    explicit IssueTreeView(QWidget* parent = nullptr);
 
 };

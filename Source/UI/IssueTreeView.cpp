@@ -1,10 +1,10 @@
-#include "IssueListView.h"
+#include "IssueTreeView.h"
 #include "IssueModel.h"
 
 IssueDelegate::IssueDelegate(QObject* parent) : QStyledItemDelegate(parent) {
 
 }
 
-IssueListView::IssueListView(QWidget* parent) : QListView(parent) {
+IssueTreeView::IssueTreeView(QWidget* parent) : QTreeView(parent) {
     setItemDelegate(new IssueDelegate(this));
 }
