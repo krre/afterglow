@@ -103,7 +103,7 @@ MainWindow::MainWindow() :
     completer->setWrapAround(false);
 
     new RlsManager(this);
-    RlsManager::setShowDebug(Settings::getValue("rls.showDebugMessages").toBool());
+    RlsManager::setShowDebug(Settings::getValue("debug.dump.rlsMessages").toBool());
     RlsManager::start();
 
     loadSettings();
