@@ -36,6 +36,13 @@ namespace Constants {
         const char PLAY[] = "\uf04b";
     }
 
+    namespace Color {
+        const char MESSAGE[] = "#0000ff";
+        const char LINE[] = "#e0eff5";
+        const char LINE_NUMBER_AREA[] = "#f0f0f0";
+        const char LINE_NUMBER[] = "#aaaaaa";
+    }
+
     namespace Action {
         const char NEW_PROJECT[] = "NewProject";
         const char NEW_RUST_FILE[] = "NewRustFile";
