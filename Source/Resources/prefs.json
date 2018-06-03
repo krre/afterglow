@@ -55,6 +55,7 @@
         "dump": {
             "compilerMessages": false,
             "rlsMessages": false
-        }
+        },
+        "compilerMessageFormat": "json"
     }
 }

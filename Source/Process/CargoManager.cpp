@@ -95,8 +95,11 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
 }
 
 void CargoManager::addBuildRunArguments(QStringList& arguments) {
-    arguments << "--message-format";
-    arguments << "json";
+    if (Settings::getValue("debug.compilerMessageFormat").toString() == "json") {
+        arguments << "--message-format";
+        arguments << "json";
+    }
+
     if (projectProperties->getBuildTarget() == BuildTarget::Release) {
         arguments << "--release";
     }
