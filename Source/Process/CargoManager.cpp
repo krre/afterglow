@@ -30,9 +30,7 @@ void CargoManager::createProject(ProjectTemplate projectTemplate, const QString&
 void CargoManager::build() {
     QStringList arguments;
     arguments << "build";
-    if (projectProperties->getBuildTarget() == BuildTarget::Release) {
-        arguments << "--release";
-    }
+    addBuildRunArguments(arguments);
     commandStatus = CommandStatus::Build;
     prepareAndStart(arguments);
 }
@@ -40,9 +38,7 @@ void CargoManager::build() {
 void CargoManager::run() {
     QStringList arguments;
     arguments << "run";
-    if (projectProperties->getBuildTarget() == BuildTarget::Release) {
-        arguments << "--release";
-    }
+    addBuildRunArguments(arguments);
     commandStatus = CommandStatus::Run;
     prepareAndStart(arguments);
 }
@@ -96,6 +92,14 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
 
     coloredOutputMessage(message, true);
     getProcess()->start();
+}
+
+void CargoManager::addBuildRunArguments(QStringList& arguments) {
+    arguments << "--message-format";
+    arguments << "json";
+    if (projectProperties->getBuildTarget() == BuildTarget::Release) {
+        arguments << "--release";
+    }
 }
 
 void CargoManager::coloredOutputMessage(const QString& message, bool start) {

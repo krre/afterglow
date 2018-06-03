@@ -38,6 +38,7 @@ private slots:
 
 private:
     void prepareAndStart(const QStringList& arguments);
+    void addBuildRunArguments(QStringList& arguments);
 
     enum class CommandStatus {
         None,
