@@ -70,7 +70,7 @@ MainWindow::MainWindow() :
 
     IssueTreeView* issueTreeView = new IssueTreeView;
     issueModel = new IssueModel(this);
-//    issueTreeView->setModel(issueModel);
+    issueTreeView->setModel(issueModel);
     ui->horizontalLayoutIssues->addWidget(issueTreeView);
 
     int id = QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font-Awesome-5-Free-Solid-900.otf");

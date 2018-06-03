@@ -44,6 +44,9 @@ IssueItem* IssueItem::getChild(int row) {
 
 
 IssueModel::IssueModel(QObject* parent) : QAbstractItemModel(parent) {
+    QList<QVariant> rootData;
+    rootData << tr("Level") << tr("Message");
+    rootItem = new IssueItem(rootData);
 }
 
 IssueModel::~IssueModel() {
