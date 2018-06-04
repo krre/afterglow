@@ -25,6 +25,7 @@ public:
     ~IssueModel();
 
     void appendMessage(const QJsonObject& message);
+    void clear();
 
     QVariant data(const QModelIndex& index, int role) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;

@@ -37,6 +37,12 @@ void IssueModel::appendMessage(const QJsonObject& message) {
     endInsertRows();
 }
 
+void IssueModel::clear() {
+    beginRemoveRows(QModelIndex(), 0, qMax(issues.count() - 1, 0));
+    issues.clear();
+    endRemoveRows();
+}
+
 int IssueModel::columnCount(const QModelIndex& parent) const {
     Q_UNUSED(parent)
     return ROLES_COUNT;

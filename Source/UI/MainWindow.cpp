@@ -290,11 +290,13 @@ void MainWindow::on_actionCleanTrailingWhitespace_triggered() {
 
 void MainWindow::on_actionBuild_triggered() {
     on_actionSaveAll_triggered();
+    issueModel->clear();
     cargoManager->build();
 }
 
 void MainWindow::on_actionRun_triggered() {
     on_actionSaveAll_triggered();
+    issueModel->clear();
     cargoManager->run();
 }
 
