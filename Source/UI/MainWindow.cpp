@@ -371,11 +371,11 @@ void MainWindow::on_tabWidgetSource_currentChanged(int index) {
 }
 
 void MainWindow::on_toolButtonCargoBuild_clicked() {
-    cargoManager->build();
+    on_actionBuild_triggered();
 }
 
 void MainWindow::on_toolButtonCargoRun_clicked() {
-    cargoManager->run();
+    on_actionRun_triggered();
 }
 
 void MainWindow::on_toolButtonCargoClear_clicked() {
