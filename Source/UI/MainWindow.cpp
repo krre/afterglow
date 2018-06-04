@@ -16,7 +16,7 @@
 #include "TextEditor/SyntaxHighlightManager.h"
 #include "ActionManager.h"
 #include "Process/RlsManager.h"
-#include "IssueTreeView.h"
+#include "IssueListView.h"
 #include "IssueModel.h"
 #include "NewName.h"
 #ifdef Q_OS_WIN
