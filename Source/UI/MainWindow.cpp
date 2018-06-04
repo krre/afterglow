@@ -396,21 +396,24 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
         ui->plainTextEditCargo->clear();
     }
 
-    if (message.left(1) == "{") {
-        QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
-        if (!doc.isNull() && doc.isObject()) {
-            QJsonObject obj = doc.object();
-            if (obj.contains("reason")) {
-                if (obj["reason"].toString() == "compiler-message") {
-                    issueModel->appendMessage(obj);
+    for (const QString& block : message.split('\n')) {
+        if (block.left(1) == "{") {
+            QJsonParseError error;
+            QJsonDocument doc = QJsonDocument::fromJson(block.toUtf8(), &error);
+            if (!doc.isNull() && doc.isObject()) {
+                QJsonObject obj = doc.object();
+                if (obj.contains("reason")) {
+                    if (obj["reason"].toString() == "compiler-message") {
+                        issueModel->appendMessage(obj);
+                    }
+
+                    if (Settings::getValue("debug.dump.compilerMessages").toBool()) {
+                        qDebug() << block;
+                    }
                 }
 
-                if (Settings::getValue("debug.dump.compilerMessages").toBool()) {
-                    qDebug() << message;
-                }
+                return;
             }
-
-            return;
         }
     }
 
