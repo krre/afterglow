@@ -10,11 +10,13 @@ struct Issue {
 
     Level level;
     QString message;
-    QString description;
+    QString rendered;
     QString filename;
     int line;
     int column;
 };
+
+const int ROLES_COUNT = 6;
 
 class IssueModel : public QAbstractItemModel {
     Q_OBJECT
@@ -26,8 +28,6 @@ public:
 
     QVariant data(const QModelIndex& index, int role) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
-    QVariant headerData(int section, Qt::Orientation orientation,
-                        int role = Qt::DisplayRole) const override;
     QModelIndex index(int row, int column,
                       const QModelIndex& parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex& index) const override;
@@ -35,7 +35,5 @@ public:
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
 private:
-
-signals:
-
+    QList<Issue> issues;
 };

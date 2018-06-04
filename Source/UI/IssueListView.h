@@ -8,9 +8,9 @@ public:
 
 };
 
-class IssueTreeView : public QListView {
+class IssueListView : public QListView {
     Q_OBJECT
 public:
-    explicit IssueTreeView(QWidget* parent = nullptr);
+    explicit IssueListView(QWidget* parent = nullptr);
 
 };

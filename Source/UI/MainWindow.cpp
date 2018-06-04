@@ -68,10 +68,10 @@ MainWindow::MainWindow() :
     ui->tabWidgetSide->addTab(projectTree, tr("Project"));
     ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
-    IssueTreeView* issueTreeView = new IssueTreeView;
+    IssueListView* issueListView = new IssueListView;
     issueModel = new IssueModel(this);
-    issueTreeView->setModel(issueModel);
-    ui->horizontalLayoutIssues->addWidget(issueTreeView);
+    issueListView->setModel(issueModel);
+    ui->horizontalLayoutIssues->addWidget(issueListView);
 
     int id = QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font-Awesome-5-Free-Solid-900.otf");
     if (id < 0) {
