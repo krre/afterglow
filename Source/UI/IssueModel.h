@@ -16,25 +16,6 @@ struct Issue {
     int column;
 };
 
-class IssueItem {
-public:
-    explicit IssueItem(const QList<QVariant>& data, IssueItem* parentItem = nullptr);
-    ~IssueItem();
-
-    void appendChild(IssueItem* child);
-    IssueItem* getChild(int row);
-    int getChildCount() const;
-    int getColumnCount() const;
-    QVariant getData(int column) const;
-    int getRow() const;
-    IssueItem* getParentItem();
-
-private:
-    QList<IssueItem*> childItems;
-    QList<QVariant> itemData;
-    IssueItem* parentItem;
-};
-
 class IssueModel : public QAbstractItemModel {
     Q_OBJECT
 public:
@@ -54,7 +35,6 @@ public:
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
 private:
-    IssueItem* rootItem;
 
 signals:
 
