@@ -38,6 +38,8 @@ void IssueModel::appendMessage(const QJsonObject& message) {
 }
 
 void IssueModel::clear() {
+    if (!issues.count()) return;
+
     beginRemoveRows(QModelIndex(), 0, qMax(issues.count() - 1, 0));
     issues.clear();
     endRemoveRows();
