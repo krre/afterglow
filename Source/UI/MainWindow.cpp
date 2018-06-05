@@ -386,6 +386,10 @@ void MainWindow::on_toolButtonCargoStop_clicked() {
     cargoManager->stop();
 }
 
+void MainWindow::on_toolButtonIssuesClear_clicked() {
+    issueModel->clear();
+}
+
 void MainWindow::onProjectCreated(const QString& path) {
     openProject(path, true);
 }
