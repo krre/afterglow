@@ -51,26 +51,27 @@ int IssueModel::columnCount(const QModelIndex& parent) const {
 QVariant IssueModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid()) return QVariant();
 
-    if (index.row() >= issues.count() || index.row() < 0) {
+    int row = index.row();
+
+    if (row >= issues.count() || row < 0 || !index.isValid()) {
         return QVariant();
     }
 
-    if (role == Qt::DisplayRole) {
-        const Issue& issue = issues.at(index.row());
+    const Issue& issue = issues.at(row);
+    Role issueRole = static_cast<Role>(role);
 
-        if (index.column() == 0) {
-            return static_cast<int>(issue.level);
-        } else if (index.column() == 1) {
-            return issue.message;
-        } else if (index.column() == 2) {
-            return issue.rendered;
-        } else if (index.column() == 3) {
-            return issue.filename;
-        } else if (index.column() == 4) {
-            return issue.line;
-        } else if (index.column() == 5) {
-            return issue.column;
-        }
+    if (issueRole == Role::Level) {
+        return static_cast<int>(issue.level);
+    } else if (issueRole == Role::Message) {
+        return issue.message;
+    } else if (issueRole == Role::Rendered) {
+        return issue.rendered;
+    } else if (issueRole == Role::Filename) {
+        return issue.filename;
+    } else if (issueRole == Role::Line) {
+        return issue.line;
+    } else if (issueRole == Role::Column) {
+        return issue.column;
     }
 
     return QVariant();

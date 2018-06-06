@@ -19,6 +19,16 @@ struct Issue {
 class IssueModel : public QAbstractItemModel {
     Q_OBJECT
 public:
+
+    enum class Role {
+        Level = Qt::UserRole,
+        Message,
+        Rendered,
+        Filename,
+        Line,
+        Column
+    };
+
     explicit IssueModel(QObject* parent = nullptr);
     ~IssueModel();
 
