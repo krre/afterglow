@@ -47,7 +47,7 @@ void IssueModel::clear() {
 
 int IssueModel::columnCount(const QModelIndex& parent) const {
     Q_UNUSED(parent)
-    return ROLES_COUNT;
+    return 1;
 }
 
 bool IssueModel::insertRows(int row, int count, const QModelIndex& parent) {

@@ -16,8 +16,6 @@ struct Issue {
     int column;
 };
 
-const int ROLES_COUNT = 6;
-
 class IssueModel : public QAbstractItemModel {
     Q_OBJECT
 public:
