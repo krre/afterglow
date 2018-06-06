@@ -6,6 +6,8 @@ class IssueDelegate : public QStyledItemDelegate {
 public:
     IssueDelegate(QObject* parent = nullptr);
 
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 };
 
 class IssueListView : public QListView {
