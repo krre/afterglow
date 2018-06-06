@@ -150,8 +150,7 @@ QModelIndex IssueModel::index(int row, int column, const QModelIndex& parent) co
 }
 
 QModelIndex IssueModel::parent(const QModelIndex& index) const {
-    if (!index.isValid()) return QModelIndex();
-
+    Q_UNUSED(index)
     return QModelIndex();
 }
 
