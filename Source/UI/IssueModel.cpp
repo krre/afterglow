@@ -145,9 +145,8 @@ Qt::ItemFlags IssueModel::flags(const QModelIndex& index) const {
 }
 
 QModelIndex IssueModel::index(int row, int column, const QModelIndex& parent) const {
-    if (!hasIndex(row, column, parent)) return QModelIndex();
-
-    return QModelIndex();
+    if (parent.isValid()) return QModelIndex();
+    return createIndex(row, column);
 }
 
 QModelIndex IssueModel::parent(const QModelIndex& index) const {
