@@ -39,17 +39,19 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     QFontMetrics fm(opt.font);
 
+    QString level = index.data(static_cast<int>(IssueModel::Role::Level)).toString();
+
     // Message
     if (!selected) {
         painter->setClipRect(opt.rect);
         QString message = index.data(static_cast<int>(IssueModel::Role::Message)).toString();
-        painter->drawText(0, fm.ascent(), message);
+        painter->drawText(0, fm.ascent(), QString("[%1]: %2").arg(level).arg(message));
     } else {
         painter->setClipRect(opt.rect);
 //        QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
 //        painter->drawText(0, fm.ascent(), rendered);
         QString message = index.data(static_cast<int>(IssueModel::Role::Message)).toString();
-        painter->drawText(0, fm.ascent(), message);
+        painter->drawText(0, fm.ascent(), QString("[%1]: %2").arg(level).arg(message));
     }
 
     // Filename
