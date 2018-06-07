@@ -79,14 +79,7 @@ MainWindow::MainWindow() :
     issueListView->setModel(issueModel);
     ui->horizontalLayoutIssues->addWidget(issueListView);
 
-    int id = QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font-Awesome-5-Free-Solid-900.otf");
-    if (id < 0) {
-        qWarning() << "Failed to load FontAwesome!";
-    }
-
-    QFont font;
-    font.setFamily(QFontDatabase::applicationFontFamilies(id).at(0));
-    font.setPixelSize(16);
+    QFont font = Global::getFontAwesomeFont();
 
     ui->toolButtonCargoBuild->setFont(font);
     ui->toolButtonCargoBuild->setText(Constants::FontAwesome::COG);

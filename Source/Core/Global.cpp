@@ -1,14 +1,23 @@
 #include "Global.h"
 #include "Constants.h"
 #include "Settings.h"
-#include <QtCore>
+#include <QtGui>
 
 static QString systemRustupHome;
 static QString systemCargoHome;
+static QFont faFont;
 
 void Global::init() {
     systemRustupHome = qEnvironmentVariable(Constants::Environment::RUSTUP_HOME);
     systemCargoHome = qEnvironmentVariable(Constants::Environment::CARGO_HOME);
+
+    int id = QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font-Awesome-5-Free-Solid-900.otf");
+    if (id < 0) {
+        qWarning() << "Failed to load FontAwesome!";
+    }
+
+    faFont.setFamily(QFontDatabase::applicationFontFamilies(id).at(0));
+    faFont.setPixelSize(16);
 }
 
 QString Global::getWorkspacePath() {
@@ -22,4 +31,8 @@ QString Global::getSystemRustupHome() {
 
 QString Global::getSystemCargoHome() {
     return systemCargoHome;
+}
+
+QFont Global::getFontAwesomeFont() {
+    return faFont;
 }
