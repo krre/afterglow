@@ -72,8 +72,11 @@ void RlsManager::onReadyReadStandardOutput(const QString& data) {
         qDebug() << "RLS Result:" << data;
     }
 
-    QJsonDocument doc = QJsonDocument::fromJson(data.split("\r\n").at(2).toUtf8());
-    emit answer(doc.object());
+    QStringList rows = data.split("\r\n");
+    if (rows.count() >= 3) {
+        QJsonDocument doc = QJsonDocument::fromJson(rows.at(2).toUtf8());
+        emit answer(doc.object());
+    }
 }
 
 void RlsManager::onReadyReadStandardError(const QString& data) {
