@@ -38,12 +38,26 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     painter->setPen(textColor);
 
     QFontMetrics fm(opt.font);
+
+    // Message
     if (!selected) {
         painter->setClipRect(opt.rect);
-        painter->drawText(0, 0 + fm.ascent(), index.data(static_cast<int>(IssueModel::Role::Message)).toString());
+        QString message = index.data(static_cast<int>(IssueModel::Role::Message)).toString();
+        painter->drawText(0, fm.ascent(), message);
     } else {
-
+        painter->setClipRect(opt.rect);
+//        QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
+//        painter->drawText(0, fm.ascent(), rendered);
+        QString message = index.data(static_cast<int>(IssueModel::Role::Message)).toString();
+        painter->drawText(0, fm.ascent(), message);
     }
+
+    // Filename
+    QString filename = index.data(static_cast<int>(IssueModel::Role::Filename)).toString();
+    QString line = index.data(static_cast<int>(IssueModel::Role::Line)).toString();
+    QString column = index.data(static_cast<int>(IssueModel::Role::Column)).toString();
+    QString filenameWithPos = QString("%1 %2:%3").arg(filename).arg(line).arg(column);
+    painter->drawText(opt.rect.width() - fm.width(filenameWithPos), fm.ascent(), filenameWithPos);
 
     // Separator lines
     painter->setPen(QColor(Constants::Color::ISSUE_SEPARATOR));
