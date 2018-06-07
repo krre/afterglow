@@ -1,14 +1,7 @@
 #include <QAbstractItemModel>
 
 struct Issue {
-    enum class Level {
-        Note,
-        Info,
-        Warning,
-        Error
-    };
-
-    Level level;
+    QString level;
     QString message;
     QString rendered;
     QString filename;

@@ -13,17 +13,7 @@ void IssueModel::appendMessage(const QJsonObject& message) {
 
     Issue issue;
 
-    QString level = messageObj["level"].toString();
-    if (level == "note") {
-        issue.level = Issue::Level::Note;
-    } else if (level == "info") {
-        issue.level = Issue::Level::Info;
-    } else if (level == "warning") {
-        issue.level = Issue::Level::Warning;
-    } else if (level == "error") {
-        issue.level = Issue::Level::Error;
-    }
-
+    issue.level = messageObj["level"].toString();
     issue.message = messageObj["message"].toString();
     issue.rendered = messageObj["rendered"].toString();
     issue.filename = spanObj["file_name"].toString();
@@ -61,7 +51,7 @@ QVariant IssueModel::data(const QModelIndex& index, int role) const {
     Role issueRole = static_cast<Role>(role);
 
     if (issueRole == Role::Level) {
-        return static_cast<int>(issue.level);
+        return (issue.level);
     } else if (issueRole == Role::Message) {
         return issue.message;
     } else if (issueRole == Role::Rendered) {
