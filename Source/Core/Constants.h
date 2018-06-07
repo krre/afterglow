@@ -41,6 +41,7 @@ namespace Constants {
         const char LINE[] = "#e0eff5";
         const char LINE_NUMBER_AREA[] = "#f0f0f0";
         const char LINE_NUMBER[] = "#aaaaaa";
+        const char ISSUE_SEPARATOR[] = "#969696";
     }
 
     namespace Action {
