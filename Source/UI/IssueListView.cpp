@@ -1,6 +1,7 @@
 #include "IssueListView.h"
 #include "IssueModel.h"
 #include "Core/Constants.h"
+#include "Core/Global.h"
 #include <QtGui>
 
 IssueDelegate::IssueDelegate(QObject* parent) : QStyledItemDelegate(parent) {
@@ -27,6 +28,32 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     painter->setPen(Qt::NoPen);
     painter->drawRect(opt.rect);
 
+    // Icon
+    QFont fontFA = Global::getFontAwesomeFont();
+    fontFA.setPixelSize(12);
+    painter->setFont(fontFA);
+
+    QString levelIcon;
+    QColor levelColor;
+
+    QString level = index.data(static_cast<int>(IssueModel::Role::Level)).toString();
+
+    if (level == "error") {
+        levelIcon = Constants::FontAwesome::TIMES_CIRCLE;
+        levelColor = QColor(Qt::red);
+
+    } else if (level == "warning") {
+        levelIcon = Constants::FontAwesome::EXCLAMATION_TRIANGLE;
+        levelColor = QColor(Qt::yellow);
+    }
+
+    painter->setPen(levelColor);
+    painter->setClipRect(opt.rect);
+    painter->drawText(0, opt.rect.bottomLeft().y(), levelIcon);
+
+    QFontMetrics fmFA(fontFA);
+    int iconWidth = fmFA.horizontalAdvance(levelIcon);
+
     // Text color
     QColor textColor;
     if (selected) {
@@ -36,22 +63,21 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     }
 
     painter->setPen(textColor);
+    painter->setFont(opt.font);
 
     QFontMetrics fm(opt.font);
-
-    QString level = index.data(static_cast<int>(IssueModel::Role::Level)).toString();
 
     // Message
     if (!selected) {
         painter->setClipRect(opt.rect);
         QString message = index.data(static_cast<int>(IssueModel::Role::Message)).toString();
-        painter->drawText(0, opt.rect.bottomLeft().y(), QString("[%1]: %2").arg(level).arg(message));
+        painter->drawText(iconWidth + 2, opt.rect.bottomLeft().y(), message);
     } else {
         painter->setClipRect(opt.rect);
 //        QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
 //        painter->drawText(0, fm.ascent(), rendered);
         QString message = index.data(static_cast<int>(IssueModel::Role::Message)).toString();
-        painter->drawText(0, opt.rect.bottomLeft().y(), QString("[%1]: %2").arg(level).arg(message));
+        painter->drawText(iconWidth + 2, opt.rect.bottomLeft().y(), message);
     }
 
     // Filename

@@ -34,6 +34,8 @@ namespace Constants {
         const char STOP[] = "\uf04d";
         const char TRASH_ALT[] = "\uf2ed";
         const char PLAY[] = "\uf04b";
+        const char EXCLAMATION_TRIANGLE[] = "\uf071";
+        const char TIMES_CIRCLE[] = "\uf057";
     }
 
     namespace Color {
