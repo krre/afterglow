@@ -4,6 +4,8 @@
 #include "Core/Global.h"
 #include <QtGui>
 
+static const int MARGIN = 2;
+
 IssueDelegate::IssueDelegate(QObject* parent) : QStyledItemDelegate(parent) {
 
 }
@@ -31,7 +33,8 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     // Icon
     QFont fontIcon = Global::getFontAwesomeFont();
-    fontIcon.setPixelSize(12);
+    int iconHeight = opt.rect.height() - MARGIN * 2;
+    fontIcon.setPixelSize(iconHeight);
     painter->setFont(fontIcon);
 
     QString levelIcon;
@@ -49,11 +52,11 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     }
 
     QFontMetrics fmIcon(fontIcon);
-    int iconWidth = fmIcon.horizontalAdvance(levelIcon);
+    int iconWidth = iconHeight;
 
     painter->setPen(levelColor);
     painter->setClipRect(opt.rect);
-    painter->drawText(0, fmIcon.ascent() + y, levelIcon);
+    painter->drawText(MARGIN, fmIcon.ascent() + y + MARGIN, levelIcon);
 
     // Text color
     QColor textColor;
@@ -72,11 +75,11 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     if (!selected) {
         painter->setClipRect(opt.rect);
         QString message = index.data(static_cast<int>(IssueModel::Role::Message)).toString();
-        painter->drawText(iconWidth + 2, fmText.ascent() + y, message);
+        painter->drawText(iconWidth + MARGIN * 3, fmText.ascent() + y, message);
     } else {
         painter->setClipRect(opt.rect);
         QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
-        QRect rect = QRect(iconWidth + 2, y, opt.rect.width(), 100);
+        QRect rect = QRect(iconWidth + MARGIN * 3, y, opt.rect.width(), 100);
         painter->drawText(rect, Qt::AlignLeft, rendered);
     }
 
