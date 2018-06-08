@@ -288,14 +288,12 @@ void MainWindow::on_actionCleanTrailingWhitespace_triggered() {
 }
 
 void MainWindow::on_actionBuild_triggered() {
-    on_actionSaveAll_triggered();
-    issueModel->clear();
+    prepareBuild();
     cargoManager->build();
 }
 
 void MainWindow::on_actionRun_triggered() {
-    on_actionSaveAll_triggered();
-    issueModel->clear();
+    prepareBuild();
     cargoManager->run();
 }
 
@@ -394,9 +392,6 @@ void MainWindow::onProjectCreated(const QString& path) {
 }
 
 void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
-    int index = static_cast<int>(OutputPane::Cargo);
-    ui->tabWidgetOutput->setCurrentIndex(index);
-
     if (start) {
         ui->plainTextEditCargo->clear();
     }
@@ -882,4 +877,11 @@ void MainWindow::updateMenuState() {
     ui->menuRecentFiles->menuAction()->setEnabled(ui->menuRecentFiles->actions().size() > Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT);
 
     ui->menuEdit->menuAction()->setEnabled(index >= 0);
+}
+
+void MainWindow::prepareBuild() {
+    on_actionSaveAll_triggered();
+    int index = static_cast<int>(OutputPane::Cargo);
+    ui->tabWidgetOutput->setCurrentIndex(index);
+    issueModel->clear();
 }

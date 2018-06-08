@@ -111,18 +111,18 @@ private slots:
     void onDocumentModified(TextEditor* editor);
 
 private:
+    enum class OutputPane {
+        Cargo,
+        Application,
+        Search
+    };
+
     void addRecentFile(const QString& filePath);
     void addRecentProject(const QString& projectPath);
     void addRecentFileOrProject(QMenu* menu, const QString& filePath, const std::function<void()>& callback);
 
     void saveProjectProperties();
     void loadProjectProperties();
-
-    enum class OutputPane {
-        Cargo,
-        Application,
-        Search
-    };
 
     void loadSettings();
     void saveSettings();
@@ -136,6 +136,7 @@ private:
     void changeWindowTitle(const QString& filePath = QString());
     int findSource(const QString& filePath);
     void updateMenuState();
+    void prepareBuild();
 
     Ui::MainWindow* ui;
     CargoManager* cargoManager;
