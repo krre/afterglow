@@ -44,6 +44,9 @@ namespace Constants {
         const char LINE_NUMBER_AREA[] = "#f0f0f0";
         const char LINE_NUMBER[] = "#aaaaaa";
         const char ISSUE_SEPARATOR[] = "#969696";
+        const char WARNING_ISSUME_ICON[] = "#ffd800";
+        const char ERROR_ISSUME_ICON[] = "#ff3600";
+
     }
 
     namespace Action {

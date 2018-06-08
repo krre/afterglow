@@ -40,11 +40,11 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     if (level == "error") {
         levelIcon = Constants::FontAwesome::TIMES_CIRCLE;
-        levelColor = QColor(Qt::red);
+        levelColor = QColor(Constants::Color::ERROR_ISSUME_ICON);
 
     } else if (level == "warning") {
         levelIcon = Constants::FontAwesome::EXCLAMATION_TRIANGLE;
-        levelColor = QColor(Qt::yellow);
+        levelColor = QColor(Constants::Color::WARNING_ISSUME_ICON);
     }
 
     painter->setPen(levelColor);
