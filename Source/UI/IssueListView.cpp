@@ -11,6 +11,7 @@ IssueDelegate::IssueDelegate(QObject* parent) : QStyledItemDelegate(parent) {
 void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
     QStyleOptionViewItem opt = option;
     initStyleOption(&opt, index);
+    int y = opt.rect.y();
     painter->save();
 
     auto view = qobject_cast<const QAbstractItemView*>(opt.widget);
@@ -29,9 +30,9 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     painter->drawRect(opt.rect);
 
     // Icon
-    QFont fontFA = Global::getFontAwesomeFont();
-    fontFA.setPixelSize(12);
-    painter->setFont(fontFA);
+    QFont fontIcon = Global::getFontAwesomeFont();
+    fontIcon.setPixelSize(12);
+    painter->setFont(fontIcon);
 
     QString levelIcon;
     QColor levelColor;
@@ -47,12 +48,12 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
         levelColor = QColor(Constants::Color::WARNING_ISSUME_ICON);
     }
 
+    QFontMetrics fmIcon(fontIcon);
+    int iconWidth = fmIcon.horizontalAdvance(levelIcon);
+
     painter->setPen(levelColor);
     painter->setClipRect(opt.rect);
-    painter->drawText(0, opt.rect.bottomLeft().y(), levelIcon);
-
-    QFontMetrics fmFA(fontFA);
-    int iconWidth = fmFA.horizontalAdvance(levelIcon);
+    painter->drawText(0, fmIcon.ascent() + y, levelIcon);
 
     // Text color
     QColor textColor;
@@ -65,19 +66,18 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     painter->setPen(textColor);
     painter->setFont(opt.font);
 
-    QFontMetrics fm(opt.font);
+    QFontMetrics fmText(opt.font);
 
     // Message
     if (!selected) {
         painter->setClipRect(opt.rect);
         QString message = index.data(static_cast<int>(IssueModel::Role::Message)).toString();
-        painter->drawText(iconWidth + 2, opt.rect.bottomLeft().y(), message);
+        painter->drawText(iconWidth + 2, fmText.ascent() + y, message);
     } else {
         painter->setClipRect(opt.rect);
-//        QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
-//        painter->drawText(0, fm.ascent(), rendered);
-        QString message = index.data(static_cast<int>(IssueModel::Role::Message)).toString();
-        painter->drawText(iconWidth + 2, opt.rect.bottomLeft().y(), message);
+        QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
+        QRect rect = QRect(iconWidth + 2, y, opt.rect.width(), 100);
+        painter->drawText(rect, Qt::AlignLeft, rendered);
     }
 
     // Filename
@@ -85,7 +85,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     QString line = index.data(static_cast<int>(IssueModel::Role::Line)).toString();
     QString column = index.data(static_cast<int>(IssueModel::Role::Column)).toString();
     QString filenameWithPos = QString("%1 %2:%3").arg(filename).arg(line).arg(column);
-    painter->drawText(opt.rect.width() - fm.width(filenameWithPos), opt.rect.bottomLeft().y(), filenameWithPos);
+    painter->drawText(opt.rect.width() - fmText.width(filenameWithPos), fmText.ascent() + y, filenameWithPos);
 
     // Separator lines
     painter->setPen(QColor(Constants::Color::ISSUE_SEPARATOR));
