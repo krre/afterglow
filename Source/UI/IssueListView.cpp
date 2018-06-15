@@ -16,7 +16,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     int y = opt.rect.y();
     painter->save();
 
-    auto view = qobject_cast<const QAbstractItemView*>(opt.widget);
+    const QAbstractItemView* view = qobject_cast<const QAbstractItemView*>(opt.widget);
     bool selected = view->selectionModel()->currentIndex() == index;
 
     // Background color
@@ -99,7 +99,17 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 }
 
 QSize IssueDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const {
-    return QStyledItemDelegate::sizeHint(option, index);
+    QStyleOptionViewItem opt = option;
+    initStyleOption(&opt, index);
+
+    const QAbstractItemView* view = qobject_cast<const QAbstractItemView*>(opt.widget);
+    bool selected = view->selectionModel()->currentIndex() == index;
+
+    if (selected) {
+        return QSize(opt.rect.width(), 100);
+    } else {
+        return QStyledItemDelegate::sizeHint(option, index);
+    }
 }
 
 IssueListView::IssueListView(QWidget* parent) : QListView(parent) {
