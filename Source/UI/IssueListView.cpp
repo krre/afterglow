@@ -112,6 +112,15 @@ QSize IssueDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIn
     }
 }
 
-IssueListView::IssueListView(QWidget* parent) : QListView(parent) {
-    setItemDelegate(new IssueDelegate(this));
+void IssueDelegate::currentChanged(const QModelIndex& current, const QModelIndex& previous) {
+    emit sizeHintChanged(current);
+    emit sizeHintChanged(previous);
+}
+
+IssueListView::IssueListView(IssueModel* model, QWidget* parent) : QListView(parent) {
+    setModel(model);
+
+    IssueDelegate* delegate = new IssueDelegate(this);
+    setItemDelegate(delegate);
+    connect(selectionModel(), &QItemSelectionModel::currentChanged, delegate, &IssueDelegate::currentChanged);
 }

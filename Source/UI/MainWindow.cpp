@@ -68,15 +68,15 @@ MainWindow::MainWindow() :
     ui->tabWidgetSide->addTab(projectTree, tr("Project"));
     ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
-    IssueListView* issueListView = new IssueListView;
+    issueModel = new IssueModel(this);
+    IssueListView* issueListView = new IssueListView(issueModel);
     connect(issueListView, &IssueListView::doubleClicked, [this] (const QModelIndex& index) {
         QString filename = issueModel->data(index, static_cast<int>(IssueModel::Role::Filename)).toString();
         QString line = issueModel->data(index, static_cast<int>(IssueModel::Role::Line)).toString();
         addSourceTab(projectPath + "/" + filename);
         editor->goToLine(line.toInt());
     });
-    issueModel = new IssueModel(this);
-    issueListView->setModel(issueModel);
+
     ui->horizontalLayoutIssues->addWidget(issueListView);
 
     QFont font = Global::getFontAwesomeFont();

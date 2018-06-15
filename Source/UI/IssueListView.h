@@ -1,6 +1,8 @@
 #include <QListView>
 #include <QStyledItemDelegate>
 
+class IssueModel;
+
 class IssueDelegate : public QStyledItemDelegate {
     Q_OBJECT
 public:
@@ -8,11 +10,13 @@ public:
 
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
     QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+
+    void currentChanged(const QModelIndex& current, const QModelIndex& previous);
 };
 
 class IssueListView : public QListView {
     Q_OBJECT
 public:
-    explicit IssueListView(QWidget* parent = nullptr);
+    explicit IssueListView(IssueModel* model, QWidget* parent = nullptr);
 
 };
