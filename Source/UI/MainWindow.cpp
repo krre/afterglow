@@ -69,7 +69,7 @@ MainWindow::MainWindow() :
     ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
     issueModel = new IssueModel(this);
-    IssueListView* issueListView = new IssueListView(issueModel);
+    issueListView = new IssueListView(issueModel);
     connect(issueListView, &IssueListView::doubleClicked, [this] (const QModelIndex& index) {
         QString filename = issueModel->data(index, static_cast<int>(IssueModel::Role::Filename)).toString();
         if (!filename.isEmpty()) {
@@ -386,6 +386,7 @@ void MainWindow::on_toolButtonCargoStop_clicked() {
 }
 
 void MainWindow::on_toolButtonIssuesClear_clicked() {
+    issueListView->setCurrentIndex(QModelIndex());
     issueModel->clear();
 }
 

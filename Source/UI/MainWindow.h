@@ -9,6 +9,7 @@ class ProjectProperties;
 class TextEditor;
 class AutoCompleter;
 class IssueModel;
+class IssueListView;
 
 namespace Ui {
     class MainWindow;
@@ -147,4 +148,5 @@ private:
     TextEditor* editor = nullptr;
     AutoCompleter* completer;
     IssueModel* issueModel;
+    IssueListView* issueListView;
 };
