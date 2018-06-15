@@ -111,10 +111,13 @@ private slots:
     // Editor
     void onDocumentModified(TextEditor* editor);
 
+    // Output pane
+    void onIssueCountChanged(int count);
+
 private:
     enum class OutputPane {
         Cargo,
-        Application,
+        Issues,
         Search
     };
 

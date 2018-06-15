@@ -23,6 +23,8 @@ void IssueModel::appendMessage(const QJsonObject& message) {
     beginInsertRows(QModelIndex(), issues.count(), issues.count());
     issues.append(issue);
     endInsertRows();
+
+    emit countChanged(issues.count());
 }
 
 void IssueModel::clear() {
@@ -31,6 +33,8 @@ void IssueModel::clear() {
     beginRemoveRows(QModelIndex(), 0, issues.count() - 1);
     issues.clear();
     endRemoveRows();
+
+    emit countChanged(0);
 }
 
 int IssueModel::columnCount(const QModelIndex& parent) const {

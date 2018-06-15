@@ -69,6 +69,7 @@ MainWindow::MainWindow() :
     ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
 
     issueModel = new IssueModel(this);
+    connect(issueModel, &IssueModel::countChanged, this, &MainWindow::onIssueCountChanged);
     issueListView = new IssueListView(issueModel);
     connect(issueListView, &IssueListView::doubleClicked, [this] (const QModelIndex& index) {
         QString filename = issueModel->data(index, static_cast<int>(IssueModel::Role::Filename)).toString();
@@ -496,6 +497,14 @@ void MainWindow::addNewFile(const QString& filePath) {
 
 void MainWindow::onDocumentModified(TextEditor* editor) {
     ui->tabWidgetSource->setTabText(ui->tabWidgetSource->indexOf(editor), editor->getModifiedName());
+}
+
+void MainWindow::onIssueCountChanged(int count) {
+    QString title = tr("Issues");
+    if (count) {
+        title += QString(" (%1)").arg(count);
+    }
+    ui->tabWidgetOutput->setTabText(static_cast<int>(OutputPane::Issues), title);
 }
 
 void MainWindow::addRecentFile(const QString& filePath) {

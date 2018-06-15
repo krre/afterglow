@@ -34,6 +34,9 @@ public:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
+signals:
+    void countChanged(int count);
+
 private:
     QList<Issue> issues;
 };
