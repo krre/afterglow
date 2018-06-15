@@ -77,7 +77,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     } else {
         painter->setClipRect(opt.rect);
         QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
-        QRect rect = QRect(iconWidth + MARGIN * 3, y, opt.rect.width(), 100);
+        QRect rect = QRect(iconWidth + MARGIN * 3, y, opt.rect.width(), opt.rect.height());
         painter->drawText(rect, Qt::AlignLeft, rendered);
     }
 
@@ -104,7 +104,10 @@ QSize IssueDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIn
     bool selected = view->selectionModel()->currentIndex() == index;
 
     if (selected) {
-        return QSize(opt.rect.width(), 100);
+        QFontMetrics fm(option.font);
+        QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
+        QStringList rows = rendered.split('\n');
+        return QSize(opt.rect.width(), fm.height() * (rows.count() - 2) + 3);
     } else {
         return QStyledItemDelegate::sizeHint(option, index);
     }
