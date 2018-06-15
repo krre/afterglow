@@ -31,9 +31,12 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     painter->setPen(Qt::NoPen);
     painter->drawRect(opt.rect);
 
+    QFontMetrics fmText(opt.font);
+
     // Icon
     QFont fontIcon = Global::getFontAwesomeFont();
-    int iconHeight = opt.rect.height() - MARGIN * 2;
+    int iconHeight = fmText.height() - MARGIN * 2;
+    int iconWidth = iconHeight;
     fontIcon.setPixelSize(iconHeight);
     painter->setFont(fontIcon);
 
@@ -51,12 +54,9 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
         levelColor = QColor(Constants::Color::WARNING_ISSUME_ICON);
     }
 
-    QFontMetrics fmIcon(fontIcon);
-    int iconWidth = iconHeight;
-
     painter->setPen(levelColor);
     painter->setClipRect(opt.rect);
-    painter->drawText(MARGIN, fmIcon.ascent() + y + MARGIN, levelIcon);
+    painter->drawText(MARGIN, y + iconHeight, levelIcon);
 
     // Text color
     QColor textColor;
@@ -68,8 +68,6 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     painter->setPen(textColor);
     painter->setFont(opt.font);
-
-    QFontMetrics fmText(opt.font);
 
     // Message
     if (!selected) {
