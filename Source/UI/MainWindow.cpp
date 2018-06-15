@@ -72,9 +72,11 @@ MainWindow::MainWindow() :
     IssueListView* issueListView = new IssueListView(issueModel);
     connect(issueListView, &IssueListView::doubleClicked, [this] (const QModelIndex& index) {
         QString filename = issueModel->data(index, static_cast<int>(IssueModel::Role::Filename)).toString();
-        QString line = issueModel->data(index, static_cast<int>(IssueModel::Role::Line)).toString();
-        addSourceTab(projectPath + "/" + filename);
-        editor->goToLine(line.toInt());
+        if (!filename.isEmpty()) {
+            QString line = issueModel->data(index, static_cast<int>(IssueModel::Role::Line)).toString();
+            addSourceTab(projectPath + "/" + filename);
+            editor->goToLine(line.toInt());
+        }
     });
 
     ui->horizontalLayoutIssues->addWidget(issueListView);

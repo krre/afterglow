@@ -83,10 +83,12 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     // Filename
     QString filename = index.data(static_cast<int>(IssueModel::Role::Filename)).toString();
-    QString line = index.data(static_cast<int>(IssueModel::Role::Line)).toString();
-    QString column = index.data(static_cast<int>(IssueModel::Role::Column)).toString();
-    QString filenameWithPos = QString("%1 %2:%3").arg(filename).arg(line).arg(column);
-    painter->drawText(opt.rect.width() - fmText.width(filenameWithPos), fmText.ascent() + y, filenameWithPos);
+    if (!filename.isEmpty()) {
+        QString line = index.data(static_cast<int>(IssueModel::Role::Line)).toString();
+        QString column = index.data(static_cast<int>(IssueModel::Role::Column)).toString();
+        QString filenameWithPos = QString("%1 %2:%3").arg(filename).arg(line).arg(column);
+        painter->drawText(opt.rect.width() - fmText.width(filenameWithPos), fmText.ascent() + y, filenameWithPos);
+    }
 
     // Separator lines
     painter->setPen(QColor(Constants::Color::ISSUE_SEPARATOR));
