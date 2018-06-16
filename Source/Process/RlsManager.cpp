@@ -40,6 +40,8 @@ void RlsManager::setShowDebug(bool showDebug) {
     instance->showDebug = showDebug;
 }
 
+// Available methods:
+// https://github.com/rust-lang-nursery/rls/blob/master/clients.md
 void RlsManager::send(const QString& method, const QJsonObject& params) {
     QJsonObject obj = {
         {"jsonrpc", "2.0"},
