@@ -400,11 +400,14 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
         ui->plainTextEditCargo->clear();
     }
 
+    bool isJson = false;
+
     for (const QString& block : message.split('\n')) {
         if (block.left(1) == "{") {
             QJsonParseError error;
             QJsonDocument doc = QJsonDocument::fromJson(block.toUtf8(), &error);
             if (!doc.isNull() && doc.isObject()) {
+                isJson = true;
                 QJsonObject obj = doc.object();
                 if (obj.contains("reason")) {
                     if (obj["reason"].toString() == "compiler-message") {
@@ -415,11 +418,11 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
                         qDebug() << block;
                     }
                 }
-
-                return;
             }
         }
     }
+
+    if (isJson) return;
 
     if (html) {
         ui->plainTextEditCargo->appendHtml(message);
