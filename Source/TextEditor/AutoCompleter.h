@@ -1,5 +1,6 @@
 #pragma once
 #include <QCompleter>
+#include <QFile>
 
 class TextEditor;
 class QKeyEvent;
@@ -15,8 +16,10 @@ public:
 
 private slots:
     void onActivate(const QString& completion);
+    void onCompletionResult(const QJsonArray& result);
 
 private:
     TextEditor* editor;
     QStringListModel* listModel;
+    QFile tmpFile;
 };

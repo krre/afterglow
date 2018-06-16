@@ -99,14 +99,14 @@ MainWindow::MainWindow() :
     ui->toolButtonIssuesClear->setFont(font);
     ui->toolButtonIssuesClear->setText(Constants::FontAwesome::TRASH_ALT);
 
+    new RlsManager(this);
+    RlsManager::setShowDebug(Settings::getValue("debug.dump.rlsMessages").toBool());
+    RlsManager::start();
+
     completer = new AutoCompleter(this);
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setWrapAround(false);
-
-    new RlsManager(this);
-    RlsManager::setShowDebug(Settings::getValue("debug.dump.rlsMessages").toBool());
-    RlsManager::start();
 
     loadSettings();
     updateMenuState();

@@ -10,7 +10,8 @@ AutoCompleter::AutoCompleter(QObject* parent) : QCompleter(parent) {
     listModel = new QStringListModel(this);
     setModel(listModel);
 
-    QObject::connect(this, SIGNAL(activated(QString)), this, SLOT(onActivate(QString)));
+    connect(this, SIGNAL(activated(QString)), this, SLOT(onActivate(QString)));
+    connect(RlsManager::getInstance(), &RlsManager::completionResult, this, &AutoCompleter::onCompletionResult);
 }
 
 void AutoCompleter::setTextEditor(TextEditor* editor) {
@@ -27,58 +28,20 @@ void AutoCompleter::open() {
     }
 
     QString tmpPath = QDir::tempPath() + "/racer.tmp";
-    QFile file(tmpPath);
-    if (!file.open(QIODevice::WriteOnly)) {
+    tmpFile.setFileName(tmpPath);
+    if (!tmpFile.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open temporary Racer file" << tmpPath;
         return;
     }
 
-    file.write(editor->document()->toPlainText().toUtf8());
-    file.close();
-
-    QProcess process;
-    QStringList arguments;
-    arguments << "complete";
+    tmpFile.write(editor->document()->toPlainText().toUtf8());
+    tmpFile.close();
 
     QTextCursor cursor = editor->textCursor();
     int row = cursor.blockNumber();
     int column = cursor.columnNumber();
-    arguments << QString::number(row + 1);
-    arguments << QString::number(column + 1);
-    arguments << tmpPath;
 
-    RlsManager::completion(editor->getFilePath(), row, column);
-
-    process.start("racer", arguments);
-    process.waitForFinished();
-
-    file.remove();
-
-    QString error = process.readAllStandardError();
-    if (!error.isEmpty()) {
-        qWarning() << "Error running Racer:" << error;
-        return;
-    }
-
-    QString result = process.readAllStandardOutput();
-    QStringList rows = result.split('\n');
-    QStringList words;
-
-    for (int i = 0; i < rows.count(); i++) {
-        if (rows.at(i).left(5) == "MATCH") {
-            QString word = rows.at(i).split(',').at(0).split(' ').at(1);
-            words << word;
-        }
-    }
-
-    listModel->setStringList(words);
-    listModel->sort(0);
-
-    QRect cr = editor->cursorRect();
-    cr.setX(cr.x() + editor->leftMargin());
-    cr.setWidth(popup()->sizeHintForColumn(0) + popup()->verticalScrollBar()->sizeHint().width());
-
-    complete(cr);
+    RlsManager::completion(tmpPath, row, column);
 }
 
 void AutoCompleter::onActivate(const QString& completion) {
@@ -92,4 +55,23 @@ void AutoCompleter::onActivate(const QString& completion) {
     cursor.movePosition(QTextCursor::EndOfWord);
     cursor.insertText(completion.right(extra));
     editor->setTextCursor(cursor);
+}
+
+void AutoCompleter::onCompletionResult(const QJsonArray& result) {
+    tmpFile.remove();
+
+    QStringList words;
+
+    for (const QJsonValue& value : result) {
+        words << value.toObject()["label"].toString();
+    }
+
+    listModel->setStringList(words);
+    listModel->sort(0);
+
+    QRect cr = editor->cursorRect();
+    cr.setX(cr.x() + editor->leftMargin());
+    cr.setWidth(popup()->sizeHintForColumn(0) + popup()->verticalScrollBar()->sizeHint().width());
+
+    complete(cr);
 }
