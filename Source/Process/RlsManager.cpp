@@ -25,7 +25,7 @@ void RlsManager::initialize(const QString& projectPath) {
     };
 
     QJsonObject params = {
-        { "rootPath", projectPath },
+        { "rootUri", "file://" + projectPath },
         { "capabilities", capabilities }
     };
 
