@@ -1,5 +1,6 @@
 #include "AutoCompleter.h"
 #include "TextEditor.h"
+#include "Process/RlsManager.h"
 #include <QtWidgets>
 
 AutoCompleter::AutoCompleter(QObject* parent) : QCompleter(parent) {
@@ -40,9 +41,13 @@ void AutoCompleter::open() {
     arguments << "complete";
 
     QTextCursor cursor = editor->textCursor();
-    arguments << QString::number(cursor.blockNumber() + 1);
-    arguments << QString::number(cursor.columnNumber() + 1);
+    int row = cursor.blockNumber();
+    int column = cursor.columnNumber();
+    arguments << QString::number(row + 1);
+    arguments << QString::number(column + 1);
     arguments << tmpPath;
+
+    RlsManager::completion(editor->getFilePath(), row, column);
 
     process.start("racer", arguments);
     process.waitForFinished();

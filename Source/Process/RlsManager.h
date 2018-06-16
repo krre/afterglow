@@ -13,6 +13,7 @@ public:
     static void shutdown();
     static void setShowDebug(bool showDebug);
     static void send(const QString& method, const QJsonObject& params = QJsonObject());
+    static void completion(const QString& filename, int row, int column);
 
 signals:
     void answer(const QJsonObject& message);

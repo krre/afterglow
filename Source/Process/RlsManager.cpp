@@ -69,6 +69,24 @@ void RlsManager::send(const QString& method, const QJsonObject& params) {
     instance->getProcess()->write(message.toUtf8());
 }
 
+void RlsManager::completion(const QString& filename, int row, int column) {
+    QJsonObject textDocument = {
+        { "uri", "file://" + filename }
+    };
+
+    QJsonObject position = {
+        { "line", row },
+        { "character", column }
+    };
+
+    QJsonObject params = {
+        { "textDocument", textDocument },
+        { "position", position }
+    };
+
+    instance->send("textDocument/completion", params);
+}
+
 void RlsManager::onReadyReadStandardOutput(const QString& data) {
     if (showDebug) {
         qDebug() << "RLS Result:" << data;
