@@ -20,13 +20,6 @@ void AutoCompleter::setTextEditor(TextEditor* editor) {
 }
 
 void AutoCompleter::open() {
-    QString prefix = editor->textUnderCursor();
-
-    if (prefix != completionPrefix()) {
-        setCompletionPrefix(prefix);
-        popup()->setCurrentIndex(completionModel()->index(0, 0));
-    }
-
     QString tmpPath = QDir::tempPath() + "/racer.tmp";
     tmpFile.setFileName(tmpPath);
     if (!tmpFile.open(QIODevice::WriteOnly)) {
@@ -42,6 +35,7 @@ void AutoCompleter::open() {
     int column = cursor.columnNumber();
 
     RlsManager::completion(tmpPath, row, column);
+//    RlsManager::completion(editor->getFilePath(), row, column);
 }
 
 void AutoCompleter::onActivate(const QString& completion) {
@@ -68,6 +62,13 @@ void AutoCompleter::onCompletionResult(const QJsonArray& result) {
 
     listModel->setStringList(words);
     listModel->sort(0);
+
+    QString prefix = editor->textUnderCursor();
+
+    if (prefix != completionPrefix()) {
+//        setCompletionPrefix(prefix);
+        popup()->setCurrentIndex(completionModel()->index(0, 0));
+    }
 
     QRect cr = editor->cursorRect();
     cr.setX(cr.x() + editor->leftMargin());
