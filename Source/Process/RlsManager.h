@@ -1,5 +1,6 @@
 #include "ProcessManager.h"
 #include <QJsonObject>
+#include <QMap>
 
 class RlsManager : public ProcessManager {
     Q_OBJECT
@@ -17,6 +18,7 @@ public:
 
 signals:
     void answer(const QJsonObject& message);
+    void completionResult(const QJsonArray& result);
 
 protected slots:
     void onReadyReadStandardOutput(const QString& data) override;
@@ -25,4 +27,5 @@ protected slots:
 private:
     bool showDebug = false;
     int counter = 0;
+    QMap<int, QString> identifiers;
 };

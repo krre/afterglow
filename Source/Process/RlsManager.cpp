@@ -43,12 +43,14 @@ void RlsManager::setShowDebug(bool showDebug) {
 // Available methods:
 // https://github.com/rust-lang-nursery/rls/blob/master/clients.md
 void RlsManager::send(const QString& method, const QJsonObject& params) {
+    int id = instance->counter++;
+    instance->identifiers[id] = method;
+
     QJsonObject obj = {
         {"jsonrpc", "2.0"},
-        { "id", instance->counter++ },
+        { "id", id },
         { "method", method },
     };
-
 
     if (!params.isEmpty()) {
         obj["params"] = params;
@@ -95,7 +97,16 @@ void RlsManager::onReadyReadStandardOutput(const QString& data) {
     QStringList rows = data.split("\r\n");
     if (rows.count() >= 3) {
         QJsonDocument doc = QJsonDocument::fromJson(rows.at(2).toUtf8());
-        emit answer(doc.object());
+        QJsonObject obj = doc.object();
+        if (obj.contains("id")) {
+            int id = obj["id"].toInt();
+            if (identifiers.contains(id)) {
+                QString method = identifiers.take(id);
+                if (method == "textDocument/completion") {
+                    completionResult(obj["result"].toArray());
+                }
+            }
+        }
     }
 }
 
