@@ -839,6 +839,8 @@ void MainWindow::openProject(const QString& path, bool isNew) {
 void MainWindow::closeProject() {
     if (projectPath.isNull()) return;
 
+    RlsManager::shutdown();
+
     saveSession();
     saveProjectProperties();
 
