@@ -10,6 +10,9 @@ AutoCompleter::AutoCompleter(QObject* parent) : QCompleter(parent) {
     listModel = new QStringListModel(this);
     setModel(listModel);
 
+    tmpPath = QDir::tempPath() + "/racer.tmp";
+    tmpFile.setFileName(tmpPath);
+
     connect(this, SIGNAL(activated(QString)), this, SLOT(onActivate(QString)));
     connect(RlsManager::getInstance(), &RlsManager::completionResult, this, &AutoCompleter::onCompletionResult);
 }
@@ -20,8 +23,6 @@ void AutoCompleter::setTextEditor(TextEditor* editor) {
 }
 
 void AutoCompleter::open() {
-    QString tmpPath = QDir::tempPath() + "/racer.tmp";
-    tmpFile.setFileName(tmpPath);
     if (!tmpFile.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open temporary Racer file" << tmpPath;
         return;

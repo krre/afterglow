@@ -22,4 +22,5 @@ private:
     TextEditor* editor;
     QStringListModel* listModel;
     QFile tmpFile;
+    QString tmpPath;
 };
