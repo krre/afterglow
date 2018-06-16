@@ -39,6 +39,20 @@
         },
         "rustInstaller": {
             "currentTab": 0
+        },
+        "output": {
+            "cargo": {
+                "font": {
+                    "family": "Consolas",
+                    "size": 10
+                }
+            },
+            "issues": {
+                "font": {
+                    "family": "Consolas",
+                    "size": 10
+                }
+            }
         }
     },
 

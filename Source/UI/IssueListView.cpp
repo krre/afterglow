@@ -1,6 +1,7 @@
 #include "IssueListView.h"
 #include "IssueModel.h"
 #include "Core/Constants.h"
+#include "Core/Settings.h"
 #include "Core/Global.h"
 #include <QtGui>
 
@@ -13,6 +14,11 @@ IssueDelegate::IssueDelegate(QObject* parent) : QStyledItemDelegate(parent) {
 void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
     QStyleOptionViewItem opt = option;
     initStyleOption(&opt, index);
+
+    const QString& family = Settings::getValue("gui.output.issues.font.family").toString();
+    int size = Settings::getValue("gui.output.issues.font.size").toInt();
+    QFont font(family, size);
+
     int y = opt.rect.y();
     painter->save();
 
@@ -31,7 +37,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     painter->setPen(Qt::NoPen);
     painter->drawRect(opt.rect);
 
-    QFontMetrics fmText(opt.font);
+    QFontMetrics fmText(font);
 
     // Icon
     QFont fontIcon = Global::getFontAwesomeFont();
@@ -67,7 +73,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     }
 
     painter->setPen(textColor);
-    painter->setFont(opt.font);
+    painter->setFont(font);
 
     // Message
     if (!selected) {
@@ -102,16 +108,20 @@ QSize IssueDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIn
     QStyleOptionViewItem opt = option;
     initStyleOption(&opt, index);
 
+    const QString& family = Settings::getValue("gui.output.issues.font.family").toString();
+    int size = Settings::getValue("gui.output.issues.font.size").toInt();
+    QFont font(family, size);
+    QFontMetrics fm(font);
+
     const QAbstractItemView* view = qobject_cast<const QAbstractItemView*>(opt.widget);
     bool selected = view->selectionModel()->currentIndex() == index;
 
     if (selected) {
-        QFontMetrics fm(option.font);
         QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
         QStringList rows = rendered.split('\n', QString::SkipEmptyParts);
         return QSize(opt.rect.width(), fm.height() * (rows.count()) + 3);
     } else {
-        return QStyledItemDelegate::sizeHint(option, index);
+        return QSize(opt.rect.width(), fm.height());
     }
 }
 

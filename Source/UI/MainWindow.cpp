@@ -631,6 +631,11 @@ void MainWindow::loadSettings() {
     ui->actionShowOutput->setChecked(Settings::getValue("gui.mainWindow.output.visible").toBool());
     ui->tabWidgetOutput->setCurrentIndex(Settings::getValue("gui.mainWindow.output.tab").toInt());
 
+    const QString& family = Settings::getValue("gui.output.cargo.font.family").toString();
+    int size = Settings::getValue("gui.output.cargo.font.size").toInt();
+    QFont font(family, size);
+    ui->plainTextEditCargo->document()->setDefaultFont(font);
+
     // Recent projects
     QJsonArray recentProjects = Settings::getValue("gui.mainWindow.recent.projects").toArray();
     for (int i = recentProjects.size() - 1; i >= 0; --i) {
