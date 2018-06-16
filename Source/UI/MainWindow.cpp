@@ -101,7 +101,7 @@ MainWindow::MainWindow() :
 
     new RlsManager(this);
     RlsManager::setShowDebug(Settings::getValue("debug.dump.rlsMessages").toBool());
-    RlsManager::start();
+//    RlsManager::start();
 
     completer = new AutoCompleter(this);
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);

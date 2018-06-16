@@ -20,6 +20,8 @@ void RlsManager::start() {
 }
 
 void RlsManager::initialize(const QString& projectPath) {
+    start(); // TODO: Do not restart process on changing proejct
+
     QJsonObject capabilities = {
         {}
     };
@@ -34,6 +36,7 @@ void RlsManager::initialize(const QString& projectPath) {
 
 void RlsManager::shutdown() {
     send("shutdown");
+    instance->stop(); // TODO: Do not restart process on changing proejct
 }
 
 void RlsManager::setShowDebug(bool showDebug) {
