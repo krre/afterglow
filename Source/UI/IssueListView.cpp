@@ -6,6 +6,7 @@
 #include <QtGui>
 
 static const int MARGIN = 2;
+static QFont issueFont = QFont();
 
 IssueDelegate::IssueDelegate(QObject* parent) : QStyledItemDelegate(parent) {
 
@@ -14,10 +15,6 @@ IssueDelegate::IssueDelegate(QObject* parent) : QStyledItemDelegate(parent) {
 void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
     QStyleOptionViewItem opt = option;
     initStyleOption(&opt, index);
-
-    const QString& family = Settings::getValue("gui.output.issues.font.family").toString();
-    int size = Settings::getValue("gui.output.issues.font.size").toInt();
-    QFont font(family, size);
 
     int y = opt.rect.y();
     painter->save();
@@ -37,7 +34,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     painter->setPen(Qt::NoPen);
     painter->drawRect(opt.rect);
 
-    QFontMetrics fmText(font);
+    QFontMetrics fmText(issueFont);
 
     // Icon
     QFont fontIcon = Global::getFontAwesomeFont();
@@ -73,7 +70,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     }
 
     painter->setPen(textColor);
-    painter->setFont(font);
+    painter->setFont(issueFont);
 
     // Message
     if (!selected) {
@@ -108,10 +105,7 @@ QSize IssueDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIn
     QStyleOptionViewItem opt = option;
     initStyleOption(&opt, index);
 
-    const QString& family = Settings::getValue("gui.output.issues.font.family").toString();
-    int size = Settings::getValue("gui.output.issues.font.size").toInt();
-    QFont font(family, size);
-    QFontMetrics fm(font);
+    QFontMetrics fm(issueFont);
 
     const QAbstractItemView* view = qobject_cast<const QAbstractItemView*>(opt.widget);
     bool selected = view->selectionModel()->currentIndex() == index;
@@ -131,6 +125,10 @@ void IssueDelegate::currentChanged(const QModelIndex& current, const QModelIndex
 }
 
 IssueListView::IssueListView(IssueModel* model, QWidget* parent) : QListView(parent) {
+    const QString& family = Settings::getValue("gui.output.issues.font.family").toString();
+    int size = Settings::getValue("gui.output.issues.font.size").toInt();
+    issueFont = QFont(family, size);
+
     setModel(model);
 
     IssueDelegate* delegate = new IssueDelegate(this);
