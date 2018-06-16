@@ -108,8 +108,8 @@ QSize IssueDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIn
     if (selected) {
         QFontMetrics fm(option.font);
         QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
-        QStringList rows = rendered.split('\n');
-        return QSize(opt.rect.width(), fm.height() * (rows.count() - 2) + 3);
+        QStringList rows = rendered.split('\n', QString::SkipEmptyParts);
+        return QSize(opt.rect.width(), fm.height() * (rows.count()) + 3);
     } else {
         return QStyledItemDelegate::sizeHint(option, index);
     }
