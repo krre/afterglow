@@ -1,3 +1,4 @@
+#pragma once
 #include "ProcessManager.h"
 #include <QJsonObject>
 #include <QMap>
