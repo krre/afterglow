@@ -4,7 +4,7 @@
 #include <QtWidgets>
 
 AutoCompleter::AutoCompleter(QObject* parent) : QCompleter(parent) {
-    setCompletionMode(QCompleter::PopupCompletion);
+    setCompletionMode(QCompleter::UnfilteredPopupCompletion);
     setCaseSensitivity(Qt::CaseInsensitive);
 
     listModel = new QStringListModel(this);
@@ -67,7 +67,7 @@ void AutoCompleter::onCompletionResult(const QJsonArray& result) {
     QString prefix = editor->textUnderCursor();
 
     if (prefix != completionPrefix()) {
-//        setCompletionPrefix(prefix);
+        setCompletionPrefix(prefix);
         popup()->setCurrentIndex(completionModel()->index(0, 0));
     }
 
