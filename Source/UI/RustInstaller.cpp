@@ -64,7 +64,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
         }
     });
 
-    connect(process, &QProcess::errorOccurred, [=] (QProcess::ProcessError error){
+    connect(process, &QProcess::errorOccurred, [=] (QProcess::ProcessError error) {
         Q_UNUSED(error)
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF").arg(tr("Command finished with error"));
         showAndScrollMessage(message);
