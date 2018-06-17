@@ -3,7 +3,7 @@
 #include "Core/Constants.h"
 #include "Core/Settings.h"
 #include "Core/Global.h"
-#include <QtGui>
+#include <QtWidgets>
 
 static const int MARGIN = 2;
 static QFont issueFont = QFont();
@@ -125,6 +125,8 @@ void IssueDelegate::currentChanged(const QModelIndex& current, const QModelIndex
 }
 
 IssueListView::IssueListView(IssueModel* model, QWidget* parent) : QListView(parent) {
+    setContextMenuPolicy(Qt::CustomContextMenu);
+
     const QString& family = Settings::getValue("gui.output.issues.font.family").toString();
     int size = Settings::getValue("gui.output.issues.font.size").toInt();
     issueFont = QFont(family, size);
@@ -134,4 +136,34 @@ IssueListView::IssueListView(IssueModel* model, QWidget* parent) : QListView(par
     IssueDelegate* delegate = new IssueDelegate(this);
     setItemDelegate(delegate);
     connect(selectionModel(), &QItemSelectionModel::currentChanged, delegate, &IssueDelegate::currentChanged);
+
+    connect(this, &QListView::customContextMenuRequested, this, &IssueListView::onCustomContextMenu);
+
+    contextMenu = new QMenu(this);
+    QAction* copyLabelAction = contextMenu->addAction(tr("Copy Label"));
+    connect(copyLabelAction, &QAction::triggered, this, &IssueListView::onCopyLabelAction);
+
+    QAction* copyDescriptionAction = contextMenu->addAction(tr("Copy Description"));
+    connect(copyDescriptionAction, &QAction::triggered, this, &IssueListView::onCopyDescriptionAction);
+}
+
+void IssueListView::onCustomContextMenu(const QPoint& point) {
+    if (indexAt(point).isValid()) {
+        contextMenu->exec(mapToGlobal(point));
+    }
+}
+
+void IssueListView::onCopyLabelAction() {
+    copyRowToClipboard(static_cast<int>(IssueModel::Role::Message));
+}
+
+void IssueListView::onCopyDescriptionAction() {
+    copyRowToClipboard(static_cast<int>(IssueModel::Role::Rendered));
+}
+
+void IssueListView::copyRowToClipboard(int role) {
+    QModelIndex index = selectionModel()->selectedIndexes().first();
+    QString text = model()->data(index, role).toString();
+    QClipboard* clipboard = QGuiApplication::clipboard();
+    clipboard->setText(text);
 }

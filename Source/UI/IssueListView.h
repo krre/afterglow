@@ -19,4 +19,13 @@ class IssueListView : public QListView {
 public:
     explicit IssueListView(IssueModel* model, QWidget* parent = nullptr);
 
+private slots:
+    void onCustomContextMenu(const QPoint& point);
+    void onCopyLabelAction();
+    void onCopyDescriptionAction();
+
+private:
+    void copyRowToClipboard(int role);
+
+    QMenu* contextMenu;
 };
