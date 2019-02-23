@@ -62,7 +62,7 @@ void TextEditor::saveFile() {
         QTextStream out(&file);
         out << toPlainText();
         document()->setModified(false);
-        documentModified(this);
+        emit documentModified(this);
     } else {
         qWarning() << "Failed to open file for writing" << filePath;
     }
