@@ -9,7 +9,7 @@ class Rename : public QDialog {
     Q_OBJECT
 
 public:
-    explicit Rename(const QString& path, QWidget* parent = 0);
+    explicit Rename(const QString& path, QWidget* parent = nullptr);
     ~Rename();
     QString getName() const;
 

@@ -12,7 +12,7 @@ class NewProject : public QDialog {
     Q_OBJECT
 
 public:
-    explicit NewProject(QWidget* parent = 0);
+    explicit NewProject(QWidget* parent = nullptr);
     ~NewProject();
     QString getProjectPath() const { return projectPath; }
     CargoManager::ProjectTemplate getProjectTemplate() const { return projectTemplate; }

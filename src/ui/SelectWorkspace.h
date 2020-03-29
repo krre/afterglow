@@ -9,7 +9,7 @@ class SelectWorkspace : public QDialog {
     Q_OBJECT
 
 public:
-    explicit SelectWorkspace(QWidget* parent = 0);
+    explicit SelectWorkspace(QWidget* parent = nullptr);
     ~SelectWorkspace();
 
 private slots:

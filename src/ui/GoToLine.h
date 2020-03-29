@@ -9,7 +9,7 @@ class GoToLine : public QDialog {
     Q_OBJECT
 
 public:
-    explicit GoToLine(QWidget* parent = 0);
+    explicit GoToLine(QWidget* parent = nullptr);
     ~GoToLine();
     int getLine() const { return line; }
     bool isValid() const { return valid; }

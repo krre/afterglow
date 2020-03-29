@@ -18,7 +18,7 @@ class RustInstaller : public QDialog {
     Q_OBJECT
 
 public:
-    explicit RustInstaller(QWidget* parent = 0);
+    explicit RustInstaller(QWidget* parent = nullptr);
     ~RustInstaller();
 
 private slots:

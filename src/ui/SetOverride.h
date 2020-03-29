@@ -9,7 +9,7 @@ class SetOverride : public QDialog {
     Q_OBJECT
 
 public:
-    explicit SetOverride(QWidget* parent = 0);
+    explicit SetOverride(QWidget* parent = nullptr);
     ~SetOverride();
 
     const QString& getDirectory() const { return directory; }

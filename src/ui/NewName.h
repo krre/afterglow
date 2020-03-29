@@ -9,7 +9,7 @@ class NewName : public QDialog {
     Q_OBJECT
 
 public:
-    explicit NewName(const QString& title, QWidget* parent = 0);
+    explicit NewName(const QString& title, QWidget* parent = nullptr);
     ~NewName();
     QString getName() const;
 

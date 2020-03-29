@@ -12,7 +12,7 @@ class AddComponentOrTarget : public QDialog {
     Q_OBJECT
 
 public:
-    explicit AddComponentOrTarget(const QString& title, const QString& command, QWidget* parent = 0);
+    explicit AddComponentOrTarget(const QString& title, const QString& command, QWidget* parent = nullptr);
     ~AddComponentOrTarget();
     const QStringList& getList() const { return list; }
 

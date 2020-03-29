@@ -9,7 +9,7 @@ class InstallToolchain : public QDialog {
     Q_OBJECT
 
 public:
-    explicit InstallToolchain(QWidget* parent = 0);
+    explicit InstallToolchain(QWidget* parent = nullptr);
     ~InstallToolchain();
     const QString& getToolchain() const { return toolchain; }
 

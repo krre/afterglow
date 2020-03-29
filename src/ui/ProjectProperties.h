@@ -11,7 +11,7 @@ class ProjectProperties : public QWidget {
     Q_OBJECT
 
 public:
-    explicit ProjectProperties(QWidget* parent = 0);
+    explicit ProjectProperties(QWidget* parent = nullptr);
     ~ProjectProperties();
 
     CargoManager::BuildTarget getBuildTarget() const;
