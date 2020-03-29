@@ -1,10 +1,10 @@
 #include "Utils.h"
 #include <QtWidgets>
 
-
-QStringList Utils::getListFromConsole(const QString& command) {
+QStringList Utils::listFromConsole(const QString& command) {
     QProcess process;
     QStringList list;
+
     QObject::connect(&process, &QProcess::readyReadStandardOutput, [&] () {
         QString output = process.readAllStandardOutput();
         list << output.split("\n");
@@ -23,10 +23,10 @@ QStringList Utils::getListFromConsole(const QString& command) {
     return list;
 }
 
-QStringList Utils::getSelectedRowsFromListView(QListView* listView, bool removeDefaultSuffix) {
+QStringList Utils::selectedRowsFromListView(QListView* listView, bool removeDefaultSuffix) {
     QStringList list;
-
     QModelIndexList indices = listView->selectionModel()->selectedIndexes();
+
     for (int i = 0; i < indices.count(); i++) {
         list.append(listView->model()->data(indices.at(i), Qt::DisplayRole).toString());
     }
@@ -41,7 +41,7 @@ QStringList Utils::getSelectedRowsFromListView(QListView* listView, bool removeD
 }
 
 void Utils::copySelectedRowsFromListViewToClipboard(QListView* listView) {
-    QStringList list = Utils::getSelectedRowsFromListView(listView);
+    QStringList list = Utils::selectedRowsFromListView(listView);
     list.replaceInStrings(" ", "");
     QClipboard* clipboard = QGuiApplication::clipboard();
     clipboard->setText(list.join('\n'));

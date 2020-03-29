@@ -16,7 +16,7 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
 
     connect(ui->listView, &QListView::customContextMenuRequested, this, &AddComponentOrTarget::onCustomContextMenu);
 
-    QStringList list = Utils::getListFromConsole(command);
+    QStringList list = Utils::listFromConsole(command);
     for (int i = list.count() - 1; i >= 0; i--) {
         if (list.at(i).contains("(default)") || list.at(i).contains("(installed)")
                 || (command.contains("component") && list.at(i).left(8) == "rust-std")) {

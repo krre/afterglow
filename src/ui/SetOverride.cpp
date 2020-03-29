@@ -10,7 +10,7 @@ SetOverride::SetOverride(QWidget* parent) :
     ui->lineEdit->setFocus();
     ui->buttonBox->buttons().at(0)->setEnabled(false);
 
-    QStringList list = Utils::getListFromConsole("rustup toolchain list");
+    QStringList list = Utils::listFromConsole("rustup toolchain list");
     for (const QString& toolchain : list) {
         ui->comboBox->addItem(toolchain);
     }

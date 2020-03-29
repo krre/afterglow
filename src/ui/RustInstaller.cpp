@@ -171,19 +171,19 @@ void RustInstaller::on_pushButtonUninstallToolchain_clicked() {
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
         runCommand("rustup", QStringList() << "toolchain" << "uninstall"
-                   << Utils::getSelectedRowsFromListView(ui->listViewToolchains), [this] {
+                   << Utils::selectedRowsFromListView(ui->listViewToolchains), [this] {
             loadToolchainList();
         });
     }
 }
 
 void RustInstaller::on_pushButtonUpdateToolchain_clicked() {
-    runCommand("rustup", QStringList() << "update" << Utils::getSelectedRowsFromListView(ui->listViewToolchains));
+    runCommand("rustup", QStringList() << "update" << Utils::selectedRowsFromListView(ui->listViewToolchains));
 }
 
 void RustInstaller::on_pushButtonSetDefaultToolchain_clicked() {
     runCommand("rustup", QStringList() << "default"
-               << Utils::getSelectedRowsFromListView(ui->listViewToolchains).at(0), [this] {
+               << Utils::selectedRowsFromListView(ui->listViewToolchains).at(0), [this] {
         loadToolchainList();
         loadTargetList();
         loadComponentList();
@@ -210,7 +210,7 @@ void RustInstaller::on_pushButtonRemoveTarget_clicked() {
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
         runCommand("rustup", QStringList() << "target" << "remove"
-                   << Utils::getSelectedRowsFromListView(ui->listViewTargets), [this] {
+                   << Utils::selectedRowsFromListView(ui->listViewTargets), [this] {
             loadTargetList();
             loadComponentList();
         });
@@ -236,7 +236,7 @@ void RustInstaller::on_pushButtonRemoveComponent_clicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        QStringList components = Utils::getSelectedRowsFromListView(ui->listViewComponents);
+        QStringList components = Utils::selectedRowsFromListView(ui->listViewComponents);
         cleanupTarget(components);
         runCommand("rustup", QStringList() << "component" << "remove" << components, [this] {
             loadComponentList();
@@ -264,7 +264,7 @@ void RustInstaller::on_pushButtonUnsetOverride_clicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        QStringList overrides = Utils::getSelectedRowsFromListView(ui->listViewOverrides);
+        QStringList overrides = Utils::selectedRowsFromListView(ui->listViewOverrides);
         for (const QString& override : overrides) {
             runCommand("rustup", QStringList() << "override" << "unset" << "--path" << override.split('\t').at(0), [this] {
                 loadOverrideList();
@@ -406,7 +406,7 @@ void RustInstaller::updateAllButtonsState() {
 }
 
 void RustInstaller::loadVersion() {
-    QStringList list = Utils::getListFromConsole("rustup show");
+    QStringList list = Utils::listFromConsole("rustup show");
     for (const QString& row : list) {
         if (row.left(5) == "rustc") {
             ui->lineEditVersion->setText(row);
@@ -439,7 +439,7 @@ void RustInstaller::loadOverrideList() {
 
 void RustInstaller::loadAndFilterList(const QString& command, QListView* listView, const std::function<void(QStringList&)>& filter) {
     StringListModel* model = static_cast<StringListModel*>(listView->model());
-    QStringList list = Utils::getListFromConsole(command);
+    QStringList list = Utils::listFromConsole(command);
 
     if (list.count() == 1 && list.at(0).left(2) == "no") {
         list.removeFirst();
