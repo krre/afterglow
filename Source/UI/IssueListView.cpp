@@ -28,8 +28,8 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
         painter->setBrush(opt.palette.highlight().color());
         backgroundColor = opt.palette.highlight().color();
     } else {
-        painter->setBrush(opt.palette.background().color());
-        backgroundColor = opt.palette.background().color();
+        painter->setBrush(opt.palette.window().color());
+        backgroundColor = opt.palette.window().color();
     }
     painter->setPen(Qt::NoPen);
     painter->drawRect(opt.rect);
@@ -90,7 +90,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
         QString line = index.data(static_cast<int>(IssueModel::Role::Line)).toString();
         QString column = index.data(static_cast<int>(IssueModel::Role::Column)).toString();
         QString filenameWithPos = QString("%1 %2:%3").arg(filename).arg(line).arg(column);
-        painter->drawText(opt.rect.width() - fmText.width(filenameWithPos) - MARGIN, fmText.ascent() + y, filenameWithPos);
+        painter->drawText(opt.rect.width() - fmText.horizontalAdvance(filenameWithPos) - MARGIN, fmText.ascent() + y, filenameWithPos);
     }
 
     // Separator lines
