@@ -9,8 +9,8 @@ static bool reseted = false;
 
 void Settings::init() {
     prefsPath = QCoreApplication::applicationDirPath() + "/" + Const::App::PrefsName;
-
     QFile resPrefsFile(":/resources/prefs.json");
+
     if (!resPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Failed to open file" << resPrefsFile.fileName();
         return;
@@ -18,6 +18,7 @@ void Settings::init() {
 
     QJsonParseError err;
     QJsonDocument resDoc(QJsonDocument::fromJson(resPrefsFile.readAll(), &err));
+
     if (err.error != QJsonParseError::NoError) {
         qWarning() << "Failed to parse JSON file" << resPrefsFile.fileName();
         qWarning() << "Error:" << err.errorString() << "offset:" << err.offset;
@@ -25,18 +26,22 @@ void Settings::init() {
     }
 
     QFile workPrefsFile(prefsPath);
+
     if (workPrefsFile.exists()) {
         if (!workPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qWarning() << "Failed to open file" << workPrefsFile.fileName();
             return;
         }
+
         QJsonParseError err;
         storage = QJsonDocument::fromJson(workPrefsFile.readAll(), &err).object();
+
         if (err.error != QJsonParseError::NoError) {
             qWarning() << "Failed to parse JSON file" << workPrefsFile.fileName();
             qWarning() << "Error:" << err.errorString() << "offset:" << err.offset;
             return;
         }
+
         // Update preferences.
         QJsonObject src = resDoc.object();
         cleanupDeprecated(src, storage);
@@ -47,7 +52,6 @@ void Settings::init() {
     }
 
     flush();
-
     updateRustEnvironmentVariables();
 }
 
@@ -58,6 +62,7 @@ void Settings::flush() {
     }
 
     QFile file(QCoreApplication::applicationDirPath() + "/" + Const::App::PrefsName);
+
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qWarning() << "Failed to open file" << file.fileName();
         return;
@@ -78,6 +83,7 @@ void Settings::setValue(const QString& path, const QJsonValue& value) {
 QJsonValue Settings::value(const QString& path) {
     QStringList keys = path.split('.');
     QJsonObject obj = storage;
+
     for (int i = 0; i < keys.count() - 1; i++) {
         obj = obj[keys.at(i)].toObject();
     }
@@ -123,7 +129,7 @@ void Settings::reset() {
 }
 
 void Settings::cleanupDeprecated(QJsonObject& src, QJsonObject& dst) {
-    for (QString key : dst.keys()) {
+    for (const QString& key : dst.keys()) {
         if (src.contains(key)) {
             if (dst[key].isObject()) {
                 QJsonObject srcObj = src[key].toObject();
@@ -138,7 +144,7 @@ void Settings::cleanupDeprecated(QJsonObject& src, QJsonObject& dst) {
 }
 
 void Settings::appendNew(QJsonObject& src, QJsonObject& dst) {
-    for (QString key : src.keys()) {
+    for (const QString& key : src.keys()) {
         if (dst.contains(key)) {
             if (src[key].isObject()) {
                 QJsonObject srcObj = src[key].toObject();
