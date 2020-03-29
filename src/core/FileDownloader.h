@@ -12,20 +12,20 @@ public:
 
     void load(const QUrl& url);
 
-    QByteArray getDownloadedData() const;
+    QByteArray data() const;
     void checkSSLSupport();
     void abort();
-    bool isBusy() const { return busy; }
+    bool isBusy() const { return m_isBusy; }
 
 signals:
     void downloaded();
 
 private slots:
-    void fileDownloaded(QNetworkReply* reply);
+    void fileDownloaded(QNetworkReply* m_reply);
 
 private:
     QNetworkAccessManager networkAccessManager;
-    QByteArray downloadedData;
-    bool busy = false;
-    QNetworkReply* reply = nullptr;
+    QByteArray m_data;
+    bool m_isBusy = false;
+    QNetworkReply* m_reply = nullptr;
 };

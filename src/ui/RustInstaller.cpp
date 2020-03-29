@@ -287,12 +287,12 @@ void RustInstaller::on_pushButtonBreak_clicked() {
 
 void RustInstaller::onDownloaded() {
     updateAllButtonsState();
-    showAndScrollMessage(QString("Downloaded %1 bytes").arg(fileDownloader->getDownloadedData().size()));
+    showAndScrollMessage(QString("Downloaded %1 bytes").arg(fileDownloader->data().size()));
 
     QString filePath = tmpDir.path() + "/" + "rustup-init.exe";
     QFile file(filePath);
     file.open(QIODevice::WriteOnly);
-    file.write(fileDownloader->getDownloadedData());
+    file.write(fileDownloader->data());
     file.close();
 
     runCommand(filePath, QStringList() << "-y", [this] {

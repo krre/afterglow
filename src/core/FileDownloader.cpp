@@ -7,21 +7,21 @@ FileDownloader::FileDownloader(QObject* parent) : QObject(parent) {
 }
 
 void FileDownloader::load(const QUrl& url) {
-    busy = true;
+    m_isBusy = true;
     QNetworkRequest request(url);
-    reply = networkAccessManager.get(request);
+    m_reply = networkAccessManager.get(request);
 }
 
 void FileDownloader::fileDownloaded(QNetworkReply* reply) {
-    downloadedData = reply->readAll();
+    m_data = reply->readAll();
     reply->deleteLater();
-    this->reply = nullptr;
-    busy = false;
+    m_reply = nullptr;
+    m_isBusy = false;
     emit downloaded();
 }
 
-QByteArray FileDownloader::getDownloadedData() const {
-    return downloadedData;
+QByteArray FileDownloader::data() const {
+    return m_data;
 }
 
 void FileDownloader::checkSSLSupport() {
@@ -33,7 +33,7 @@ void FileDownloader::checkSSLSupport() {
 }
 
 void FileDownloader::abort() {
-    if (reply) {
-        reply->abort();
+    if (m_reply) {
+        m_reply->abort();
     }
 }
