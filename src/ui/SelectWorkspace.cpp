@@ -10,7 +10,7 @@ SelectWorkspace::SelectWorkspace(QWidget* parent) :
         ui(new Ui::SelectWorkspace) {
     ui->setupUi(this);
     setFixedHeight(height());
-    ui->lineEdit->setText(Global::getWorkspacePath());
+    ui->lineEdit->setText(Global::workspacePath());
 }
 
 SelectWorkspace::~SelectWorkspace() {

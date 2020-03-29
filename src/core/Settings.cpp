@@ -102,14 +102,14 @@ void Settings::updateRustEnvironmentVariables() {
 
     if (!rustupHome.isEmpty()) {
         qputenv(Const::Environment::RustupHome, rustupHome.toUtf8());
-    } else if (Global::getSystemRustupHome().isEmpty()) {
+    } else if (Global::systemRustupHome().isEmpty()) {
         qputenv(Const::Environment::RustupHome, QString(homePath + "/.rustup").toUtf8());
     }
 
     QString cargoHome = value("environment.cargoHome").toString();
     if (!cargoHome.isEmpty()) {
         qputenv(Const::Environment::CargoHome, cargoHome.toUtf8());
-    } else if (Global::getSystemCargoHome().isEmpty()) {
+    } else if (Global::systemCargoHome().isEmpty()) {
         qputenv(Const::Environment::CargoHome, QString(homePath + "/.cargo").toUtf8());
     }
 

@@ -82,7 +82,7 @@ MainWindow::MainWindow() :
 
     ui->horizontalLayoutIssues->addWidget(issueListView);
 
-    QFont font = Global::getFontAwesomeFont();
+    QFont font = Global::fontAwesomeFont();
 
     ui->toolButtonCargoBuild->setFont(font);
     ui->toolButtonCargoBuild->setText(Const::FontAwesome::Cog);
@@ -204,7 +204,7 @@ void MainWindow::on_actionNewDirectory_triggered() {
 }
 
 void MainWindow::on_actionOpen_triggered() {
-    QString dirPath = projectPath.isEmpty() ? Global::getWorkspacePath() : projectPath;
+    QString dirPath = projectPath.isEmpty() ? Global::workspacePath() : projectPath;
     QString filePath = QFileDialog::getOpenFileName(this, tr("Open File or Project"), dirPath, "All Files(*.*)");
     if (filePath.isEmpty()) return;
 

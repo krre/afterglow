@@ -37,7 +37,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     QFontMetrics fmText(issueFont);
 
     // Icon
-    QFont fontIcon = Global::getFontAwesomeFont();
+    QFont fontIcon = Global::fontAwesomeFont();
     int iconHeight = fmText.height() - MARGIN * 2;
     int iconWidth = iconHeight;
     fontIcon.setPixelSize(iconHeight);
