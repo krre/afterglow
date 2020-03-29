@@ -80,7 +80,7 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
 }
 
 void CargoManager::prepareAndStart(const QStringList& arguments) {
-    QString cargoPath = Settings::getValue("cargo.path").toString();
+    QString cargoPath = Settings::value("cargo.path").toString();
     getProcess()->setProgram(cargoPath.isEmpty() ? "cargo" : cargoPath);
     getProcess()->setArguments(arguments);
 
@@ -96,7 +96,7 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
 }
 
 void CargoManager::addBuildRunArguments(QStringList& arguments) {
-    if (Settings::getValue("debug.compilerMessageFormat").toString() == "json") {
+    if (Settings::value("debug.compilerMessageFormat").toString() == "json") {
         arguments << "--message-format";
         arguments << "json";
     }

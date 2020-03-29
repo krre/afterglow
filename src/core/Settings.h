@@ -8,7 +8,7 @@ public:
     static void flush();
 
     static void setValue(const QString& path, const QJsonValue& value);
-    static QJsonValue getValue(const QString& path);
+    static QJsonValue value(const QString& path);
 
     static QString getPrefsPath();
     static void updateRustEnvironmentVariables();

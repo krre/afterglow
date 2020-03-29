@@ -21,7 +21,7 @@ void Global::init() {
 }
 
 QString Global::getWorkspacePath() {
-    QString workspace = Settings::getValue("workspace").toString();
+    QString workspace = Settings::value("workspace").toString();
     return workspace.isEmpty() ? QDir::homePath() + "/" + Const::Window::WorkspaceDir : workspace;
 }
 

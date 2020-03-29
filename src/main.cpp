@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     MainWindow window;
     window.show();
 
-    if (Settings::getValue("workspace").toString().isEmpty()) {
+    if (Settings::value("workspace").toString().isEmpty()) {
         SelectWorkspace selectWorkspace(&window);
         selectWorkspace.exec();
     }

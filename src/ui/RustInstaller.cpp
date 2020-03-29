@@ -515,7 +515,7 @@ void RustInstaller::cleanupTarget(QStringList& components) const {
 void RustInstaller::readSettings() {
     ui->lineEditRustupHome->setText(qEnvironmentVariable(Const::Environment::RustupHome));
     ui->lineEditCargoHome->setText(qEnvironmentVariable(Const::Environment::CargoHome));
-    ui->tabWidget->setCurrentIndex(Settings::getValue("gui.rustInstaller.currentTab").toInt());
+    ui->tabWidget->setCurrentIndex(Settings::value("gui.rustInstaller.currentTab").toInt());
     settingsLoaded = true;
 }
 

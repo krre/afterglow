@@ -74,8 +74,8 @@ void Settings::setValue(const QString& path, const QJsonValue& value) {
 }
 
 // Using:
-// int width = Settings::getValue("window.width").toInt();
-QJsonValue Settings::getValue(const QString& path) {
+// int width = Settings::value("window.width").toInt();
+QJsonValue Settings::value(const QString& path) {
     QStringList keys = path.split('.');
     QJsonObject obj = storage;
     for (int i = 0; i < keys.count() - 1; i++) {
@@ -92,7 +92,7 @@ QString Settings::getPrefsPath() {
 void Settings::updateRustEnvironmentVariables() {
     QString homePath = QDir::homePath();
 
-    QString rustupHome = getValue("environment.rustupHome").toString();
+    QString rustupHome = value("environment.rustupHome").toString();
 
     if (!rustupHome.isEmpty()) {
         qputenv(Const::Environment::RustupHome, rustupHome.toUtf8());
@@ -100,7 +100,7 @@ void Settings::updateRustEnvironmentVariables() {
         qputenv(Const::Environment::RustupHome, QString(homePath + "/.rustup").toUtf8());
     }
 
-    QString cargoHome = getValue("environment.cargoHome").toString();
+    QString cargoHome = value("environment.cargoHome").toString();
     if (!cargoHome.isEmpty()) {
         qputenv(Const::Environment::CargoHome, cargoHome.toUtf8());
     } else if (Global::getSystemCargoHome().isEmpty()) {

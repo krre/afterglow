@@ -100,7 +100,7 @@ MainWindow::MainWindow() :
     ui->toolButtonIssuesClear->setText(Const::FontAwesome::TrashAlt);
 
     new RlsManager(this);
-    RlsManager::setShowDebug(Settings::getValue("debug.dump.rlsMessages").toBool());
+    RlsManager::setShowDebug(Settings::value("debug.dump.rlsMessages").toBool());
 //    RlsManager::start();
 
     completer = new AutoCompleter(this);
@@ -414,7 +414,7 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
                         issueModel->appendMessage(obj);
                     }
 
-                    if (Settings::getValue("debug.dump.compilerMessages").toBool()) {
+                    if (Settings::value("debug.dump.compilerMessages").toBool()) {
                         qDebug() << block;
                     }
                 }
@@ -586,11 +586,11 @@ void MainWindow::loadProjectProperties() {
 
 void MainWindow::loadSettings() {
     // Window geometry
-    int width = Settings::getValue("window.geometry.width").toInt();
-    int height = Settings::getValue("window.geometry.height").toInt();
+    int width = Settings::value("window.geometry.width").toInt();
+    int height = Settings::value("window.geometry.height").toInt();
 
-    QJsonValue x = Settings::getValue("window.geometry.x");
-    QJsonValue y = Settings::getValue("window.geometry.y");
+    QJsonValue x = Settings::value("window.geometry.x");
+    QJsonValue y = Settings::value("window.geometry.y");
 
     if (x.isNull() || y.isNull()) {
         // Center window in screen.
@@ -601,7 +601,7 @@ void MainWindow::loadSettings() {
     }
 
     // Window state
-    Qt::WindowStates state = static_cast<Qt::WindowStates>(Settings::getValue("window.state").toInt());
+    Qt::WindowStates state = static_cast<Qt::WindowStates>(Settings::value("window.state").toInt());
 
     if (state == Qt::WindowMaximized || state == Qt::WindowFullScreen) {
         setWindowState(state);
@@ -609,13 +609,13 @@ void MainWindow::loadSettings() {
 
     // Splitter sizes
     QList<int> sizes;
-    QJsonArray sizesArray = Settings::getValue("gui.mainWindow.splitters.main").toArray();
+    QJsonArray sizesArray = Settings::value("gui.mainWindow.splitters.main").toArray();
     for (const auto& size : sizesArray) {
         sizes.append(size.toInt());
     }
     ui->splitterMain->setSizes(sizes);
 
-    sizesArray = Settings::getValue("gui.mainWindow.splitters.side").toArray();
+    sizesArray = Settings::value("gui.mainWindow.splitters.side").toArray();
     sizes.clear();
 
     for (const auto& size : sizesArray) {
@@ -624,34 +624,34 @@ void MainWindow::loadSettings() {
     ui->splitterSide->setSizes(sizes);
 
     // Sidebar
-    ui->actionShowSidebar->setChecked(Settings::getValue("gui.mainWindow.sidebar.visible").toBool());
-    ui->tabWidgetSide->setCurrentIndex(Settings::getValue("gui.mainWindow.sidebar.tab").toInt());
+    ui->actionShowSidebar->setChecked(Settings::value("gui.mainWindow.sidebar.visible").toBool());
+    ui->tabWidgetSide->setCurrentIndex(Settings::value("gui.mainWindow.sidebar.tab").toInt());
 
     // Output pane
-    ui->actionShowOutput->setChecked(Settings::getValue("gui.mainWindow.output.visible").toBool());
-    ui->tabWidgetOutput->setCurrentIndex(Settings::getValue("gui.mainWindow.output.tab").toInt());
+    ui->actionShowOutput->setChecked(Settings::value("gui.mainWindow.output.visible").toBool());
+    ui->tabWidgetOutput->setCurrentIndex(Settings::value("gui.mainWindow.output.tab").toInt());
 
-    const QString& family = Settings::getValue("gui.output.cargo.font.family").toString();
-    int size = Settings::getValue("gui.output.cargo.font.size").toInt();
+    const QString& family = Settings::value("gui.output.cargo.font.family").toString();
+    int size = Settings::value("gui.output.cargo.font.size").toInt();
     QFont font(family, size);
     ui->plainTextEditCargo->document()->setDefaultFont(font);
 
     // Recent projects
-    QJsonArray recentProjects = Settings::getValue("gui.mainWindow.recent.projects").toArray();
+    QJsonArray recentProjects = Settings::value("gui.mainWindow.recent.projects").toArray();
     for (int i = recentProjects.size() - 1; i >= 0; --i) {
         QString projectPath = recentProjects.at(i).toString();
         addRecentProject(projectPath);
     }
 
     // Recent files
-    QJsonArray recentFiles = Settings::getValue("gui.mainWindow.recent.files").toArray();
+    QJsonArray recentFiles = Settings::value("gui.mainWindow.recent.files").toArray();
     for (int i = recentFiles.size() - 1; i >= 0; --i) {
         QString filePath = recentFiles.at(i).toString();
         addRecentFile(filePath);
     }
 
     // Last project
-    QString lastProject = Settings::getValue("gui.mainWindow.session.project").toString();
+    QString lastProject = Settings::value("gui.mainWindow.session.project").toString();
     if (QFileInfo::exists(lastProject + "/Cargo.toml")) {
         openProject(lastProject);
     }
@@ -715,7 +715,7 @@ void MainWindow::saveSettings() {
 }
 
 void MainWindow::saveSession() {
-    if (!Settings::getValue("gui.mainWindow.session.restore").toBool() || projectPath.isEmpty()) {
+    if (!Settings::value("gui.mainWindow.session.restore").toBool() || projectPath.isEmpty()) {
         return;
     }
 
@@ -769,7 +769,7 @@ void MainWindow::saveSession() {
 }
 
 void MainWindow::loadSession() {
-    if (!Settings::getValue("gui.mainWindow.session.restore").toBool() || projectPath.isEmpty()) {
+    if (!Settings::value("gui.mainWindow.session.restore").toBool() || projectPath.isEmpty()) {
         return;
     }
 

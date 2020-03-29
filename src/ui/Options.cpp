@@ -48,7 +48,7 @@ void Options::on_buttonBox_accepted() {
 
 void Options::readSettings() {
     ui->lineEditWorkspace->setText(Global::getWorkspacePath());
-    ui->checkBoxSession->setChecked(Settings::getValue("gui.mainWindow.session.restore").toBool());
+    ui->checkBoxSession->setChecked(Settings::value("gui.mainWindow.session.restore").toBool());
 }
 
 void Options::writeSettings() {

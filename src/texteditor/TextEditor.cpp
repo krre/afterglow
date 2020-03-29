@@ -11,8 +11,8 @@ TextEditor::TextEditor(QString filePath, QWidget* parent) :
         filePath(filePath) {
     setFrameShape(QFrame::NoFrame);
 
-    const QString& family = Settings::getValue("editor.font.family").toString();
-    int size = Settings::getValue("editor.font.size").toInt();
+    const QString& family = Settings::value("editor.font.family").toString();
+    int size = Settings::value("editor.font.size").toInt();
     QFont font(family, size);
     document()->setDefaultFont(font);
 
@@ -53,7 +53,7 @@ void TextEditor::setAutoCompleter(AutoCompleter* completer) {
 void TextEditor::saveFile() {
     if (!document()->isModified()) return;
 
-    if (Settings::getValue("editor.cleanTrailingWhitespaceOnSave").toBool()) {
+    if (Settings::value("editor.cleanTrailingWhitespaceOnSave").toBool()) {
        cleanTrailingWhitespace();
     }
 
@@ -117,7 +117,7 @@ int TextEditor::getLineNumberAreaWidth() {
         ++digits;
     }
 
-    digits = qMax(Settings::getValue("editor.numberAreaDigits").toInt(), digits);
+    digits = qMax(Settings::value("editor.numberAreaDigits").toInt(), digits);
     int space = 3 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
 
     return space;
@@ -329,7 +329,7 @@ void TextEditor::increaseIndent() {
 
     cursor.beginEditBlock();
 
-    int indent = Settings::getValue("editor.indent").toInt();
+    int indent = Settings::value("editor.indent").toInt();
 
     for (int row = startRow; row <= endRow; row++) {
         QTextBlock block = document()->findBlockByLineNumber(row);
@@ -366,7 +366,7 @@ void TextEditor::decreaseIndent() {
 
     cursor.beginEditBlock();
 
-    int indent = Settings::getValue("editor.indent").toInt();
+    int indent = Settings::value("editor.indent").toInt();
 
     for (int row = startRow; row <= endRow; row++) {
         QTextBlock block = document()->findBlockByLineNumber(row);

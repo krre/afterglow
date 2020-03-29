@@ -127,8 +127,8 @@ void IssueDelegate::currentChanged(const QModelIndex& current, const QModelIndex
 IssueListView::IssueListView(IssueModel* model, QWidget* parent) : QListView(parent) {
     setContextMenuPolicy(Qt::CustomContextMenu);
 
-    const QString& family = Settings::getValue("gui.output.issues.font.family").toString();
-    int size = Settings::getValue("gui.output.issues.font.size").toInt();
+    const QString& family = Settings::value("gui.output.issues.font.family").toString();
+    int size = Settings::value("gui.output.issues.font.size").toInt();
     issueFont = QFont(family, size);
 
     setModel(model);
