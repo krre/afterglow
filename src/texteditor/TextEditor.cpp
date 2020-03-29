@@ -2,8 +2,8 @@
 #include "LineNumberArea.h"
 #include "Highlighter.h"
 #include "AutoCompleter.h"
-#include "Core/Settings.h"
-#include "Core/Const.h"
+#include "core/Settings.h"
+#include "core/Const.h"
 #include <QtWidgets>
 
 TextEditor::TextEditor(QString filePath, QWidget* parent) :

@@ -1,8 +1,8 @@
 #include "SelectWorkspace.h"
 #include "ui_SelectWorkspace.h"
-#include "Core/Const.h"
-#include "Core/Global.h"
-#include "Core/Settings.h"
+#include "core/Const.h"
+#include "core/Global.h"
+#include "core/Settings.h"
 #include <QtWidgets>
 
 SelectWorkspace::SelectWorkspace(QWidget* parent) :

@@ -2,7 +2,7 @@
 #include <QtCore>
 
 SyntaxHighlightManager::SyntaxHighlightManager(QObject* parent) : QObject(parent) {
-    addSyntaxFile(":/Resources/Highlighting/Rust.json");
+    addSyntaxFile(":/resources/highlighting/rust.json");
 }
 
 SyntaxHighlightManager::~SyntaxHighlightManager() {

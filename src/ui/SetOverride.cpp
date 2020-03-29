@@ -1,6 +1,6 @@
 #include "SetOverride.h"
 #include "ui_SetOverride.h"
-#include "Core/Utils.h"
+#include "core/Utils.h"
 #include <QtWidgets>
 
 SetOverride::SetOverride(QWidget* parent) :

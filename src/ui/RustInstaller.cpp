@@ -1,14 +1,14 @@
 #include "RustInstaller.h"
 #include "ui_RustInstaller.h"
-#include "Core/Settings.h"
-#include "Core/FileDownloader.h"
+#include "core/Settings.h"
+#include "core/FileDownloader.h"
 #include "AddComponentOrTarget.h"
 #include "SetOverride.h"
 #include "StringListModel.h"
-#include "Core/Utils.h"
-#include "Core/Const.h"
+#include "core/Utils.h"
+#include "core/Const.h"
 #include "InstallToolchain.h"
-#include "Core/Settings.h"
+#include "core/Settings.h"
 #include <QtWidgets>
 
 using namespace std::placeholders;

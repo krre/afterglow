@@ -1,6 +1,6 @@
 #include "AutoCompleter.h"
 #include "TextEditor.h"
-#include "Process/RlsManager.h"
+#include "process/RlsManager.h"
 #include <QtWidgets>
 
 AutoCompleter::AutoCompleter(QObject* parent) : QCompleter(parent) {

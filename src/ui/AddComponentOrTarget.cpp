@@ -1,6 +1,6 @@
 #include "AddComponentOrTarget.h"
 #include "ui_AddComponentOrTarget.h"
-#include "Core/Utils.h"
+#include "core/Utils.h"
 #include "StringListModel.h"
 #include <QtWidgets>
 

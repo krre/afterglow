@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/Singleton.h"
+#include "core/Singleton.h"
 #include <QProcess>
 #include <QTextCodec>
 

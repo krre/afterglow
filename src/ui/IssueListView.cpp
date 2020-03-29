@@ -1,8 +1,8 @@
 #include "IssueListView.h"
 #include "IssueModel.h"
-#include "Core/Const.h"
-#include "Core/Settings.h"
-#include "Core/Global.h"
+#include "core/Const.h"
+#include "core/Settings.h"
+#include "core/Global.h"
 #include <QtWidgets>
 
 static const int MARGIN = 2;

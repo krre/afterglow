@@ -1,7 +1,7 @@
 #include "NewProject.h"
 #include "ui_NewProject.h"
-#include "Core/Global.h"
-#include "Process/CargoManager.h"
+#include "core/Global.h"
+#include "process/CargoManager.h"
 #include <QtWidgets>
 
 NewProject::NewProject(QWidget* parent) :

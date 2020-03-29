@@ -10,7 +10,7 @@ static bool reseted = false;
 void Settings::init() {
     prefsPath = QCoreApplication::applicationDirPath() + "/" + Const::App::PrefsName;
 
-    QFile resPrefsFile(":/Resources/prefs.json");
+    QFile resPrefsFile(":/resources/prefs.json");
     if (!resPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Failed to open file" << resPrefsFile.fileName();
         return;
