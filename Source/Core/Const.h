@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Constants {
+namespace Const {
     namespace Environment {
         const char RUSTUP_HOME[] = "RUSTUP_HOME";
         const char CARGO_HOME[] = "CARGO_HOME";

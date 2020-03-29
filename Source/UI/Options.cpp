@@ -1,6 +1,6 @@
 #include "Options.h"
 #include "ui_Options.h"
-#include "Core/Constants.h"
+#include "Core/Const.h"
 #include "Core/Global.h"
 #include "Core/Settings.h"
 #include <QtWidgets>
@@ -9,7 +9,7 @@ Options::Options(QWidget* parent) :
         QDialog(parent),
         ui(new Ui::Options) {
     ui->setupUi(this);
-    ui->pushButtonOpenPrefs->setText(tr("Open %1").arg(Constants::App::PREFS_NAME));
+    ui->pushButtonOpenPrefs->setText(tr("Open %1").arg(Const::App::PREFS_NAME));
 
     adjustSize();
     resize(600, height());

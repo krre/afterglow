@@ -1,6 +1,6 @@
 #include "IssueListView.h"
 #include "IssueModel.h"
-#include "Core/Constants.h"
+#include "Core/Const.h"
 #include "Core/Settings.h"
 #include "Core/Global.h"
 #include <QtWidgets>
@@ -49,12 +49,12 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     QString level = index.data(static_cast<int>(IssueModel::Role::Level)).toString();
 
     if (level == "error") {
-        levelIcon = Constants::FontAwesome::TIMES_CIRCLE;
-        levelColor = QColor(Constants::Color::ERROR_ISSUME_ICON);
+        levelIcon = Const::FontAwesome::TIMES_CIRCLE;
+        levelColor = QColor(Const::Color::ERROR_ISSUME_ICON);
 
     } else if (level == "warning") {
-        levelIcon = Constants::FontAwesome::EXCLAMATION_TRIANGLE;
-        levelColor = QColor(Constants::Color::WARNING_ISSUME_ICON);
+        levelIcon = Const::FontAwesome::EXCLAMATION_TRIANGLE;
+        levelColor = QColor(Const::Color::WARNING_ISSUME_ICON);
     }
 
     painter->setPen(levelColor);
@@ -94,7 +94,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     }
 
     // Separator lines
-    painter->setPen(QColor(Constants::Color::ISSUE_SEPARATOR));
+    painter->setPen(QColor(Const::Color::ISSUE_SEPARATOR));
     const QRectF borderRect = QRectF(opt.rect).adjusted(0.5, 0.5, -0.5, -0.5);
     painter->drawLine(borderRect.bottomLeft(), borderRect.bottomRight());
 

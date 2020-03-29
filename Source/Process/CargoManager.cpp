@@ -1,7 +1,7 @@
 #include "CargoManager.h"
 #include "UI/ProjectProperties.h"
 #include "Core/Settings.h"
-#include "Core/Constants.h"
+#include "Core/Const.h"
 #include <QtCore>
 
 CargoManager::CargoManager(ProjectProperties* projectProperties, QObject* parent) :
@@ -108,7 +108,7 @@ void CargoManager::addBuildRunArguments(QStringList& arguments) {
 
 void CargoManager::coloredOutputMessage(const QString& message, bool start) {
     QString coloredMessage = QString("<font color=%1>%2</font>")
-            .arg(Constants::Color::MESSAGE)
+            .arg(Const::Color::MESSAGE)
             .arg(message);
     emit consoleMessage(coloredMessage, true, start);
 }

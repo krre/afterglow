@@ -1,6 +1,6 @@
 #include "UI/MainWindow.h"
 #include "UI/SelectWorkspace.h"
-#include "Core/Constants.h"
+#include "Core/Const.h"
 #include "Core/Global.h"
 #include "Core/Settings.h"
 #include <QApplication>
@@ -8,8 +8,8 @@
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    app.setApplicationName(Constants::App::NAME);
-    app.setApplicationVersion(Constants::App::VERSION);
+    app.setApplicationName(Const::App::NAME);
+    app.setApplicationVersion(Const::App::VERSION);
 
     Global::init();
     Settings::init();

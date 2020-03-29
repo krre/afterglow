@@ -41,6 +41,7 @@ SOURCES += \
     UI/IssueListView.cpp
 
 HEADERS += \
+    Core/Const.h \
     UI/MainWindow.h \
     Core/Global.h \
     UI/SelectWorkspace.h \
@@ -51,7 +52,6 @@ HEADERS += \
     UI/NewName.h \
     UI/ProjectProperties.h \
     UI/Rename.h \
-    Core/Constants.h \
     UI/FileSystemProxyModel.h \
     UI/ProjectTree.h \
     Core/Settings.h \

@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "Core/Global.h"
-#include "Core/Constants.h"
+#include "Core/Const.h"
 #include "Core/Settings.h"
 #include "Core/Utils.h"
 #include "NewProject.h"
@@ -32,26 +32,26 @@ MainWindow::MainWindow() :
 
     new ActionManager(this);
 
-    ActionManager::addAction(Constants::Action::NEW_PROJECT, ui->actionNewProject);
-    ActionManager::addAction(Constants::Action::NEW_RUST_FILE, ui->actionNewRustFile);
-    ActionManager::addAction(Constants::Action::NEW_FILE, ui->actionNewFile);
-    ActionManager::addAction(Constants::Action::NEW_DIRECTORY, ui->actionNewDirectory);
+    ActionManager::addAction(Const::Action::NEW_PROJECT, ui->actionNewProject);
+    ActionManager::addAction(Const::Action::NEW_RUST_FILE, ui->actionNewRustFile);
+    ActionManager::addAction(Const::Action::NEW_FILE, ui->actionNewFile);
+    ActionManager::addAction(Const::Action::NEW_DIRECTORY, ui->actionNewDirectory);
 
-    ActionManager::addAction(Constants::Action::OPEN, ui->actionOpen);
-    ActionManager::addAction(Constants::Action::CLOSE_PROJECT, ui->actionCloseProject);
+    ActionManager::addAction(Const::Action::OPEN, ui->actionOpen);
+    ActionManager::addAction(Const::Action::CLOSE_PROJECT, ui->actionCloseProject);
 
-    ActionManager::addAction(Constants::Action::SAVE, ui->actionSave);
-    ActionManager::addAction(Constants::Action::SAVE_AS, ui->actionSaveAs);
-    ActionManager::addAction(Constants::Action::SAVE_ALL, ui->actionSaveAll);
+    ActionManager::addAction(Const::Action::SAVE, ui->actionSave);
+    ActionManager::addAction(Const::Action::SAVE_AS, ui->actionSaveAs);
+    ActionManager::addAction(Const::Action::SAVE_ALL, ui->actionSaveAll);
 
-    ActionManager::addAction(Constants::Action::CLOSE, ui->actionClose);
-    ActionManager::addAction(Constants::Action::CLOSE_ALL, ui->actionCloseAll);
-    ActionManager::addAction(Constants::Action::CLOSE_OTHER, ui->actionCloseOther);
+    ActionManager::addAction(Const::Action::CLOSE, ui->actionClose);
+    ActionManager::addAction(Const::Action::CLOSE_ALL, ui->actionCloseAll);
+    ActionManager::addAction(Const::Action::CLOSE_OTHER, ui->actionCloseOther);
 
-    ActionManager::addAction(Constants::Action::BUILD, ui->actionBuild);
-    ActionManager::addAction(Constants::Action::RUN, ui->actionRun);
-    ActionManager::addAction(Constants::Action::STOP, ui->actionStop);
-    ActionManager::addAction(Constants::Action::CLEAN, ui->actionClean);
+    ActionManager::addAction(Const::Action::BUILD, ui->actionBuild);
+    ActionManager::addAction(Const::Action::RUN, ui->actionRun);
+    ActionManager::addAction(Const::Action::STOP, ui->actionStop);
+    ActionManager::addAction(Const::Action::CLEAN, ui->actionClean);
 
     projectProperties = new ProjectProperties;
 
@@ -85,19 +85,19 @@ MainWindow::MainWindow() :
     QFont font = Global::getFontAwesomeFont();
 
     ui->toolButtonCargoBuild->setFont(font);
-    ui->toolButtonCargoBuild->setText(Constants::FontAwesome::COG);
+    ui->toolButtonCargoBuild->setText(Const::FontAwesome::COG);
 
     ui->toolButtonCargoRun->setFont(font);
-    ui->toolButtonCargoRun->setText(Constants::FontAwesome::PLAY);
+    ui->toolButtonCargoRun->setText(Const::FontAwesome::PLAY);
 
     ui->toolButtonCargoStop->setFont(font);
-    ui->toolButtonCargoStop->setText(Constants::FontAwesome::STOP);
+    ui->toolButtonCargoStop->setText(Const::FontAwesome::STOP);
 
     ui->toolButtonCargoClear->setFont(font);
-    ui->toolButtonCargoClear->setText(Constants::FontAwesome::TRASH_ALT);
+    ui->toolButtonCargoClear->setText(Const::FontAwesome::TRASH_ALT);
 
     ui->toolButtonIssuesClear->setFont(font);
-    ui->toolButtonIssuesClear->setText(Constants::FontAwesome::TRASH_ALT);
+    ui->toolButtonIssuesClear->setText(Const::FontAwesome::TRASH_ALT);
 
     new RlsManager(this);
     RlsManager::setShowDebug(Settings::getValue("debug.dump.rlsMessages").toBool());
@@ -159,7 +159,7 @@ void MainWindow::on_actionSaveAll_triggered() {
 }
 
 void MainWindow::on_actionClearMenuRecentFiles_triggered() {
-    for (int i = ui->menuRecentFiles->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT - 1; i >= 0; i--) {
+    for (int i = ui->menuRecentFiles->actions().size() - Const::Window::SEPARATOR_AND_MENU_CLEAR_COUNT - 1; i >= 0; i--) {
         ui->menuRecentFiles->removeAction(ui->menuRecentFiles->actions().at(i));
     }
 
@@ -167,7 +167,7 @@ void MainWindow::on_actionClearMenuRecentFiles_triggered() {
 }
 
 void MainWindow::on_actionClearMenuRecentProjects_triggered() {
-    for (int i = ui->menuRecentProjects->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT - 1; i >= 0; i--) {
+    for (int i = ui->menuRecentProjects->actions().size() - Const::Window::SEPARATOR_AND_MENU_CLEAR_COUNT - 1; i >= 0; i--) {
         ui->menuRecentProjects->removeAction(ui->menuRecentProjects->actions().at(i));
     }
 
@@ -334,17 +334,17 @@ void MainWindow::on_actionTheBook_triggered() {
 }
 
 void MainWindow::on_actionAbout_triggered() {
-    QMessageBox::about(this, tr("About %1").arg(Constants::App::NAME),
+    QMessageBox::about(this, tr("About %1").arg(Const::App::NAME),
         tr("<h3>%1 %2 %3</h3>\
            IDE for Rust programming language<br><br> \
            Based on Qt %4<br> \
            Build on %5<br><br> \
            <a href=%6>%6</a><br><br>%7")
-            .arg(Constants::App::NAME)
-            .arg(Constants::App::VERSION).arg(Constants::App::STATUS)
+            .arg(Const::App::NAME)
+            .arg(Const::App::VERSION).arg(Const::App::STATUS)
             .arg(QT_VERSION_STR)
             .arg(__DATE__)
-            .arg(Constants::App::URL).arg(Constants::App::COPYRIGHT));
+            .arg(Const::App::URL).arg(Const::App::COPYRIGHT));
 }
 
 void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {
@@ -535,8 +535,8 @@ void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, co
     connect(fileAction, &QAction::triggered, callback);
     menu->insertAction(menu->actions().first(), fileAction);
 
-    if (menu->actions().size() > Constants::Window::MAX_RECENT_FILES + Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT) {
-        menu->removeAction(menu->actions().at(menu->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT - 1));
+    if (menu->actions().size() > Const::Window::MAX_RECENT_FILES + Const::Window::SEPARATOR_AND_MENU_CLEAR_COUNT) {
+        menu->removeAction(menu->actions().at(menu->actions().size() - Const::Window::SEPARATOR_AND_MENU_CLEAR_COUNT - 1));
     }
 
     updateMenuState();
@@ -545,7 +545,7 @@ void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, co
 void MainWindow::saveProjectProperties() {
     if (projectPath.isEmpty()) return;
 
-    QString path = projectPath + "/" + Constants::Project::DATA_DIRECTORY + "/" + Constants::Project::PROPERTIES_FILE;
+    QString path = projectPath + "/" + Const::Project::DATA_DIRECTORY + "/" + Const::Project::PROPERTIES_FILE;
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open project properties file for writing" << path;
@@ -563,7 +563,7 @@ void MainWindow::saveProjectProperties() {
 void MainWindow::loadProjectProperties() {
     if (projectPath.isEmpty()) return;
 
-    QString path = projectPath + "/" + Constants::Project::DATA_DIRECTORY + "/" + Constants::Project::PROPERTIES_FILE;
+    QString path = projectPath + "/" + Const::Project::DATA_DIRECTORY + "/" + Const::Project::PROPERTIES_FILE;
     if (!QFileInfo::exists(path)) {
         return;
     }
@@ -696,14 +696,14 @@ void MainWindow::saveSettings() {
 
     // Recent projects
     QJsonArray recentProjects;
-    for (int i = 0; i < ui->menuRecentProjects->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
+    for (int i = 0; i < ui->menuRecentProjects->actions().size() - Const::Window::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
         recentProjects.append(ui->menuRecentProjects->actions().at(i)->text());
     }
     Settings::setValue("gui.mainWindow.recent.projects", recentProjects);
 
     // Recent files
     QJsonArray recentFiles;
-    for (int i = 0; i < ui->menuRecentFiles->actions().size() - Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
+    for (int i = 0; i < ui->menuRecentFiles->actions().size() - Const::Window::SEPARATOR_AND_MENU_CLEAR_COUNT; ++i) {
         recentFiles.append(ui->menuRecentFiles->actions().at(i)->text());
     }
     Settings::setValue("gui.mainWindow.recent.files", recentFiles);
@@ -720,7 +720,7 @@ void MainWindow::saveSession() {
     }
 
     QDir dir(projectPath);
-    bool result = dir.mkdir(Constants::Project::DATA_DIRECTORY);
+    bool result = dir.mkdir(Const::Project::DATA_DIRECTORY);
 #ifdef Q_OS_WIN
     // Set hidden attribute on created directory (need only for Windows).
     if (result) {
@@ -737,7 +737,7 @@ void MainWindow::saveSession() {
     Q_UNUSED(result)
 #endif
 
-    QString path = projectPath + "/" + Constants::Project::DATA_DIRECTORY + "/" + Constants::Project::SESSION_FILE;
+    QString path = projectPath + "/" + Const::Project::DATA_DIRECTORY + "/" + Const::Project::SESSION_FILE;
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open session file for writing" << path;
@@ -773,7 +773,7 @@ void MainWindow::loadSession() {
         return;
     }
 
-    QString path = projectPath + "/" + Constants::Project::DATA_DIRECTORY + "/" + Constants::Project::SESSION_FILE;
+    QString path = projectPath + "/" + Const::Project::DATA_DIRECTORY + "/" + Const::Project::SESSION_FILE;
     if (!QFileInfo::exists(path)) {
         return;
     }
@@ -895,8 +895,8 @@ void MainWindow::updateMenuState() {
     ui->actionCloseOther->setEnabled(index >= 0);
     ui->actionCloseAll->setEnabled(index >= 0);
 
-    ui->menuRecentProjects->menuAction()->setEnabled(ui->menuRecentProjects->actions().size() > Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT);
-    ui->menuRecentFiles->menuAction()->setEnabled(ui->menuRecentFiles->actions().size() > Constants::Window::SEPARATOR_AND_MENU_CLEAR_COUNT);
+    ui->menuRecentProjects->menuAction()->setEnabled(ui->menuRecentProjects->actions().size() > Const::Window::SEPARATOR_AND_MENU_CLEAR_COUNT);
+    ui->menuRecentFiles->menuAction()->setEnabled(ui->menuRecentFiles->actions().size() > Const::Window::SEPARATOR_AND_MENU_CLEAR_COUNT);
 
     ui->menuEdit->menuAction()->setEnabled(index >= 0);
 }

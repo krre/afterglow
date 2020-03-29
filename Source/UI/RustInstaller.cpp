@@ -6,7 +6,7 @@
 #include "SetOverride.h"
 #include "StringListModel.h"
 #include "Core/Utils.h"
-#include "Core/Constants.h"
+#include "Core/Const.h"
 #include "InstallToolchain.h"
 #include "Core/Settings.h"
 #include <QtWidgets>
@@ -513,8 +513,8 @@ void RustInstaller::cleanupTarget(QStringList& components) const {
 }
 
 void RustInstaller::readSettings() {
-    ui->lineEditRustupHome->setText(qEnvironmentVariable(Constants::Environment::RUSTUP_HOME));
-    ui->lineEditCargoHome->setText(qEnvironmentVariable(Constants::Environment::CARGO_HOME));
+    ui->lineEditRustupHome->setText(qEnvironmentVariable(Const::Environment::RUSTUP_HOME));
+    ui->lineEditCargoHome->setText(qEnvironmentVariable(Const::Environment::CARGO_HOME));
     ui->tabWidget->setCurrentIndex(Settings::getValue("gui.rustInstaller.currentTab").toInt());
     settingsLoaded = true;
 }
