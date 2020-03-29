@@ -7,7 +7,7 @@ Highlighter::Highlighter(const QString& fileExt, QTextDocument* parent) : QSynta
 }
 
 bool Highlighter::hasExtension(const QString& ext) {
-    return SyntaxHighlightManager::getInstance()->hasExtension(ext);
+    return SyntaxHighlightManager::instance()->hasExtension(ext);
 }
 
 void Highlighter::highlightBlock(const QString& text) {
@@ -42,9 +42,9 @@ void Highlighter::highlightBlock(const QString& text) {
 }
 
 void Highlighter::loadRules(const QString& fileExt) {
-    if (!SyntaxHighlightManager::getInstance()->hasExtension(fileExt)) return;
+    if (!SyntaxHighlightManager::instance()->hasExtension(fileExt)) return;
 
-    QJsonObject obj = SyntaxHighlightManager::getInstance()->getSyntaxJson(fileExt);
+    QJsonObject obj = SyntaxHighlightManager::instance()->getSyntaxJson(fileExt);
 
     QJsonObject lang = obj["lang"].toObject();
     QJsonObject words = obj["words"].toObject();

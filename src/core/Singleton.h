@@ -5,26 +5,26 @@ template <typename T> class Singleton {
 
 public:
     Singleton() {
-        Q_ASSERT(instance == nullptr && "Singleton object should be initialized only once");
-        instance = static_cast<T*>(this);
+        Q_ASSERT(s_instance == nullptr && "Singleton object should be initialized only once");
+        s_instance = static_cast<T*>(this);
     }
 
     virtual ~Singleton() {
-        instance = nullptr;
+        s_instance = nullptr;
     }
 
-    static T* getInstance() {
-        return instance;
+    static T* instance() {
+        return s_instance;
     }
 
     static void release() {
-        if (instance != nullptr) {
-            delete instance;
+        if (s_instance != nullptr) {
+            delete s_instance;
         }
     }
 
 private:
-    static T* instance;
+    static T* s_instance;
 };
 
-template <typename T> T* Singleton<T>::instance = nullptr;
+template <typename T> T* Singleton<T>::s_instance = nullptr;
