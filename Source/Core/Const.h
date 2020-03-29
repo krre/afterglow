@@ -2,73 +2,73 @@
 
 namespace Const {
     namespace Environment {
-        const char RustupHome[] = "RUSTUP_HOME";
-        const char CargoHome[] = "CARGO_HOME";
-        const char Path[] = "PATH";
+        constexpr auto RustupHome = "RUSTUP_HOME";
+        constexpr auto CargoHome = "CARGO_HOME";
+        constexpr auto Path = "PATH";
     }
 
     namespace App {
-        const char Name[] = "Afterglow";
-        const char Version[] = "0.2.0";
-        const char Status[] = "Preview Alpha";
-        const char Url[] = "https://github.com/krre/afterglow";
-        const char SettingsName[] = "afterglow.ini";
-        const char PrefsName[] = "prefs.json";
-        const char Copyright[] = "Copyright © 2018-2020, Vladimir Zarypov";
+        constexpr auto Name = "Afterglow";
+        constexpr auto Version = "0.2.0";
+        constexpr auto Status = "Preview Alpha";
+        constexpr auto Url = "https://github.com/krre/afterglow";
+        constexpr auto SettingsName = "afterglow.ini";
+        constexpr auto PrefsName = "prefs.json";
+        constexpr auto Copyright = "Copyright © 2018-2020, Vladimir Zarypov";
     }
 
     namespace Window {
-        const char WorkspaceDir[] = "RustProjects";
-        const int MaxRecentFiles = 10;
-        const int SeparatorAndMenuClearCount = 2;
+        constexpr auto WorkspaceDir = "RustProjects";
+        constexpr int MaxRecentFiles = 10;
+        constexpr int SeparatorAndMenuClearCount = 2;
     }
 
     namespace Project {
-        const char DataDir[] = ".afterglow";
-        const char SessionFile[] = "session.json";
-        const char PropertyFile[] = "properties.json";
+        constexpr auto DataDir = ".afterglow";
+        constexpr auto SessionFile = "session.json";
+        constexpr auto PropertyFile = "properties.json";
     }
 
     namespace FontAwesome {
-        const char Cog[] = "\uf013";
-        const char Stop[] = "\uf04d";
-        const char TrashAlt[] = "\uf2ed";
-        const char Play[] = "\uf04b";
-        const char ExclamationTriangle[] = "\uf071";
-        const char TimesCircle[] = "\uf057";
+        constexpr auto Cog = "\uf013";
+        constexpr auto Stop = "\uf04d";
+        constexpr auto TrashAlt = "\uf2ed";
+        constexpr auto Play = "\uf04b";
+        constexpr auto ExclamationTriangle = "\uf071";
+        constexpr auto TimesCircle = "\uf057";
     }
 
     namespace Color {
-        const char Message[] = "#0000ff";
-        const char Line[] = "#e0eff5";
-        const char LineNumberArea[] = "#f0f0f0";
-        const char LineNumber[] = "#aaaaaa";
-        const char IssueSeparator[] = "#969696";
-        const char WarningIssueIcon[] = "#ffd800";
-        const char ErrorIssueIcon[] = "#ff3600";
+        constexpr auto Message = "#0000ff";
+        constexpr auto Line = "#e0eff5";
+        constexpr auto LineNumberArea = "#f0f0f0";
+        constexpr auto LineNumber = "#aaaaaa";
+        constexpr auto IssueSeparator = "#969696";
+        constexpr auto WarningIssueIcon = "#ffd800";
+        constexpr auto ErrorIssueIcon = "#ff3600";
 
     }
 
     namespace Action {
-        const char NewProject[] = "NewProject";
-        const char NewRustFile[] = "NewRustFile";
-        const char NewFile[] = "NewFile";
-        const char NewDirectory[] = "NewDirectory";
+        constexpr auto NewProject = "NewProject";
+        constexpr auto NewRustFile = "NewRustFile";
+        constexpr auto NewFile = "NewFile";
+        constexpr auto NewDirectory = "NewDirectory";
 
-        const char Open[] = "Open";
-        const char CloseProject[] = "CloseProject";
+        constexpr auto Open = "Open";
+        constexpr auto CloseProject = "CloseProject";
 
-        const char Save[] = "Save";
-        const char SaveAs[] = "SaveAs";
-        const char SaveAll[] = "SaveAll";
+        constexpr auto Save = "Save";
+        constexpr auto SaveAs = "SaveAs";
+        constexpr auto SaveAll = "SaveAll";
 
-        const char Close[] = "Close";
-        const char CloseAll[] = "CloseAll";
-        const char CloseOther[] = "CloseOther";
+        constexpr auto Close = "Close";
+        constexpr auto CloseAll = "CloseAll";
+        constexpr auto CloseOther = "CloseOther";
 
-        const char Build[] = "Build";
-        const char Run[] = "Run";
-        const char Stop[] = "Stop";
-        const char Clean[] = "Clean";
+        constexpr auto Build = "Build";
+        constexpr auto Run = "Run";
+        constexpr auto Stop = "Stop";
+        constexpr auto Clean = "Clean";
     }
 }
