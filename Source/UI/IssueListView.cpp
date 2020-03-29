@@ -49,12 +49,12 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     QString level = index.data(static_cast<int>(IssueModel::Role::Level)).toString();
 
     if (level == "error") {
-        levelIcon = Const::FontAwesome::TIMES_CIRCLE;
-        levelColor = QColor(Const::Color::ERROR_ISSUME_ICON);
+        levelIcon = Const::FontAwesome::TimesCircle;
+        levelColor = QColor(Const::Color::ErrorIssueIcon);
 
     } else if (level == "warning") {
-        levelIcon = Const::FontAwesome::EXCLAMATION_TRIANGLE;
-        levelColor = QColor(Const::Color::WARNING_ISSUME_ICON);
+        levelIcon = Const::FontAwesome::ExclamationTriangle;
+        levelColor = QColor(Const::Color::WarningIssueIcon);
     }
 
     painter->setPen(levelColor);
@@ -94,7 +94,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     }
 
     // Separator lines
-    painter->setPen(QColor(Const::Color::ISSUE_SEPARATOR));
+    painter->setPen(QColor(Const::Color::IssueSeparator));
     const QRectF borderRect = QRectF(opt.rect).adjusted(0.5, 0.5, -0.5, -0.5);
     painter->drawLine(borderRect.bottomLeft(), borderRect.bottomRight());
 

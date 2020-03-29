@@ -2,73 +2,73 @@
 
 namespace Const {
     namespace Environment {
-        const char RUSTUP_HOME[] = "RUSTUP_HOME";
-        const char CARGO_HOME[] = "CARGO_HOME";
-        const char PATH[] = "PATH";
+        const char RustupHome[] = "RUSTUP_HOME";
+        const char CargoHome[] = "CARGO_HOME";
+        const char Path[] = "PATH";
     }
 
     namespace App {
-        const char NAME[] = "Afterglow";
-        const char VERSION[] = "0.2.0";
-        const char STATUS[] = "Preview Alpha";
-        const char URL[] = "https://github.com/krre/afterglow";
-        const char SETTINGS_NAME[] = "afterglow.ini";
-        const char PREFS_NAME[] = "prefs.json";
-        const char COPYRIGHT[] = "Copyright © 2018-2020, Vladimir Zarypov";
+        const char Name[] = "Afterglow";
+        const char Version[] = "0.2.0";
+        const char Status[] = "Preview Alpha";
+        const char Url[] = "https://github.com/krre/afterglow";
+        const char SettingsName[] = "afterglow.ini";
+        const char PrefsName[] = "prefs.json";
+        const char Copyright[] = "Copyright © 2018-2020, Vladimir Zarypov";
     }
 
     namespace Window {
-        const char WORKSPACE_DIRECTORY[] = "RustProjects";
-        const int MAX_RECENT_FILES = 10;
-        const int SEPARATOR_AND_MENU_CLEAR_COUNT = 2;
+        const char WorkspaceDir[] = "RustProjects";
+        const int MaxRecentFiles = 10;
+        const int SeparatorAndMenuClearCount = 2;
     }
 
     namespace Project {
-        const char DATA_DIRECTORY[] = ".afterglow";
-        const char SESSION_FILE[] = "session.json";
-        const char PROPERTIES_FILE[] = "properties.json";
+        const char DataDir[] = ".afterglow";
+        const char SessionFile[] = "session.json";
+        const char PropertyFile[] = "properties.json";
     }
 
     namespace FontAwesome {
-        const char COG[] = "\uf013";
-        const char STOP[] = "\uf04d";
-        const char TRASH_ALT[] = "\uf2ed";
-        const char PLAY[] = "\uf04b";
-        const char EXCLAMATION_TRIANGLE[] = "\uf071";
-        const char TIMES_CIRCLE[] = "\uf057";
+        const char Cog[] = "\uf013";
+        const char Stop[] = "\uf04d";
+        const char TrashAlt[] = "\uf2ed";
+        const char Play[] = "\uf04b";
+        const char ExclamationTriangle[] = "\uf071";
+        const char TimesCircle[] = "\uf057";
     }
 
     namespace Color {
-        const char MESSAGE[] = "#0000ff";
-        const char LINE[] = "#e0eff5";
-        const char LINE_NUMBER_AREA[] = "#f0f0f0";
-        const char LINE_NUMBER[] = "#aaaaaa";
-        const char ISSUE_SEPARATOR[] = "#969696";
-        const char WARNING_ISSUME_ICON[] = "#ffd800";
-        const char ERROR_ISSUME_ICON[] = "#ff3600";
+        const char Message[] = "#0000ff";
+        const char Line[] = "#e0eff5";
+        const char LineNumberArea[] = "#f0f0f0";
+        const char LineNumber[] = "#aaaaaa";
+        const char IssueSeparator[] = "#969696";
+        const char WarningIssueIcon[] = "#ffd800";
+        const char ErrorIssueIcon[] = "#ff3600";
 
     }
 
     namespace Action {
-        const char NEW_PROJECT[] = "NewProject";
-        const char NEW_RUST_FILE[] = "NewRustFile";
-        const char NEW_FILE[] = "NewFile";
-        const char NEW_DIRECTORY[] = "NewDirectory";
+        const char NewProject[] = "NewProject";
+        const char NewRustFile[] = "NewRustFile";
+        const char NewFile[] = "NewFile";
+        const char NewDirectory[] = "NewDirectory";
 
-        const char OPEN[] = "Open";
-        const char CLOSE_PROJECT[] = "CloseProject";
+        const char Open[] = "Open";
+        const char CloseProject[] = "CloseProject";
 
-        const char SAVE[] = "Save";
-        const char SAVE_AS[] = "SaveAs";
-        const char SAVE_ALL[] = "SaveAll";
+        const char Save[] = "Save";
+        const char SaveAs[] = "SaveAs";
+        const char SaveAll[] = "SaveAll";
 
-        const char CLOSE[] = "Close";
-        const char CLOSE_ALL[] = "CloseAll";
-        const char CLOSE_OTHER[] = "CloseOther";
+        const char Close[] = "Close";
+        const char CloseAll[] = "CloseAll";
+        const char CloseOther[] = "CloseOther";
 
-        const char BUILD[] = "Build";
-        const char RUN[] = "Run";
-        const char STOP[] = "Stop";
-        const char CLEAN[] = "Clean";
+        const char Build[] = "Build";
+        const char Run[] = "Run";
+        const char Stop[] = "Stop";
+        const char Clean[] = "Clean";
     }
 }

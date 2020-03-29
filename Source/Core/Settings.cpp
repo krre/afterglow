@@ -8,7 +8,7 @@ static QString prefsPath = QString();
 static bool reseted = false;
 
 void Settings::init() {
-    prefsPath = QCoreApplication::applicationDirPath() + "/" + Const::App::PREFS_NAME;
+    prefsPath = QCoreApplication::applicationDirPath() + "/" + Const::App::PrefsName;
 
     QFile resPrefsFile(":/Resources/prefs.json");
     if (!resPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -57,7 +57,7 @@ void Settings::flush() {
         return;
     }
 
-    QFile file(QCoreApplication::applicationDirPath() + "/" + Const::App::PREFS_NAME);
+    QFile file(QCoreApplication::applicationDirPath() + "/" + Const::App::PrefsName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qWarning() << "Failed to open file" << file.fileName();
         return;
@@ -95,27 +95,27 @@ void Settings::updateRustEnvironmentVariables() {
     QString rustupHome = getValue("environment.rustupHome").toString();
 
     if (!rustupHome.isEmpty()) {
-        qputenv(Const::Environment::RUSTUP_HOME, rustupHome.toUtf8());
+        qputenv(Const::Environment::RustupHome, rustupHome.toUtf8());
     } else if (Global::getSystemRustupHome().isEmpty()) {
-        qputenv(Const::Environment::RUSTUP_HOME, QString(homePath + "/.rustup").toUtf8());
+        qputenv(Const::Environment::RustupHome, QString(homePath + "/.rustup").toUtf8());
     }
 
     QString cargoHome = getValue("environment.cargoHome").toString();
     if (!cargoHome.isEmpty()) {
-        qputenv(Const::Environment::CARGO_HOME, cargoHome.toUtf8());
+        qputenv(Const::Environment::CargoHome, cargoHome.toUtf8());
     } else if (Global::getSystemCargoHome().isEmpty()) {
-        qputenv(Const::Environment::CARGO_HOME, QString(homePath + "/.cargo").toUtf8());
+        qputenv(Const::Environment::CargoHome, QString(homePath + "/.cargo").toUtf8());
     }
 
-    QString path = qEnvironmentVariable(Const::Environment::PATH);
+    QString path = qEnvironmentVariable(Const::Environment::Path);
     QString separator;
 #if defined(Q_OS_WIN)
     separator = ";";
 #else
     separator = ":";
 #endif
-    path += separator + qEnvironmentVariable(Const::Environment::CARGO_HOME) + "/bin";
-    qputenv(Const::Environment::PATH, QDir::toNativeSeparators(path).toUtf8());
+    path += separator + qEnvironmentVariable(Const::Environment::CargoHome) + "/bin";
+    qputenv(Const::Environment::Path, QDir::toNativeSeparators(path).toUtf8());
 }
 
 void Settings::reset() {

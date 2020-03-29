@@ -8,8 +8,8 @@ static QString systemCargoHome;
 static QFont faFont;
 
 void Global::init() {
-    systemRustupHome = qEnvironmentVariable(Const::Environment::RUSTUP_HOME);
-    systemCargoHome = qEnvironmentVariable(Const::Environment::CARGO_HOME);
+    systemRustupHome = qEnvironmentVariable(Const::Environment::RustupHome);
+    systemCargoHome = qEnvironmentVariable(Const::Environment::CargoHome);
 
     int id = QFontDatabase::addApplicationFont(":/Resources/Font/FontAwesome/Font-Awesome-5-Free-Solid-900.otf");
     if (id < 0) {
@@ -22,7 +22,7 @@ void Global::init() {
 
 QString Global::getWorkspacePath() {
     QString workspace = Settings::getValue("workspace").toString();
-    return workspace.isEmpty() ? QDir::homePath() + "/" + Const::Window::WORKSPACE_DIRECTORY : workspace;
+    return workspace.isEmpty() ? QDir::homePath() + "/" + Const::Window::WorkspaceDir : workspace;
 }
 
 QString Global::getSystemRustupHome() {

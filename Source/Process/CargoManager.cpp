@@ -108,7 +108,7 @@ void CargoManager::addBuildRunArguments(QStringList& arguments) {
 
 void CargoManager::coloredOutputMessage(const QString& message, bool start) {
     QString coloredMessage = QString("<font color=%1>%2</font>")
-            .arg(Const::Color::MESSAGE)
+            .arg(Const::Color::Message)
             .arg(message);
     emit consoleMessage(coloredMessage, true, start);
 }

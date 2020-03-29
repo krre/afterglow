@@ -8,8 +8,8 @@
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    app.setApplicationName(Const::App::NAME);
-    app.setApplicationVersion(Const::App::VERSION);
+    app.setApplicationName(Const::App::Name);
+    app.setApplicationVersion(Const::App::Version);
 
     Global::init();
     Settings::init();
