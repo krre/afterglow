@@ -14,7 +14,7 @@ namespace Constants {
         const char URL[] = "https://github.com/krre/afterglow";
         const char SETTINGS_NAME[] = "afterglow.ini";
         const char PREFS_NAME[] = "prefs.json";
-        const char COPYRIGHT[] = "Copyright © 2018, Vladimir Zarypov";
+        const char COPYRIGHT[] = "Copyright © 2018-2020, Vladimir Zarypov";
     }
 
     namespace Window {
