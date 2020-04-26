@@ -2,32 +2,32 @@
 #include <QDebug>
 
 ProcessManager::ProcessManager(QObject* parent) : QObject(parent) {
-    process = new QProcess(this);
+    m_process = new QProcess(this);
 
-    connect(process, &QProcess::readyReadStandardOutput, [=] {
-        const QByteArray& data = process->readAllStandardOutput();
+    connect(m_process, &QProcess::readyReadStandardOutput, [=] {
+        const QByteArray& data = m_process->readAllStandardOutput();
         const QString& output = outputCodec->toUnicode(data.constData(), data.length(), &outputCodecState);
         onReadyReadStandardOutput(output);
     });
 
-    connect(process, &QProcess::readyReadStandardError, [=] {
-        const QByteArray& data = process->readAllStandardError();
+    connect(m_process, &QProcess::readyReadStandardError, [=] {
+        const QByteArray& data = m_process->readAllStandardError();
         const QString& output = outputCodec->toUnicode(data.constData(), data.length(), &errorCodecState);
         onReadyReadStandardError(output);
     });
 
-    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+    connect(m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
         [=] (int exitCode, QProcess::ExitStatus exitStatus) { onFinished(exitCode, exitStatus); });
 
-    connect(process, &QProcess::errorOccurred, this, &ProcessManager::onErrorOccurred);
+    connect(m_process, &QProcess::errorOccurred, this, &ProcessManager::onErrorOccurred);
 }
 
-QProcess* ProcessManager::getProcess() {
-    return process;
+QProcess* ProcessManager::process() const {
+    return m_process;
 }
 
 void ProcessManager::stop() {
-    process->close();
+    m_process->close();
 }
 
 void ProcessManager::onReadyReadStandardOutput(const QString& data) {

@@ -52,7 +52,7 @@ void CargoManager::clean() {
 
 void CargoManager::setProjectPath(const QString& path) {
     projectPath = path;
-    getProcess()->setWorkingDirectory(path);
+    process()->setWorkingDirectory(path);
 }
 
 void CargoManager::onReadyReadStandardOutput(const QString& data) {
@@ -66,14 +66,14 @@ void CargoManager::onReadyReadStandardError(const QString& data) {
 void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     switch (commandStatus) {
         case CommandStatus::New:
-            emit projectCreated(getProcess()->arguments().last());
+            emit projectCreated(process()->arguments().last());
             break;
         default:
             break;
     }
 
     QString message = QString("%1 %2 with code %3")
-            .arg(getProcess()->program())
+            .arg(process()->program())
             .arg(exitStatus == QProcess::NormalExit ? "finished" : "crashed")
             .arg(exitCode);
     coloredOutputMessage(message);
@@ -81,10 +81,10 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
 
 void CargoManager::prepareAndStart(const QStringList& arguments) {
     QString cargoPath = Settings::value("cargo.path").toString();
-    getProcess()->setProgram(cargoPath.isEmpty() ? "cargo" : cargoPath);
-    getProcess()->setArguments(arguments);
+    process()->setProgram(cargoPath.isEmpty() ? "cargo" : cargoPath);
+    process()->setArguments(arguments);
 
-    QString message = getProcess()->program();
+    QString message = process()->program();
     for (const auto& argument : arguments) {
         message += " " + argument;
     }
@@ -92,7 +92,7 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
     message += "<br>";
 
     coloredOutputMessage(message, true);
-    getProcess()->start();
+    process()->start();
 }
 
 void CargoManager::addBuildRunArguments(QStringList& arguments) {

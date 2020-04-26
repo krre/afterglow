@@ -7,7 +7,7 @@ class ProcessManager : public QObject {
     Q_OBJECT
 public:
     explicit ProcessManager(QObject* parent = nullptr);
-    QProcess* getProcess();
+    QProcess* process() const;
     void stop();
 
 protected slots:
@@ -20,7 +20,7 @@ protected:
     QString errorToString(QProcess::ProcessError error);
 
 private:
-    QProcess* process;
+    QProcess* m_process;
     QTextCodec* outputCodec = QTextCodec::codecForLocale();
     QTextCodec::ConverterState outputCodecState;
     QTextCodec::ConverterState errorCodecState;

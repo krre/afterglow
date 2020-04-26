@@ -16,7 +16,7 @@ RlsManager* RlsManager::getInstance() {
 }
 
 void RlsManager::start() {
-    instance->getProcess()->start("rls");
+    instance->process()->start("rls");
 }
 
 void RlsManager::initialize(const QString& projectPath) {
@@ -71,7 +71,7 @@ void RlsManager::send(const QString& method, const QJsonObject& params) {
         qDebug() << "RLS Message:" << message;
     }
 
-    instance->getProcess()->write(message.toUtf8());
+    instance->process()->write(message.toUtf8());
 }
 
 void RlsManager::completion(const QString& filename, int row, int column) {
