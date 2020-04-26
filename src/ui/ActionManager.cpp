@@ -19,7 +19,7 @@ void ActionManager::addAction(const QString& id, QAction* action) {
     instance->actions[id] = action;
 }
 
-QAction* ActionManager::getAction(const QString& id) {
+QAction* ActionManager::action(const QString& id) {
     return instance->actions.value(id);
 }
 

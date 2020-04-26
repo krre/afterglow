@@ -13,7 +13,7 @@ public:
     static ActionManager* getInstance();
 
     static void addAction(const QString& id, QAction* action);
-    static QAction* getAction(const QString& id);
+    static QAction* action(const QString& id);
     static void removeAction(const QString& id);
 
 private:
