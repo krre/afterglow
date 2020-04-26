@@ -10,7 +10,7 @@ public:
     explicit ActionManager(QObject* parent = nullptr);
     ~ActionManager();
 
-    static ActionManager* getInstance();
+    static ActionManager* instance();
 
     static void addAction(const QString& id, QAction* action);
     static QAction* action(const QString& id);
