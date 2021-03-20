@@ -112,7 +112,7 @@ QSize IssueDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIn
 
     if (selected) {
         QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
-        QStringList rows = rendered.split('\n', QString::SkipEmptyParts);
+        QStringList rows = rendered.split('\n', Qt::SkipEmptyParts);
         return QSize(opt.rect.width(), fm.height() * (rows.count()) + 3);
     } else {
         return QSize(opt.rect.width(), fm.height());

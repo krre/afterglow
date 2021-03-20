@@ -16,7 +16,7 @@ RlsManager* RlsManager::getInstance() {
 }
 
 void RlsManager::start() {
-    instance->process()->start("rls");
+    instance->process()->start("rls", QStringList());
 }
 
 void RlsManager::initialize(const QString& projectPath) {
