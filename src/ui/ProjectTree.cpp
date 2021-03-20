@@ -36,7 +36,7 @@ ProjectTree::ProjectTree(QWidget* parent) : QTreeView(parent) {
         if (fsModel->isDir(sourceIndex)) {
             setExpanded(proxyIndex, true);
         } else {
-            openActivated(fsModel->filePath(sourceIndex));
+            emit openActivated(fsModel->filePath(sourceIndex));
         }
     });
 
@@ -93,7 +93,7 @@ void ProjectTree::onNewRustFile() {
     if (!name.isEmpty()) {
         QFileInfo fi(name);
         QString newFilePath = getCurrentDirectory() + "/" + fi.baseName() + ".rs";
-        newFileActivated(newFilePath);
+        emit newFileActivated(newFilePath);
     }
 }
 
@@ -102,7 +102,7 @@ void ProjectTree::onNewFile() {
     newName.exec();
     QString name = newName.getName();
     if (!name.isEmpty()) {
-        newFileActivated(getCurrentDirectory() + "/" + name);
+        emit newFileActivated(getCurrentDirectory() + "/" + name);
     }
 }
 
@@ -152,7 +152,7 @@ void ProjectTree::onFileRename() {
         QDir dir;
         if (dir.rename(oldPath, newPath)) {
             setCurrentIndex(fsProxyModel->mapFromSource(fsModel->index(newPath)));
-            renameActivated(oldPath, newPath);
+            emit renameActivated(oldPath, newPath);
         } else {
             qWarning() << QString("Failed to rename %1 to %2").arg(oldPath, newPath);
         }

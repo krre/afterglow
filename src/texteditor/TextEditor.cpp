@@ -455,12 +455,12 @@ void TextEditor::resizeEvent(QResizeEvent* event) {
 }
 
 void TextEditor::focusInEvent(QFocusEvent* event) {
-    focusChanged(event->gotFocus());
+    emit focusChanged(event->gotFocus());
     QPlainTextEdit::focusInEvent(event);
 }
 
 void TextEditor::focusOutEvent(QFocusEvent* event) {
-    focusChanged(event->gotFocus());
+    emit focusChanged(event->gotFocus());
     QPlainTextEdit::focusInEvent(event);
 }
 
