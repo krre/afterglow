@@ -533,7 +533,7 @@ void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, co
 
     QAction* fileAction = new QAction(filePath);
     connect(fileAction, &QAction::triggered, callback);
-    menu->insertAction(menu->actions().first(), fileAction);
+    menu->insertAction(menu->actions().constFirst(), fileAction);
 
     if (menu->actions().size() > Const::Window::MaxRecentFiles + Const::Window::SeparatorAndMenuClearCount) {
         menu->removeAction(menu->actions().at(menu->actions().size() - Const::Window::SeparatorAndMenuClearCount - 1));

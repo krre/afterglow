@@ -31,7 +31,7 @@ ProjectTree::ProjectTree(QWidget* parent) : QTreeView(parent) {
 
     QAction* openAction = contextMenu->addAction(tr("Open"));
     connect(openAction, &QAction::triggered, [=]() {
-        QModelIndex proxyIndex = selectedIndexes().first();
+        QModelIndex proxyIndex = selectedIndexes().constFirst();
         QModelIndex sourceIndex = fsProxyModel->mapToSource(proxyIndex);
         if (fsModel->isDir(sourceIndex)) {
             setExpanded(proxyIndex, true);
@@ -111,14 +111,14 @@ void ProjectTree::onNewDirectory() {
     newName.exec();
     QString name = newName.getName();
     if (!name.isEmpty()) {
-        QModelIndex sourceIndex = fsProxyModel->mapToSource(selectedIndexes().first());
+        QModelIndex sourceIndex = fsProxyModel->mapToSource(selectedIndexes().constFirst());
         QModelIndex index = fsModel->mkdir(fsModel->isDir(sourceIndex) ? sourceIndex : fsModel->parent(sourceIndex), name);
         setCurrentIndex(index);
     }
 }
 
 void ProjectTree::onFileRemove() {
-    QModelIndex index = fsProxyModel->mapToSource(selectedIndexes().first());
+    QModelIndex index = fsProxyModel->mapToSource(selectedIndexes().constFirst());
     bool isDir = fsModel->isDir(index);
     QString text = QString("Remove %1 \"%2\"?")
             .arg(isDir ? tr("directory") : tr("file"), fsModel->fileName(index));
@@ -142,7 +142,7 @@ void ProjectTree::onFileRemove() {
 }
 
 void ProjectTree::onFileRename() {
-    QString oldPath = fsModel->filePath(fsProxyModel->mapToSource(selectedIndexes().first()));
+    QString oldPath = fsModel->filePath(fsProxyModel->mapToSource(selectedIndexes().constFirst()));
     Rename rename(oldPath, this);
     rename.exec();
     QString name = rename.getName();
@@ -160,7 +160,7 @@ void ProjectTree::onFileRename() {
 }
 
 QString ProjectTree::getCurrentDirectory() const {
-    QModelIndex index = fsProxyModel->mapToSource(selectedIndexes().first());
+    QModelIndex index = fsProxyModel->mapToSource(selectedIndexes().constFirst());
     return fsModel->isDir(index) ? fsModel->filePath(index)
                                  : fsModel->fileInfo(index).absolutePath();
 }
