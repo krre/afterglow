@@ -11,7 +11,7 @@ bool Highlighter::hasExtension(const QString& ext) {
 }
 
 void Highlighter::highlightBlock(const QString& text) {
-    for (const HighlightingRule &rule : highlightingRules) {
+    for (const HighlightingRule& rule : qAsConst(highlightingRules)) {
         QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
         while (matchIterator.hasNext()) {
             QRegularExpressionMatch match = matchIterator.next();
@@ -61,7 +61,9 @@ void Highlighter::loadRules(const QString& fileExt) {
         highlightingRule.format = jsonToFormat(formats[rule["format"].toString()].toObject());
 
         if (rule.contains("words")) {
-            for (const auto& word : words[rule["words"].toString()].toArray()) {
+            const auto ruleWords = words[rule["words"].toString()].toArray();
+
+            for (const auto& word : ruleWords) {
                 highlightingRule.pattern = QRegularExpression(rule["pattern"].toString().arg(word.toString()));
                 highlightingRules.append(highlightingRule);
             }
@@ -73,7 +75,7 @@ void Highlighter::loadRules(const QString& fileExt) {
 
     }
 
-    for (const auto&b : blocks) {
+    for (const auto& b : blocks) {
         QJsonObject block = b.toObject();
         if (block["name"].toString() == "SingleLineComment") {
             commentStartExpression = QRegularExpression(block["start"].toString());

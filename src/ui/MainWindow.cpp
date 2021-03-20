@@ -398,8 +398,9 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
     }
 
     bool isJson = false;
+    const auto blocks = message.split('\n');
 
-    for (const QString& block : message.split('\n')) {
+    for (const QString& block : blocks) {
         if (block.left(1) == "{") {
             QJsonParseError error;
             QJsonDocument doc = QJsonDocument::fromJson(block.toUtf8(), &error);
@@ -522,7 +523,9 @@ void MainWindow::addRecentProject(const QString& projectPath) {
 }
 
 void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, const std::function<void()>& callback) {
-    for (QAction* action : menu->actions()) {
+    const auto actions = menu->actions();
+
+    for (QAction* action : actions) {
         if (action->text() == filePath) {
             menu->removeAction(action);
         }
@@ -615,7 +618,7 @@ void MainWindow::loadSettings() {
     sizesArray = Settings::value("gui.mainWindow.splitters.side").toArray();
     sizes.clear();
 
-    for (const auto& size : sizesArray) {
+    for (const auto& size : qAsConst(sizesArray)) {
         sizes.append(size.toInt());
     }
     ui->splitterSide->setSizes(sizes);
@@ -669,7 +672,9 @@ void MainWindow::saveSettings() {
     // Splitter sizes
     if (ui->actionShowSidebar->isChecked()) {
         QJsonArray sizesArray;
-        for (int size : ui->splitterMain->sizes()) {
+        const auto sizes = ui->splitterMain->sizes();
+
+        for (int size : sizes) {
             sizesArray.append(QJsonValue(size));
         }
         Settings::setValue("gui.mainWindow.splitters.main", sizesArray);
@@ -677,7 +682,9 @@ void MainWindow::saveSettings() {
 
     if (ui->actionShowOutput->isChecked()) {
         QJsonArray sizesArray;
-        for (int size : ui->splitterSide->sizes()) {
+        const auto sizes = ui->splitterSide->sizes();
+
+        for (int size : sizes) {
             sizesArray.append(QJsonValue(size));
         }
         Settings::setValue("gui.mainWindow.splitters.side", sizesArray);

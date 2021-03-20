@@ -129,31 +129,31 @@ void Settings::reset() {
 }
 
 void Settings::cleanupDeprecated(QJsonObject& src, QJsonObject& dst) {
-    for (const QString& key : dst.keys()) {
-        if (src.contains(key)) {
-            if (dst[key].isObject()) {
-                QJsonObject srcObj = src[key].toObject();
-                QJsonObject dstObj = dst[key].toObject();
+    for (auto it = dst.begin(); it != dst.end(); it++) {
+        if (src.contains(it.key())) {
+            if (it.value().isObject()) {
+                QJsonObject srcObj = src[it.key()].toObject();
+                QJsonObject dstObj = it.value().toObject();
                 cleanupDeprecated(srcObj, dstObj);
-                dst[key] = dstObj;
+                it.value() = dstObj;
             }
         } else {
-            dst.remove(key);
+            dst.remove(it.key());
         }
     }
 }
 
 void Settings::appendNew(QJsonObject& src, QJsonObject& dst) {
-    for (const QString& key : src.keys()) {
-        if (dst.contains(key)) {
-            if (src[key].isObject()) {
-                QJsonObject srcObj = src[key].toObject();
-                QJsonObject dstObj = dst[key].toObject();
+    for (auto it = src.begin(); it != src.end(); it++) {
+        if (dst.contains(it.key())) {
+            if (it.value().isObject()) {
+                QJsonObject srcObj = it.value().toObject();
+                QJsonObject dstObj = dst[it.key()].toObject();
                 appendNew(srcObj, dstObj);
-                dst[key] = dstObj;
+                dst[it.key()] = dstObj;
             }
         } else {
-            dst[key] = src[key];
+            dst[it.key()] = it.value();
         }
     }
 }
