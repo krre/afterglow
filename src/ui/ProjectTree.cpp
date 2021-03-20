@@ -121,8 +121,7 @@ void ProjectTree::onFileRemove() {
     QModelIndex index = fsProxyModel->mapToSource(selectedIndexes().first());
     bool isDir = fsModel->isDir(index);
     QString text = QString("Remove %1 \"%2\"?")
-            .arg(isDir ? tr("directory") : tr("file"))
-            .arg(fsModel->fileName(index));
+            .arg(isDir ? tr("directory") : tr("file"), fsModel->fileName(index));
     int result = QMessageBox::question(this, tr("Remove"), text);
     if (result == QMessageBox::Yes) {
         QString path = fsModel->filePath(index);
@@ -155,7 +154,7 @@ void ProjectTree::onFileRename() {
             setCurrentIndex(fsProxyModel->mapFromSource(fsModel->index(newPath)));
             renameActivated(oldPath, newPath);
         } else {
-            qWarning() << QString("Failed to rename %1 to %2").arg(oldPath).arg(newPath);
+            qWarning() << QString("Failed to rename %1 to %2").arg(oldPath, newPath);
         }
     }
 }

@@ -13,9 +13,7 @@ Rename::Rename(const QString& path, QWidget* parent) :
     QFileInfo fi(path);
     name = fi.fileName();
     ui->lineEdit->setText(name);
-    ui->label->setText(QString("Rename %1 %2?")
-                       .arg(fi.isDir() ? "directory" : "file")
-                       .arg(name));
+    ui->label->setText(QString("Rename %1 %2?").arg(fi.isDir() ? "directory" : "file", name));
 }
 
 Rename::~Rename() {

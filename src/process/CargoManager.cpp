@@ -73,8 +73,7 @@ void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     }
 
     QString message = QString("%1 %2 with code %3")
-            .arg(process()->program())
-            .arg(exitStatus == QProcess::NormalExit ? "finished" : "crashed")
+            .arg(process()->program(), exitStatus == QProcess::NormalExit ? "finished" : "crashed")
             .arg(exitCode);
     coloredOutputMessage(message);
 }
@@ -108,7 +107,6 @@ void CargoManager::addBuildRunArguments(QStringList& arguments) {
 
 void CargoManager::coloredOutputMessage(const QString& message, bool start) {
     QString coloredMessage = QString("<font color=%1>%2</font>")
-            .arg(Const::Color::Message)
-            .arg(message);
+            .arg(Const::Color::Message, message);
     emit consoleMessage(coloredMessage, true, start);
 }

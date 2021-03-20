@@ -52,7 +52,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=] (int exitCode, QProcess::ExitStatus exitStatus) {
         Q_UNUSED(exitStatus)
         Q_UNUSED(exitCode)
-        QString message = QString("<font color=%1>%2</font>").arg("#0000FF").arg(tr("Command finished successfully"));
+        QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished successfully"));
         showAndScrollMessage(message);
         if (commandQueue.count()) {
             Command command = commandQueue.dequeue();
@@ -66,7 +66,7 @@ RustInstaller::RustInstaller(QWidget* parent) :
 
     connect(process, &QProcess::errorOccurred, [=] (QProcess::ProcessError error) {
         Q_UNUSED(error)
-        QString message = QString("<font color=%1>%2</font>").arg("#0000FF").arg(tr("Command finished with error"));
+        QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished with error"));
         showAndScrollMessage(message);
         commandQueue.clear();
     });
@@ -337,11 +337,7 @@ void RustInstaller::runFromQueue() {
 
         Command command = commandQueue.head();
         QString message = QString("<font color=%1>%2</font>: <font color=%3>%4 %5</font>")
-                    .arg("#0000FF")
-                    .arg(tr("Run command"))
-                    .arg("#FF0000")
-                    .arg(command.program)
-                    .arg(command.arguments.join(" "));
+                    .arg("#0000FF", tr("Run command"), "#FF0000", command.program, command.arguments.join(" "));
         showAndScrollMessage(message);
         process->start(command.program, command.arguments);
     }

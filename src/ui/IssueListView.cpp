@@ -89,7 +89,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     if (!filename.isEmpty()) {
         QString line = index.data(static_cast<int>(IssueModel::Role::Line)).toString();
         QString column = index.data(static_cast<int>(IssueModel::Role::Column)).toString();
-        QString filenameWithPos = QString("%1 %2:%3").arg(filename).arg(line).arg(column);
+        QString filenameWithPos = QString("%1 %2:%3").arg(filename, line, column);
         painter->drawText(opt.rect.width() - fmText.horizontalAdvance(filenameWithPos) - MARGIN, fmText.ascent() + y, filenameWithPos);
     }
 

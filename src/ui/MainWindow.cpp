@@ -340,11 +340,8 @@ void MainWindow::on_actionAbout_triggered() {
            Based on Qt %4<br> \
            Build on %5<br><br> \
            <a href=%6>%6</a><br><br>%7")
-            .arg(Const::App::Name)
-            .arg(Const::App::Version).arg(Const::App::Status)
-            .arg(QT_VERSION_STR)
-            .arg(__DATE__)
-            .arg(Const::App::Url).arg(Const::App::Copyright));
+            .arg(Const::App::Name, Const::App::Version, Const::App::Status,
+                 QT_VERSION_STR, __DATE__, Const::App::Url, Const::App::Copyright));
 }
 
 void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {
