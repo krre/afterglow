@@ -14,7 +14,7 @@ namespace Const {
         constexpr auto Url = "https://github.com/krre/afterglow";
         constexpr auto SettingsName = "afterglow.ini";
         constexpr auto PrefsName = "prefs.json";
-        constexpr auto Copyright = "Copyright © 2018-2020, Vladimir Zarypov";
+        constexpr auto Copyright = "Copyright © 2018-2021, Vladimir Zarypov";
     }
 
     namespace Window {
