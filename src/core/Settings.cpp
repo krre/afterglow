@@ -5,10 +5,9 @@
 
 Q_GLOBAL_STATIC(QJsonObject, storage);
 Q_GLOBAL_STATIC(QString, prefsPath);
-Q_GLOBAL_STATIC(bool, reseted);
+static bool reseted = false;
 
 void Settings::init() {
-    *reseted = false;
     *prefsPath = QCoreApplication::applicationDirPath() + "/" + Const::App::PrefsName;
     QFile resPrefsFile(":/resources/prefs.json");
 
@@ -57,7 +56,7 @@ void Settings::init() {
 }
 
 void Settings::flush() {
-    if (*reseted) {
+    if (reseted) {
         QFile::remove(*prefsPath);
         return;
     }
@@ -126,7 +125,7 @@ void Settings::updateRustEnvironmentVariables() {
 }
 
 void Settings::reset() {
-    *reseted = true;
+    reseted = true;
 }
 
 void Settings::cleanupDeprecated(QJsonObject& src, QJsonObject& dst) {
