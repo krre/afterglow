@@ -3,12 +3,13 @@
 #include "Global.h"
 #include <QtCore>
 
-static QJsonObject storage = QJsonObject();
-static QString prefsPath = QString();
-static bool reseted = false;
+Q_GLOBAL_STATIC(QJsonObject, storage);
+Q_GLOBAL_STATIC(QString, prefsPath);
+Q_GLOBAL_STATIC(bool, reseted);
 
 void Settings::init() {
-    prefsPath = QCoreApplication::applicationDirPath() + "/" + Const::App::PrefsName;
+    *reseted = false;
+    *prefsPath = QCoreApplication::applicationDirPath() + "/" + Const::App::PrefsName;
     QFile resPrefsFile(":/resources/prefs.json");
 
     if (!resPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -25,7 +26,7 @@ void Settings::init() {
         return;
     }
 
-    QFile workPrefsFile(prefsPath);
+    QFile workPrefsFile(*prefsPath);
 
     if (workPrefsFile.exists()) {
         if (!workPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -34,7 +35,7 @@ void Settings::init() {
         }
 
         QJsonParseError err;
-        storage = QJsonDocument::fromJson(workPrefsFile.readAll(), &err).object();
+        *storage = QJsonDocument::fromJson(workPrefsFile.readAll(), &err).object();
 
         if (err.error != QJsonParseError::NoError) {
             qWarning() << "Failed to parse JSON file" << workPrefsFile.fileName();
@@ -44,11 +45,11 @@ void Settings::init() {
 
         // Update preferences.
         QJsonObject src = resDoc.object();
-        cleanupDeprecated(src, storage);
-        appendNew(src, storage);
+        cleanupDeprecated(src, *storage);
+        appendNew(src, *storage);
     } else {
         // Create preferences from resources.
-        storage = resDoc.object();
+        *storage = resDoc.object();
     }
 
     flush();
@@ -56,8 +57,8 @@ void Settings::init() {
 }
 
 void Settings::flush() {
-    if (reseted) {
-        QFile::remove(prefsPath);
+    if (*reseted) {
+        QFile::remove(*prefsPath);
         return;
     }
 
@@ -68,21 +69,21 @@ void Settings::flush() {
         return;
     }
 
-    QJsonDocument doc(storage);
+    QJsonDocument doc(*storage);
     file.write(doc.toJson());
 }
 
 // Using:
 // Settings::setValue("window.width", 42);
 void Settings::setValue(const QString& path, const QJsonValue& value) {
-    modifyJsonValue(storage, path, value);
+    modifyJsonValue(*storage, path, value);
 }
 
 // Using:
 // int width = Settings::value("window.width").toInt();
 QJsonValue Settings::value(const QString& path) {
     QStringList keys = path.split('.');
-    QJsonObject obj = storage;
+    QJsonObject obj = *storage;
 
     for (int i = 0; i < keys.count() - 1; i++) {
         obj = obj[keys.at(i)].toObject();
@@ -92,7 +93,7 @@ QJsonValue Settings::value(const QString& path) {
 }
 
 QString Settings::getPrefsPath() {
-    return prefsPath;
+    return *prefsPath;
 }
 
 void Settings::updateRustEnvironmentVariables() {
@@ -125,7 +126,7 @@ void Settings::updateRustEnvironmentVariables() {
 }
 
 void Settings::reset() {
-    reseted = true;
+    *reseted = true;
 }
 
 void Settings::cleanupDeprecated(QJsonObject& src, QJsonObject& dst) {

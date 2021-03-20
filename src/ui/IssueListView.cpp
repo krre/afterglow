@@ -6,7 +6,7 @@
 #include <QtWidgets>
 
 static const int MARGIN = 2;
-static QFont issueFont = QFont();
+Q_GLOBAL_STATIC(QFont, issueFont);
 
 IssueDelegate::IssueDelegate(QObject* parent) : QStyledItemDelegate(parent) {
 
@@ -34,7 +34,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     painter->setPen(Qt::NoPen);
     painter->drawRect(opt.rect);
 
-    QFontMetrics fmText(issueFont);
+    QFontMetrics fmText(*issueFont);
 
     // Icon
     QFont fontIcon = Global::fontAwesomeFont();
@@ -70,7 +70,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     }
 
     painter->setPen(textColor);
-    painter->setFont(issueFont);
+    painter->setFont(*issueFont);
 
     // Message
     if (!selected) {
@@ -105,7 +105,7 @@ QSize IssueDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIn
     QStyleOptionViewItem opt = option;
     initStyleOption(&opt, index);
 
-    QFontMetrics fm(issueFont);
+    QFontMetrics fm(*issueFont);
 
     const QAbstractItemView* view = qobject_cast<const QAbstractItemView*>(opt.widget);
     bool selected = view->selectionModel()->currentIndex() == index;
@@ -129,7 +129,7 @@ IssueListView::IssueListView(IssueModel* model, QWidget* parent) : QListView(par
 
     const QString& family = Settings::value("gui.output.issues.font.family").toString();
     int size = Settings::value("gui.output.issues.font.size").toInt();
-    issueFont = QFont(family, size);
+    *issueFont = QFont(family, size);
 
     setModel(model);
 
