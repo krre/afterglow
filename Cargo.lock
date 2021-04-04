@@ -3,3 +3,10 @@
 [[package]]
 name = "afterglow"
 version = "0.1.0"
+dependencies = [
+ "antiq",
+]
+
+[[package]]
+name = "antiq"
+version = "0.1.0"

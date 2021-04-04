@@ -5,3 +5,4 @@ authors = ["Vladimir Zarypov <krre31@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+antiq = { path = "../antiq" }

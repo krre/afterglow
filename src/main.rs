@@ -1,3 +1,6 @@
+use antiq::window::*;
+
 fn main() {
-    println!("Hello, world");
+    let application_window = ApplicationWindow::new();
+    println!("{}", application_window.title());
 }
