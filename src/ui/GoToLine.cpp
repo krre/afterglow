@@ -23,6 +23,7 @@ GoToLine::GoToLine(QWidget* parent) : QDialog(parent) {
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
     buttonBox->buttons().at(0)->setEnabled(false);
     verticalLayout->addWidget(buttonBox);
+    verticalLayout->setSizeConstraint(QLayout::SetFixedSize);
 
     setLayout(verticalLayout);
 
