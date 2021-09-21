@@ -401,6 +401,8 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
     const auto blocks = message.split('\n');
 
     for (const QString& block : blocks) {
+        if (block.isEmpty()) continue;
+
         if (block.at(0) == "{") {
             QJsonParseError error;
             QJsonDocument doc = QJsonDocument::fromJson(block.toUtf8(), &error);
