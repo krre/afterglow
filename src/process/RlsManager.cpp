@@ -1,22 +1,22 @@
 #include "RlsManager.h"
 #include <QtCore>
 
-static RlsManager* instance = nullptr;
+static RlsManager* s_instance = nullptr;
 
 RlsManager::RlsManager(QObject* parent) : ProcessManager(parent) {
-    instance = this;
+    s_instance = this;
 }
 
 RlsManager::~RlsManager() {
     stop();
 }
 
-RlsManager* RlsManager::getInstance() {
-    return instance;
+RlsManager* RlsManager::instance() {
+    return s_instance;
 }
 
 void RlsManager::start() {
-    instance->process()->start("rls", QStringList());
+    s_instance->process()->start("rls", QStringList());
 }
 
 void RlsManager::initialize(const QString& projectPath) {
@@ -31,23 +31,23 @@ void RlsManager::initialize(const QString& projectPath) {
         { "capabilities", capabilities }
     };
 
-    instance->send("initialize", params);
+    s_instance->send("initialize", params);
 }
 
 void RlsManager::shutdown() {
     send("shutdown");
-    instance->stop(); // TODO: Do not restart process on changing project
+    s_instance->stop(); // TODO: Do not restart process on changing project
 }
 
 void RlsManager::setShowDebug(bool showDebug) {
-    instance->showDebug = showDebug;
+    s_instance->showDebug = showDebug;
 }
 
 // Available methods:
 // https://github.com/rust-lang-nursery/rls/blob/master/clients.md
 void RlsManager::send(const QString& method, const QJsonObject& params) {
-    int id = instance->counter++;
-    instance->identifiers[id] = method;
+    int id = s_instance->counter++;
+    s_instance->identifiers[id] = method;
 
     QJsonObject obj = {
         {"jsonrpc", "2.0"},
@@ -67,11 +67,11 @@ void RlsManager::send(const QString& method, const QJsonObject& params) {
     message += "\r\n";
     message += jsonrpc;
 
-    if (instance->showDebug) {
+    if (s_instance->showDebug) {
         qDebug() << "RLS Message:" << message;
     }
 
-    instance->process()->write(message.toUtf8());
+    s_instance->process()->write(message.toUtf8());
 }
 
 void RlsManager::completion(const QString& filename, int row, int column) {
@@ -89,7 +89,7 @@ void RlsManager::completion(const QString& filename, int row, int column) {
         { "position", position }
     };
 
-    instance->send("textDocument/completion", params);
+    s_instance->send("textDocument/completion", params);
 }
 
 void RlsManager::onReadyReadStandardOutput(const QString& data) {

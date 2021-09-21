@@ -9,7 +9,7 @@ public:
     explicit RlsManager(QObject* parent = nullptr);
     ~RlsManager();
 
-    static RlsManager* getInstance();
+    static RlsManager* instance();
     static void start();
     static void initialize(const QString& projectPath);
     static void shutdown();

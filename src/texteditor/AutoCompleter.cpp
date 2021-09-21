@@ -14,7 +14,7 @@ AutoCompleter::AutoCompleter(QObject* parent) : QCompleter(parent) {
     tmpFile.setFileName(tmpPath);
 
     connect(this, SIGNAL(activated(QString)), this, SLOT(onActivate(QString)));
-    connect(RlsManager::getInstance(), &RlsManager::completionResult, this, &AutoCompleter::onCompletionResult);
+    connect(RlsManager::instance(), &RlsManager::completionResult, this, &AutoCompleter::onCompletionResult);
 }
 
 void AutoCompleter::setTextEditor(TextEditor* editor) {
