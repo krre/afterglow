@@ -282,7 +282,7 @@ void MainWindow::on_actionGoToLine_triggered() {
     goToLine.exec();
 
     if (goToLine.isValid()) {
-        editor->goToLine(goToLine.getLine());
+        editor->goToLine(goToLine.line());
     }
 }
 

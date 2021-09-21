@@ -11,7 +11,7 @@ class GoToLine : public QDialog {
 public:
     explicit GoToLine(QWidget* parent = nullptr);
     ~GoToLine();
-    int getLine() const { return line; }
+    int line() const { return m_line; }
     bool isValid() const { return valid; }
 
 private slots:
@@ -19,6 +19,6 @@ private slots:
 
 private:
     Ui::GoToLine* ui;
-    int line = 0;
+    int m_line = 0;
     bool valid = false;
 };
