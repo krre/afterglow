@@ -83,7 +83,6 @@ FORMS += \
     ui/NewName.ui \
     ui/ProjectProperties.ui \
     ui/Rename.ui \
-    ui/GoToLine.ui \
     ui/RustInstaller.ui \
     ui/InstallToolchain.ui \
     ui/AddComponentOrTarget.ui \

@@ -281,8 +281,10 @@ void MainWindow::on_actionGoToLine_triggered() {
     GoToLine goToLine(this);
     goToLine.exec();
 
-    if (goToLine.isValid()) {
-        editor->goToLine(goToLine.line());
+    int line = goToLine.line();
+
+    if (line >= 0) {
+        editor->goToLine(line);
     }
 }
 
