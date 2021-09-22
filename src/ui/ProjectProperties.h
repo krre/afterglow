@@ -28,7 +28,7 @@ public:
     void updateMetadata();
 
 private:
-    Ui::ProjectProperties* ui;
+    Ui::ProjectProperties* ui = nullptr;
     QString projectPath;
     QJsonObject metadata;
 };

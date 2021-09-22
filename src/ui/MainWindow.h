@@ -142,14 +142,14 @@ private:
     void updateMenuState();
     void prepareBuild();
 
-    Ui::MainWindow* ui;
-    CargoManager* cargoManager;
-    ApplicationManager* applicationManager;
-    ProjectTree* projectTree;
-    ProjectProperties* projectProperties;
+    Ui::MainWindow* ui = nullptr;
+    CargoManager* cargoManager = nullptr;
+    ApplicationManager* applicationManager = nullptr;
+    ProjectTree* projectTree = nullptr;
+    ProjectProperties* projectProperties = nullptr;
     QString projectPath;
     TextEditor* editor = nullptr;
-    AutoCompleter* completer;
-    IssueModel* issueModel;
-    IssueListView* issueListView;
+    AutoCompleter* completer = nullptr;
+    IssueModel* issueModel = nullptr;
+    IssueListView* issueListView = nullptr;
 };

@@ -23,7 +23,7 @@ private slots:
     void adjustAcceptedButton();
 
 private:
-    Ui::NewProject* ui;
+    Ui::NewProject* ui = nullptr;
     QString projectPath;
     CargoManager::ProjectTemplate projectTemplate;
 };

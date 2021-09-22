@@ -20,7 +20,7 @@ protected:
     QString errorToString(QProcess::ProcessError error);
 
 private:
-    QProcess* m_process;
+    QProcess* m_process = nullptr;
     QTextCodec* outputCodec = QTextCodec::codecForLocale();
     QTextCodec::ConverterState outputCodecState;
     QTextCodec::ConverterState errorCodecState;

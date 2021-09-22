@@ -22,6 +22,6 @@ private slots:
 private:
     void loadHosts();
 
-    Ui::InstallToolchain* ui;
+    Ui::InstallToolchain* ui = nullptr;
     QString toolchain;
 };

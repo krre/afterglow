@@ -18,6 +18,6 @@ private slots:
     void on_lineEditName_textChanged(const QString& text);
 
 private:
-    Ui::NewName* ui;
+    Ui::NewName* ui = nullptr;
     QString name;
 };

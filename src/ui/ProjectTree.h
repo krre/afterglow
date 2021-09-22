@@ -37,7 +37,7 @@ private slots:
 private:
     QString getCurrentDirectory() const;
 
-    QFileSystemModel* fsModel;
-    FileSystemProxyModel* fsProxyModel;
+    QFileSystemModel* fsModel = nullptr;
+    FileSystemProxyModel* fsProxyModel = nullptr;
     QMenu* contextMenu;
 };

@@ -22,7 +22,7 @@ private slots:
     void onCustomContextMenu(const QPoint& point);
 
 private:
-    Ui::AddComponentOrTarget* ui;
+    Ui::AddComponentOrTarget* ui = nullptr;
     QStringList list;
-    QMenu* contextMenu;
+    QMenu* contextMenu = nullptr;
 };

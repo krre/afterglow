@@ -19,8 +19,8 @@ private slots:
     void onCompletionResult(const QJsonArray& result);
 
 private:
-    TextEditor* editor;
-    QStringListModel* listModel;
+    TextEditor* editor = nullptr;
+    QStringListModel* listModel = nullptr;
     QFile tmpFile;
     QString tmpPath;
 };

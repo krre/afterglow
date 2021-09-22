@@ -28,5 +28,5 @@ private slots:
 private:
     void copyRowToClipboard(int role);
 
-    QMenu* contextMenu;
+    QMenu* contextMenu= nullptr;
 };

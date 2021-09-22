@@ -62,8 +62,8 @@ private:
     void autoindent();
     void extendSelectionToBeginOfComment();
 
-    QWidget* lineNumberArea;
-    Highlighter* highlighter;
+    QWidget* lineNumberArea = nullptr;
+    Highlighter* highlighter = nullptr;
     QString filePath;
-    AutoCompleter* completer;
+    AutoCompleter* completer = nullptr;
 };

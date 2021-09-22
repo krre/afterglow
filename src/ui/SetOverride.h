@@ -21,7 +21,7 @@ private slots:
     void on_lineEdit_textChanged(const QString& text);
 
 private:
-    Ui::SetOverride* ui;
+    Ui::SetOverride* ui = nullptr;
     QString directory;
     QString toolchain;
 };

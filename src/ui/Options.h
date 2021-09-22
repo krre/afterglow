@@ -25,5 +25,5 @@ private:
     void readSettings();
     void writeSettings();
 
-    Ui::Options* ui;
+    Ui::Options* ui = nullptr;
 };

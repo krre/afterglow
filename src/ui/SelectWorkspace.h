@@ -18,5 +18,5 @@ private slots:
     void on_lineEdit_textChanged(const QString& text);
 
 private:
-    Ui::SelectWorkspace* ui;
+    Ui::SelectWorkspace* ui = nullptr;
 };

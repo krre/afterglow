@@ -97,12 +97,12 @@ private:
         Overrides
     };
 
-    Ui::RustInstaller* ui;
+    Ui::RustInstaller* ui = nullptr;
     QProcess* process;
-    FileDownloader* fileDownloader;
+    FileDownloader* fileDownloader = nullptr;
     QTemporaryDir tmpDir;
     QQueue<Command> commandQueue;
-    QMenu* contextMenu;
+    QMenu* contextMenu = nullptr;
     QString defaultToolchain;
     QString defaultTarget;
     bool settingsLoaded = false;
