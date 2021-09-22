@@ -2,19 +2,18 @@
 #include <QDialog>
 
 class QDialogButtonBox;
+class QLineEdit;
 
 class GoToLine : public QDialog {
     Q_OBJECT
 public:
     explicit GoToLine(QWidget* parent = nullptr);
-
-    int line() const { return m_line; }
+    int line() const;
 
 private slots:
     void onTextChanged(const QString& text);
 
 private:
+    QLineEdit* lineEdit = nullptr;
     QDialogButtonBox* buttonBox = nullptr;
-    int m_line = -1;
-    bool m_isValid = false;
 };

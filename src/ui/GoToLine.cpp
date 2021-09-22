@@ -11,7 +11,7 @@ GoToLine::GoToLine(QWidget* parent) : QDialog(parent) {
     auto validator = new QIntValidator(this);
     validator->setBottom(0);
 
-    auto lineEdit = new QLineEdit;
+    lineEdit = new QLineEdit;
     lineEdit->setValidator(validator);
     horizontalLayout->addWidget(lineEdit);
 
@@ -32,7 +32,10 @@ GoToLine::GoToLine(QWidget* parent) : QDialog(parent) {
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
+int GoToLine::line() const {
+    return lineEdit->text().toInt();
+}
+
 void GoToLine::onTextChanged(const QString& text) {
-    m_line = text.toInt();
     buttonBox->buttons().at(0)->setEnabled(!text.isEmpty());
 }

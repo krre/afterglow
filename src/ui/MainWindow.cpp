@@ -279,13 +279,8 @@ void MainWindow::on_actionDecreaseIndent_triggered() {
 
 void MainWindow::on_actionGoToLine_triggered() {
     GoToLine goToLine(this);
-    goToLine.exec();
-
-    int line = goToLine.line();
-
-    if (line >= 0) {
-        editor->goToLine(line);
-    }
+    if (goToLine.exec() == QDialog::Rejected) return;
+    editor->goToLine(goToLine.line());
 }
 
 void MainWindow::on_actionCleanTrailingWhitespace_triggered() {
