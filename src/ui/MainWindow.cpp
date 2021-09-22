@@ -124,11 +124,8 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 
 void MainWindow::on_actionNewProject_triggered() {
     NewProject newCargoProject(this);
-    newCargoProject.exec();
-
-    if (!newCargoProject.getProjectPath().isEmpty()) {
-        cargoManager->createProject(newCargoProject.getProjectTemplate(), newCargoProject.getProjectPath());
-    }
+    if (newCargoProject.exec() == QDialog::Rejected) return;
+    cargoManager->createProject(newCargoProject.projectTemplate(), newCargoProject.path());
 }
 
 void MainWindow::on_actionNewRustFile_triggered() {

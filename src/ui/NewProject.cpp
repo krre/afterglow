@@ -1,39 +1,73 @@
 #include "NewProject.h"
-#include "ui_NewProject.h"
 #include "core/Global.h"
 #include "process/CargoManager.h"
 #include <QtWidgets>
 
-NewProject::NewProject(QWidget* parent) :
-        QDialog(parent),
-        ui(new Ui::NewProject) {
-    ui->setupUi(this);
-    setFixedHeight(height());
+NewProject::NewProject(QWidget* parent) : QDialog(parent) {
+    setWindowTitle(tr("New Project"));
+    resize(400, 140);
 
-    ui->lineEditDirectory->setText(Global::workspacePath());
+    auto gridLayout = new QGridLayout;
+    gridLayout->addWidget(new QLabel(tr("Name:")), 0, 0, 1, 1);
+    gridLayout->addWidget(new QLabel(tr("Directory:")), 1, 0, 1, 1);
 
-    connect(ui->lineEditName, &QLineEdit::textChanged, this, &NewProject::adjustAcceptedButton);
-    connect(ui->lineEditDirectory, &QLineEdit::textChanged, this, &NewProject::adjustAcceptedButton);
+    nameLineEdit = new QLineEdit;
+    gridLayout->addWidget(nameLineEdit, 0, 1, 1, 1);
+
+    auto horizontalLayout = new QHBoxLayout;
+
+    directoryLineEdit = new QLineEdit(Global::workspacePath());
+    horizontalLayout->addWidget(directoryLineEdit);
+
+    auto browsePushButton = new QPushButton(tr("Browse..."));
+    horizontalLayout->addWidget(browsePushButton);
+
+    gridLayout->addLayout(horizontalLayout, 1, 1, 1, 1);
+    gridLayout->addWidget(new QLabel(tr("Template:")), 2, 0, 1, 1);
+
+    templateComboBox = new QComboBox;
+    templateComboBox->addItem(tr("Binary"));
+    templateComboBox->addItem(tr("Library"));
+
+    gridLayout->addWidget(templateComboBox, 2, 1, 1, 1);
+
+    auto verticalLayout = new QVBoxLayout;
+    verticalLayout->addLayout(gridLayout);
+
+    buttonBox = new QDialogButtonBox;
+    buttonBox->setOrientation(Qt::Horizontal);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
+    verticalLayout->addWidget(buttonBox);
+    setLayout(verticalLayout);
+
+    connect(browsePushButton, &QPushButton::clicked, this, &NewProject::onBrowseButtonClicked);
+
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
+    connect(nameLineEdit, &QLineEdit::textChanged, this, &NewProject::adjustAcceptedButton);
+    connect(directoryLineEdit, &QLineEdit::textChanged, this, &NewProject::adjustAcceptedButton);
 
     adjustAcceptedButton();
 }
 
-NewProject::~NewProject() {
-    delete ui;
+QString NewProject::path() const {
+    return directoryLineEdit->text() + "/" + nameLineEdit->text();
 }
 
-void NewProject::on_pushButtonDirectory_clicked() {
+CargoManager::ProjectTemplate NewProject::projectTemplate() const {
+    return static_cast<CargoManager::ProjectTemplate>(templateComboBox->currentIndex());
+}
+
+void NewProject::onBrowseButtonClicked() {
     QString dirPath = QFileDialog::getExistingDirectory(this);
+
     if (!dirPath.isEmpty()) {
-        ui->lineEditDirectory->setText(dirPath);
+        directoryLineEdit->setText(dirPath);
     }
 }
 
-void NewProject::on_buttonBox_accepted() {
-    projectTemplate = static_cast<CargoManager::ProjectTemplate>(ui->comboBoxTemplate->currentIndex());
-    projectPath = ui->lineEditDirectory->text() + "/" + ui->lineEditName->text();
-}
-
 void NewProject::adjustAcceptedButton() {
-    ui->buttonBox->buttons().at(0)->setEnabled(!ui->lineEditName->text().isEmpty() && !ui->lineEditDirectory->text().isEmpty());
+    buttonBox->buttons().at(0)->setEnabled(!nameLineEdit->text().isEmpty() && !directoryLineEdit->text().isEmpty());
 }

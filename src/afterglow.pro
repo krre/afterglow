@@ -79,7 +79,6 @@ FORMS += \
     ui/MainWindow.ui \
     ui/SelectWorkspace.ui \
     ui/Options.ui \
-    ui/NewProject.ui \
     ui/ProjectProperties.ui \
     ui/RustInstaller.ui \
     ui/InstallToolchain.ui \
