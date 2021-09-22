@@ -143,19 +143,19 @@ void ProjectTree::onFileRemove() {
 
 void ProjectTree::onFileRename() {
     QString oldPath = fsModel->filePath(fsProxyModel->mapToSource(selectedIndexes().constFirst()));
-    Rename rename(oldPath, this);
-    rename.exec();
-    QString name = rename.name();
-    if (!name.isEmpty()) {
-        QFileInfo fi(oldPath);
-        QString newPath = (fi.isDir() ? fi.absolutePath() : fi.path()) + "/" + name;
-        QDir dir;
-        if (dir.rename(oldPath, newPath)) {
-            setCurrentIndex(fsProxyModel->mapFromSource(fsModel->index(newPath)));
-            emit renameActivated(oldPath, newPath);
-        } else {
-            qWarning() << QString("Failed to rename %1 to %2").arg(oldPath, newPath);
-        }
+    QFileInfo fi(oldPath);
+
+    Rename rename(fi.fileName(), this);
+    if (rename.exec() == QDialog::Rejected) return;
+
+    QString newPath = (fi.isDir() ? fi.absolutePath() : fi.path()) + "/" + rename.name();
+    QDir dir;
+
+    if (dir.rename(oldPath, newPath)) {
+        setCurrentIndex(fsProxyModel->mapFromSource(fsModel->index(newPath)));
+        emit renameActivated(oldPath, newPath);
+    } else {
+        qWarning() << QString("Failed to rename %1 to %2").arg(oldPath, newPath);
     }
 }
 

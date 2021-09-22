@@ -1,17 +1,14 @@
 #include "Rename.h"
 #include <QtWidgets>
 
-Rename::Rename(const QString& path, QWidget* parent) : QDialog(parent) {
+Rename::Rename(const QString& name, QWidget* parent) : QDialog(parent), m_name(name) {
     setWindowTitle(tr("Rename"));
 
-    QFileInfo fi(path);
-    m_name = fi.fileName();
-
     auto label = new QLabel;
-    label->setText(QString("Rename %1 %2?").arg(fi.isDir() ? "directory" : "file", m_name));
+    label->setText(tr("Rename %1?").arg(name));
 
-    auto lineEdit = new QLineEdit;
-    lineEdit->setText(m_name);
+    lineEdit = new QLineEdit;
+    lineEdit->setText(name);
     lineEdit->setFocus();
 
     auto verticalLayout = new QVBoxLayout;
@@ -30,19 +27,13 @@ Rename::Rename(const QString& path, QWidget* parent) : QDialog(parent) {
 
     connect(lineEdit, &QLineEdit::textChanged, this, &Rename::onTextChanged);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &Rename::onRejected);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
-const QString& Rename::name() const {
-    return m_name;
-}
-
-void Rename::onRejected() {
-    m_name = QString();
-    reject();
+QString Rename::name() const {
+    return lineEdit->text();
 }
 
 void Rename::onTextChanged(const QString& text) {
     buttonBox->buttons().at(0)->setEnabled(!text.isEmpty() && text != m_name);
-    m_name = text;
 }
