@@ -88,33 +88,26 @@ void ProjectTree::onDoubleClicked(const QModelIndex& index) {
 
 void ProjectTree::onNewRustFile() {
     NewName newName(tr("New Rust File"), this);
-    newName.exec();
-    QString name = newName.getName();
-    if (!name.isEmpty()) {
-        QFileInfo fi(name);
-        QString newFilePath = getCurrentDirectory() + "/" + fi.baseName() + ".rs";
-        emit newFileActivated(newFilePath);
-    }
+    if (newName.exec() == QDialog::Rejected) return;
+
+    QFileInfo fi(newName.name());
+    QString newFilePath = getCurrentDirectory() + "/" + fi.baseName() + ".rs";
+    emit newFileActivated(newFilePath);
 }
 
 void ProjectTree::onNewFile() {
     NewName newName(tr("New File"), this);
-    newName.exec();
-    QString name = newName.getName();
-    if (!name.isEmpty()) {
-        emit newFileActivated(getCurrentDirectory() + "/" + name);
-    }
+    if (newName.exec() == QDialog::Rejected) return;
+    emit newFileActivated(getCurrentDirectory() + "/" + newName.name());
 }
 
 void ProjectTree::onNewDirectory() {
     NewName newName(tr("New Directory"), this);
-    newName.exec();
-    QString name = newName.getName();
-    if (!name.isEmpty()) {
-        QModelIndex sourceIndex = fsProxyModel->mapToSource(selectedIndexes().constFirst());
-        QModelIndex index = fsModel->mkdir(fsModel->isDir(sourceIndex) ? sourceIndex : fsModel->parent(sourceIndex), name);
-        setCurrentIndex(index);
-    }
+    if (newName.exec() == QDialog::Rejected) return;
+
+    QModelIndex sourceIndex = fsProxyModel->mapToSource(selectedIndexes().constFirst());
+    QModelIndex index = fsModel->mkdir(fsModel->isDir(sourceIndex) ? sourceIndex : fsModel->parent(sourceIndex), newName.name());
+    setCurrentIndex(index);
 }
 
 void ProjectTree::onFileRemove() {

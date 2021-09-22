@@ -1,23 +1,19 @@
 #pragma once
 #include <QDialog>
 
-namespace Ui {
-    class NewName;
-}
+class QLineEdit;
+class QDialogButtonBox;
 
 class NewName : public QDialog {
     Q_OBJECT
-
 public:
     explicit NewName(const QString& title, QWidget* parent = nullptr);
-    ~NewName();
-    QString getName() const;
+    QString name() const;
 
 private slots:
-    void on_buttonBox_accepted();
-    void on_lineEditName_textChanged(const QString& text);
+    void onTextChanged(const QString& text);
 
 private:
-    Ui::NewName* ui = nullptr;
-    QString name;
+    QLineEdit* lineEdit = nullptr;
+    QDialogButtonBox* buttonBox = nullptr;
 };

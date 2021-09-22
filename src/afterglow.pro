@@ -80,7 +80,6 @@ FORMS += \
     ui/SelectWorkspace.ui \
     ui/Options.ui \
     ui/NewProject.ui \
-    ui/NewName.ui \
     ui/ProjectProperties.ui \
     ui/RustInstaller.ui \
     ui/InstallToolchain.ui \
