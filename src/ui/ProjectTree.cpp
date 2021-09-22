@@ -145,7 +145,7 @@ void ProjectTree::onFileRename() {
     QString oldPath = fsModel->filePath(fsProxyModel->mapToSource(selectedIndexes().constFirst()));
     Rename rename(oldPath, this);
     rename.exec();
-    QString name = rename.getName();
+    QString name = rename.name();
     if (!name.isEmpty()) {
         QFileInfo fi(oldPath);
         QString newPath = (fi.isDir() ? fi.absolutePath() : fi.path()) + "/" + name;
