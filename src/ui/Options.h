@@ -1,29 +1,26 @@
 #pragma once
 #include <QDialog>
 
-namespace Ui {
-    class Options;
-}
+class QLineEdit;
+class QCheckBox;
 
 class Options : public QDialog {
     Q_OBJECT
-
 public:
     explicit Options(QWidget* parent = nullptr);
-    ~Options();
 
 signals:
     void openPrefs();
 
 private slots:
-    void on_pushButtonWorkspace_clicked();
-    void on_pushButtonOpenPrefs_clicked();
-    void on_pushButtonResetSettings_clicked();
-    void on_buttonBox_accepted();
+    void onWorkspaceClicked();
+    void onResetSettingsClicked();
+    void onAccepted();
 
 private:
     void readSettings();
     void writeSettings();
 
-    Ui::Options* ui = nullptr;
+    QLineEdit* workspaceLineEdit = nullptr;
+    QCheckBox* sessionCheckBox = nullptr;
 };

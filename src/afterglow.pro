@@ -78,7 +78,6 @@ HEADERS += \
 FORMS += \
     ui/MainWindow.ui \
     ui/SelectWorkspace.ui \
-    ui/Options.ui \
     ui/ProjectProperties.ui \
     ui/RustInstaller.ui \
     ui/InstallToolchain.ui \
