@@ -1,5 +1,4 @@
 #include "NewName.h"
-#include "ui_NewName.h"
 #include <QtWidgets>
 
 NewName::NewName(const QString& title, QWidget* parent) : QDialog(parent) {
