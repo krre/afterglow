@@ -29,7 +29,7 @@ NewProject::NewProject(QWidget* parent) : QDialog(parent) {
     templateComboBox->addItem(tr("Binary"));
     templateComboBox->addItem(tr("Library"));
 
-    gridLayout->addWidget(templateComboBox, 2, 1, 1, 1);
+    gridLayout->addWidget(templateComboBox, 2, 1, 1, 1, Qt::AlignLeft);
 
     auto verticalLayout = new QVBoxLayout;
     verticalLayout->addLayout(gridLayout);
@@ -38,6 +38,7 @@ NewProject::NewProject(QWidget* parent) : QDialog(parent) {
     buttonBox->setOrientation(Qt::Horizontal);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
+    verticalLayout->addStretch();
     verticalLayout->addWidget(buttonBox);
     setLayout(verticalLayout);
 
