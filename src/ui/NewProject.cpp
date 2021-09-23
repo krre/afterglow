@@ -5,7 +5,6 @@
 
 NewProject::NewProject(QWidget* parent) : QDialog(parent) {
     setWindowTitle(tr("New Project"));
-    resize(400, 140);
 
     auto gridLayout = new QGridLayout;
     gridLayout->addWidget(new QLabel(tr("Name:")), 0, 0, 1, 1);
@@ -41,6 +40,9 @@ NewProject::NewProject(QWidget* parent) : QDialog(parent) {
     verticalLayout->addStretch();
     verticalLayout->addWidget(buttonBox);
     setLayout(verticalLayout);
+
+    adjustSize();
+    resize(400, height());
 
     connect(browsePushButton, &QPushButton::clicked, this, &NewProject::onBrowseButtonClicked);
 
