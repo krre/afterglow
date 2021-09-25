@@ -87,7 +87,7 @@ void ProjectTree::onDoubleClicked(const QModelIndex& index) {
 }
 
 void ProjectTree::onNewRustFile() {
-    NewName newName(tr("New Rust File"), this);
+    NewName newName(tr("New Rust File"));
     if (newName.exec() == QDialog::Rejected) return;
 
     QFileInfo fi(newName.name());
@@ -96,13 +96,13 @@ void ProjectTree::onNewRustFile() {
 }
 
 void ProjectTree::onNewFile() {
-    NewName newName(tr("New File"), this);
+    NewName newName(tr("New File"));
     if (newName.exec() == QDialog::Rejected) return;
     emit newFileActivated(getCurrentDirectory() + "/" + newName.name());
 }
 
 void ProjectTree::onNewDirectory() {
-    NewName newName(tr("New Directory"), this);
+    NewName newName(tr("New Directory"));
     if (newName.exec() == QDialog::Rejected) return;
 
     QModelIndex sourceIndex = fsProxyModel->mapToSource(selectedIndexes().constFirst());

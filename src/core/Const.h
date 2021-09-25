@@ -70,5 +70,8 @@ namespace Const {
         constexpr auto Run = "Run";
         constexpr auto Stop = "Stop";
         constexpr auto Clean = "Clean";
+
+        constexpr auto ShowSidebar = "ShowSidebar";
+        constexpr auto ShowOutput = "ShowOutput";
     }
 }

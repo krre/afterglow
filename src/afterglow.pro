@@ -76,7 +76,6 @@ HEADERS += \
     ui/IssueListView.h
 
 FORMS += \
-    ui/MainWindow.ui \
     ui/SelectWorkspace.ui \
     ui/ProjectProperties.ui \
     ui/RustInstaller.ui \

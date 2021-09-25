@@ -1,5 +1,4 @@
 #include "MainWindow.h"
-#include "ui_MainWindow.h"
 #include "core/Global.h"
 #include "core/Const.h"
 #include "core/Settings.h"
@@ -24,34 +23,125 @@
 #endif
 #include <QtWidgets>
 
-MainWindow::MainWindow() :
-        ui(new Ui::MainWindow) {
+MainWindow::MainWindow() {
     new SyntaxHighlightManager(this);
-
-    ui->setupUi(this);
-
     new ActionManager(this);
 
-    ActionManager::addAction(Const::Action::NewProject, ui->actionNewProject);
-    ActionManager::addAction(Const::Action::NewRustFile, ui->actionNewRustFile);
-    ActionManager::addAction(Const::Action::NewFile, ui->actionNewFile);
-    ActionManager::addAction(Const::Action::NewDirectory, ui->actionNewDirectory);
+    resize(1040, 620);
 
-    ActionManager::addAction(Const::Action::Open, ui->actionOpen);
-    ActionManager::addAction(Const::Action::CloseProject, ui->actionCloseProject);
+    mainSplitter = new QSplitter;
+    mainSplitter->setOrientation(Qt::Horizontal);
+    mainSplitter->setHandleWidth(0);
+    mainSplitter->setChildrenCollapsible(false);
 
-    ActionManager::addAction(Const::Action::Save, ui->actionSave);
-    ActionManager::addAction(Const::Action::SaveAs, ui->actionSaveAs);
-    ActionManager::addAction(Const::Action::SaveAll, ui->actionSaveAll);
+    setCentralWidget(mainSplitter);
 
-    ActionManager::addAction(Const::Action::Close, ui->actionClose);
-    ActionManager::addAction(Const::Action::CloseAll, ui->actionCloseAll);
-    ActionManager::addAction(Const::Action::CloseOther, ui->actionCloseOther);
+    sideTabWidget = new QTabWidget(mainSplitter);
+    sideTabWidget->setMinimumSize(QSize(50, 0));
+    sideTabWidget->setBaseSize(QSize(200, 0));
+    sideTabWidget->setTabPosition(QTabWidget::West);
+    mainSplitter->addWidget(sideTabWidget);
 
-    ActionManager::addAction(Const::Action::Build, ui->actionBuild);
-    ActionManager::addAction(Const::Action::Run, ui->actionRun);
-    ActionManager::addAction(Const::Action::Stop, ui->actionStop);
-    ActionManager::addAction(Const::Action::Clean, ui->actionClean);
+    sideSplitter = new QSplitter(mainSplitter);
+    sideSplitter->setOrientation(Qt::Vertical);
+    sideSplitter->setHandleWidth(0);
+    sideSplitter->setChildrenCollapsible(false);
+
+    sourceTabWidget = new QTabWidget(sideSplitter);
+    sourceTabWidget->setMinimumSize(QSize(0, 50));
+    sourceTabWidget->setTabsClosable(true);
+    sourceTabWidget->setMovable(true);
+    sideSplitter->addWidget(sourceTabWidget);
+
+    connect(sourceTabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::onSourceTabClose);
+    connect(sourceTabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::onSourceTabCurrentChanged);
+
+    outputTabWidget = new QTabWidget(sideSplitter);
+    outputTabWidget->setMinimumSize(QSize(0, 50));
+
+    QWidget* cargoTab = new QWidget();
+
+    QHBoxLayout* cargoHorizontalLayout = new QHBoxLayout(cargoTab);
+    cargoHorizontalLayout->setSpacing(0);
+    cargoHorizontalLayout->setContentsMargins(0, 0, 0, 0);
+
+    QVBoxLayout* cargoVerticalLayout = new QVBoxLayout();
+    cargoVerticalLayout->setSpacing(0);
+    cargoVerticalLayout->setContentsMargins(1, 1, 1, 1);
+
+    QFont font = Global::fontAwesomeFont();
+
+    auto buildToolButtonCargo = new QToolButton();
+    buildToolButtonCargo->setToolTip(tr("Build"));
+    buildToolButtonCargo->setFont(font);
+    buildToolButtonCargo->setText(Const::FontAwesome::Cog);
+    cargoVerticalLayout->addWidget(buildToolButtonCargo);
+
+    auto runToolButtonCargo = new QToolButton(cargoTab);
+    runToolButtonCargo->setToolTip(tr("Run"));
+    runToolButtonCargo->setFont(font);
+    runToolButtonCargo->setText(Const::FontAwesome::Play);
+    cargoVerticalLayout->addWidget(runToolButtonCargo);
+
+    auto stopToolButtonCargo = new QToolButton(cargoTab);
+    stopToolButtonCargo->setToolTip(tr("Stop"));
+    stopToolButtonCargo->setFont(font);
+    stopToolButtonCargo->setText(Const::FontAwesome::Stop);
+    cargoVerticalLayout->addWidget(stopToolButtonCargo);
+
+    auto clearToolButtonCargo = new QToolButton(cargoTab);
+    clearToolButtonCargo->setToolTip(tr("Clear"));
+    clearToolButtonCargo->setFont(font);
+    clearToolButtonCargo->setText(Const::FontAwesome::TrashAlt);
+    cargoVerticalLayout->addWidget(clearToolButtonCargo);
+
+    cargoVerticalLayout->addStretch();
+
+    connect(buildToolButtonCargo, &QToolButton::clicked, this, &MainWindow::onCargoBuild);
+    connect(runToolButtonCargo, &QToolButton::clicked, this, &MainWindow::onCargoRun);
+    connect(stopToolButtonCargo, &QToolButton::clicked, this, &MainWindow::onCargoStop);
+    connect(clearToolButtonCargo, &QToolButton::clicked, this, &MainWindow::onCargoClear);
+
+    cargoHorizontalLayout->addLayout(cargoVerticalLayout);
+
+    cargoPlainTextEdit = new QPlainTextEdit(cargoTab);
+    cargoPlainTextEdit->setFocusPolicy(Qt::StrongFocus);
+    cargoPlainTextEdit->setReadOnly(true);
+
+    cargoHorizontalLayout->addWidget(cargoPlainTextEdit);
+
+    outputTabWidget->addTab(cargoTab, tr("Cargo"));
+
+    QWidget* issuesTab = new QWidget();
+    auto issueHorizontalLayout = new QHBoxLayout(issuesTab);
+    issueHorizontalLayout->setSpacing(0);
+    issueHorizontalLayout->setContentsMargins(0, 0, 0, 0);
+
+    auto issueVerticalLayout = new QVBoxLayout();
+    issueVerticalLayout->setSpacing(0);
+
+    auto clearToolButtonIssues = new QToolButton(issuesTab);
+    clearToolButtonIssues->setToolTip(tr("Clear"));
+    clearToolButtonIssues->setFont(font);
+    clearToolButtonIssues->setText(Const::FontAwesome::TrashAlt);
+    issueVerticalLayout->addWidget(clearToolButtonIssues);
+
+    issueVerticalLayout->addStretch();
+
+    connect(clearToolButtonIssues, &QToolButton::clicked, this, &MainWindow::onIssuesClear);
+
+    issueHorizontalLayout->addLayout(issueVerticalLayout);
+
+    auto issueWidget = new QWidget(issuesTab);
+    issueHorizontalLayout->addWidget(issueWidget);
+
+    outputTabWidget->addTab(issuesTab, tr("Issues"));
+
+    sideSplitter->addWidget(outputTabWidget);
+    mainSplitter->addWidget(sideSplitter);
+
+    sideTabWidget->setCurrentIndex(-1);
+    outputTabWidget->setCurrentIndex(0);
 
     projectProperties = new ProjectProperties;
 
@@ -65,8 +155,8 @@ MainWindow::MainWindow() :
     connect(projectTree, &ProjectTree::removeActivated, this, &MainWindow::onFileRemoved);
     connect(projectTree, &ProjectTree::renameActivated, this, &MainWindow::onFileRenamed);
 
-    ui->tabWidgetSide->addTab(projectTree, tr("Project"));
-    ui->tabWidgetSide->addTab(projectProperties, tr("Properties"));
+    sideTabWidget->addTab(projectTree, tr("Project"));
+    sideTabWidget->addTab(projectProperties, tr("Properties"));
 
     issueModel = new IssueModel(this);
     connect(issueModel, &IssueModel::countChanged, this, &MainWindow::onIssueCountChanged);
@@ -80,24 +170,7 @@ MainWindow::MainWindow() :
         }
     });
 
-    ui->horizontalLayoutIssues->addWidget(issueListView);
-
-    QFont font = Global::fontAwesomeFont();
-
-    ui->toolButtonCargoBuild->setFont(font);
-    ui->toolButtonCargoBuild->setText(Const::FontAwesome::Cog);
-
-    ui->toolButtonCargoRun->setFont(font);
-    ui->toolButtonCargoRun->setText(Const::FontAwesome::Play);
-
-    ui->toolButtonCargoStop->setFont(font);
-    ui->toolButtonCargoStop->setText(Const::FontAwesome::Stop);
-
-    ui->toolButtonCargoClear->setFont(font);
-    ui->toolButtonCargoClear->setText(Const::FontAwesome::TrashAlt);
-
-    ui->toolButtonIssuesClear->setFont(font);
-    ui->toolButtonIssuesClear->setText(Const::FontAwesome::TrashAlt);
+    issueHorizontalLayout->addWidget(issueListView);
 
     new RlsManager(this);
     RlsManager::setShowDebug(Settings::value("debug.dump.rlsMessages").toBool());
@@ -108,12 +181,9 @@ MainWindow::MainWindow() :
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setWrapAround(false);
 
+    createActions();
     loadSettings();
     updateMenuState();
-}
-
-MainWindow::~MainWindow() {
-    delete ui;
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
@@ -122,21 +192,21 @@ void MainWindow::closeEvent(QCloseEvent* event) {
     event->accept();
 }
 
-void MainWindow::on_actionNewProject_triggered() {
+void MainWindow::onNewProjectAction() {
     NewProject newCargoProject(this);
     if (newCargoProject.exec() == QDialog::Rejected) return;
     cargoManager->createProject(newCargoProject.projectTemplate(), newCargoProject.path());
 }
 
-void MainWindow::on_actionNewRustFile_triggered() {
+void MainWindow::onNewRustFileAction() {
     projectTree->onNewRustFile();
 }
 
-void MainWindow::on_actionCloseProject_triggered() {
+void MainWindow::onCloseProjectAction() {
     closeProject();
 }
 
-void MainWindow::on_actionSaveAs_triggered() {
+void MainWindow::onSaveAsAction() {
     QString filePath = QFileDialog::getSaveFileName(this, tr("Save File"), editor->getFilePath(), "Rust (*.rs);;All Files(*.*)");
     if (!filePath.isEmpty()) {
         bool result = QFile::copy(editor->getFilePath(), filePath);
@@ -148,59 +218,60 @@ void MainWindow::on_actionSaveAs_triggered() {
     }
 }
 
-void MainWindow::on_actionSaveAll_triggered() {
-    for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
-        TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
+void MainWindow::onSaveAllAction() {
+    for (int i = 0; i < sourceTabWidget->count(); i++) {
+        TextEditor* editor = static_cast<TextEditor*>(sourceTabWidget->widget(i));
         editor->saveFile();
     }
 }
 
-void MainWindow::on_actionClearMenuRecentFiles_triggered() {
-    for (int i = ui->menuRecentFiles->actions().size() - Const::Window::SeparatorAndMenuClearCount - 1; i >= 0; i--) {
-        ui->menuRecentFiles->removeAction(ui->menuRecentFiles->actions().at(i));
+void MainWindow::onClearMenuRecentFilesAction() {
+    for (int i = recentFilesMenu->actions().size() - Const::Window::SeparatorAndMenuClearCount - 1; i >= 0; i--) {
+        recentFilesMenu->removeAction(recentFilesMenu->actions().at(i));
     }
 
     updateMenuState();
 }
 
-void MainWindow::on_actionClearMenuRecentProjects_triggered() {
-    for (int i = ui->menuRecentProjects->actions().size() - Const::Window::SeparatorAndMenuClearCount - 1; i >= 0; i--) {
-        ui->menuRecentProjects->removeAction(ui->menuRecentProjects->actions().at(i));
+void MainWindow::onClearMenuRecentProjectsAction() {
+    for (int i = recentProjectsMenu->actions().size() - Const::Window::SeparatorAndMenuClearCount - 1; i >= 0; i--) {
+        recentProjectsMenu->removeAction(recentProjectsMenu->actions().at(i));
     }
 
     updateMenuState();
 }
 
-void MainWindow::on_actionClose_triggered() {
-    on_tabWidgetSource_tabCloseRequested(ui->tabWidgetSource->currentIndex());
+void MainWindow::onCloseAction() {
+    onSourceTabClose(sourceTabWidget->currentIndex());
 }
 
-void MainWindow::on_actionCloseAll_triggered() {
-    while (ui->tabWidgetSource->count()) {
-        on_tabWidgetSource_tabCloseRequested(0);
+void MainWindow::onCloseAllAction() {
+    while (sourceTabWidget->count()) {
+        onSourceTabClose(0);
     }
 }
 
-void MainWindow::on_actionCloseOther_triggered() {
+void MainWindow::onCloseOtherAction() {
     int i = 0;
-    while (ui->tabWidgetSource->count() > 1) {
-        if (i != ui->tabWidgetSource->currentIndex()) {
-            on_tabWidgetSource_tabCloseRequested(i);
+
+    while (sourceTabWidget->count() > 1) {
+        if (i != sourceTabWidget->currentIndex()) {
+            onSourceTabClose(i);
         } else {
             i++;
         }
     }
 }
 
-void MainWindow::on_actionNewFile_triggered() {
+void MainWindow::onNewFileAction() {
     projectTree->onNewFile();
 }
 
-void MainWindow::on_actionNewDirectory_triggered() {
+void MainWindow::onNewDirectoryAction() {
     projectTree->onNewDirectory();
 }
 
-void MainWindow::on_actionOpen_triggered() {
+void MainWindow::onOpenAction() {
     QString dirPath = projectPath.isEmpty() ? Global::workspacePath() : projectPath;
     QString filePath = QFileDialog::getOpenFileName(this, tr("Open File or Project"), dirPath, "All Files(*.*)");
     if (filePath.isEmpty()) return;
@@ -214,100 +285,100 @@ void MainWindow::on_actionOpen_triggered() {
     }
 }
 
-void MainWindow::on_actionSave_triggered() {
+void MainWindow::onSaveAction() {
     editor->saveFile();
 }
 
-void MainWindow::on_actionUndo_triggered() {
+void MainWindow::onUndoAction() {
     editor->undo();
 }
 
-void MainWindow::on_actionRedo_triggered() {
+void MainWindow::onRedoAction() {
     editor->redo();
 }
 
-void MainWindow::on_actionCut_triggered() {
+void MainWindow::onCutAction() {
     editor->cut();
 }
 
-void MainWindow::on_actionCopy_triggered() {
+void MainWindow::onCopyAction() {
     editor->copy();
 }
 
-void MainWindow::on_actionPaste_triggered() {
+void MainWindow::onPasteAction() {
     editor->paste();
 }
 
-void MainWindow::on_actionSelectAll_triggered() {
+void MainWindow::onSelectAllAction() {
     editor->selectAll();
 }
 
-void MainWindow::on_actionToggleSingleLineComment_triggered() {
+void MainWindow::onToggleSingleLineCommentAction() {
     editor->toggleSingleLineComment();
 }
 
-void MainWindow::on_actionToggleBlockComment_triggered() {
+void MainWindow::onToggleBlockCommentAction() {
     editor->toggleBlockComment();
 }
 
-void MainWindow::on_actionAutoCompleter_triggered() {
+void MainWindow::onAutoCompleterAction() {
     editor->openAutoCompleter();
 }
 
-void MainWindow::on_actionJoinLines_triggered() {
+void MainWindow::onJoinLinesAction() {
     editor->joinLines();
 }
 
-void MainWindow::on_actionDuplicateLine_triggered() {
+void MainWindow::onDuplicateLineAction() {
     editor->duplicateLine();
 }
 
-void MainWindow::on_actionCutLine_triggered() {
+void MainWindow::onCutLineAction() {
     editor->cutLine();
 }
 
-void MainWindow::on_actionIncreaseIndent_triggered() {
+void MainWindow::onIncreaseIndentAction() {
     editor->increaseIndent();
 }
 
-void MainWindow::on_actionDecreaseIndent_triggered() {
+void MainWindow::onDecreaseIndentAction() {
     editor->decreaseIndent();
 }
 
-void MainWindow::on_actionGoToLine_triggered() {
+void MainWindow::onGoToLineAction() {
     GoToLine goToLine(this);
     if (goToLine.exec() == QDialog::Rejected) return;
     editor->goToLine(goToLine.line());
 }
 
-void MainWindow::on_actionCleanTrailingWhitespace_triggered() {
+void MainWindow::onCleanTrailingWhitespaceAction() {
     editor->cleanTrailingWhitespace();
 }
 
-void MainWindow::on_actionBuild_triggered() {
+void MainWindow::onBuildAction() {
     prepareBuild();
     cargoManager->build();
 }
 
-void MainWindow::on_actionRun_triggered() {
+void MainWindow::onRunAction() {
     prepareBuild();
     cargoManager->run();
 }
 
-void MainWindow::on_actionStop_triggered() {
+void MainWindow::onStopAction() {
     cargoManager->stop();
 }
 
-void MainWindow::on_actionClean_triggered() {
+void MainWindow::onCleanAction() {
     cargoManager->clean();
 }
 
-void MainWindow::on_actionRustInstaller_triggered() {
+void MainWindow::onRustInstallerAction() {
     RustInstaller installer(this);
     installer.exec();
 }
 
-void MainWindow::on_actionOptions_triggered() {
+void MainWindow::onOptionsAction() {
     Options options(this);
     connect(&options, &Options::openPrefs, [this] {
         addSourceTab(Settings::getPrefsPath());
@@ -315,19 +386,19 @@ void MainWindow::on_actionOptions_triggered() {
     options.exec();
 }
 
-void MainWindow::on_actionDocumentation_triggered() {
+void MainWindow::onDocumentationAction() {
     Utils::runRustupCommand(QStringList() << "doc");
 }
 
-void MainWindow::on_actionStandardLibrary_triggered() {
+void MainWindow::onStandardLibraryAction() {
     Utils::runRustupCommand(QStringList() << "doc" << "--std");
 }
 
-void MainWindow::on_actionTheBook_triggered() {
+void MainWindow::onTheBookAction() {
     Utils::runRustupCommand(QStringList() << "doc" << "--book");
 }
 
-void MainWindow::on_actionAbout_triggered() {
+void MainWindow::onAboutAction() {
     QMessageBox::about(this, tr("About %1").arg(Const::App::Name),
         tr("<h3>%1 %2 %3</h3>\
            IDE for Rust programming language<br><br> \
@@ -338,15 +409,15 @@ void MainWindow::on_actionAbout_triggered() {
                  QT_VERSION_STR, __DATE__, Const::App::Url, Const::App::Copyright));
 }
 
-void MainWindow::on_tabWidgetSource_tabCloseRequested(int index) {
-    QWidget* widget = ui->tabWidgetSource->widget(index);
-    ui->tabWidgetSource->removeTab(index);
+void MainWindow::onSourceTabClose(int index) {
+    QWidget* widget = sourceTabWidget->widget(index);
+    sourceTabWidget->removeTab(index);
     delete widget;
 }
 
-void MainWindow::on_tabWidgetSource_currentChanged(int index) {
+void MainWindow::onSourceTabCurrentChanged(int index) {
     if (index >= 0) {
-        editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(index));
+        editor = static_cast<TextEditor*>(sourceTabWidget->widget(index));
         editor->setAutoCompleter(completer);
         editor->setFocus();
         QString filePath = editor->getFilePath();
@@ -361,23 +432,23 @@ void MainWindow::on_tabWidgetSource_currentChanged(int index) {
     updateMenuState();
 }
 
-void MainWindow::on_toolButtonCargoBuild_clicked() {
-    on_actionBuild_triggered();
+void MainWindow::onCargoBuild() {
+    onBuildAction();
 }
 
-void MainWindow::on_toolButtonCargoRun_clicked() {
-    on_actionRun_triggered();
+void MainWindow::onCargoRun() {
+    onRunAction();
 }
 
-void MainWindow::on_toolButtonCargoClear_clicked() {
-    ui->plainTextEditCargo->clear();
+void MainWindow::onCargoClear() {
+    cargoPlainTextEdit->clear();
 }
 
-void MainWindow::on_toolButtonCargoStop_clicked() {
+void MainWindow::onCargoStop() {
     cargoManager->stop();
 }
 
-void MainWindow::on_toolButtonIssuesClear_clicked() {
+void MainWindow::onIssuesClear() {
     issueListView->setCurrentIndex(QModelIndex());
     issueModel->clear();
 }
@@ -388,7 +459,7 @@ void MainWindow::onProjectCreated(const QString& path) {
 
 void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
     if (start) {
-        ui->plainTextEditCargo->clear();
+        cargoPlainTextEdit->clear();
     }
 
     bool isJson = false;
@@ -419,12 +490,12 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
     if (isJson) return;
 
     if (html) {
-        ui->plainTextEditCargo->appendHtml(message);
+        cargoPlainTextEdit->appendHtml(message);
     } else {
-        ui->plainTextEditCargo->insertPlainText(message);
+        cargoPlainTextEdit->insertPlainText(message);
     }
 
-    ui->plainTextEditCargo->verticalScrollBar()->setValue(ui->plainTextEditCargo->verticalScrollBar()->maximum());
+    cargoPlainTextEdit->verticalScrollBar()->setValue(cargoPlainTextEdit->verticalScrollBar()->maximum());
 }
 
 void MainWindow::onFileCreated(const QString& filePath) {
@@ -433,8 +504,8 @@ void MainWindow::onFileCreated(const QString& filePath) {
 
 void MainWindow::onFileRemoved(const QString& filePath) {
     QVector<int> indices;
-    for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
-        TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
+    for (int i = 0; i < sourceTabWidget->count(); i++) {
+        TextEditor* editor = static_cast<TextEditor*>(sourceTabWidget->widget(i));
         if (editor->getFilePath().contains(filePath)) {
             indices.append(i);
         }
@@ -442,13 +513,13 @@ void MainWindow::onFileRemoved(const QString& filePath) {
 
     // Remove tabs in reverse order
     for (int i = indices.count() - 1; i >= 0; i--) {
-        on_tabWidgetSource_tabCloseRequested(indices.at(i));
+        onSourceTabClose(indices.at(i));
     }
 }
 
 void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
-    for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
-        TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
+    for (int i = 0; i < sourceTabWidget->count(); i++) {
+        TextEditor* editor = static_cast<TextEditor*>(sourceTabWidget->widget(i));
         if (editor->getFilePath().contains(oldPath)) {
             QFileInfo fi(newPath);
             if (fi.isDir()) {
@@ -464,15 +535,15 @@ void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
 int MainWindow::addSourceTab(const QString& filePath) {
     int tabIndex = findSource(filePath);
     if (tabIndex != -1) {
-        ui->tabWidgetSource->setCurrentIndex(tabIndex);
+        sourceTabWidget->setCurrentIndex(tabIndex);
         return tabIndex;
     } else {
         QFileInfo fi(filePath);
         TextEditor* editor = new TextEditor(filePath);
         connect(editor, &TextEditor::documentModified, this, &MainWindow::onDocumentModified);
-        int index = ui->tabWidgetSource->addTab(editor, fi.fileName());
-        ui->tabWidgetSource->setTabToolTip(index, filePath);
-        ui->tabWidgetSource->setCurrentIndex(index);
+        int index = sourceTabWidget->addTab(editor, fi.fileName());
+        sourceTabWidget->setTabToolTip(index, filePath);
+        sourceTabWidget->setCurrentIndex(index);
 
         addRecentFile(filePath);
 
@@ -493,7 +564,7 @@ void MainWindow::addNewFile(const QString& filePath) {
 }
 
 void MainWindow::onDocumentModified(TextEditor* editor) {
-    ui->tabWidgetSource->setTabText(ui->tabWidgetSource->indexOf(editor), editor->getModifiedName());
+    sourceTabWidget->setTabText(sourceTabWidget->indexOf(editor), editor->getModifiedName());
 }
 
 void MainWindow::onIssueCountChanged(int count) {
@@ -501,11 +572,106 @@ void MainWindow::onIssueCountChanged(int count) {
     if (count) {
         title += QString(" (%1)").arg(count);
     }
-    ui->tabWidgetOutput->setTabText(static_cast<int>(OutputPane::Issues), title);
+
+    outputTabWidget->setTabText(static_cast<int>(OutputPane::Issues), title);
+}
+
+void MainWindow::createActions() {
+    QMenu* fileMenu = menuBar()->addMenu(tr("File"));
+    QMenu* newFileMenu = fileMenu->addMenu(tr("New"));
+
+    ActionManager::addAction(Const::Action::NewProject, newFileMenu->addAction(tr("Project..."), this, &MainWindow::onNewProjectAction));
+    ActionManager::addAction(Const::Action::NewRustFile, newFileMenu->addAction(tr("Rust File..."), this, &MainWindow::onNewRustFileAction, QKeySequence("Ctrl+N")));
+    ActionManager::addAction(Const::Action::NewFile, newFileMenu->addAction(tr("File..."), this, &MainWindow::onNewFileAction));
+    ActionManager::addAction(Const::Action::NewDirectory, newFileMenu->addAction(tr("Directory..."), this, &MainWindow::onNewDirectoryAction));
+
+    ActionManager::addAction(Const::Action::Open, fileMenu->addAction(tr("Open..."), this, &MainWindow::onOpenAction, QKeySequence("Ctrl+O")));
+    ActionManager::addAction(Const::Action::CloseProject, fileMenu->addAction(tr("Close Project"), this, &MainWindow::onCloseProjectAction));
+
+    recentFilesMenu = fileMenu->addMenu(tr("Recent Files"));
+    recentFilesMenu->addSeparator();
+    recentFilesMenu->addAction(tr("Clear Menu"), this, &MainWindow::onClearMenuRecentFilesAction);
+
+    recentProjectsMenu = fileMenu->addMenu(tr("Recent Projects"));
+    recentProjectsMenu->addSeparator();
+    recentProjectsMenu->addAction(tr("Clear Menu"), this, &MainWindow::onClearMenuRecentProjectsAction);
+
+    fileMenu->addSeparator();
+
+    ActionManager::addAction(Const::Action::Save, fileMenu->addAction(tr("Save"), this, &MainWindow::onSaveAction, QKeySequence("Ctrl+S")));
+    ActionManager::addAction(Const::Action::SaveAs, fileMenu->addAction(tr("Save As..."), this, &MainWindow::onSaveAsAction));
+    ActionManager::addAction(Const::Action::SaveAll, fileMenu->addAction(tr("Save All"), this, &MainWindow::onSaveAllAction, QKeySequence("Ctrl+Shift+S")));
+
+    fileMenu->addSeparator();
+
+    ActionManager::addAction(Const::Action::Close, fileMenu->addAction(tr("Close"), this, &MainWindow::onCloseAction, QKeySequence("Ctrl+W")));
+    ActionManager::addAction(Const::Action::CloseAll, fileMenu->addAction(tr("Close All"), this, &MainWindow::onCloseAllAction, QKeySequence("Ctrl+Shift+W")));
+    ActionManager::addAction(Const::Action::CloseOther, fileMenu->addAction(tr("Close Other"), this, &MainWindow::onCloseOtherAction));
+
+    fileMenu->addSeparator();
+    fileMenu->addAction(tr("Exit"), this, &MainWindow::close, QKeySequence("Ctrl+Q"));
+
+    editMenu = menuBar()->addMenu(tr("Edit"));
+    editMenu->addAction(tr("Undo"), this, &MainWindow::onUndoAction, QKeySequence("Ctrl+Z"));
+    editMenu->addAction(tr("Redo"), this, &MainWindow::onRedoAction, QKeySequence("Ctrl+Shift+Z"));
+    editMenu->addSeparator();
+    editMenu->addAction(tr("Cut"), this, &MainWindow::onCutAction, QKeySequence("Ctrl+X"));
+    editMenu->addAction(tr("Copy"), this, &MainWindow::onCopyAction, QKeySequence("Ctrl+C"));
+    editMenu->addAction(tr("Paste"), this, &MainWindow::onPasteAction, QKeySequence("Ctrl+V"));
+    editMenu->addSeparator();
+    editMenu->addAction(tr("Select All"), this, &MainWindow::onSelectAllAction, QKeySequence("Ctrl+A"));
+    editMenu->addSeparator();
+
+    QMenu* lineMenu = editMenu->addMenu(tr("Line"));
+    lineMenu->addAction(tr("Duplicate Line"), this, &MainWindow::onDuplicateLineAction, QKeySequence("Ctrl+D"));
+    lineMenu->addAction(tr("Join Lines"), this, &MainWindow::onJoinLinesAction, QKeySequence("Ctrl+J"));
+    lineMenu->addAction(tr("Cut Line"), this, &MainWindow::onCutLineAction, QKeySequence("Ctrl+Del"));
+
+    QMenu* indentMenu = editMenu->addMenu(tr("Indent"));
+    indentMenu->addAction(tr("Increase Indent"), this, &MainWindow::onIncreaseIndentAction, QKeySequence("Tab"));
+    indentMenu->addAction(tr("Decrease Indent"), this, &MainWindow::onDecreaseIndentAction, QKeySequence("Shift+Tab"));
+
+    QMenu* commentMenu = editMenu->addMenu(tr("Comment"));
+    commentMenu->addAction(tr("Toggle Single Line Comment"), this, &MainWindow::onToggleSingleLineCommentAction, QKeySequence("Ctrl+/"));
+    commentMenu->addAction(tr("Toggle Block Comment"), this, &MainWindow::onToggleBlockCommentAction, QKeySequence("Ctrl+Shift+/"));
+
+    editMenu->addAction(tr("Auto-Completer"), this, &MainWindow::onAutoCompleterAction, QKeySequence("Ctrl+Space"));
+    editMenu->addAction(tr("Clean Trailing Whitespace"), this, &MainWindow::onCleanTrailingWhitespaceAction);
+    editMenu->addSeparator();
+    editMenu->addAction(tr("Go to Line..."), this, &MainWindow::onGoToLineAction, QKeySequence("Ctrl+G"));
+
+    buildMenu = menuBar()->addMenu(tr("Build"));
+    ActionManager::addAction(Const::Action::Build, buildMenu->addAction(tr("Build"), this, &MainWindow::onBuildAction, QKeySequence("Ctrl+B")));
+    ActionManager::addAction(Const::Action::Run, buildMenu->addAction(tr("Run"), this, &MainWindow::onRunAction, QKeySequence("Ctrl+R")));
+    ActionManager::addAction(Const::Action::Stop, buildMenu->addAction(tr("Stop"), this, &MainWindow::onStopAction));
+    ActionManager::addAction(Const::Action::Clean, buildMenu->addAction(tr("Clean"), this, &MainWindow::onCleanAction));
+
+    QMenu* toolsMenu = menuBar()->addMenu(tr("Tools"));
+    toolsMenu->addAction(tr("Rust Installer..."), this, &MainWindow::onRustInstallerAction);
+    toolsMenu->addAction(tr("Options..."), this, &MainWindow::onOptionsAction);
+
+    QMenu* viewMenu = menuBar()->addMenu(tr("View"));
+
+    QAction* showSidebarAction = viewMenu->addAction(tr("Show Sidebar"), sideTabWidget, &QTableWidget::setVisible);
+    showSidebarAction->setCheckable(true);
+    showSidebarAction->setChecked(true);
+    ActionManager::addAction(Const::Action::ShowSidebar, showSidebarAction);
+
+    QAction* showOutputAction = viewMenu->addAction(tr("Show Output"), outputTabWidget, &QTableWidget::setVisible);
+    showOutputAction->setCheckable(true);
+    showOutputAction->setChecked(true);
+    ActionManager::addAction(Const::Action::ShowOutput, showOutputAction);
+
+    QMenu* helpMenu = menuBar()->addMenu(tr("Help"));
+    helpMenu->addAction(tr("Documentation"), this, &MainWindow::onDocumentationAction);
+    helpMenu->addAction(tr("Standard Library"), this, &MainWindow::onStandardLibraryAction);
+    helpMenu->addAction(tr("The Book"), this, &MainWindow::onTheBookAction);
+    helpMenu->addSeparator();
+    helpMenu->addAction(tr("About..."), this, &MainWindow::onAboutAction);
 }
 
 void MainWindow::addRecentFile(const QString& filePath) {
-    addRecentFileOrProject(ui->menuRecentFiles, filePath, [=] {
+    addRecentFileOrProject(recentFilesMenu, filePath, [=] {
         addSourceTab(filePath);
     });
 }
@@ -513,7 +679,7 @@ void MainWindow::addRecentFile(const QString& filePath) {
 void MainWindow::addRecentProject(const QString& projectPath) {
     if (!QFileInfo::exists(projectPath + "/Cargo.toml")) return;
 
-    addRecentFileOrProject(ui->menuRecentProjects, projectPath, [=] {
+    addRecentFileOrProject(recentProjectsMenu, projectPath, [=] {
         openProject(projectPath);
     });
 }
@@ -606,10 +772,12 @@ void MainWindow::loadSettings() {
     // Splitter sizes
     QList<int> sizes;
     QJsonArray sizesArray = Settings::value("gui.mainWindow.splitters.main").toArray();
+
     for (const auto& size : sizesArray) {
         sizes.append(size.toInt());
     }
-    ui->splitterMain->setSizes(sizes);
+
+    mainSplitter->setSizes(sizes);
 
     sizesArray = Settings::value("gui.mainWindow.splitters.side").toArray();
     sizes.clear();
@@ -617,23 +785,25 @@ void MainWindow::loadSettings() {
     for (const auto& size : qAsConst(sizesArray)) {
         sizes.append(size.toInt());
     }
-    ui->splitterSide->setSizes(sizes);
+
+    sideSplitter->setSizes(sizes);
 
     // Sidebar
-    ui->actionShowSidebar->setChecked(Settings::value("gui.mainWindow.sidebar.visible").toBool());
-    ui->tabWidgetSide->setCurrentIndex(Settings::value("gui.mainWindow.sidebar.tab").toInt());
+    ActionManager::action(Const::Action::ShowSidebar)->setChecked(Settings::value("gui.mainWindow.sidebar.visible").toBool());
+    sideTabWidget->setCurrentIndex(Settings::value("gui.mainWindow.sidebar.tab").toInt());
 
     // Output pane
-    ui->actionShowOutput->setChecked(Settings::value("gui.mainWindow.output.visible").toBool());
-    ui->tabWidgetOutput->setCurrentIndex(Settings::value("gui.mainWindow.output.tab").toInt());
+    ActionManager::action(Const::Action::ShowOutput)->setChecked(Settings::value("gui.mainWindow.output.visible").toBool());
+    outputTabWidget->setCurrentIndex(Settings::value("gui.mainWindow.output.tab").toInt());
 
     const QString& family = Settings::value("gui.output.cargo.font.family").toString();
     int size = Settings::value("gui.output.cargo.font.size").toInt();
     QFont font(family, size);
-    ui->plainTextEditCargo->document()->setDefaultFont(font);
+    cargoPlainTextEdit->document()->setDefaultFont(font);
 
     // Recent projects
     QJsonArray recentProjects = Settings::value("gui.mainWindow.recent.projects").toArray();
+
     for (int i = recentProjects.size() - 1; i >= 0; --i) {
         QString projectPath = recentProjects.at(i).toString();
         addRecentProject(projectPath);
@@ -641,6 +811,7 @@ void MainWindow::loadSettings() {
 
     // Recent files
     QJsonArray recentFiles = Settings::value("gui.mainWindow.recent.files").toArray();
+
     for (int i = recentFiles.size() - 1; i >= 0; --i) {
         QString filePath = recentFiles.at(i).toString();
         addRecentFile(filePath);
@@ -648,6 +819,7 @@ void MainWindow::loadSettings() {
 
     // Last project
     QString lastProject = Settings::value("gui.mainWindow.session.project").toString();
+
     if (QFileInfo::exists(lastProject + "/Cargo.toml")) {
         openProject(lastProject);
     }
@@ -665,10 +837,13 @@ void MainWindow::saveSettings() {
     // Window state
     Settings::setValue("window.state", static_cast<int>(windowState()));
 
+    QAction* showSidebarAction = ActionManager::action(Const::Action::ShowSidebar);
+    QAction* showOutputAction = ActionManager::action(Const::Action::ShowOutput);
+
     // Splitter sizes
-    if (ui->actionShowSidebar->isChecked()) {
+    if (showSidebarAction->isChecked()) {
         QJsonArray sizesArray;
-        const auto sizes = ui->splitterMain->sizes();
+        const auto sizes = mainSplitter->sizes();
 
         for (int size : sizes) {
             sizesArray.append(QJsonValue(size));
@@ -676,9 +851,9 @@ void MainWindow::saveSettings() {
         Settings::setValue("gui.mainWindow.splitters.main", sizesArray);
     }
 
-    if (ui->actionShowOutput->isChecked()) {
+    if (showOutputAction->isChecked()) {
         QJsonArray sizesArray;
-        const auto sizes = ui->splitterSide->sizes();
+        const auto sizes = sideSplitter->sizes();
 
         for (int size : sizes) {
             sizesArray.append(QJsonValue(size));
@@ -687,25 +862,29 @@ void MainWindow::saveSettings() {
     }
 
     // Sidebar
-    Settings::setValue("gui.mainWindow.sidebar.visible", ui->actionShowSidebar->isChecked());
-    Settings::setValue("gui.mainWindow.sidebar.tab", ui->tabWidgetSide->currentIndex());
+    Settings::setValue("gui.mainWindow.sidebar.visible", showSidebarAction->isChecked());
+    Settings::setValue("gui.mainWindow.sidebar.tab", sideTabWidget->currentIndex());
 
     // Output pane
-    Settings::setValue("gui.mainWindow.output.visible", ui->actionShowOutput->isChecked());
-    Settings::setValue("gui.mainWindow.output.tab", ui->tabWidgetOutput->currentIndex());
+    Settings::setValue("gui.mainWindow.output.visible", showOutputAction->isChecked());
+    Settings::setValue("gui.mainWindow.output.tab", outputTabWidget->currentIndex());
 
     // Recent projects
     QJsonArray recentProjects;
-    for (int i = 0; i < ui->menuRecentProjects->actions().size() - Const::Window::SeparatorAndMenuClearCount; ++i) {
-        recentProjects.append(ui->menuRecentProjects->actions().at(i)->text());
+
+    for (int i = 0; i < recentProjectsMenu->actions().size() - Const::Window::SeparatorAndMenuClearCount; ++i) {
+        recentProjects.append(recentProjectsMenu->actions().at(i)->text());
     }
+
     Settings::setValue("gui.mainWindow.recent.projects", recentProjects);
 
     // Recent files
     QJsonArray recentFiles;
-    for (int i = 0; i < ui->menuRecentFiles->actions().size() - Const::Window::SeparatorAndMenuClearCount; ++i) {
-        recentFiles.append(ui->menuRecentFiles->actions().at(i)->text());
+
+    for (int i = 0; i < recentFilesMenu->actions().size() - Const::Window::SeparatorAndMenuClearCount; ++i) {
+        recentFiles.append(recentFilesMenu->actions().at(i)->text());
     }
+
     Settings::setValue("gui.mainWindow.recent.files", recentFiles);
 
     // Last project
@@ -745,8 +924,8 @@ void MainWindow::saveSession() {
     }
 
     QJsonArray openFiles;
-    for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
-        TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
+    for (int i = 0; i < sourceTabWidget->count(); i++) {
+        TextEditor* editor = static_cast<TextEditor*>(sourceTabWidget->widget(i));
 
         QJsonObject obj;
         obj["path"] = editor->getFilePath();
@@ -762,7 +941,7 @@ void MainWindow::saveSession() {
 
     QJsonObject obj;
     obj["openFiles"] = openFiles;
-    obj["selectedTab"] = ui->tabWidgetSource->currentIndex();
+    obj["selectedTab"] = sourceTabWidget->currentIndex();
 
     QJsonDocument doc(obj);
     file.write(doc.toJson());
@@ -795,13 +974,13 @@ void MainWindow::loadSession() {
         if (QFileInfo::exists(filePath)) {
             int index = addSourceTab(filePath);
             QJsonArray cursorPosArray = obj["cursor"].toArray();
-            TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(index));
+            TextEditor* editor = static_cast<TextEditor*>(sourceTabWidget->widget(index));
             editor->setCursorPosition(QPoint(cursorPosArray.at(0).toInt(), cursorPosArray.at(1).toInt()));
         }
     }
 
     int index = findSource(selectedFilePath);
-    ui->tabWidgetSource->setCurrentIndex(index);
+    sourceTabWidget->setCurrentIndex(index);
 }
 
 void MainWindow::openProject(const QString& path, bool isNew) {
@@ -828,7 +1007,7 @@ void MainWindow::openProject(const QString& path, bool isNew) {
         loadSession();
     }
 
-    if (!ui->tabWidgetSource->count()) {
+    if (!sourceTabWidget->count()) {
         changeWindowTitle();
     }
 
@@ -844,14 +1023,14 @@ void MainWindow::closeProject() {
     saveSession();
     saveProjectProperties();
 
-    on_actionCloseAll_triggered();
+    onCloseAllAction();
 
     projectProperties->reset();
     projectTree->setRootPath(QString());
     projectPath = QString();
     changeWindowTitle();
     updateMenuState();
-    ui->plainTextEditCargo->clear();
+    cargoPlainTextEdit->clear();
 }
 
 void MainWindow::changeWindowTitle(const QString& filePath) {
@@ -871,8 +1050,8 @@ void MainWindow::changeWindowTitle(const QString& filePath) {
 }
 
 int MainWindow::findSource(const QString& filePath) {
-    for (int i = 0; i < ui->tabWidgetSource->count(); i++) {
-        TextEditor* editor = static_cast<TextEditor*>(ui->tabWidgetSource->widget(i));
+    for (int i = 0; i < sourceTabWidget->count(); i++) {
+        TextEditor* editor = static_cast<TextEditor*>(sourceTabWidget->widget(i));
         if (editor->getFilePath() == filePath) {
             return i;
         }
@@ -882,28 +1061,28 @@ int MainWindow::findSource(const QString& filePath) {
 }
 
 void MainWindow::updateMenuState() {
-    ui->menuEdit->menuAction()->setVisible(!projectPath.isNull());
-    ui->menuBuild->menuAction()->setVisible(!projectPath.isNull());
+    editMenu->menuAction()->setVisible(!projectPath.isNull());
+    buildMenu->menuAction()->setVisible(!projectPath.isNull());
 
-    int index = ui->tabWidgetSource->currentIndex();
+    int index = sourceTabWidget->currentIndex();
 
-    ui->actionSave->setEnabled(index >= 0);
-    ui->actionSaveAs->setEnabled(index >= 0);
-    ui->actionSaveAll->setEnabled(index >= 0);
+    ActionManager::action(Const::Action::Save)->setEnabled(index >= 0);
+    ActionManager::action(Const::Action::SaveAs)->setEnabled(index >= 0);
+    ActionManager::action(Const::Action::SaveAll)->setEnabled(index >= 0);
 
-    ui->actionClose->setEnabled(index >= 0);
-    ui->actionCloseOther->setEnabled(index >= 0);
-    ui->actionCloseAll->setEnabled(index >= 0);
+    ActionManager::action(Const::Action::Close)->setEnabled(index >= 0);
+    ActionManager::action(Const::Action::CloseAll)->setEnabled(index >= 0);
+    ActionManager::action(Const::Action::CloseOther)->setEnabled(index >= 0);
 
-    ui->menuRecentProjects->menuAction()->setEnabled(ui->menuRecentProjects->actions().size() > Const::Window::SeparatorAndMenuClearCount);
-    ui->menuRecentFiles->menuAction()->setEnabled(ui->menuRecentFiles->actions().size() > Const::Window::SeparatorAndMenuClearCount);
+    recentProjectsMenu->menuAction()->setEnabled(recentProjectsMenu->actions().size() > Const::Window::SeparatorAndMenuClearCount);
+    recentFilesMenu->menuAction()->setEnabled(recentFilesMenu->actions().size() > Const::Window::SeparatorAndMenuClearCount);
 
-    ui->menuEdit->menuAction()->setEnabled(index >= 0);
+    editMenu->menuAction()->setEnabled(index >= 0);
 }
 
 void MainWindow::prepareBuild() {
-    on_actionSaveAll_triggered();
+    onSaveAllAction();
     int index = static_cast<int>(OutputPane::Cargo);
-    ui->tabWidgetOutput->setCurrentIndex(index);
+    outputTabWidget->setCurrentIndex(index);
     issueModel->clear();
 }

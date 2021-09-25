@@ -2,6 +2,9 @@
 #include <QMainWindow>
 #include <functional>
 
+class QSplitter;
+class QPlainTextEdit;
+
 class CargoManager;
 class ApplicationManager;
 class ProjectTree;
@@ -11,90 +14,84 @@ class AutoCompleter;
 class IssueModel;
 class IssueListView;
 
-namespace Ui {
-    class MainWindow;
-}
-
 class MainWindow : public QMainWindow {
     Q_OBJECT
-
 public:
     explicit MainWindow();
-    ~MainWindow();
 
 protected:
     void closeEvent(QCloseEvent* event) override;
 
 private slots:
     // File
-    void on_actionNewProject_triggered();
-    void on_actionNewRustFile_triggered();
-    void on_actionNewFile_triggered();
-    void on_actionNewDirectory_triggered();
+    void onNewProjectAction();
+    void onNewRustFileAction();
+    void onNewFileAction();
+    void onNewDirectoryAction();
 
-    void on_actionOpen_triggered();
-    void on_actionCloseProject_triggered();
-    void on_actionClearMenuRecentFiles_triggered();
-    void on_actionClearMenuRecentProjects_triggered();
+    void onOpenAction();
+    void onCloseProjectAction();
+    void onClearMenuRecentFilesAction();
+    void onClearMenuRecentProjectsAction();
 
-    void on_actionSave_triggered();
-    void on_actionSaveAs_triggered();
-    void on_actionSaveAll_triggered();
+    void onSaveAction();
+    void onSaveAsAction();
+    void onSaveAllAction();
 
-    void on_actionClose_triggered();
-    void on_actionCloseAll_triggered();
-    void on_actionCloseOther_triggered();
+    void onCloseAction();
+    void onCloseAllAction();
+    void onCloseOtherAction();
 
     // Edit
-    void on_actionUndo_triggered();
-    void on_actionRedo_triggered();
+    void onUndoAction();
+    void onRedoAction();
 
-    void on_actionCut_triggered();
-    void on_actionCopy_triggered();
-    void on_actionPaste_triggered();
+    void onCutAction();
+    void onCopyAction();
+    void onPasteAction();
 
-    void on_actionSelectAll_triggered();
+    void onSelectAllAction();
 
-    void on_actionJoinLines_triggered();
-    void on_actionDuplicateLine_triggered();
-    void on_actionCutLine_triggered();
+    void onJoinLinesAction();
+    void onDuplicateLineAction();
+    void onCutLineAction();
 
-    void on_actionIncreaseIndent_triggered();
-    void on_actionDecreaseIndent_triggered();
+    void onIncreaseIndentAction();
+    void onDecreaseIndentAction();
 
-    void on_actionToggleSingleLineComment_triggered();
-    void on_actionToggleBlockComment_triggered();
+    void onToggleSingleLineCommentAction();
+    void onToggleBlockCommentAction();
 
-    void on_actionAutoCompleter_triggered();
-    void on_actionGoToLine_triggered();
-    void on_actionCleanTrailingWhitespace_triggered();
+    void onAutoCompleterAction();
+    void onGoToLineAction();
+    void onCleanTrailingWhitespaceAction();
 
     // Build
-    void on_actionBuild_triggered();
-    void on_actionRun_triggered();
-    void on_actionStop_triggered();
-    void on_actionClean_triggered();
+    void onBuildAction();
+    void onRunAction();
+    void onStopAction();
+    void onCleanAction();
 
     // Tools
-    void on_actionRustInstaller_triggered();
-    void on_actionOptions_triggered();
+    void onRustInstallerAction();
+    void onOptionsAction();
 
     // Help
-    void on_actionDocumentation_triggered();
-    void on_actionStandardLibrary_triggered();
-    void on_actionTheBook_triggered();
-    void on_actionAbout_triggered();
+    void onDocumentationAction();
+    void onStandardLibraryAction();
+    void onTheBookAction();
+    void onAboutAction();
 
     // TabWidet
-    void on_tabWidgetSource_tabCloseRequested(int index);
-    void on_tabWidgetSource_currentChanged(int index);
+    void onSourceTabClose(int index);
+    void onSourceTabCurrentChanged(int index);
 
-    void on_toolButtonCargoBuild_clicked();
-    void on_toolButtonCargoRun_clicked();
-    void on_toolButtonCargoClear_clicked();
-    void on_toolButtonCargoStop_clicked();
+    void onCargoBuild();
+    void onCargoRun();
+    void onCargoClear();
+    void onCargoStop();
 
-    void on_toolButtonIssuesClear_clicked();
+    void onIssuesClear();
 
     // CargoManager
     void onProjectCreated(const QString& path);
@@ -121,6 +118,8 @@ private:
         Search
     };
 
+    void createActions();
+
     void addRecentFile(const QString& filePath);
     void addRecentProject(const QString& projectPath);
     void addRecentFileOrProject(QMenu* menu, const QString& filePath, const std::function<void()>& callback);
@@ -142,7 +141,21 @@ private:
     void updateMenuState();
     void prepareBuild();
 
-    Ui::MainWindow* ui = nullptr;
+    QMenu* recentFilesMenu = nullptr;
+    QMenu* recentProjectsMenu = nullptr;
+
+    QMenu* editMenu = nullptr;
+    QMenu* buildMenu = nullptr;
+
+    QSplitter* mainSplitter = nullptr;
+    QSplitter* sideSplitter = nullptr;
+
+    QTabWidget* sideTabWidget = nullptr;
+    QTabWidget* sourceTabWidget = nullptr;
+    QTabWidget* outputTabWidget = nullptr;
+
+    QPlainTextEdit* cargoPlainTextEdit = nullptr;
+
     CargoManager* cargoManager = nullptr;
     ApplicationManager* applicationManager = nullptr;
     ProjectTree* projectTree = nullptr;

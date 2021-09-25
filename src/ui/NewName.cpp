@@ -3,7 +3,6 @@
 
 NewName::NewName(const QString& title, QWidget* parent) : QDialog(parent) {
     setWindowTitle(title);
-    resize(420, height());
 
     lineEdit = new QLineEdit;
     lineEdit->setFocus();
@@ -23,6 +22,9 @@ NewName::NewName(const QString& title, QWidget* parent) : QDialog(parent) {
 
     verticalLayout->addWidget(buttonBox);
     setLayout(verticalLayout);
+
+    adjustSize();
+    resize(420, height());
 
     connect(lineEdit, &QLineEdit::textChanged, this, &NewName::onTextChanged);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
