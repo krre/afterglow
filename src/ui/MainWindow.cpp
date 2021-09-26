@@ -981,6 +981,7 @@ void MainWindow::loadSession() {
 
     int index = findSource(selectedFilePath);
     sourceTabWidget->setCurrentIndex(index);
+    onSourceTabCurrentChanged(index);
 }
 
 void MainWindow::openProject(const QString& path, bool isNew) {
