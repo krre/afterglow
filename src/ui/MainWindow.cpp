@@ -539,7 +539,7 @@ int MainWindow::addSourceTab(const QString& filePath) {
         return tabIndex;
     } else {
         QFileInfo fi(filePath);
-        TextEditor* editor = new TextEditor(filePath);
+        editor = new TextEditor(filePath);
         connect(editor, &TextEditor::documentModified, this, &MainWindow::onDocumentModified);
         int index = sourceTabWidget->addTab(editor, fi.fileName());
         sourceTabWidget->setTabToolTip(index, filePath);
