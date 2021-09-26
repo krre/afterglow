@@ -1,34 +1,33 @@
 #pragma once
-#include <QWidget>
 #include "process/CargoManager.h"
+#include <QWidget>
 #include <QJsonObject>
 
-namespace Ui {
-    class ProjectProperties;
-}
+class QComboBox;
+class QLineEdit;
 
 class ProjectProperties : public QWidget {
     Q_OBJECT
-
 public:
     explicit ProjectProperties(QWidget* parent = nullptr);
-    ~ProjectProperties();
 
-    CargoManager::BuildTarget getBuildTarget() const;
+    CargoManager::BuildTarget buildTarget() const;
     void setBuildTarget(CargoManager::BuildTarget buildTarget);
 
-    const QString getRunTarget() const;
+    const QString runTarget() const;
     void setProject(const QString& projectPath);
 
-    QString getArguments() const;
-    QStringList getArgumentsList() const;
+    QString arguments() const;
+    QStringList argumentsList() const;
     void setArguments(const QString& arguments);
 
     void reset();
     void updateMetadata();
 
 private:
-    Ui::ProjectProperties* ui = nullptr;
+    QComboBox* targetComboBox = nullptr;
+    QComboBox* runComboBox = nullptr;
+    QLineEdit* argumentsLineEdit = nullptr;
     QString projectPath;
     QJsonObject metadata;
 };

@@ -100,7 +100,7 @@ void CargoManager::addBuildRunArguments(QStringList& arguments) {
         arguments << "json";
     }
 
-    if (projectProperties->getBuildTarget() == BuildTarget::Release) {
+    if (projectProperties->buildTarget() == BuildTarget::Release) {
         arguments << "--release";
     }
 }

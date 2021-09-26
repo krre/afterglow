@@ -715,8 +715,8 @@ void MainWindow::saveProjectProperties() {
     }
 
     QJsonObject obj;
-    obj["target"] = static_cast<int>(projectProperties->getBuildTarget());
-    obj["arguments"] = projectProperties->getArguments();
+    obj["target"] = static_cast<int>(projectProperties->buildTarget());
+    obj["arguments"] = projectProperties->arguments();
 
     QJsonDocument doc(obj);
     file.write(doc.toJson());
