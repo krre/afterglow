@@ -155,9 +155,10 @@ void RustInstaller::on_pushButtonUninstallRustup_clicked() {
 
 void RustInstaller::on_pushButtonInstallToolchain_clicked() {
     InstallToolchain installToolchain(this);
-    installToolchain.exec();
+    if (installToolchain.exec() == QDialog::Rejected) return;;
 
-    QString toolchain = installToolchain.getToolchain();
+    QString toolchain = installToolchain.toolchain();
+
     if (!toolchain.isEmpty()) {
         runCommand("rustup", QStringList() << "toolchain" << "install" << toolchain, [this] {
             loadToolchainList();

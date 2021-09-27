@@ -1,60 +1,112 @@
 #include "InstallToolchain.h"
-#include "ui_InstallToolchain.h"
-#include <QtCore>
+#include <QtWidgets>
 
-InstallToolchain::InstallToolchain(QWidget* parent) :
-        QDialog(parent),
-        ui(new Ui::InstallToolchain) {
-    ui->setupUi(this);
-    setFixedHeight(height());
+InstallToolchain::InstallToolchain(QWidget* parent) : QDialog(parent) {
+    setWindowTitle(tr("Install Toolchain"));
+
+    auto gridLayout = new QGridLayout;
+    gridLayout->addWidget(new QLabel(tr("Channel:")), 0, 0, 1, 1);
+    gridLayout->addWidget(new QLabel(tr("Date:")), 1, 0, 1, 1);
+
+    dateLineEdit = new QLineEdit;
+    gridLayout->addWidget(dateLineEdit, 1, 1, 1, 1);
+
+    auto channelHorizontalLayout = new QHBoxLayout;
+    channelHorizontalLayout->setContentsMargins(-1, 0, -1, -1);
+
+    channelComboBox = new QComboBox;
+    channelComboBox->addItem(QString("stable"));
+    channelComboBox->addItem(QString("beta"));
+    channelComboBox->addItem(QString("nightly"));
+    channelComboBox->addItem(QString("version"));
+
+    channelHorizontalLayout->addWidget(channelComboBox);
+
+    channelLineEdit = new QLineEdit;
+    channelLineEdit->setEnabled(false);
+
+    channelHorizontalLayout->addWidget(channelLineEdit);
+    gridLayout->addLayout(channelHorizontalLayout, 0, 1, 1, 1);
+    gridLayout->addWidget(new QLabel(tr("Host:")), 2, 0, 1, 1);
+
+    auto hostHorizontalLayout = new QHBoxLayout();
+    hostHorizontalLayout->setContentsMargins(-1, 0, -1, -1);
+    hostComboBox = new QComboBox;
+
+    hostHorizontalLayout->addWidget(hostComboBox);
+
+    hostLineEdit = new QLineEdit;
+    hostLineEdit->setEnabled(false);
+
+    hostHorizontalLayout->addWidget(hostLineEdit);
+    gridLayout->addLayout(hostHorizontalLayout, 2, 1, 1, 1);
+
+    auto verticalLayout = new QVBoxLayout;
+    verticalLayout->addLayout(gridLayout);
+    verticalLayout->addStretch();
+
+    auto buttonBox = new QDialogButtonBox;
+    buttonBox->setOrientation(Qt::Horizontal);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
+    verticalLayout->addWidget(buttonBox);
+    setLayout(verticalLayout);
+
+    adjustSize();
+    resize(530, height());
+
+    connect(channelComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, qOverload<int>(&InstallToolchain::onChannelCurrentIndexChanged));
+    connect(hostComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, qOverload<int>(&InstallToolchain::onHostCurrentIndexChanged));
+
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     loadHosts();
 }
 
-InstallToolchain::~InstallToolchain() {
-    delete ui;
+QString InstallToolchain::toolchain() const {
+    QString channel = channelComboBox->currentText();
+
+    if (channelComboBox->currentIndex() == channelComboBox->count() - 1) {
+        channel = channelLineEdit->text();
+    }
+
+    QString date = dateLineEdit->text();
+    QString host = hostComboBox->currentText();
+
+    if (hostComboBox->currentIndex() == hostComboBox->count() - 1) {
+        host = hostLineEdit->text();
+    }
+
+    return channel + "-" + (!date.isEmpty() ? QString("%1-").arg(date) : "") + host;
 }
 
-void InstallToolchain::on_comboBoxChannel_currentIndexChanged(int index) {
-    ui->lineEditChannel->setEnabled(index == ui->comboBoxChannel->count() - 1);
-    if (ui->lineEditChannel->isEnabled()) {
-        ui->lineEditChannel->setFocus();
+void InstallToolchain::onChannelCurrentIndexChanged(int index) {
+    channelLineEdit->setEnabled(index == channelComboBox->count() - 1);
+
+    if (channelLineEdit->isEnabled()) {
+        channelLineEdit->setFocus();
     }
 }
 
-void InstallToolchain::on_comboBoxHost_currentIndexChanged(int index) {
-    ui->lineEditHost->setEnabled(index == ui->comboBoxHost->count() - 1);
-    if (ui->lineEditHost->isEnabled()) {
-        ui->lineEditHost->setFocus();
+void InstallToolchain::onHostCurrentIndexChanged(int index) {
+    hostLineEdit->setEnabled(index == hostComboBox->count() - 1);
+
+    if (hostLineEdit->isEnabled()) {
+        hostLineEdit->setFocus();
     }
-}
-
-void InstallToolchain::on_buttonBox_accepted() {
-    QString channel = ui->comboBoxChannel->currentText();
-    if (ui->comboBoxChannel->currentIndex() == ui->comboBoxChannel->count() - 1) {
-        channel = ui->lineEditChannel->text();
-    }
-
-    QString date = ui->lineEditDate->text();
-
-    QString host = ui->comboBoxHost->currentText();
-    if (ui->comboBoxHost->currentIndex() == ui->comboBoxHost->count() - 1) {
-        host = ui->lineEditHost->text();
-    }
-
-    toolchain = channel + "-" + (!date.isEmpty() ? QString("%1-").arg(date) : "") + host;
 }
 
 void InstallToolchain::loadHosts() {
 #if defined(Q_OS_LINUX)
-    ui->comboBoxHost->addItem("x86_64-unknown-linux-gnu");
-    ui->comboBoxHost->addItem("i686-unknown-linux-gnu");
+    hostComboBox->addItem("x86_64-unknown-linux-gnu");
+    hostComboBox->addItem("i686-unknown-linux-gnu");
 #elif defined(Q_OS_WIN)
-    ui->comboBoxHost->addItem("x86_64-pc-windows-gnu");
-    ui->comboBoxHost->addItem("x86_64-pc-windows-msvc");
-    ui->comboBoxHost->addItem("i686-pc-windows-gnu");
-    ui->comboBoxHost->addItem("i686-pc-windows-msvc");
+    hostComboBox->addItem("x86_64-pc-windows-gnu");
+    hostComboBox->addItem("x86_64-pc-windows-msvc");
+    hostComboBox->addItem("i686-pc-windows-gnu");
+    hostComboBox->addItem("i686-pc-windows-msvc");
 #endif
-    ui->comboBoxHost->addItem(tr("Custom"));
-    on_comboBoxHost_currentIndexChanged(0);
+    hostComboBox->addItem(tr("Custom"));
+    onHostCurrentIndexChanged(0);
 }

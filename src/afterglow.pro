@@ -76,8 +76,7 @@ HEADERS += \
     ui/IssueListView.h
 
 FORMS += \
-    ui/RustInstaller.ui \
-    ui/InstallToolchain.ui
+    ui/RustInstaller.ui
 
 DISTFILES += \
     ../README.md \
