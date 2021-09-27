@@ -1,27 +1,24 @@
 #pragma once
 #include <QDialog>
 
-namespace Ui {
-    class SetOverride;
-}
+class QLineEdit;
+class QComboBox;
+class QDialogButtonBox;
 
 class SetOverride : public QDialog {
     Q_OBJECT
-
 public:
     explicit SetOverride(QWidget* parent = nullptr);
-    ~SetOverride();
 
-    const QString& getDirectory() const { return directory; }
-    const QString& getToolchain() const { return toolchain; }
+    QString directory() const;
+    QString toolchain() const;
 
 private slots:
-    void on_pushButtonBrowse_clicked();
-    void on_buttonBox_accepted();
-    void on_lineEdit_textChanged(const QString& text);
+    void onBrowseButtonClicked();
+    void onTextChanged(const QString& text);
 
 private:
-    Ui::SetOverride* ui = nullptr;
-    QString directory;
-    QString toolchain;
+    QLineEdit* lineEdit = nullptr;
+    QComboBox* comboBox = nullptr;
+    QDialogButtonBox* buttonBox = nullptr;
 };

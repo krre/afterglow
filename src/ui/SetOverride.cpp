@@ -1,37 +1,69 @@
 #include "SetOverride.h"
-#include "ui_SetOverride.h"
 #include "core/Utils.h"
 #include <QtWidgets>
 
-SetOverride::SetOverride(QWidget* parent) :
-        QDialog(parent),
-        ui(new Ui::SetOverride) {
-    ui->setupUi(this);
-    ui->lineEdit->setFocus();
-    ui->buttonBox->buttons().at(0)->setEnabled(false);
+SetOverride::SetOverride(QWidget* parent) : QDialog(parent) {
+    setWindowTitle(tr("Set Override"));
+
+    auto verticalLayout = new QVBoxLayout;
+    verticalLayout->addWidget(new QLabel(tr("Directory:")));
+
+    auto horizontalLayout = new QHBoxLayout;
+    lineEdit = new QLineEdit;
+    horizontalLayout->addWidget(lineEdit);
+
+    auto browsePushButton = new QPushButton(tr("Browse..."));
+    horizontalLayout->addWidget(browsePushButton);
+
+    verticalLayout->addLayout(horizontalLayout);
+
+    verticalLayout->addWidget(new QLabel(tr("Toolchain:")));
+
+    comboBox = new QComboBox();
+    verticalLayout->addWidget(comboBox, 0, Qt::AlignLeft);
+    verticalLayout->addStretch();
+
+    buttonBox = new QDialogButtonBox;
+    buttonBox->setOrientation(Qt::Horizontal);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+    verticalLayout->addWidget(buttonBox);
+
+    setLayout(verticalLayout);
+    adjustSize();
+    resize(500, height());
+
+    connect(browsePushButton, &QPushButton::clicked, this, &SetOverride::onBrowseButtonClicked);
+    connect(lineEdit, &QLineEdit::textChanged, this, &SetOverride::onTextChanged);
+
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
+    lineEdit->setFocus();
+    buttonBox->buttons().at(0)->setEnabled(false);
 
     QStringList list = Utils::listFromConsole("rustup toolchain list");
+
     for (const QString& toolchain : list) {
-        ui->comboBox->addItem(toolchain);
+        comboBox->addItem(toolchain);
     }
 }
 
-SetOverride::~SetOverride() {
-    delete ui;
+QString SetOverride::directory() const {
+    return lineEdit->text();
 }
 
-void SetOverride::on_pushButtonBrowse_clicked() {
+QString SetOverride::toolchain() const {
+    return comboBox->currentText();
+}
+
+void SetOverride::onBrowseButtonClicked() {
     QString dirPath = QFileDialog::getExistingDirectory(this);
+
     if (!dirPath.isEmpty()) {
-        ui->lineEdit->setText(dirPath);
+        lineEdit->setText(dirPath);
     }
 }
 
-void SetOverride::on_buttonBox_accepted() {
-    directory = ui->lineEdit->text();
-    toolchain = ui->comboBox->currentText();
-}
-
-void SetOverride::on_lineEdit_textChanged(const QString& text) {
-    ui->buttonBox->buttons().at(0)->setEnabled(!text.isEmpty());
+void SetOverride::onTextChanged(const QString& text) {
+    buttonBox->buttons().at(0)->setEnabled(!text.isEmpty());
 }

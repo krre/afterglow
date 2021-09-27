@@ -77,8 +77,7 @@ HEADERS += \
 
 FORMS += \
     ui/RustInstaller.ui \
-    ui/InstallToolchain.ui \
-    ui/SetOverride.ui
+    ui/InstallToolchain.ui
 
 DISTFILES += \
     ../README.md \

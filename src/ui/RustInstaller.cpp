@@ -246,10 +246,10 @@ void RustInstaller::on_pushButtonRemoveComponent_clicked() {
 
 void RustInstaller::on_pushButtonSetOverride_clicked() {
     SetOverride setOverride(this);
-    setOverride.exec();
+    if (setOverride.exec() == QDialog::Rejected) return;
 
-    QString directory = setOverride.getDirectory();
-    QString toolchain = setOverride.getToolchain();
+    QString directory = setOverride.directory();
+    QString toolchain = setOverride.toolchain();
 
     if (!directory.isEmpty()) {
         process->setWorkingDirectory(directory);
