@@ -195,7 +195,7 @@ void RustInstaller::on_pushButtonAddTarget_clicked() {
     AddComponentOrTarget addTarget(tr("Add Target"), "rustup target list", this);
     addTarget.exec();
 
-    QStringList targets = addTarget.getList();
+    QStringList targets = addTarget.list();
     if (targets.count()) {
         runCommand("rustup", QStringList() << "target" << "add" << targets, [this] {
             loadTargetList();
@@ -221,7 +221,7 @@ void RustInstaller::on_pushButtonAddComponent_clicked() {
     AddComponentOrTarget addComponent(tr("Add Component"), "rustup component list", this);
     addComponent.exec();
 
-    QStringList components = addComponent.getList();
+    QStringList components = addComponent.list();
 
     if (components.count()) {
         cleanupTarget(components);

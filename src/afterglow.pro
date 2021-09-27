@@ -78,7 +78,6 @@ HEADERS += \
 FORMS += \
     ui/RustInstaller.ui \
     ui/InstallToolchain.ui \
-    ui/AddComponentOrTarget.ui \
     ui/SetOverride.ui
 
 DISTFILES += \
