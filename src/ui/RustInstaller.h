@@ -5,49 +5,48 @@
 #include <QProcess>
 #include <functional>
 
-namespace Ui {
-    class RustInstaller;
-}
-
+class QTabWidget;
+class QPlainTextEdit;
 class QListView;
+class QLineEdit;
+class QPushButton;
 class QMenu;
 class FileDownloader;
 class CommandLine;
 
 class RustInstaller : public QDialog {
     Q_OBJECT
-
 public:
     explicit RustInstaller(QWidget* parent = nullptr);
     ~RustInstaller();
 
 private slots:
-    void on_pushButtonBrowseRustupHome_clicked();
-    void on_lineEditRustupHome_textChanged(const QString& text);
-    void on_pushButtonBrowseCargoHome_clicked();
-    void on_lineEditCargoHome_textChanged(const QString& text);
+    void onRustupHomeBrowsePushButtonClicked();
+    void onRustupHomeLineEditTextChanged(const QString& text);
+    void onCargoHomeBrowsePushButtonClicked();
+    void onCargoHomeLineEditTextChanged(const QString& text);
 
-    void on_pushButtonDownloadRustup_clicked();
-    void on_pushButtonUpdateRustup_clicked();
-    void on_pushButtonUpdateAll_clicked();
-    void on_pushButtonUninstallRustup_clicked();
+    void onRustupDownloadPushButtonClicked();
+    void onRustupUpdatePushButtonClicked();
+    void onRustupUpdateAllPushButtonClicked();
+    void onRustupUninstallPushButtonClicked();
 
-    void on_pushButtonInstallToolchain_clicked();
-    void on_pushButtonUninstallToolchain_clicked();
-    void on_pushButtonUpdateToolchain_clicked();
-    void on_pushButtonSetDefaultToolchain_clicked();
+    void onToolchainInstallPushButtonClicked();
+    void onToolchainUninstallPushButtonClicked();
+    void onToolchainUpdatePushButtonClicked();
+    void onToolchainSetDefaultPushButtonClicked();
 
-    void on_pushButtonAddTarget_clicked();
-    void on_pushButtonRemoveTarget_clicked();
+    void onTargetAddPushButtonAddClicked();
+    void onTargetRemovePushButtonAddClicked();
 
-    void on_pushButtonAddComponent_clicked();
-    void on_pushButtonRemoveComponent_clicked();
+    void onComponentAddPushButtonAddClicked();
+    void onComponentRemovePushButtonAddClicked();
 
-    void on_pushButtonSetOverride_clicked();
-    void on_pushButtonUnsetOverride_clicked();
-    void on_pushButtonCleanupOverride_clicked();
+    void onOverrideSetPushButtonSetClicked();
+    void onOverrideUnsetPushButtonSetClicked();
+    void onOverrideCleanupPushButtonSetClicked();
 
-    void on_pushButtonBreak_clicked();
+    void onBreakPushButtonClicked();
 
     void onDownloaded();
     void onCustomContextMenu(const QPoint& point);
@@ -55,6 +54,12 @@ private slots:
     void onProcessStateChainged(QProcess::ProcessState newState);
 
 private:
+    void createRustupTab();
+    void createToolchainsTab();
+    void createTargetsTab();
+    void createComponentsTab();
+    void createOverridesTab();
+
     void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr);
     void showAndScrollMessage(const QString message);
     void runFromQueue();
@@ -76,7 +81,7 @@ private:
     void loadAndFilterList(const QString& command, QListView* listView, const std::function<void(QStringList&)>& filter = nullptr);
     void defaultInstalledFilter(QStringList& list);
     void rustStdFilter(QStringList& list);
-    QListView* getCurrentListView() const;
+    QListView* currentListView() const;
     QString findDefault(QListView* listView) const;
     void cleanupTarget(QStringList& components) const;
 
@@ -97,7 +102,39 @@ private:
         Overrides
     };
 
-    Ui::RustInstaller* ui = nullptr;
+    QTabWidget* tabWidget = nullptr;
+    QPlainTextEdit* consolePlainTextEdit = nullptr;
+    QLineEdit* rustupHomeLineEdit = nullptr;
+    QLineEdit* cargoHomeLineEdit = nullptr;
+    QLineEdit* versionLineEdit = nullptr;
+
+    QListView* toolchainsListView = nullptr;
+    QListView* targetsListView = nullptr;
+    QListView* componentsListView = nullptr;
+    QListView* overridesListView = nullptr;
+
+    QPushButton* rustupDownloadPushButton = nullptr;
+    QPushButton* rustupUpdatePushButton = nullptr;
+    QPushButton* rustupUpdateAllPushButton = nullptr;
+    QPushButton* rustupUninstallPushButton = nullptr;
+
+    QPushButton* toolchainInstallPushButton = nullptr;
+    QPushButton* toolchainUninstallPushButton = nullptr;
+    QPushButton* toolchainUpdatePushButton = nullptr;
+    QPushButton* toolchainSetDefaultPushButton = nullptr;
+
+    QPushButton* targetAddPushButton = nullptr;
+    QPushButton* targetRemovePushButton = nullptr;
+
+    QPushButton* componentAddPushButton = nullptr;
+    QPushButton* componentRemovePushButton = nullptr;
+
+    QPushButton* overrideSetPushButton = nullptr;
+    QPushButton* overrideUnsetPushButton = nullptr;
+    QPushButton* overrideCleanupPushButton = nullptr;
+
+    QPushButton* breakPushButton = nullptr;
+
     QProcess* process;
     FileDownloader* fileDownloader = nullptr;
     QTemporaryDir tmpDir;
