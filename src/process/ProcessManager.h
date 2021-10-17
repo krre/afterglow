@@ -1,7 +1,6 @@
 #pragma once
 #include "core/Singleton.h"
 #include <QProcess>
-#include <QTextCodec>
 
 class ProcessManager : public QObject {
     Q_OBJECT
@@ -21,7 +20,4 @@ protected:
 
 private:
     QProcess* m_process = nullptr;
-    QTextCodec* outputCodec = QTextCodec::codecForLocale();
-    QTextCodec::ConverterState outputCodecState;
-    QTextCodec::ConverterState errorCodecState;
 };

@@ -93,19 +93,18 @@ RustInstaller::RustInstaller(QWidget* parent) : QDialog(parent) {
     connect(copyAction, &QAction::triggered, this, &RustInstaller::onCopyAction);
 
     process = new QProcess(this);
-    QTextCodec* outputCodec = QTextCodec::codecForLocale();
 
     connect(process, &QProcess::readyReadStandardOutput, [=] {
-        const QByteArray& data = process->readAllStandardOutput();
-        QTextCodec::ConverterState outputCodecState;
-        const QString& output = outputCodec->toUnicode(data.constData(), data.length(), &outputCodecState);
+        QByteArray data = process->readAllStandardOutput();
+        auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
+        QString output = toUtf16(data);
         showAndScrollMessage(output);
     });
 
     connect(process, &QProcess::readyReadStandardError, [=] {
-        const QByteArray& data = process->readAllStandardError();
-        QTextCodec::ConverterState errorCodecState;
-        const QString& output = outputCodec->toUnicode(data.constData(), data.length(), &errorCodecState);
+        QByteArray data = process->readAllStandardError();
+        auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
+        QString output = toUtf16(data);
         showAndScrollMessage(output);
     });
 

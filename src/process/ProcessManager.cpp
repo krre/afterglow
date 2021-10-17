@@ -1,18 +1,21 @@
 #include "ProcessManager.h"
+#include <QStringConverter>
 #include <QDebug>
 
 ProcessManager::ProcessManager(QObject* parent) : QObject(parent) {
     m_process = new QProcess(this);
 
     connect(m_process, &QProcess::readyReadStandardOutput, [=] {
-        const QByteArray& data = m_process->readAllStandardOutput();
-        const QString& output = outputCodec->toUnicode(data.constData(), data.length(), &outputCodecState);
+        QByteArray data = m_process->readAllStandardOutput();
+        auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
+        QString output = toUtf16(data);
         onReadyReadStandardOutput(output);
     });
 
     connect(m_process, &QProcess::readyReadStandardError, [=] {
-        const QByteArray& data = m_process->readAllStandardError();
-        const QString& output = outputCodec->toUnicode(data.constData(), data.length(), &errorCodecState);
+        QByteArray data = m_process->readAllStandardError();
+        auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
+        QString output = toUtf16(data);
         onReadyReadStandardError(output);
     });
 
