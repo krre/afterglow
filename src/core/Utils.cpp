@@ -7,11 +7,7 @@ QStringList Utils::listFromConsole(const QString& command) {
 
     QObject::connect(&process, &QProcess::readyReadStandardOutput, [&] () {
         QString output = process.readAllStandardOutput();
-        list << output.split("\n");
-        // Cleanup last empty string
-        if (list.count() && list.last().isEmpty()) {
-            list.removeLast();
-        }
+        list << output.split("\n", Qt::SkipEmptyParts);
     });
 
     QStringList arguments = command.split(" ");
