@@ -6,7 +6,6 @@ class QSplitter;
 class QPlainTextEdit;
 
 class CargoManager;
-class ApplicationManager;
 class ProjectTree;
 class ProjectProperties;
 class TextEditor;
@@ -157,7 +156,6 @@ private:
     QPlainTextEdit* cargoPlainTextEdit = nullptr;
 
     CargoManager* cargoManager = nullptr;
-    ApplicationManager* applicationManager = nullptr;
     ProjectTree* projectTree = nullptr;
     ProjectProperties* projectProperties = nullptr;
     QString projectPath;
