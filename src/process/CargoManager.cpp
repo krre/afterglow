@@ -44,6 +44,10 @@ void CargoManager::run() {
     prepareAndStart(arguments);
 }
 
+void CargoManager::check() {
+    prepareAndStart(QStringList("check"));
+}
+
 void CargoManager::clean() {
     QStringList arguments;
     arguments << "clean";

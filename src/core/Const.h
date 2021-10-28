@@ -68,6 +68,7 @@ namespace Const {
 
         constexpr auto Build = "Build";
         constexpr auto Run = "Run";
+        constexpr auto Check = "Check";
         constexpr auto Stop = "Stop";
         constexpr auto Clean = "Clean";
 

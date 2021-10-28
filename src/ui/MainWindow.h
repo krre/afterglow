@@ -68,6 +68,7 @@ private slots:
     // Build
     void onBuildAction();
     void onRunAction();
+    void onCheckAction();
     void onStopAction();
     void onCleanAction();
 

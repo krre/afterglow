@@ -365,6 +365,11 @@ void MainWindow::onRunAction() {
     cargoManager->run();
 }
 
+void MainWindow::onCheckAction() {
+    prepareBuild();
+    cargoManager->check();
+}
+
 void MainWindow::onStopAction() {
     cargoManager->stop();
 }
@@ -643,6 +648,7 @@ void MainWindow::createActions() {
     buildMenu = menuBar()->addMenu(tr("Build"));
     ActionManager::addAction(Const::Action::Build, buildMenu->addAction(tr("Build"), this, &MainWindow::onBuildAction, QKeySequence("Ctrl+B")));
     ActionManager::addAction(Const::Action::Run, buildMenu->addAction(tr("Run"), this, &MainWindow::onRunAction, QKeySequence("Ctrl+R")));
+    ActionManager::addAction(Const::Action::Check, buildMenu->addAction(tr("Check"), this, &MainWindow::onCheckAction, QKeySequence("Ctrl+K")));
     ActionManager::addAction(Const::Action::Stop, buildMenu->addAction(tr("Stop"), this, &MainWindow::onStopAction));
     ActionManager::addAction(Const::Action::Clean, buildMenu->addAction(tr("Clean"), this, &MainWindow::onCleanAction));
 

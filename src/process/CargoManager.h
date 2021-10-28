@@ -23,6 +23,7 @@ public:
     void createProject(ProjectTemplate projectTemplate, const QString& path);
     void build();
     void run();
+    void check();
     void clean();
 
     void setProjectPath(const QString& path);
