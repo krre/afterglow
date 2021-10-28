@@ -1,5 +1,4 @@
 #pragma once
-#include "core/Singleton.h"
 #include <QProcess>
 
 class ProcessManager : public QObject {
