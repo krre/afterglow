@@ -14,8 +14,8 @@ CargoManager::~CargoManager() {
 }
 
 void CargoManager::createProject(ProjectTemplate projectTemplate, const QString& path) {
-    QStringList arguments;
-    arguments << "new";
+    QStringList arguments("new");
+
     if (projectTemplate == ProjectTemplate::Binary) {
         arguments << "--bin";
     } else if (projectTemplate == ProjectTemplate::Library) {
@@ -29,16 +29,14 @@ void CargoManager::createProject(ProjectTemplate projectTemplate, const QString&
 }
 
 void CargoManager::build() {
-    QStringList arguments;
-    arguments << "build";
+    QStringList arguments("build");
     addBuildRunArguments(arguments);
     commandStatus = CommandStatus::Build;
     prepareAndStart(arguments);
 }
 
 void CargoManager::run() {
-    QStringList arguments;
-    arguments << "run";
+    QStringList arguments("run");
     addBuildRunArguments(arguments);
     commandStatus = CommandStatus::Run;
     prepareAndStart(arguments);
@@ -49,9 +47,7 @@ void CargoManager::check() {
 }
 
 void CargoManager::clean() {
-    QStringList arguments;
-    arguments << "clean";
-    prepareAndStart(arguments);
+    prepareAndStart(QStringList("clean"));
 }
 
 void CargoManager::setProjectPath(const QString& path) {
