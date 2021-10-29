@@ -39,7 +39,7 @@ SetOverride::SetOverride(QWidget* parent) : QDialog(parent) {
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     lineEdit->setFocus();
-    buttonBox->buttons().at(0)->setEnabled(false);
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
     QStringList list = Utils::listFromConsole("rustup toolchain list");
 
@@ -65,5 +65,5 @@ void SetOverride::onBrowseButtonClicked() {
 }
 
 void SetOverride::onTextChanged(const QString& text) {
-    buttonBox->buttons().at(0)->setEnabled(!text.isEmpty());
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
 }

@@ -50,7 +50,7 @@ void SelectWorkspace::onBrowseButtonClicked() {
 }
 
 void SelectWorkspace::adjustAcceptedButton(const QString& text) {
-    buttonBox->buttons().at(0)->setEnabled(!text.isEmpty());
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
 }
 
 void SelectWorkspace::accept() {

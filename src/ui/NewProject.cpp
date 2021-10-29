@@ -72,5 +72,5 @@ void NewProject::onBrowseButtonClicked() {
 }
 
 void NewProject::adjustAcceptedButton() {
-    buttonBox->buttons().at(0)->setEnabled(!nameLineEdit->text().isEmpty() && !directoryLineEdit->text().isEmpty());
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!nameLineEdit->text().isEmpty() && !directoryLineEdit->text().isEmpty());
 }

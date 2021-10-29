@@ -21,7 +21,7 @@ GoToLine::GoToLine(QWidget* parent) : QDialog(parent) {
     buttonBox = new QDialogButtonBox;
     buttonBox->setOrientation(Qt::Horizontal);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-    buttonBox->buttons().at(0)->setEnabled(false);
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     verticalLayout->addWidget(buttonBox);
     verticalLayout->setSizeConstraint(QLayout::SetFixedSize);
 
@@ -37,5 +37,5 @@ int GoToLine::line() const {
 }
 
 void GoToLine::onTextChanged(const QString& text) {
-    buttonBox->buttons().at(0)->setEnabled(!text.isEmpty());
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
 }

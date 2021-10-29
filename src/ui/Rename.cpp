@@ -18,7 +18,7 @@ Rename::Rename(const QString& name, QWidget* parent) : QDialog(parent), m_name(n
     buttonBox = new QDialogButtonBox;
     buttonBox->setOrientation(Qt::Horizontal);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-    buttonBox->buttons().at(0)->setEnabled(false);
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
     verticalLayout->addWidget(buttonBox);
     verticalLayout->setSizeConstraint(QLayout::SetFixedSize);
@@ -35,5 +35,5 @@ QString Rename::name() const {
 }
 
 void Rename::onTextChanged(const QString& text) {
-    buttonBox->buttons().at(0)->setEnabled(!text.isEmpty() && text != m_name);
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty() && text != m_name);
 }

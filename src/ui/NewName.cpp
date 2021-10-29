@@ -30,7 +30,7 @@ NewName::NewName(const QString& title, QWidget* parent) : QDialog(parent) {
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-    buttonBox->buttons().at(0)->setEnabled(false);
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 
 QString NewName::name() const {
@@ -38,5 +38,5 @@ QString NewName::name() const {
 }
 
 void NewName::onTextChanged(const QString& text) {
-    buttonBox->buttons().at(0)->setEnabled(!text.isEmpty());
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
 }
