@@ -4,7 +4,7 @@
 #include "core/Settings.h"
 #include <QtWidgets>
 
-SelectWorkspace::SelectWorkspace(QWidget* parent) : QDialog(parent) {
+SelectWorkspace::SelectWorkspace(QWidget* parent) : Dialog(parent) {
     setWindowTitle(tr("Select Workspace"));
 
     auto verticalLayout = new QVBoxLayout;
@@ -17,28 +17,17 @@ SelectWorkspace::SelectWorkspace(QWidget* parent) : QDialog(parent) {
     horizontalLayout->addWidget(lineEdit);
 
     auto browsePushButton = new QPushButton(tr("Browse..."));
-
     horizontalLayout->addWidget(browsePushButton);
 
     verticalLayout->addLayout(horizontalLayout);
-
-    buttonBox = new QDialogButtonBox;
-    buttonBox->setOrientation(Qt::Horizontal);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-
-    verticalLayout->addWidget(buttonBox);
-
-    setLayout(verticalLayout);
-    adjustSize();
-    resize(430, height());
+    setContentLayout(verticalLayout);
+    resizeToWidth(430);
 
     connect(browsePushButton, &QPushButton::clicked, this, &SelectWorkspace::onBrowseButtonClicked);
     connect(lineEdit, &QLineEdit::textChanged, this, &SelectWorkspace::adjustAcceptedButton);
 
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-
     lineEdit->setText(Global::workspacePath());
+    lineEdit->setFocus();
 }
 
 void SelectWorkspace::onBrowseButtonClicked() {
@@ -50,7 +39,7 @@ void SelectWorkspace::onBrowseButtonClicked() {
 }
 
 void SelectWorkspace::adjustAcceptedButton(const QString& text) {
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
+    buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
 }
 
 void SelectWorkspace::accept() {

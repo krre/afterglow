@@ -1,7 +1,7 @@
 #include "InstallToolchain.h"
 #include <QtWidgets>
 
-InstallToolchain::InstallToolchain(QWidget* parent) : QDialog(parent) {
+InstallToolchain::InstallToolchain(QWidget* parent) : Dialog(parent) {
     setWindowTitle(tr("Install Toolchain"));
 
     auto gridLayout = new QGridLayout;
@@ -41,25 +41,13 @@ InstallToolchain::InstallToolchain(QWidget* parent) : QDialog(parent) {
     hostHorizontalLayout->addWidget(hostLineEdit);
     gridLayout->addLayout(hostHorizontalLayout, 2, 1, 1, 1);
 
-    auto verticalLayout = new QVBoxLayout;
-    verticalLayout->addLayout(gridLayout);
-    verticalLayout->addStretch();
-
-    auto buttonBox = new QDialogButtonBox;
-    buttonBox->setOrientation(Qt::Horizontal);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-
-    verticalLayout->addWidget(buttonBox);
-    setLayout(verticalLayout);
+    setContentLayout(gridLayout);
 
     adjustSize();
     resize(530, height());
 
     connect(channelComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, qOverload<int>(&InstallToolchain::onChannelCurrentIndexChanged));
     connect(hostComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, qOverload<int>(&InstallToolchain::onHostCurrentIndexChanged));
-
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     loadHosts();
 }

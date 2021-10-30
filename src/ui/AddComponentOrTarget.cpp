@@ -3,7 +3,7 @@
 #include "StringListModel.h"
 #include <QtWidgets>
 
-AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& command, QWidget *parent) : QDialog(parent) {
+AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& command, QWidget *parent) : Dialog(parent) {
     setWindowTitle(title);
     resize(400, 300);
 
@@ -11,18 +11,7 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
     listView->setContextMenuPolicy(Qt::CustomContextMenu);
     listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-    auto verticalLayout = new QVBoxLayout;
-    verticalLayout->addWidget(listView);
-
-    auto buttonBox = new QDialogButtonBox;
-    buttonBox->setOrientation(Qt::Horizontal);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-    verticalLayout->addWidget(buttonBox);
-
-    setLayout(verticalLayout);
-
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    setContentWidget(listView);
 
     contextMenu = new QMenu(this);
     QAction* copyAction = contextMenu->addAction(tr("Copy"));

@@ -1,10 +1,10 @@
 #pragma once
-#include <QDialog>
+#include "base/Dialog.h"
 
 class QLineEdit;
 class QComboBox;
 
-class InstallToolchain : public QDialog {
+class InstallToolchain : public Dialog {
     Q_OBJECT
 public:
     explicit InstallToolchain(QWidget* parent = nullptr);

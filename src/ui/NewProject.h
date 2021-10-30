@@ -1,12 +1,11 @@
 #pragma once
+#include "base/Dialog.h"
 #include "process/CargoManager.h"
-#include <QDialog>
 
 class QLineEdit;
-class QDialogButtonBox;
 class QComboBox;
 
-class NewProject : public QDialog {
+class NewProject : public Dialog {
     Q_OBJECT
 public:
     explicit NewProject(QWidget* parent = nullptr);
@@ -22,5 +21,4 @@ private:
     QLineEdit* nameLineEdit = nullptr;
     QLineEdit* directoryLineEdit = nullptr;
     QComboBox* templateComboBox = nullptr;
-    QDialogButtonBox* buttonBox = nullptr;
 };

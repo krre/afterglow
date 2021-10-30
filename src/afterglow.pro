@@ -38,7 +38,8 @@ SOURCES += \
     ui/AddComponentOrTarget.cpp \
     ui/SetOverride.cpp \
     ui/IssueModel.cpp \
-    ui/IssueListView.cpp
+    ui/IssueListView.cpp \
+    ui/base/Dialog.cpp
 
 HEADERS += \
     core/Const.h \
@@ -73,7 +74,8 @@ HEADERS += \
     ui/AddComponentOrTarget.h \
     ui/SetOverride.h \
     ui/IssueModel.h \
-    ui/IssueListView.h
+    ui/IssueListView.h \
+    ui/base/Dialog.h
 
 FORMS +=
 

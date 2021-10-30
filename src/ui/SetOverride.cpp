@@ -2,7 +2,7 @@
 #include "core/Utils.h"
 #include <QtWidgets>
 
-SetOverride::SetOverride(QWidget* parent) : QDialog(parent) {
+SetOverride::SetOverride(QWidget* parent) : Dialog(parent) {
     setWindowTitle(tr("Set Override"));
 
     auto verticalLayout = new QVBoxLayout;
@@ -21,25 +21,15 @@ SetOverride::SetOverride(QWidget* parent) : QDialog(parent) {
 
     comboBox = new QComboBox();
     verticalLayout->addWidget(comboBox, 0, Qt::AlignLeft);
-    verticalLayout->addStretch();
 
-    buttonBox = new QDialogButtonBox;
-    buttonBox->setOrientation(Qt::Horizontal);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-    verticalLayout->addWidget(buttonBox);
-
-    setLayout(verticalLayout);
-    adjustSize();
-    resize(500, height());
+    setContentLayout(verticalLayout);
+    resizeToWidth(500);
 
     connect(browsePushButton, &QPushButton::clicked, this, &SetOverride::onBrowseButtonClicked);
     connect(lineEdit, &QLineEdit::textChanged, this, &SetOverride::onTextChanged);
 
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-
     lineEdit->setFocus();
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
 
     QStringList list = Utils::listFromConsole("rustup toolchain list");
 
@@ -65,5 +55,5 @@ void SetOverride::onBrowseButtonClicked() {
 }
 
 void SetOverride::onTextChanged(const QString& text) {
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
+    buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
 }

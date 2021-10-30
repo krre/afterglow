@@ -12,9 +12,8 @@
 
 using namespace std::placeholders;
 
-RustInstaller::RustInstaller(QWidget* parent) : QDialog(parent) {
+RustInstaller::RustInstaller(QWidget* parent) : Dialog(parent) {
     setWindowTitle(tr("Rust Installer"));
-    resize(810, 600);
 
     tabWidget = new QTabWidget;
 
@@ -29,27 +28,15 @@ RustInstaller::RustInstaller(QWidget* parent) : QDialog(parent) {
 
     consolePlainTextEdit = new QPlainTextEdit;
     consolePlainTextEdit->setReadOnly(true);
-
-    verticalLayout->addWidget(consolePlainTextEdit);
+    verticalLayout->addWidget(consolePlainTextEdit, 1);
 
     breakPushButton = new QPushButton(tr("Break"));
     breakPushButton->setEnabled(false);
+    verticalLayout->addWidget(breakPushButton, 0, Qt::AlignLeft);
 
-    auto horizontalLayout = new QHBoxLayout();
-    horizontalLayout->setContentsMargins(-1, 0, -1, -1);
-    horizontalLayout->addWidget(breakPushButton);
-
-    auto buttonBox = new QDialogButtonBox;
-    buttonBox->setOrientation(Qt::Horizontal);
-    buttonBox->setStandardButtons(QDialogButtonBox::Close);
-
-    horizontalLayout->addWidget(buttonBox);
-
-    verticalLayout->addLayout(horizontalLayout);
-    setLayout(verticalLayout);
-
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    setContentLayout(verticalLayout, false);
+    resizeToWidth(810);
+    buttonBox()->setStandardButtons(QDialogButtonBox::Close);
 
     tabWidget->setCurrentIndex(0);
 

@@ -1,11 +1,11 @@
 #pragma once
-#include <QDialog>
+#include "base/Dialog.h"
 #include <QStringList>
 
 class QMenu;
 class QListView;
 
-class AddComponentOrTarget : public QDialog {
+class AddComponentOrTarget : public Dialog {
     Q_OBJECT
 public:
     explicit AddComponentOrTarget(const QString& title, const QString& command, QWidget* parent = nullptr);

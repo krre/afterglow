@@ -1,35 +1,27 @@
 #include "GoToLine.h"
 #include <QtWidgets>
 
-GoToLine::GoToLine(QWidget* parent) : QDialog(parent) {
+GoToLine::GoToLine(QWidget* parent) : Dialog(parent) {
     setWindowTitle(tr("Go to Line"));
 
-    auto horizontalLayout = new QHBoxLayout();
     auto label = new QLabel(tr("Line:"));
-    horizontalLayout->addWidget(label);
 
     auto validator = new QIntValidator(this);
     validator->setBottom(0);
 
     lineEdit = new QLineEdit;
     lineEdit->setValidator(validator);
+
+    auto horizontalLayout = new QHBoxLayout();
+    horizontalLayout->addWidget(label);
     horizontalLayout->addWidget(lineEdit);
 
-    auto verticalLayout = new QVBoxLayout;
-    verticalLayout->addLayout(horizontalLayout);
+    setContentLayout(horizontalLayout);
 
-    buttonBox = new QDialogButtonBox;
-    buttonBox->setOrientation(Qt::Horizontal);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    verticalLayout->addWidget(buttonBox);
-    verticalLayout->setSizeConstraint(QLayout::SetFixedSize);
+    setLayoutToFixedSize();
 
-    setLayout(verticalLayout);
-
+    buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
     connect(lineEdit, &QLineEdit::textChanged, this, &GoToLine::onTextChanged);
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
 int GoToLine::line() const {
@@ -37,5 +29,5 @@ int GoToLine::line() const {
 }
 
 void GoToLine::onTextChanged(const QString& text) {
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
+    buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
 }

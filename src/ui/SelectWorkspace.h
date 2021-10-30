@@ -1,10 +1,9 @@
 #pragma once
-#include <QDialog>
+#include "base/Dialog.h"
 
 class QLineEdit;
-class QDialogButtonBox;
 
-class SelectWorkspace : public QDialog {
+class SelectWorkspace : public Dialog {
     Q_OBJECT
 public:
     explicit SelectWorkspace(QWidget* parent = nullptr);
@@ -18,5 +17,4 @@ private slots:
 
 private:
     QLineEdit* lineEdit = nullptr;
-    QDialogButtonBox* buttonBox = nullptr;
 };

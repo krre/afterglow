@@ -1,7 +1,7 @@
 #include "Rename.h"
 #include <QtWidgets>
 
-Rename::Rename(const QString& name, QWidget* parent) : QDialog(parent), m_name(name) {
+Rename::Rename(const QString& name, QWidget* parent) : Dialog(parent), m_name(name) {
     setWindowTitle(tr("Rename"));
 
     auto label = new QLabel;
@@ -9,25 +9,17 @@ Rename::Rename(const QString& name, QWidget* parent) : QDialog(parent), m_name(n
 
     lineEdit = new QLineEdit;
     lineEdit->setText(name);
-    lineEdit->setFocus();
 
     auto verticalLayout = new QVBoxLayout;
     verticalLayout->addWidget(label);
     verticalLayout->addWidget(lineEdit);
+    setContentLayout(verticalLayout);
+    resizeToWidth(300);
 
-    buttonBox = new QDialogButtonBox;
-    buttonBox->setOrientation(Qt::Horizontal);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-
-    verticalLayout->addWidget(buttonBox);
-    verticalLayout->setSizeConstraint(QLayout::SetFixedSize);
-
-    setLayout(verticalLayout);
-
+    buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
     connect(lineEdit, &QLineEdit::textChanged, this, &Rename::onTextChanged);
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
+    lineEdit->setFocus();
 }
 
 QString Rename::name() const {
@@ -35,5 +27,5 @@ QString Rename::name() const {
 }
 
 void Rename::onTextChanged(const QString& text) {
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty() && text != m_name);
+    buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty() && text != m_name);
 }

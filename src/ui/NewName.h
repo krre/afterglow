@@ -1,10 +1,9 @@
 #pragma once
-#include <QDialog>
+#include "base/Dialog.h"
 
 class QLineEdit;
-class QDialogButtonBox;
 
-class NewName : public QDialog {
+class NewName : public Dialog {
     Q_OBJECT
 public:
     explicit NewName(const QString& title, QWidget* parent = nullptr);
@@ -15,5 +14,4 @@ private slots:
 
 private:
     QLineEdit* lineEdit = nullptr;
-    QDialogButtonBox* buttonBox = nullptr;
 };

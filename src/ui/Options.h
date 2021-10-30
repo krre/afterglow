@@ -1,10 +1,10 @@
 #pragma once
-#include <QDialog>
+#include "base/Dialog.h"
 
 class QLineEdit;
 class QCheckBox;
 
-class Options : public QDialog {
+class Options : public Dialog {
     Q_OBJECT
 public:
     explicit Options(QWidget* parent = nullptr);

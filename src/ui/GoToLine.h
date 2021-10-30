@@ -1,10 +1,9 @@
 #pragma once
-#include <QDialog>
+#include "ui/base/Dialog.h"
 
-class QDialogButtonBox;
 class QLineEdit;
 
-class GoToLine : public QDialog {
+class GoToLine : public Dialog {
     Q_OBJECT
 public:
     explicit GoToLine(QWidget* parent = nullptr);
@@ -15,5 +14,4 @@ private slots:
 
 private:
     QLineEdit* lineEdit = nullptr;
-    QDialogButtonBox* buttonBox = nullptr;
 };

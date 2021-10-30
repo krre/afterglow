@@ -4,7 +4,7 @@
 #include "core/Settings.h"
 #include <QtWidgets>
 
-Options::Options(QWidget* parent) : QDialog(parent) {
+Options::Options(QWidget* parent) : Dialog(parent) {
     setWindowTitle(tr("Options"));
 
     auto pathGroupBox = new QGroupBox(tr("Path"));
@@ -34,24 +34,13 @@ Options::Options(QWidget* parent) : QDialog(parent) {
     interfaceVerticalLayout->addWidget(resetSettingsPushButton, 0, Qt::AlignLeft);
 
     verticalLayout->addWidget(interfaceGroupBox);
-    verticalLayout->addStretch();
-
-    auto buttonBox = new QDialogButtonBox;
-    buttonBox->setOrientation(Qt::Horizontal);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-
-    verticalLayout->addWidget(buttonBox);
-    setLayout(verticalLayout);
+    setContentLayout(verticalLayout);
+    resizeToWidth(600);
 
     connect(workspacePushButton, &QPushButton::clicked, this, &Options::onWorkspaceClicked);
     connect(openPrefsPushButton, &QPushButton::clicked, this, &Options::openPrefs);
     connect(resetSettingsPushButton, &QPushButton::clicked, this, &Options::onResetSettingsClicked);
 
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &Options::onAccepted);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-
-    adjustSize();
-    resize(600, height());
     readSettings();
 }
 

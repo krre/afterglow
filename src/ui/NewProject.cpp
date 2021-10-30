@@ -3,7 +3,7 @@
 #include "process/CargoManager.h"
 #include <QtWidgets>
 
-NewProject::NewProject(QWidget* parent) : QDialog(parent) {
+NewProject::NewProject(QWidget* parent) : Dialog(parent) {
     setWindowTitle(tr("New Project"));
 
     auto gridLayout = new QGridLayout;
@@ -30,29 +30,15 @@ NewProject::NewProject(QWidget* parent) : QDialog(parent) {
 
     gridLayout->addWidget(templateComboBox, 2, 1, 1, 1, Qt::AlignLeft);
 
-    auto verticalLayout = new QVBoxLayout;
-    verticalLayout->addLayout(gridLayout);
-
-    buttonBox = new QDialogButtonBox;
-    buttonBox->setOrientation(Qt::Horizontal);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-
-    verticalLayout->addStretch();
-    verticalLayout->addWidget(buttonBox);
-    setLayout(verticalLayout);
-
-    adjustSize();
-    resize(400, height());
+    setContentLayout(gridLayout);
+    resizeToWidth(400);
 
     connect(browsePushButton, &QPushButton::clicked, this, &NewProject::onBrowseButtonClicked);
-
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-
     connect(nameLineEdit, &QLineEdit::textChanged, this, &NewProject::adjustAcceptedButton);
     connect(directoryLineEdit, &QLineEdit::textChanged, this, &NewProject::adjustAcceptedButton);
 
     adjustAcceptedButton();
+    nameLineEdit->setFocus();
 }
 
 QString NewProject::path() const {
@@ -72,5 +58,5 @@ void NewProject::onBrowseButtonClicked() {
 }
 
 void NewProject::adjustAcceptedButton() {
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!nameLineEdit->text().isEmpty() && !directoryLineEdit->text().isEmpty());
+    buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(!nameLineEdit->text().isEmpty() && !directoryLineEdit->text().isEmpty());
 }

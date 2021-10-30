@@ -1,11 +1,10 @@
 #pragma once
-#include <QDialog>
+#include "base/Dialog.h"
 
 class QLineEdit;
 class QComboBox;
-class QDialogButtonBox;
 
-class SetOverride : public QDialog {
+class SetOverride : public Dialog {
     Q_OBJECT
 public:
     explicit SetOverride(QWidget* parent = nullptr);
@@ -20,5 +19,4 @@ private slots:
 private:
     QLineEdit* lineEdit = nullptr;
     QComboBox* comboBox = nullptr;
-    QDialogButtonBox* buttonBox = nullptr;
 };
