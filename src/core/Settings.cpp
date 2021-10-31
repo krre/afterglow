@@ -8,7 +8,15 @@ Q_GLOBAL_STATIC(QString, prefsPath);
 static bool reseted = false;
 
 void Settings::init() {
-    *prefsPath = QCoreApplication::applicationDirPath() + "/" + Const::App::PrefsName;
+#ifdef Q_OS_WIN
+    // Need to get user config directory, not Windows registry
+    QSettings::setDefaultFormat(QSettings::IniFormat);
+#endif
+
+    QString prefsDir = QFileInfo(QSettings().fileName()).absolutePath();
+    QDir().mkpath(prefsDir);
+
+    *prefsPath = prefsDir + "/" + Const::App::PrefsName;
     QFile resPrefsFile(":/resources/prefs.json");
 
     if (!resPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {

@@ -8,6 +8,7 @@
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
+    app.setOrganizationName(Const::App::Organization);
     app.setApplicationName(Const::App::Name);
     app.setApplicationVersion(Const::App::Version);
 
