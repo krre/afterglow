@@ -61,7 +61,7 @@ void Settings::flush() {
         return;
     }
 
-    QFile file(QCoreApplication::applicationDirPath() + "/" + Const::App::PrefsName);
+    QFile file(*prefsPath);
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qWarning() << "Failed to open file" << file.fileName();
