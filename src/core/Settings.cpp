@@ -4,7 +4,7 @@
 #include <QtCore>
 
 Q_GLOBAL_STATIC(QJsonObject, storage);
-Q_GLOBAL_STATIC(QString, prefsPath);
+Q_GLOBAL_STATIC(QString, s_prefsPath);
 static bool reseted = false;
 
 void Settings::init() {
@@ -16,7 +16,7 @@ void Settings::init() {
     QString prefsDir = QFileInfo(QSettings().fileName()).absolutePath();
     QDir().mkpath(prefsDir);
 
-    *prefsPath = prefsDir + "/" + Const::App::PrefsName;
+    *s_prefsPath = prefsDir + "/" + Const::App::PrefsName;
     QFile resPrefsFile(":/resources/prefs.json");
 
     if (!resPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -33,7 +33,7 @@ void Settings::init() {
         return;
     }
 
-    QFile workPrefsFile(*prefsPath);
+    QFile workPrefsFile(*s_prefsPath);
 
     if (workPrefsFile.exists()) {
         if (!workPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -65,11 +65,11 @@ void Settings::init() {
 
 void Settings::flush() {
     if (reseted) {
-        QFile::remove(*prefsPath);
+        QFile::remove(*s_prefsPath);
         return;
     }
 
-    QFile file(*prefsPath);
+    QFile file(*s_prefsPath);
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qWarning() << "Failed to open file" << file.fileName();
@@ -99,8 +99,8 @@ QJsonValue Settings::value(const QString& path) {
     return obj[keys.last()];
 }
 
-QString Settings::getPrefsPath() {
-    return *prefsPath;
+const QString& Settings::prefsPath() {
+    return *s_prefsPath;
 }
 
 void Settings::updateRustEnvironmentVariables() {

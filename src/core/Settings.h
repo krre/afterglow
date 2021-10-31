@@ -10,7 +10,7 @@ public:
     static void setValue(const QString& path, const QJsonValue& value);
     static QJsonValue value(const QString& path);
 
-    static QString getPrefsPath();
+    static const QString& prefsPath();
     static void updateRustEnvironmentVariables();
     static void reset();
 

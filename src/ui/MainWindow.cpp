@@ -386,7 +386,7 @@ void MainWindow::onRustInstallerAction() {
 void MainWindow::onOptionsAction() {
     Options options(this);
     connect(&options, &Options::openPrefs, [this] {
-        addSourceTab(Settings::getPrefsPath());
+        addSourceTab(Settings::prefsPath());
     });
     options.exec();
 }
