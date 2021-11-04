@@ -1,4 +1,5 @@
 #pragma once
+#include <QChar>
 
 namespace Const {
     namespace Environment {
@@ -30,12 +31,12 @@ namespace Const {
     }
 
     namespace FontAwesome {
-        constexpr auto Cog = "\uf013";
-        constexpr auto Stop = "\uf04d";
-        constexpr auto TrashAlt = "\uf2ed";
-        constexpr auto Play = "\uf04b";
-        constexpr auto ExclamationTriangle = "\uf071";
-        constexpr auto TimesCircle = "\uf057";
+        constexpr auto Cog = QChar(0xf013);
+        constexpr auto Stop = QChar(0xf04d);
+        constexpr auto TrashAlt = QChar(0xf2ed);
+        constexpr auto Play = QChar(0xf04b);
+        constexpr auto ExclamationTriangle = QChar(0xf071);
+        constexpr auto TimesCircle = QChar(0xf057);
     }
 
     namespace Color {
