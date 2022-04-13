@@ -438,10 +438,10 @@ void RustInstaller::createToolchainsTab() {
 
     auto verticalLayout = new QVBoxLayout();
 
-    toolchainInstallPushButton = new QPushButton(tr("Install"));
+    toolchainInstallPushButton = new QPushButton(tr("Install..."));
     verticalLayout->addWidget(toolchainInstallPushButton);
 
-    toolchainUninstallPushButton = new QPushButton(tr("Uninstall"));
+    toolchainUninstallPushButton = new QPushButton(tr("Uninstall..."));
     toolchainUninstallPushButton->setEnabled(false);
     verticalLayout->addWidget(toolchainUninstallPushButton);
 
