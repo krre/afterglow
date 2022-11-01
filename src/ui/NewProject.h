@@ -4,6 +4,7 @@
 
 class QLineEdit;
 class QComboBox;
+class BrowseLineEdit;
 
 class NewProject : public Dialog {
     Q_OBJECT
@@ -14,11 +15,10 @@ public:
     CargoManager::ProjectTemplate projectTemplate() const;
 
 private slots:
-    void onBrowseButtonClicked();
     void adjustAcceptedButton();
 
 private:
     QLineEdit* nameLineEdit = nullptr;
-    QLineEdit* directoryLineEdit = nullptr;
+    BrowseLineEdit* directoryBrowseLineEdit = nullptr;
     QComboBox* templateComboBox = nullptr;
 };
