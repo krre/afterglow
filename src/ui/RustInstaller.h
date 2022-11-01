@@ -13,6 +13,7 @@ class QPushButton;
 class QMenu;
 class FileDownloader;
 class CommandLine;
+class BrowseLineEdit;
 
 class RustInstaller : public Dialog {
     Q_OBJECT
@@ -21,9 +22,7 @@ public:
     ~RustInstaller();
 
 private slots:
-    void onRustupHomeBrowsePushButtonClicked();
     void onRustupHomeLineEditTextChanged(const QString& text);
-    void onCargoHomeBrowsePushButtonClicked();
     void onCargoHomeLineEditTextChanged(const QString& text);
 
     void onRustupDownloadPushButtonClicked();
@@ -104,8 +103,8 @@ private:
 
     QTabWidget* tabWidget = nullptr;
     QPlainTextEdit* consolePlainTextEdit = nullptr;
-    QLineEdit* rustupHomeLineEdit = nullptr;
-    QLineEdit* cargoHomeLineEdit = nullptr;
+    BrowseLineEdit* rustupHomeBrowseLineEdit = nullptr;
+    BrowseLineEdit* cargoHomeBrowseLineEdit = nullptr;
     QLineEdit* versionLineEdit = nullptr;
 
     QListView* toolchainsListView = nullptr;
