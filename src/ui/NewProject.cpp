@@ -6,31 +6,26 @@
 NewProject::NewProject(QWidget* parent) : Dialog(parent) {
     setWindowTitle(tr("New Project"));
 
-    auto gridLayout = new QGridLayout;
-    gridLayout->addWidget(new QLabel(tr("Name:")), 0, 0, 1, 1);
-    gridLayout->addWidget(new QLabel(tr("Directory:")), 1, 0, 1, 1);
-
     nameLineEdit = new QLineEdit;
-    gridLayout->addWidget(nameLineEdit, 0, 1, 1, 1);
-
-    auto horizontalLayout = new QHBoxLayout;
 
     directoryLineEdit = new QLineEdit(Global::workspacePath());
-    horizontalLayout->addWidget(directoryLineEdit);
-
     auto browsePushButton = new QPushButton(tr("Browse..."));
-    horizontalLayout->addWidget(browsePushButton);
 
-    gridLayout->addLayout(horizontalLayout, 1, 1, 1, 1);
-    gridLayout->addWidget(new QLabel(tr("Template:")), 2, 0, 1, 1);
+    auto directoryLayout = new QHBoxLayout;
+    directoryLayout->addWidget(directoryLineEdit);
+    directoryLayout->addWidget(browsePushButton);
 
     templateComboBox = new QComboBox;
     templateComboBox->addItem(tr("Binary"));
     templateComboBox->addItem(tr("Library"));
 
-    gridLayout->addWidget(templateComboBox, 2, 1, 1, 1, Qt::AlignLeft);
+    auto formLayout = new QFormLayout;
+    formLayout->addRow(new QLabel(tr("Name:")), nameLineEdit);
+    formLayout->addRow(new QLabel(tr("Directory:")), directoryLayout);
+    formLayout->addRow(new QLabel(tr("Template:")), templateComboBox);
+    formLayout->itemAt(2, QFormLayout::FieldRole)->setAlignment(Qt::AlignLeft);
 
-    setContentLayout(gridLayout);
+    setContentLayout(formLayout);
     resizeToWidth(400);
 
     connect(browsePushButton, &QPushButton::clicked, this, &NewProject::onBrowseButtonClicked);
