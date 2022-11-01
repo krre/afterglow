@@ -3,6 +3,7 @@
 
 class QLineEdit;
 class QCheckBox;
+class BrowseLineEdit;
 
 class Options : public Dialog {
     Q_OBJECT
@@ -13,7 +14,6 @@ signals:
     void openPrefs();
 
 private slots:
-    void onWorkspaceClicked();
     void onResetSettingsClicked();
     void onAccepted();
 
@@ -21,6 +21,6 @@ private:
     void readSettings();
     void writeSettings();
 
-    QLineEdit* workspaceLineEdit = nullptr;
+    BrowseLineEdit* workspaceBrowseLineEdit = nullptr;
     QCheckBox* sessionCheckBox = nullptr;
 };

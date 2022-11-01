@@ -1,4 +1,5 @@
 #include "Options.h"
+#include "base/BrowseLineEdit.h"
 #include "core/Const.h"
 #include "core/Global.h"
 #include "core/Settings.h"
@@ -7,15 +8,14 @@
 Options::Options(QWidget* parent) : Dialog(parent) {
     setWindowTitle(tr("Options"));
 
+    workspaceBrowseLineEdit = new BrowseLineEdit;
+
+    auto workspaceLayout = new QHBoxLayout;
+    workspaceLayout->addWidget(new QLabel(tr("Workspace:")));
+    workspaceLayout->addLayout(workspaceBrowseLineEdit);
+
     auto pathGroupBox = new QGroupBox(tr("Path"));
-    auto gridLayout = new QGridLayout(pathGroupBox);
-    workspaceLineEdit = new QLineEdit(pathGroupBox);
-
-    gridLayout->addWidget(new QLabel(tr("Workspace:")), 0, 0, 1, 1);
-    gridLayout->addWidget(workspaceLineEdit, 0, 1, 1, 1);
-
-    auto workspacePushButton = new QPushButton(tr("Browse..."));
-    gridLayout->addWidget(workspacePushButton, 0, 2, 1, 1);
+    pathGroupBox->setLayout(workspaceLayout);
 
     auto verticalLayout = new QVBoxLayout;
     verticalLayout->addWidget(pathGroupBox);
@@ -37,19 +37,10 @@ Options::Options(QWidget* parent) : Dialog(parent) {
     setContentLayout(verticalLayout);
     resizeToWidth(600);
 
-    connect(workspacePushButton, &QPushButton::clicked, this, &Options::onWorkspaceClicked);
     connect(openPrefsPushButton, &QPushButton::clicked, this, &Options::openPrefs);
     connect(resetSettingsPushButton, &QPushButton::clicked, this, &Options::onResetSettingsClicked);
 
     readSettings();
-}
-
-void Options::onWorkspaceClicked() {
-    QString dirPath = QFileDialog::getExistingDirectory(this);
-
-    if (!dirPath.isEmpty()) {
-        workspaceLineEdit->setText(dirPath);
-    }
 }
 
 void Options::onResetSettingsClicked() {
@@ -69,11 +60,11 @@ void Options::onAccepted() {
 }
 
 void Options::readSettings() {
-    workspaceLineEdit->setText(Global::workspacePath());
+    workspaceBrowseLineEdit->lineEdit()->setText(Global::workspacePath());
     sessionCheckBox->setChecked(Settings::value("gui.mainWindow.session.restore").toBool());
 }
 
 void Options::writeSettings() {
-    Settings::setValue("workspace", workspaceLineEdit->text());
+    Settings::setValue("workspace", workspaceBrowseLineEdit->lineEdit()->text());
     Settings::setValue("gui.mainWindow.session.restore", sessionCheckBox->isChecked());
 }
