@@ -1,5 +1,4 @@
 #include "SelectWorkspace.h"
-#include "core/Const.h"
 #include "core/Global.h"
 #include "core/Settings.h"
 #include <QtWidgets>
