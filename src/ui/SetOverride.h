@@ -3,6 +3,7 @@
 
 class QLineEdit;
 class QComboBox;
+class BrowseLineEdit;
 
 class SetOverride : public Dialog {
     Q_OBJECT
@@ -13,10 +14,9 @@ public:
     QString toolchain() const;
 
 private slots:
-    void onBrowseButtonClicked();
     void onTextChanged(const QString& text);
 
 private:
-    QLineEdit* lineEdit = nullptr;
-    QComboBox* comboBox = nullptr;
+    BrowseLineEdit* directoryBrowseLineEdit = nullptr;
+    QComboBox* toolchainComboBox = nullptr;
 };

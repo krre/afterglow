@@ -1,57 +1,40 @@
 #include "SetOverride.h"
 #include "core/Utils.h"
+#include "base/BrowseLineEdit.h"
 #include <QtWidgets>
 
 SetOverride::SetOverride(QWidget* parent) : Dialog(parent) {
     setWindowTitle(tr("Set Override"));
 
-    auto verticalLayout = new QVBoxLayout;
-    verticalLayout->addWidget(new QLabel(tr("Directory:")));
+    directoryBrowseLineEdit = new BrowseLineEdit;
+    connect(directoryBrowseLineEdit->lineEdit(), &QLineEdit::textChanged, this, &SetOverride::onTextChanged);
 
-    auto horizontalLayout = new QHBoxLayout;
-    lineEdit = new QLineEdit;
-    horizontalLayout->addWidget(lineEdit);
+    toolchainComboBox = new QComboBox();
 
-    auto browsePushButton = new QPushButton(tr("Browse..."));
-    horizontalLayout->addWidget(browsePushButton);
+    auto formLayout = new QFormLayout;
+    formLayout->addRow(new QLabel(tr("Directory:")), directoryBrowseLineEdit);
+    formLayout->addRow(new QLabel(tr("Toolchain:")), toolchainComboBox);
+    formLayout->itemAt(1, QFormLayout::FieldRole)->setAlignment(Qt::AlignLeft);
 
-    verticalLayout->addLayout(horizontalLayout);
-
-    verticalLayout->addWidget(new QLabel(tr("Toolchain:")));
-
-    comboBox = new QComboBox();
-    verticalLayout->addWidget(comboBox, 0, Qt::AlignLeft);
-
-    setContentLayout(verticalLayout);
+    setContentLayout(formLayout);
     resizeToWidth(500);
 
-    connect(browsePushButton, &QPushButton::clicked, this, &SetOverride::onBrowseButtonClicked);
-    connect(lineEdit, &QLineEdit::textChanged, this, &SetOverride::onTextChanged);
-
-    lineEdit->setFocus();
+    directoryBrowseLineEdit->lineEdit()->setFocus();
     buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
 
     QStringList list = Utils::listFromConsole("rustup toolchain list");
 
     for (const QString& toolchain : list) {
-        comboBox->addItem(toolchain);
+        toolchainComboBox->addItem(toolchain);
     }
 }
 
 QString SetOverride::directory() const {
-    return lineEdit->text();
+    return directoryBrowseLineEdit->lineEdit()->text();
 }
 
 QString SetOverride::toolchain() const {
-    return comboBox->currentText();
-}
-
-void SetOverride::onBrowseButtonClicked() {
-    QString dirPath = QFileDialog::getExistingDirectory(this);
-
-    if (!dirPath.isEmpty()) {
-        lineEdit->setText(dirPath);
-    }
+    return toolchainComboBox->currentText();
 }
 
 void SetOverride::onTextChanged(const QString& text) {
