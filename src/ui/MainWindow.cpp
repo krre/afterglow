@@ -586,11 +586,11 @@ void MainWindow::createActions() {
     QMenu* newFileMenu = fileMenu->addMenu(tr("New"));
 
     ActionManager::addAction(Const::Action::NewProject, newFileMenu->addAction(tr("Project..."), this, &MainWindow::onNewProjectAction));
-    ActionManager::addAction(Const::Action::NewRustFile, newFileMenu->addAction(tr("Rust File..."), this, &MainWindow::onNewRustFileAction, QKeySequence("Ctrl+N")));
+    ActionManager::addAction(Const::Action::NewRustFile, newFileMenu->addAction(tr("Rust File..."), QKeySequence("Ctrl+N"), this, &MainWindow::onNewRustFileAction));
     ActionManager::addAction(Const::Action::NewFile, newFileMenu->addAction(tr("File..."), this, &MainWindow::onNewFileAction));
     ActionManager::addAction(Const::Action::NewDirectory, newFileMenu->addAction(tr("Directory..."), this, &MainWindow::onNewDirectoryAction));
 
-    ActionManager::addAction(Const::Action::Open, fileMenu->addAction(tr("Open..."), this, &MainWindow::onOpenAction, QKeySequence("Ctrl+O")));
+    ActionManager::addAction(Const::Action::Open, fileMenu->addAction(tr("Open..."), QKeySequence("Ctrl+O"), this, &MainWindow::onOpenAction));
     ActionManager::addAction(Const::Action::CloseProject, fileMenu->addAction(tr("Close Project"), this, &MainWindow::onCloseProjectAction));
 
     recentFilesMenu = fileMenu->addMenu(tr("Recent Files"));
@@ -603,52 +603,52 @@ void MainWindow::createActions() {
 
     fileMenu->addSeparator();
 
-    ActionManager::addAction(Const::Action::Save, fileMenu->addAction(tr("Save"), this, &MainWindow::onSaveAction, QKeySequence("Ctrl+S")));
+    ActionManager::addAction(Const::Action::Save, fileMenu->addAction(tr("Save"), QKeySequence("Ctrl+S"), this, &MainWindow::onSaveAction));
     ActionManager::addAction(Const::Action::SaveAs, fileMenu->addAction(tr("Save As..."), this, &MainWindow::onSaveAsAction));
-    ActionManager::addAction(Const::Action::SaveAll, fileMenu->addAction(tr("Save All"), this, &MainWindow::onSaveAllAction, QKeySequence("Ctrl+Shift+S")));
+    ActionManager::addAction(Const::Action::SaveAll, fileMenu->addAction(tr("Save All"), QKeySequence("Ctrl+Shift+S"), this, &MainWindow::onSaveAllAction));
 
     fileMenu->addSeparator();
 
-    ActionManager::addAction(Const::Action::Close, fileMenu->addAction(tr("Close"), this, &MainWindow::onCloseAction, QKeySequence("Ctrl+W")));
-    ActionManager::addAction(Const::Action::CloseAll, fileMenu->addAction(tr("Close All"), this, &MainWindow::onCloseAllAction, QKeySequence("Ctrl+Shift+W")));
+    ActionManager::addAction(Const::Action::Close, fileMenu->addAction(tr("Close"), QKeySequence("Ctrl+W"), this, &MainWindow::onCloseAction));
+    ActionManager::addAction(Const::Action::CloseAll, fileMenu->addAction(tr("Close All"), QKeySequence("Ctrl+Shift+W"), this, &MainWindow::onCloseAllAction));
     ActionManager::addAction(Const::Action::CloseOther, fileMenu->addAction(tr("Close Other"), this, &MainWindow::onCloseOtherAction));
 
     fileMenu->addSeparator();
-    fileMenu->addAction(tr("Exit"), this, &MainWindow::close, QKeySequence("Ctrl+Q"));
+    fileMenu->addAction(tr("Exit"), QKeySequence("Ctrl+Q"), this, &MainWindow::close);
 
     editMenu = menuBar()->addMenu(tr("Edit"));
-    editMenu->addAction(tr("Undo"), this, &MainWindow::onUndoAction, QKeySequence("Ctrl+Z"));
-    editMenu->addAction(tr("Redo"), this, &MainWindow::onRedoAction, QKeySequence("Ctrl+Shift+Z"));
+    editMenu->addAction(tr("Undo"), QKeySequence("Ctrl+Z"), this, &MainWindow::onUndoAction);
+    editMenu->addAction(tr("Redo"), QKeySequence("Ctrl+Shift+Z"), this, &MainWindow::onRedoAction);
     editMenu->addSeparator();
-    editMenu->addAction(tr("Cut"), this, &MainWindow::onCutAction, QKeySequence("Ctrl+X"));
-    editMenu->addAction(tr("Copy"), this, &MainWindow::onCopyAction, QKeySequence("Ctrl+C"));
-    editMenu->addAction(tr("Paste"), this, &MainWindow::onPasteAction, QKeySequence("Ctrl+V"));
+    editMenu->addAction(tr("Cut"), QKeySequence("Ctrl+X"), this, &MainWindow::onCutAction);
+    editMenu->addAction(tr("Copy"), QKeySequence("Ctrl+C"), this, &MainWindow::onCopyAction);
+    editMenu->addAction(tr("Paste"), QKeySequence("Ctrl+V"), this, &MainWindow::onPasteAction);
     editMenu->addSeparator();
-    editMenu->addAction(tr("Select All"), this, &MainWindow::onSelectAllAction, QKeySequence("Ctrl+A"));
+    editMenu->addAction(tr("Select All"), QKeySequence("Ctrl+A"), this, &MainWindow::onSelectAllAction);
     editMenu->addSeparator();
 
     QMenu* lineMenu = editMenu->addMenu(tr("Line"));
-    lineMenu->addAction(tr("Duplicate Line"), this, &MainWindow::onDuplicateLineAction, QKeySequence("Ctrl+D"));
-    lineMenu->addAction(tr("Join Lines"), this, &MainWindow::onJoinLinesAction, QKeySequence("Ctrl+J"));
-    lineMenu->addAction(tr("Cut Line"), this, &MainWindow::onCutLineAction, QKeySequence("Ctrl+Del"));
+    lineMenu->addAction(tr("Duplicate Line"), QKeySequence("Ctrl+D"), this, &MainWindow::onDuplicateLineAction);
+    lineMenu->addAction(tr("Join Lines"), QKeySequence("Ctrl+J"), this, &MainWindow::onJoinLinesAction);
+    lineMenu->addAction(tr("Cut Line"), QKeySequence("Ctrl+Del"), this, &MainWindow::onCutLineAction);
 
     QMenu* indentMenu = editMenu->addMenu(tr("Indent"));
-    indentMenu->addAction(tr("Increase Indent"), this, &MainWindow::onIncreaseIndentAction, QKeySequence("Tab"));
-    indentMenu->addAction(tr("Decrease Indent"), this, &MainWindow::onDecreaseIndentAction, QKeySequence("Shift+Tab"));
+    indentMenu->addAction(tr("Increase Indent"), QKeySequence("Tab"), this, &MainWindow::onIncreaseIndentAction);
+    indentMenu->addAction(tr("Decrease Indent"), QKeySequence("Shift+Tab"), this, &MainWindow::onDecreaseIndentAction);
 
     QMenu* commentMenu = editMenu->addMenu(tr("Comment"));
-    commentMenu->addAction(tr("Toggle Single Line Comment"), this, &MainWindow::onToggleSingleLineCommentAction, QKeySequence("Ctrl+/"));
-    commentMenu->addAction(tr("Toggle Block Comment"), this, &MainWindow::onToggleBlockCommentAction, QKeySequence("Ctrl+Shift+/"));
+    commentMenu->addAction(tr("Toggle Single Line Comment"), QKeySequence("Ctrl+/"), this, &MainWindow::onToggleSingleLineCommentAction);
+    commentMenu->addAction(tr("Toggle Block Comment"), QKeySequence("Ctrl+Shift+/"), this, &MainWindow::onToggleBlockCommentAction);
 
-    editMenu->addAction(tr("Auto-Completer"), this, &MainWindow::onAutoCompleterAction, QKeySequence("Ctrl+Space"));
+    editMenu->addAction(tr("Auto-Completer"), QKeySequence("Ctrl+Space"), this, &MainWindow::onAutoCompleterAction);
     editMenu->addAction(tr("Clean Trailing Whitespace"), this, &MainWindow::onCleanTrailingWhitespaceAction);
     editMenu->addSeparator();
-    editMenu->addAction(tr("Go to Line..."), this, &MainWindow::onGoToLineAction, QKeySequence("Ctrl+G"));
+    editMenu->addAction(tr("Go to Line..."), QKeySequence("Ctrl+G"), this, &MainWindow::onGoToLineAction);
 
     buildMenu = menuBar()->addMenu(tr("Build"));
-    ActionManager::addAction(Const::Action::Build, buildMenu->addAction(tr("Build"), this, &MainWindow::onBuildAction, QKeySequence("Ctrl+B")));
-    ActionManager::addAction(Const::Action::Run, buildMenu->addAction(tr("Run"), this, &MainWindow::onRunAction, QKeySequence("Ctrl+R")));
-    ActionManager::addAction(Const::Action::Check, buildMenu->addAction(tr("Check"), this, &MainWindow::onCheckAction, QKeySequence("Ctrl+K")));
+    ActionManager::addAction(Const::Action::Build, buildMenu->addAction(tr("Build"), QKeySequence("Ctrl+B"), this, &MainWindow::onBuildAction));
+    ActionManager::addAction(Const::Action::Run, buildMenu->addAction(tr("Run"), QKeySequence("Ctrl+R"), this, &MainWindow::onRunAction));
+    ActionManager::addAction(Const::Action::Check, buildMenu->addAction(tr("Check"), QKeySequence("Ctrl+K"), this, &MainWindow::onCheckAction));
     ActionManager::addAction(Const::Action::Stop, buildMenu->addAction(tr("Stop"), this, &MainWindow::onStopAction));
     ActionManager::addAction(Const::Action::Clean, buildMenu->addAction(tr("Clean"), this, &MainWindow::onCleanAction));
 
