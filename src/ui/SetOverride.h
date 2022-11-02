@@ -1,7 +1,6 @@
 #pragma once
 #include "base/Dialog.h"
 
-class QLineEdit;
 class QComboBox;
 class BrowseLineEdit;
 
