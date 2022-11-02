@@ -1,7 +1,7 @@
 #pragma once
 #include "base/Dialog.h"
 
-class QLineEdit;
+class BrowseLineEdit;
 
 class SelectWorkspace : public Dialog {
     Q_OBJECT
@@ -12,9 +12,8 @@ protected slots:
     void accept() override;
 
 private slots:
-    void onBrowseButtonClicked();
     void adjustAcceptedButton(const QString& text);
 
 private:
-    QLineEdit* lineEdit = nullptr;
+    BrowseLineEdit* directoryBrowseLineEdit = nullptr;
 };
