@@ -1,5 +1,5 @@
 #include "Options.h"
-#include "base/BrowseLineEdit.h"
+#include "base/BrowseLayout.h"
 #include "core/Const.h"
 #include "core/Global.h"
 #include "core/Settings.h"
@@ -8,11 +8,11 @@
 Options::Options(QWidget* parent) : Dialog(parent) {
     setWindowTitle(tr("Options"));
 
-    workspaceBrowseLineEdit = new BrowseLineEdit;
+    workspaceBrowseLayout = new BrowseLayout;
 
     auto workspaceLayout = new QHBoxLayout;
     workspaceLayout->addWidget(new QLabel(tr("Workspace:")));
-    workspaceLayout->addLayout(workspaceBrowseLineEdit);
+    workspaceLayout->addLayout(workspaceBrowseLayout);
 
     auto pathGroupBox = new QGroupBox(tr("Path"));
     pathGroupBox->setLayout(workspaceLayout);
@@ -60,11 +60,11 @@ void Options::onAccepted() {
 }
 
 void Options::readSettings() {
-    workspaceBrowseLineEdit->lineEdit()->setText(Global::workspacePath());
+    workspaceBrowseLayout->lineEdit()->setText(Global::workspacePath());
     sessionCheckBox->setChecked(Settings::value("gui.mainWindow.session.restore").toBool());
 }
 
 void Options::writeSettings() {
-    Settings::setValue("workspace", workspaceBrowseLineEdit->lineEdit()->text());
+    Settings::setValue("workspace", workspaceBrowseLayout->lineEdit()->text());
     Settings::setValue("gui.mainWindow.session.restore", sessionCheckBox->isChecked());
 }

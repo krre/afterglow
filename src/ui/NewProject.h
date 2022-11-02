@@ -4,7 +4,7 @@
 
 class QLineEdit;
 class QComboBox;
-class BrowseLineEdit;
+class BrowseLayout;
 
 class NewProject : public Dialog {
     Q_OBJECT
@@ -19,6 +19,6 @@ private slots:
 
 private:
     QLineEdit* nameLineEdit = nullptr;
-    BrowseLineEdit* directoryBrowseLineEdit = nullptr;
+    BrowseLayout* directoryBrowseLayout = nullptr;
     QComboBox* templateComboBox = nullptr;
 };

@@ -39,7 +39,7 @@ SOURCES += \
     ui/SetOverride.cpp \
     ui/IssueModel.cpp \
     ui/IssueListView.cpp \
-    ui/base/BrowseLineEdit.cpp \
+    ui/base/BrowseLayout.cpp \
     ui/base/Dialog.cpp
 
 HEADERS += \
@@ -76,7 +76,7 @@ HEADERS += \
     ui/SetOverride.h \
     ui/IssueModel.h \
     ui/IssueListView.h \
-    ui/base/BrowseLineEdit.h \
+    ui/base/BrowseLayout.h \
     ui/base/Dialog.h
 
 FORMS +=

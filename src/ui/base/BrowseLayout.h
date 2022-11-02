@@ -3,9 +3,9 @@
 
 class QLineEdit;
 
-class BrowseLineEdit : public QHBoxLayout {
+class BrowseLayout : public QHBoxLayout {
 public:
-    BrowseLineEdit();
+    BrowseLayout();
 
     QLineEdit* lineEdit() const;
 

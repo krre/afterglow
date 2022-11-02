@@ -2,7 +2,7 @@
 #include "base/Dialog.h"
 
 class QComboBox;
-class BrowseLineEdit;
+class BrowseLayout;
 
 class SetOverride : public Dialog {
     Q_OBJECT
@@ -16,6 +16,6 @@ private slots:
     void onTextChanged(const QString& text);
 
 private:
-    BrowseLineEdit* directoryBrowseLineEdit = nullptr;
+    BrowseLayout* directoryBrowseLayout = nullptr;
     QComboBox* toolchainComboBox = nullptr;
 };

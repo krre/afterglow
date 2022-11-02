@@ -3,7 +3,7 @@
 #include "SetOverride.h"
 #include "StringListModel.h"
 #include "InstallToolchain.h"
-#include "base/BrowseLineEdit.h"
+#include "base/BrowseLayout.h"
 #include "core/Utils.h"
 #include "core/Const.h"
 #include "core/Settings.h"
@@ -68,8 +68,8 @@ RustInstaller::RustInstaller(QWidget* parent) : Dialog(parent) {
 
     connect(breakPushButton, &QPushButton::clicked, this, &RustInstaller::onBreakPushButtonClicked);
 
-    connect(rustupHomeBrowseLineEdit->lineEdit(), &QLineEdit::textChanged, this, &RustInstaller::onRustupHomeLineEditTextChanged);
-    connect(cargoHomeBrowseLineEdit->lineEdit(), &QLineEdit::textChanged, this, &RustInstaller::onCargoHomeLineEditTextChanged);
+    connect(rustupHomeBrowseLayout->lineEdit(), &QLineEdit::textChanged, this, &RustInstaller::onRustupHomeLineEditTextChanged);
+    connect(cargoHomeBrowseLayout->lineEdit(), &QLineEdit::textChanged, this, &RustInstaller::onCargoHomeLineEditTextChanged);
 
     connect(toolchainsListView, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
     connect(targetsListView, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
@@ -356,12 +356,12 @@ void RustInstaller::createRustupTab() {
     auto groupBox = new QGroupBox(tr("Environment Variables"));
 
 
-    rustupHomeBrowseLineEdit = new BrowseLineEdit;
-    cargoHomeBrowseLineEdit = new BrowseLineEdit;
+    rustupHomeBrowseLayout = new BrowseLayout;
+    cargoHomeBrowseLayout = new BrowseLayout;
 
     auto envFormLayout = new QFormLayout;
-    envFormLayout->addRow(new QLabel("RUSTUP_HOME:"), rustupHomeBrowseLineEdit);
-    envFormLayout->addRow(new QLabel("RUSTUP_HOME:"), cargoHomeBrowseLineEdit);
+    envFormLayout->addRow(new QLabel("RUSTUP_HOME:"), rustupHomeBrowseLayout);
+    envFormLayout->addRow(new QLabel("RUSTUP_HOME:"), cargoHomeBrowseLayout);
 
     groupBox->setLayout(envFormLayout);
 
@@ -702,15 +702,15 @@ void RustInstaller::cleanupTarget(QStringList& components) const {
 }
 
 void RustInstaller::readSettings() {
-    rustupHomeBrowseLineEdit->lineEdit()->setText(qEnvironmentVariable(Const::Environment::RustupHome));
-    cargoHomeBrowseLineEdit->lineEdit()->setText(qEnvironmentVariable(Const::Environment::CargoHome));
+    rustupHomeBrowseLayout->lineEdit()->setText(qEnvironmentVariable(Const::Environment::RustupHome));
+    cargoHomeBrowseLayout->lineEdit()->setText(qEnvironmentVariable(Const::Environment::CargoHome));
     tabWidget->setCurrentIndex(Settings::value("gui.rustInstaller.currentTab").toInt());
     settingsLoaded = true;
 }
 
 void RustInstaller::writeSettings() {
-    Settings::setValue("environment.rustupHome", rustupHomeBrowseLineEdit->lineEdit()->text());
-    Settings::setValue("environment.cargoHome", cargoHomeBrowseLineEdit->lineEdit()->text());
+    Settings::setValue("environment.rustupHome", rustupHomeBrowseLayout->lineEdit()->text());
+    Settings::setValue("environment.cargoHome", cargoHomeBrowseLayout->lineEdit()->text());
     Settings::setValue("gui.rustInstaller.currentTab", tabWidget->currentIndex());
     Settings::updateRustEnvironmentVariables();
 }

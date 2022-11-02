@@ -1,7 +1,7 @@
 #pragma once
 #include "base/Dialog.h"
 
-class BrowseLineEdit;
+class BrowseLayout;
 
 class SelectWorkspace : public Dialog {
     Q_OBJECT
@@ -15,5 +15,5 @@ private slots:
     void adjustAcceptedButton(const QString& text);
 
 private:
-    BrowseLineEdit* directoryBrowseLineEdit = nullptr;
+    BrowseLayout* directoryBrowseLayout = nullptr;
 };

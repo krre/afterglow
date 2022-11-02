@@ -2,7 +2,7 @@
 #include "base/Dialog.h"
 
 class QCheckBox;
-class BrowseLineEdit;
+class BrowseLayout;
 
 class Options : public Dialog {
     Q_OBJECT
@@ -20,6 +20,6 @@ private:
     void readSettings();
     void writeSettings();
 
-    BrowseLineEdit* workspaceBrowseLineEdit = nullptr;
+    BrowseLayout* workspaceBrowseLayout = nullptr;
     QCheckBox* sessionCheckBox = nullptr;
 };

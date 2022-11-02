@@ -13,7 +13,7 @@ class QPushButton;
 class QMenu;
 class FileDownloader;
 class CommandLine;
-class BrowseLineEdit;
+class BrowseLayout;
 
 class RustInstaller : public Dialog {
     Q_OBJECT
@@ -103,8 +103,8 @@ private:
 
     QTabWidget* tabWidget = nullptr;
     QPlainTextEdit* consolePlainTextEdit = nullptr;
-    BrowseLineEdit* rustupHomeBrowseLineEdit = nullptr;
-    BrowseLineEdit* cargoHomeBrowseLineEdit = nullptr;
+    BrowseLayout* rustupHomeBrowseLayout = nullptr;
+    BrowseLayout* cargoHomeBrowseLayout = nullptr;
     QLineEdit* versionLineEdit = nullptr;
 
     QListView* toolchainsListView = nullptr;
