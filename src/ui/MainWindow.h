@@ -74,7 +74,7 @@ private slots:
 
     // Tools
     void onRustInstallerAction();
-    void onOptionsAction();
+    void onPreferencesAction();
 
     // Help
     void onDocumentationAction();

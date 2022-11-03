@@ -5,7 +5,7 @@
 #include "core/Utils.h"
 #include "NewProject.h"
 #include "GoToLine.h"
-#include "Options.h"
+#include "Preferences.h"
 #include "RustInstaller.h"
 #include "process/CargoManager.h"
 #include "ProjectTree.h"
@@ -383,12 +383,12 @@ void MainWindow::onRustInstallerAction() {
     installer.exec();
 }
 
-void MainWindow::onOptionsAction() {
-    Options options(this);
-    connect(&options, &Options::openPrefs, this, [=] {
+void MainWindow::onPreferencesAction() {
+    Preferences preferences(this);
+    connect(&preferences, &Preferences::openPrefs, this, [=] {
         addSourceTab(Settings::prefsPath());
     });
-    options.exec();
+    preferences.exec();
 }
 
 void MainWindow::onDocumentationAction() {
@@ -614,6 +614,10 @@ void MainWindow::createActions() {
     ActionManager::addAction(Const::Action::CloseOther, fileMenu->addAction(tr("Close Other"), this, &MainWindow::onCloseOtherAction));
 
     fileMenu->addSeparator();
+
+    fileMenu->addAction(tr("Preferences..."), this, &MainWindow::onPreferencesAction);
+
+    fileMenu->addSeparator();
     fileMenu->addAction(tr("Exit"), QKeySequence("Ctrl+Q"), this, &MainWindow::close);
 
     editMenu = menuBar()->addMenu(tr("Edit"));
@@ -654,7 +658,6 @@ void MainWindow::createActions() {
 
     QMenu* toolsMenu = menuBar()->addMenu(tr("Tools"));
     toolsMenu->addAction(tr("Rust Installer..."), this, &MainWindow::onRustInstallerAction);
-    toolsMenu->addAction(tr("Options..."), this, &MainWindow::onOptionsAction);
 
     QMenu* viewMenu = menuBar()->addMenu(tr("View"));
 

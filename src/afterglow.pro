@@ -10,8 +10,8 @@ SOURCES += \
         main.cpp \
     ui/MainWindow.cpp \
     core/Global.cpp \
+    ui/Preferences.cpp \
     ui/SelectWorkspace.cpp \
-    ui/Options.cpp \
     ui/NewProject.cpp \
     texteditor/LineNumberArea.cpp \
     texteditor/Highlighter.cpp \
@@ -46,8 +46,8 @@ HEADERS += \
     core/Const.h \
     ui/MainWindow.h \
     core/Global.h \
+    ui/Preferences.h \
     ui/SelectWorkspace.h \
-    ui/Options.h \
     ui/NewProject.h \
     texteditor/LineNumberArea.h \
     texteditor/Highlighter.h \

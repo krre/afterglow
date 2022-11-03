@@ -1,12 +1,12 @@
-#include "Options.h"
+#include "Preferences.h"
 #include "base/BrowseLayout.h"
 #include "core/Const.h"
 #include "core/Global.h"
 #include "core/Settings.h"
 #include <QtWidgets>
 
-Options::Options(QWidget* parent) : Dialog(parent) {
-    setWindowTitle(tr("Options"));
+Preferences::Preferences(QWidget* parent) : Dialog(parent) {
+    setWindowTitle(tr("Preferences"));
 
     workspaceBrowseLayout = new BrowseLayout;
 
@@ -37,13 +37,13 @@ Options::Options(QWidget* parent) : Dialog(parent) {
     setContentLayout(verticalLayout);
     resizeToWidth(600);
 
-    connect(openPrefsPushButton, &QPushButton::clicked, this, &Options::openPrefs);
-    connect(resetSettingsPushButton, &QPushButton::clicked, this, &Options::onResetSettingsClicked);
+    connect(openPrefsPushButton, &QPushButton::clicked, this, &Preferences::openPrefs);
+    connect(resetSettingsPushButton, &QPushButton::clicked, this, &Preferences::onResetSettingsClicked);
 
     readSettings();
 }
 
-void Options::onResetSettingsClicked() {
+void Preferences::onResetSettingsClicked() {
     int button = QMessageBox::question(this, tr("Reset Settings"), tr("Settings will be reseted to default.\n"
                                                                       "You are need restart application.\n"
                                                                       "Continue?"),
@@ -54,17 +54,17 @@ void Options::onResetSettingsClicked() {
     }
 }
 
-void Options::onAccepted() {
+void Preferences::onAccepted() {
     writeSettings();
     accept();
 }
 
-void Options::readSettings() {
+void Preferences::readSettings() {
     workspaceBrowseLayout->lineEdit()->setText(Global::workspacePath());
     sessionCheckBox->setChecked(Settings::value("gui.mainWindow.session.restore").toBool());
 }
 
-void Options::writeSettings() {
+void Preferences::writeSettings() {
     Settings::setValue("workspace", workspaceBrowseLayout->lineEdit()->text());
     Settings::setValue("gui.mainWindow.session.restore", sessionCheckBox->isChecked());
 }

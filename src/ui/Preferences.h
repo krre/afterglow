@@ -4,10 +4,10 @@
 class QCheckBox;
 class BrowseLayout;
 
-class Options : public Dialog {
+class Preferences : public Dialog {
     Q_OBJECT
 public:
-    explicit Options(QWidget* parent = nullptr);
+    explicit Preferences(QWidget* parent = nullptr);
 
 signals:
     void openPrefs();
