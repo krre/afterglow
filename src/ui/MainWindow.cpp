@@ -17,7 +17,6 @@
 #include "process/RlsManager.h"
 #include "IssueListView.h"
 #include "IssueModel.h"
-#include "NewName.h"
 #ifdef Q_OS_WIN
     #include <windows.h>
 #endif
