@@ -22,6 +22,8 @@ GoToLine::GoToLine(QWidget* parent) : Dialog(parent) {
 
     buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
     connect(lineEdit, &QLineEdit::textChanged, this, &GoToLine::onTextChanged);
+
+    lineEdit->setFocus();
 }
 
 int GoToLine::line() const {
