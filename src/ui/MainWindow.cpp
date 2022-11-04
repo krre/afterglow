@@ -585,11 +585,11 @@ void MainWindow::createActions() {
     QMenu* newFileMenu = fileMenu->addMenu(tr("New"));
 
     ActionManager::addAction(Const::Action::NewProject, newFileMenu->addAction(tr("Project..."), this, &MainWindow::onNewProjectAction));
-    ActionManager::addAction(Const::Action::NewRustFile, newFileMenu->addAction(tr("Rust File..."), QKeySequence("Ctrl+N"), this, &MainWindow::onNewRustFileAction));
+    ActionManager::addAction(Const::Action::NewRustFile, newFileMenu->addAction(tr("Rust File..."), Qt::CTRL | Qt::Key_N, this, &MainWindow::onNewRustFileAction));
     ActionManager::addAction(Const::Action::NewFile, newFileMenu->addAction(tr("File..."), this, &MainWindow::onNewFileAction));
     ActionManager::addAction(Const::Action::NewDirectory, newFileMenu->addAction(tr("Directory..."), this, &MainWindow::onNewDirectoryAction));
 
-    ActionManager::addAction(Const::Action::Open, fileMenu->addAction(tr("Open..."), QKeySequence("Ctrl+O"), this, &MainWindow::onOpenAction));
+    ActionManager::addAction(Const::Action::Open, fileMenu->addAction(tr("Open..."), Qt::CTRL | Qt::Key_O, this, &MainWindow::onOpenAction));
     ActionManager::addAction(Const::Action::CloseProject, fileMenu->addAction(tr("Close Project"), this, &MainWindow::onCloseProjectAction));
 
     recentFilesMenu = fileMenu->addMenu(tr("Recent Files"));
@@ -602,14 +602,14 @@ void MainWindow::createActions() {
 
     fileMenu->addSeparator();
 
-    ActionManager::addAction(Const::Action::Save, fileMenu->addAction(tr("Save"), QKeySequence("Ctrl+S"), this, &MainWindow::onSaveAction));
+    ActionManager::addAction(Const::Action::Save, fileMenu->addAction(tr("Save"), Qt::CTRL | Qt::Key_S, this, &MainWindow::onSaveAction));
     ActionManager::addAction(Const::Action::SaveAs, fileMenu->addAction(tr("Save As..."), this, &MainWindow::onSaveAsAction));
-    ActionManager::addAction(Const::Action::SaveAll, fileMenu->addAction(tr("Save All"), QKeySequence("Ctrl+Shift+S"), this, &MainWindow::onSaveAllAction));
+    ActionManager::addAction(Const::Action::SaveAll, fileMenu->addAction(tr("Save All"), Qt::CTRL | Qt::SHIFT | Qt::Key_S, this, &MainWindow::onSaveAllAction));
 
     fileMenu->addSeparator();
 
-    ActionManager::addAction(Const::Action::Close, fileMenu->addAction(tr("Close"), QKeySequence("Ctrl+W"), this, &MainWindow::onCloseAction));
-    ActionManager::addAction(Const::Action::CloseAll, fileMenu->addAction(tr("Close All"), QKeySequence("Ctrl+Shift+W"), this, &MainWindow::onCloseAllAction));
+    ActionManager::addAction(Const::Action::Close, fileMenu->addAction(tr("Close"), Qt::CTRL | Qt::Key_W, this, &MainWindow::onCloseAction));
+    ActionManager::addAction(Const::Action::CloseAll, fileMenu->addAction(tr("Close All"), Qt::CTRL | Qt::SHIFT | Qt::Key_W, this, &MainWindow::onCloseAllAction));
     ActionManager::addAction(Const::Action::CloseOther, fileMenu->addAction(tr("Close Other"), this, &MainWindow::onCloseOtherAction));
 
     fileMenu->addSeparator();
@@ -617,41 +617,41 @@ void MainWindow::createActions() {
     fileMenu->addAction(tr("Preferences..."), this, &MainWindow::onPreferencesAction);
 
     fileMenu->addSeparator();
-    fileMenu->addAction(tr("Exit"), QKeySequence("Ctrl+Q"), this, &MainWindow::close);
+    fileMenu->addAction(tr("Exit"), Qt::CTRL | Qt::Key_Q, this, &MainWindow::close);
 
     editMenu = menuBar()->addMenu(tr("Edit"));
-    editMenu->addAction(tr("Undo"), QKeySequence("Ctrl+Z"), this, &MainWindow::onUndoAction);
-    editMenu->addAction(tr("Redo"), QKeySequence("Ctrl+Shift+Z"), this, &MainWindow::onRedoAction);
+    editMenu->addAction(tr("Undo"), Qt::CTRL | Qt::Key_Z, this, &MainWindow::onUndoAction);
+    editMenu->addAction(tr("Redo"), Qt::CTRL | Qt::SHIFT | Qt::Key_N, this, &MainWindow::onRedoAction);
     editMenu->addSeparator();
-    editMenu->addAction(tr("Cut"), QKeySequence("Ctrl+X"), this, &MainWindow::onCutAction);
-    editMenu->addAction(tr("Copy"), QKeySequence("Ctrl+C"), this, &MainWindow::onCopyAction);
-    editMenu->addAction(tr("Paste"), QKeySequence("Ctrl+V"), this, &MainWindow::onPasteAction);
+    editMenu->addAction(tr("Cut"), Qt::CTRL | Qt::Key_X, this, &MainWindow::onCutAction);
+    editMenu->addAction(tr("Copy"), Qt::CTRL | Qt::Key_C, this, &MainWindow::onCopyAction);
+    editMenu->addAction(tr("Paste"), Qt::CTRL | Qt::Key_V, this, &MainWindow::onPasteAction);
     editMenu->addSeparator();
-    editMenu->addAction(tr("Select All"), QKeySequence("Ctrl+A"), this, &MainWindow::onSelectAllAction);
+    editMenu->addAction(tr("Select All"), Qt::CTRL | Qt::Key_A, this, &MainWindow::onSelectAllAction);
     editMenu->addSeparator();
 
     QMenu* lineMenu = editMenu->addMenu(tr("Line"));
-    lineMenu->addAction(tr("Duplicate Line"), QKeySequence("Ctrl+D"), this, &MainWindow::onDuplicateLineAction);
-    lineMenu->addAction(tr("Join Lines"), QKeySequence("Ctrl+J"), this, &MainWindow::onJoinLinesAction);
-    lineMenu->addAction(tr("Cut Line"), QKeySequence("Ctrl+Del"), this, &MainWindow::onCutLineAction);
+    lineMenu->addAction(tr("Duplicate Line"), Qt::CTRL | Qt::Key_D, this, &MainWindow::onDuplicateLineAction);
+    lineMenu->addAction(tr("Join Lines"), Qt::CTRL | Qt::Key_J, this, &MainWindow::onJoinLinesAction);
+    lineMenu->addAction(tr("Cut Line"), Qt::CTRL | Qt::Key_Delete, this, &MainWindow::onCutLineAction);
 
     QMenu* indentMenu = editMenu->addMenu(tr("Indent"));
-    indentMenu->addAction(tr("Increase Indent"), QKeySequence("Tab"), this, &MainWindow::onIncreaseIndentAction);
-    indentMenu->addAction(tr("Decrease Indent"), QKeySequence("Shift+Tab"), this, &MainWindow::onDecreaseIndentAction);
+    indentMenu->addAction(tr("Increase Indent"), Qt::Key_Tab, this, &MainWindow::onIncreaseIndentAction);
+    indentMenu->addAction(tr("Decrease Indent"), Qt::SHIFT | Qt::Key_Tab, this, &MainWindow::onDecreaseIndentAction);
 
     QMenu* commentMenu = editMenu->addMenu(tr("Comment"));
-    commentMenu->addAction(tr("Toggle Single Line Comment"), QKeySequence("Ctrl+/"), this, &MainWindow::onToggleSingleLineCommentAction);
-    commentMenu->addAction(tr("Toggle Block Comment"), QKeySequence("Ctrl+Shift+/"), this, &MainWindow::onToggleBlockCommentAction);
+    commentMenu->addAction(tr("Toggle Single Line Comment"), Qt::CTRL | Qt::Key_Slash, this, &MainWindow::onToggleSingleLineCommentAction);
+    commentMenu->addAction(tr("Toggle Block Comment"), Qt::CTRL | Qt::SHIFT | Qt::Key_Slash, this, &MainWindow::onToggleBlockCommentAction);
 
-    editMenu->addAction(tr("Auto-Completer"), QKeySequence("Ctrl+Space"), this, &MainWindow::onAutoCompleterAction);
+    editMenu->addAction(tr("Auto-Completer"), Qt::CTRL | Qt::Key_Space, this, &MainWindow::onAutoCompleterAction);
     editMenu->addAction(tr("Clean Trailing Whitespace"), this, &MainWindow::onCleanTrailingWhitespaceAction);
     editMenu->addSeparator();
-    editMenu->addAction(tr("Go to Line..."), QKeySequence("Ctrl+G"), this, &MainWindow::onGoToLineAction);
+    editMenu->addAction(tr("Go to Line..."), Qt::CTRL | Qt::Key_G, this, &MainWindow::onGoToLineAction);
 
     buildMenu = menuBar()->addMenu(tr("Build"));
-    ActionManager::addAction(Const::Action::Build, buildMenu->addAction(tr("Build"), QKeySequence("Ctrl+B"), this, &MainWindow::onBuildAction));
-    ActionManager::addAction(Const::Action::Run, buildMenu->addAction(tr("Run"), QKeySequence("Ctrl+R"), this, &MainWindow::onRunAction));
-    ActionManager::addAction(Const::Action::Check, buildMenu->addAction(tr("Check"), QKeySequence("Ctrl+K"), this, &MainWindow::onCheckAction));
+    ActionManager::addAction(Const::Action::Build, buildMenu->addAction(tr("Build"), Qt::CTRL | Qt::Key_B, this, &MainWindow::onBuildAction));
+    ActionManager::addAction(Const::Action::Run, buildMenu->addAction(tr("Run"), Qt::CTRL | Qt::Key_R, this, &MainWindow::onRunAction));
+    ActionManager::addAction(Const::Action::Check, buildMenu->addAction(tr("Check"), Qt::CTRL | Qt::Key_K, this, &MainWindow::onCheckAction));
     ActionManager::addAction(Const::Action::Stop, buildMenu->addAction(tr("Stop"), this, &MainWindow::onStopAction));
     ActionManager::addAction(Const::Action::Clean, buildMenu->addAction(tr("Clean"), this, &MainWindow::onCleanAction));
 
