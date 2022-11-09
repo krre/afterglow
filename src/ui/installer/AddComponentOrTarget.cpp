@@ -1,6 +1,6 @@
 #include "AddComponentOrTarget.h"
 #include "core/Utils.h"
-#include "StringListModel.h"
+#include "ui/StringListModel.h"
 #include <QtWidgets>
 
 AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& command, QWidget *parent) : Dialog(parent) {

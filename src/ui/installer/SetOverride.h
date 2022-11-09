@@ -1,5 +1,5 @@
 #pragma once
-#include "base/Dialog.h"
+#include "ui/base/Dialog.h"
 
 class QComboBox;
 class BrowseLayout;

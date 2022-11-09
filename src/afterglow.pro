@@ -28,19 +28,19 @@ SOURCES += \
     texteditor/SyntaxHighlightManager.cpp \
     ui/GoToLine.cpp \
     ui/ActionManager.cpp \
-    ui/RustInstaller.cpp \
     core/FileDownloader.cpp \
     process/RlsManager.cpp \
     ui/CommandLine.cpp \
     ui/StringListModel.cpp \
     core/Utils.cpp \
-    ui/InstallToolchain.cpp \
-    ui/AddComponentOrTarget.cpp \
-    ui/SetOverride.cpp \
     ui/IssueModel.cpp \
     ui/IssueListView.cpp \
     ui/base/BrowseLayout.cpp \
-    ui/base/Dialog.cpp
+    ui/base/Dialog.cpp \
+    ui/installer/AddComponentOrTarget.cpp \
+    ui/installer/InstallToolchain.cpp \
+    ui/installer/RustInstaller.cpp \
+    ui/installer/SetOverride.cpp
 
 HEADERS += \
     core/Const.h \
@@ -65,19 +65,19 @@ HEADERS += \
     texteditor/SyntaxHighlightManager.h \
     ui/GoToLine.h \
     ui/ActionManager.h \
-    ui/RustInstaller.h \
     core/FileDownloader.h \
     process/RlsManager.h \
     ui/CommandLine.h \
     ui/StringListModel.h \
     core/Utils.h \
-    ui/InstallToolchain.h \
-    ui/AddComponentOrTarget.h \
-    ui/SetOverride.h \
     ui/IssueModel.h \
     ui/IssueListView.h \
     ui/base/BrowseLayout.h \
-    ui/base/Dialog.h
+    ui/base/Dialog.h \
+    ui/installer/AddComponentOrTarget.h \
+    ui/installer/InstallToolchain.h \
+    ui/installer/RustInstaller.h \
+    ui/installer/SetOverride.h
 
 FORMS +=
 
