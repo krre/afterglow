@@ -50,11 +50,11 @@ Qt::ItemFlags StringListModel::flags(const QModelIndex& index) const {
 
 bool StringListModel::setData(const QModelIndex& index, const QVariant& value, int role) {
     if (index.isValid() && role == Qt::EditRole) {
-
         stringList.replace(index.row(), value.toString());
         emit dataChanged(index, index);
         return true;
     }
+
     return false;
 }
 
