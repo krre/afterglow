@@ -17,14 +17,15 @@ void SyntaxHighlightManager::addSyntaxFile(const QString& path) {
     }
 
     QJsonParseError err;
-    QJsonDocument doc(QJsonDocument::fromJson(file.readAll(), &err));
+    QJsonObject syntax = QJsonDocument::fromJson(file.readAll(), &err).object();
+
     if (err.error != QJsonParseError::NoError) {
         qWarning() << "Failed to parse JSON file" << file.fileName();
         qWarning() << "Error:" << err.errorString() << "offset:" << err.offset;
         return;
     }
 
-    syntaxJsonObjects[doc.object()["lang"].toObject()["extension"].toString()] = doc.object();
+    syntaxJsonObjects[syntax["lang"].toObject()["extension"].toString()] = syntax;
 }
 
 QJsonObject SyntaxHighlightManager::getSyntaxJson(const QString& ext) const {

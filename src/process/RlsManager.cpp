@@ -59,10 +59,7 @@ void RlsManager::send(const QString& method, const QJsonObject& params) {
         obj["params"] = params;
     }
 
-    QJsonDocument doc;
-    doc.setObject(obj);
-    QString jsonrpc = doc.toJson(QJsonDocument::Compact);
-
+    QString jsonrpc = QJsonDocument(obj).toJson(QJsonDocument::Compact);
     QString message = QString("Content-Length: %1\r\n").arg(jsonrpc.size());
     message += "\r\n";
     message += jsonrpc;
@@ -99,8 +96,8 @@ void RlsManager::onReadyReadStandardOutput(const QString& data) {
 
     QStringList rows = data.split("\r\n");
     if (rows.count() >= 3) {
-        QJsonDocument doc = QJsonDocument::fromJson(rows.at(2).toUtf8());
-        QJsonObject obj = doc.object();
+        QJsonObject obj = QJsonDocument::fromJson(rows.at(2).toUtf8()).object();
+
         if (obj.contains("id")) {
             int id = obj["id"].toInt();
             if (identifiers.contains(id)) {

@@ -25,7 +25,7 @@ void Settings::init() {
     }
 
     QJsonParseError err;
-    QJsonDocument resDoc(QJsonDocument::fromJson(resPrefsFile.readAll(), &err));
+    QJsonObject prefs = QJsonDocument::fromJson(resPrefsFile.readAll(), &err).object();
 
     if (err.error != QJsonParseError::NoError) {
         qWarning() << "Failed to parse JSON file" << resPrefsFile.fileName();
@@ -51,12 +51,12 @@ void Settings::init() {
         }
 
         // Update preferences.
-        QJsonObject src = resDoc.object();
+        QJsonObject src = prefs;
         cleanupDeprecated(src, *storage);
         appendNew(src, *storage);
     } else {
         // Create preferences from resources.
-        *storage = resDoc.object();
+        *storage = prefs;
     }
 
     flush();
@@ -76,8 +76,7 @@ void Settings::flush() {
         return;
     }
 
-    QJsonDocument doc(*storage);
-    file.write(doc.toJson());
+    file.write(QJsonDocument(*storage).toJson());
 }
 
 // Using:

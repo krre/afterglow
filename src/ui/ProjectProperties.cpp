@@ -76,9 +76,7 @@ void ProjectProperties::updateMetadata() {
     process.start("cargo", arguments);
     process.waitForFinished();
 
-    QJsonDocument doc(QJsonDocument::fromJson(process.readAllStandardOutput()));
-    metadata = doc.object();
-
+    metadata = QJsonDocument::fromJson(process.readAllStandardOutput()).object();
     QJsonArray targets = metadata["packages"].toArray().at(0).toObject()["targets"].toArray();
 
     for (int i = 0; i < targets.size(); i++) {

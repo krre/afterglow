@@ -475,6 +475,7 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
         if (block.at(0) == '{') {
             QJsonParseError error;
             QJsonDocument doc = QJsonDocument::fromJson(block.toUtf8(), &error);
+
             if (!doc.isNull() && doc.isObject()) {
                 isJson = true;
                 QJsonObject obj = doc.object();
@@ -726,8 +727,7 @@ void MainWindow::saveProjectProperties() {
     obj["target"] = static_cast<int>(projectProperties->buildTarget());
     obj["arguments"] = projectProperties->arguments();
 
-    QJsonDocument doc(obj);
-    file.write(doc.toJson());
+    file.write(QJsonDocument(obj).toJson());
 }
 
 void MainWindow::loadProjectProperties() {
@@ -746,9 +746,7 @@ void MainWindow::loadProjectProperties() {
         return;
     }
 
-    QJsonDocument doc(QJsonDocument::fromJson(file.readAll()));
-    QJsonObject obj = doc.object();
-
+    QJsonObject obj = QJsonDocument::fromJson(file.readAll()).object();
     CargoManager::BuildTarget target = static_cast<CargoManager::BuildTarget>(obj["target"].toInt());
     projectProperties->setBuildTarget(target);
     projectProperties->setArguments(obj["arguments"].toString());
@@ -951,8 +949,7 @@ void MainWindow::saveSession() {
     obj["openFiles"] = openFiles;
     obj["selectedTab"] = sourceTabWidget->currentIndex();
 
-    QJsonDocument doc(obj);
-    file.write(doc.toJson());
+    file.write(QJsonDocument(obj).toJson());
 }
 
 void MainWindow::loadSession() {
@@ -971,9 +968,9 @@ void MainWindow::loadSession() {
         return;
     }
 
-    QJsonDocument doc(QJsonDocument::fromJson(file.readAll()));
-    QJsonArray array = doc.object()["openFiles"].toArray();
-    int selectedTab = doc.object()["selectedTab"].toInt();
+    QJsonObject session = QJsonDocument::fromJson(file.readAll()).object();
+    QJsonArray array = session["openFiles"].toArray();
+    int selectedTab = session["selectedTab"].toInt();
     QString selectedFilePath = array.at(selectedTab).toObject()["path"].toString();
 
     for (int i = 0; i < array.count(); i++) {
