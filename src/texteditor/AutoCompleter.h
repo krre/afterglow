@@ -7,7 +7,6 @@ class QKeyEvent;
 class QStringListModel;
 
 class AutoCompleter : public QCompleter {
-    Q_OBJECT
 public:
     explicit AutoCompleter(QObject* parent = nullptr);
     void setTextEditor(TextEditor* editor);

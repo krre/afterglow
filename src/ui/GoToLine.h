@@ -4,7 +4,6 @@
 class QLineEdit;
 
 class GoToLine : public StandardDialog {
-    Q_OBJECT
 public:
     explicit GoToLine(QWidget* parent = nullptr);
     int line() const;

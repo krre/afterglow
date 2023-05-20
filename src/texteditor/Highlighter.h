@@ -6,7 +6,6 @@
 class QTextDocument;
 
 class Highlighter : public QSyntaxHighlighter {
-    Q_OBJECT
 public:
     explicit Highlighter(const QString& fileExt, QTextDocument* parent);
     const QString& getLangName() const { return langName; }

@@ -13,7 +13,6 @@ struct Issue {
 class IssueModel : public QAbstractItemModel {
     Q_OBJECT
 public:
-
     enum class Role {
         Level = Qt::UserRole,
         Message,

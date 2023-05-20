@@ -2,7 +2,6 @@
 #include <QProcess>
 
 class ProcessManager : public QObject {
-    Q_OBJECT
 public:
     explicit ProcessManager(QObject* parent = nullptr);
     QProcess* process() const;

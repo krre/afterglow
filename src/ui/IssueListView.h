@@ -5,7 +5,6 @@
 class IssueModel;
 
 class IssueDelegate : public QStyledItemDelegate {
-    Q_OBJECT
 public:
     IssueDelegate(QObject* parent = nullptr);
 
@@ -16,7 +15,6 @@ public:
 };
 
 class IssueListView : public QListView {
-    Q_OBJECT
 public:
     explicit IssueListView(IssueModel* model, QWidget* parent = nullptr);
 

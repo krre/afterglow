@@ -13,7 +13,7 @@ AutoCompleter::AutoCompleter(QObject* parent) : QCompleter(parent) {
     tmpPath = QDir::tempPath() + "/racer.tmp";
     tmpFile.setFileName(tmpPath);
 
-    connect(this, SIGNAL(activated(QString)), this, SLOT(onActivate(QString)));
+    connect(this, qOverload<const QString&>(&QCompleter::activated), this, &AutoCompleter::onActivate);
     connect(RlsManager::instance(), &RlsManager::completionResult, this, &AutoCompleter::onCompletionResult);
 }
 
