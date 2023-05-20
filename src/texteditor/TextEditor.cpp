@@ -3,7 +3,7 @@
 #include "Highlighter.h"
 #include "AutoCompleter.h"
 #include "core/Settings.h"
-#include "core/Const.h"
+#include "core/Constants.h"
 #include <QtWidgets>
 
 TextEditor::TextEditor(QString filePath, QWidget* parent) :

@@ -13,7 +13,7 @@
 #include "texteditor/AutoCompleter.h"
 #include "texteditor/SyntaxHighlightManager.h"
 #include "core/Global.h"
-#include "core/Const.h"
+#include "core/Constants.h"
 #include "core/Settings.h"
 #include "core/Utils.h"
 #include "process/RlsManager.h"

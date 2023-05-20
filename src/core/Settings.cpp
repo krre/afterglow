@@ -1,5 +1,5 @@
 #include "Settings.h"
-#include "Const.h"
+#include "Constants.h"
 #include "Global.h"
 #include <QtCore>
 

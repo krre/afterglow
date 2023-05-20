@@ -5,7 +5,7 @@
 #include "ui/base/BrowseLayout.h"
 #include "ui/StringListModel.h"
 #include "core/Utils.h"
-#include "core/Const.h"
+#include "core/Constants.h"
 #include "core/Settings.h"
 #include "core/FileDownloader.h"
 #include "core/Settings.h"

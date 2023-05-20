@@ -43,7 +43,7 @@ SOURCES += \
     ui/installer/SetOverride.cpp
 
 HEADERS += \
-    core/Const.h \
+    core/Constants.h \
     ui/MainWindow.h \
     core/Global.h \
     ui/Preferences.h \

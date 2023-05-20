@@ -1,6 +1,6 @@
 #include "ui/MainWindow.h"
 #include "ui/SelectWorkspace.h"
-#include "core/Const.h"
+#include "core/Constants.h"
 #include "core/Global.h"
 #include "core/Settings.h"
 #include <QApplication>

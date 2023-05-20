@@ -1,6 +1,6 @@
 #include "Preferences.h"
 #include "base/BrowseLayout.h"
-#include "core/Const.h"
+#include "core/Constants.h"
 #include "core/Global.h"
 #include "core/Settings.h"
 #include <QtWidgets>

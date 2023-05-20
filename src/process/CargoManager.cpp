@@ -1,7 +1,7 @@
 #include "CargoManager.h"
 #include "ui/ProjectProperties.h"
 #include "core/Settings.h"
-#include "core/Const.h"
+#include "core/Constants.h"
 #include <QtCore>
 
 CargoManager::CargoManager(ProjectProperties* projectProperties, QObject* parent) :

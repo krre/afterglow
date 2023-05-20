@@ -1,6 +1,6 @@
 #include "IssueListView.h"
 #include "IssueModel.h"
-#include "core/Const.h"
+#include "core/Constants.h"
 #include "core/Settings.h"
 #include "core/Global.h"
 #include <QtWidgets>

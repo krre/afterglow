@@ -1,5 +1,5 @@
 #include "Global.h"
-#include "Const.h"
+#include "Constants.h"
 #include "Settings.h"
 #include <QtGui>
 
