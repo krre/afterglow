@@ -15,10 +15,10 @@ InstallToolchain::InstallToolchain(QWidget* parent) : StandardDialog(parent) {
     channelHorizontalLayout->setContentsMargins(-1, 0, -1, -1);
 
     channelComboBox = new QComboBox;
-    channelComboBox->addItem(QString("stable"));
-    channelComboBox->addItem(QString("beta"));
-    channelComboBox->addItem(QString("nightly"));
-    channelComboBox->addItem(QString("version"));
+    channelComboBox->addItem("stable");
+    channelComboBox->addItem("beta");
+    channelComboBox->addItem("nightly");
+    channelComboBox->addItem("version");
 
     channelHorizontalLayout->addWidget(channelComboBox);
 
