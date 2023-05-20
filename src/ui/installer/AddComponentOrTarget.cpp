@@ -3,7 +3,7 @@
 #include "ui/StringListModel.h"
 #include <QtWidgets>
 
-AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& command, QWidget *parent) : Dialog(parent) {
+AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& command, QWidget* parent) : Dialog(parent) {
     setWindowTitle(title);
     resize(400, 300);
 
