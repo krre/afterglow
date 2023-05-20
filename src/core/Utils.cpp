@@ -3,20 +3,26 @@
 
 QStringList Utils::listFromConsole(const QString& command) {
     QProcess process;
-    QStringList list;
+    QByteArray output;
 
     QObject::connect(&process, &QProcess::readyReadStandardOutput, [&] () {
-        QString output = process.readAllStandardOutput();
-        list << output.split("\n", Qt::SkipEmptyParts);
+        output += process.readAllStandardOutput();
     });
 
     QStringList arguments = command.split(" ");
-    QString program = arguments.at(0);
+    QString program = arguments.first();
     arguments.removeFirst();
     process.start(program, arguments);
     process.waitForFinished();
 
-    return list;
+    QStringList result;
+
+    for (auto& part : output.split('\n')) {
+        if (part.isEmpty()) continue;
+        result.append(part);
+    }
+
+    return result;
 }
 
 QStringList Utils::selectedRowsFromListView(QListView* listView, bool removeDefaultSuffix) {
