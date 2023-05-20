@@ -609,13 +609,13 @@ void RustInstaller::loadToolchainList() {
 }
 
 void RustInstaller::loadTargetList() {
-    loadAndFilterList("rustup target list", targetsListView, std::bind(&RustInstaller::defaultInstalledFilter, this, _1));
+    loadAndFilterList("rustup target list", targetsListView, [=] (QStringList& list) { defaultInstalledFilter(list); });
     updateTargetButtonsState();
     defaultTarget = findDefault(targetsListView);
 }
 
 void RustInstaller::loadComponentList() {
-    loadAndFilterList("rustup component list", componentsListView, std::bind(&RustInstaller::rustStdFilter, this, _1));
+    loadAndFilterList("rustup component list", componentsListView, [=] (QStringList& list) { rustStdFilter(list); });
     updateComponentButtonsState();
 }
 
