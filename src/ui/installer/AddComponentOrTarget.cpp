@@ -19,7 +19,7 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
 
     connect(listView, &QListView::customContextMenuRequested, this, &AddComponentOrTarget::onCustomContextMenu);
 
-    QStringList list = Utils::listFromConsole(command);
+    QStringList list = Utils::runConsoleCommand(command);
 
     for (int i = list.count() - 1; i >= 0; i--) {
         if (list.at(i).contains("(default)") || list.at(i).contains("(installed)")

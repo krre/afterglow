@@ -592,7 +592,7 @@ void RustInstaller::updateAllButtonsState() {
 }
 
 void RustInstaller::loadVersion() {
-    QStringList list = Utils::listFromConsole("rustup show");
+    QStringList list = Utils::runConsoleCommand("rustup show");
 
     for (const QString& row : list) {
         if (row.left(5) == "rustc") {
@@ -626,7 +626,7 @@ void RustInstaller::loadOverrideList() {
 
 void RustInstaller::loadAndFilterList(const QString& command, QListView* listView, const std::function<void(QStringList&)>& filter) {
     StringListModel* model = static_cast<StringListModel*>(listView->model());
-    QStringList list = Utils::listFromConsole(command);
+    QStringList list = Utils::runConsoleCommand(command);
 
     if (list.count() == 1 && list.at(0).left(2) == "no") {
         list.removeFirst();

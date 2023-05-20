@@ -1,7 +1,7 @@
 #include "Utils.h"
 #include <QtWidgets>
 
-QStringList Utils::listFromConsole(const QString& command) {
+QStringList Utils::runConsoleCommand(const QString& command) {
     QProcess process;
     QByteArray output;
 

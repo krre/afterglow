@@ -21,8 +21,8 @@ SetOverride::SetOverride(QWidget* parent) : Dialog(parent) {
 
     directoryBrowseLayout->lineEdit()->setFocus();
     buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
-
-    QStringList list = Utils::listFromConsole("rustup toolchain list");
+    
+    QStringList list = Utils::runConsoleCommand("rustup toolchain list");
 
     for (const QString& toolchain : list) {
         toolchainComboBox->addItem(toolchain);
