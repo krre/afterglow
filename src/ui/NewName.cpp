@@ -5,17 +5,13 @@ NewName::NewName(const QString& title, QWidget* parent) : StandardDialog(parent)
     setWindowTitle(title);
 
     lineEdit = new QLineEdit;
-
-    auto gridLayout = new QGridLayout;
-    gridLayout->addWidget(lineEdit, 0, 1, 1, 1);
-
-    auto label = new QLabel(tr("Name:"));
-    gridLayout->addWidget(label, 0, 0, 1, 1);
-
-    setContentLayout(gridLayout);
-    resizeToWidth(400);
-
     connect(lineEdit, &QLineEdit::textChanged, this, &NewName::onTextChanged);
+
+    auto formLayout = new QFormLayout;
+    formLayout->addRow(tr("Name:"), lineEdit);
+
+    setContentLayout(formLayout);
+    resizeToWidth(400);
 
     buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
     lineEdit->setFocus();

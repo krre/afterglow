@@ -353,46 +353,37 @@ void RustInstaller::onProcessStateChainged(QProcess::ProcessState newState) {
 }
 
 void RustInstaller::createRustupTab() {
-    auto groupBox = new QGroupBox(tr("Environment Variables"));
-
-
     rustupHomeBrowseLayout = new BrowseLayout;
     cargoHomeBrowseLayout = new BrowseLayout;
 
-    auto envFormLayout = new QFormLayout;
-    envFormLayout->addRow(new QLabel("RUSTUP_HOME:"), rustupHomeBrowseLayout);
-    envFormLayout->addRow(new QLabel("RUSTUP_HOME:"), cargoHomeBrowseLayout);
+    auto envLayout = new QFormLayout;
+    envLayout->addRow(new QLabel("RUSTUP_HOME:"), rustupHomeBrowseLayout);
+    envLayout->addRow(new QLabel("RUSTUP_HOME:"), cargoHomeBrowseLayout);
 
-    groupBox->setLayout(envFormLayout);
-
-    auto verticalLayout = new QVBoxLayout;
-    verticalLayout->addWidget(groupBox);
-
-    auto gridLayout = new QGridLayout;
-    gridLayout->addWidget(new QLabel(tr("Version:")), 0, 0, 1, 1);
+    auto groupBox = new QGroupBox(tr("Environment Variables"));
+    groupBox->setLayout(envLayout);
 
     versionLineEdit = new QLineEdit;
     versionLineEdit->setReadOnly(true);
-    gridLayout->addWidget(versionLineEdit, 0, 1, 1, 1);
 
-    verticalLayout->addLayout(gridLayout);
-
-    auto horizontalLayout = new QHBoxLayout;
+    auto versionLayout = new QFormLayout;
+    versionLayout->addRow(tr("Version:"), versionLineEdit);
 
     rustupDownloadPushButton = new QPushButton(tr("Download"));
-    horizontalLayout->addWidget(rustupDownloadPushButton);
-
     rustupUpdatePushButton = new QPushButton(tr("Update"));
-    horizontalLayout->addWidget(rustupUpdatePushButton);
-
     rustupUpdateAllPushButton = new QPushButton(tr("Update All"));
-    horizontalLayout->addWidget(rustupUpdateAllPushButton);
-
     rustupUninstallPushButton = new QPushButton(tr("Uninstall..."));
-    horizontalLayout->addWidget(rustupUninstallPushButton);
 
+    auto horizontalLayout = new QHBoxLayout;
+    horizontalLayout->addWidget(rustupDownloadPushButton);
+    horizontalLayout->addWidget(rustupUpdatePushButton);
+    horizontalLayout->addWidget(rustupUpdateAllPushButton);
+    horizontalLayout->addWidget(rustupUninstallPushButton);
     horizontalLayout->addStretch();
 
+    auto verticalLayout = new QVBoxLayout;
+    verticalLayout->addWidget(groupBox);
+    verticalLayout->addLayout(versionLayout);
     verticalLayout->addLayout(horizontalLayout);
     verticalLayout->addStretch();
 

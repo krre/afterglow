@@ -4,15 +4,7 @@
 InstallToolchain::InstallToolchain(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Install Toolchain"));
 
-    auto gridLayout = new QGridLayout;
-    gridLayout->addWidget(new QLabel(tr("Channel:")), 0, 0, 1, 1);
-    gridLayout->addWidget(new QLabel(tr("Date:")), 1, 0, 1, 1);
-
     dateLineEdit = new QLineEdit;
-    gridLayout->addWidget(dateLineEdit, 1, 1, 1, 1);
-
-    auto channelHorizontalLayout = new QHBoxLayout;
-    channelHorizontalLayout->setContentsMargins(-1, 0, -1, -1);
 
     channelComboBox = new QComboBox;
     channelComboBox->addItem("stable");
@@ -20,28 +12,30 @@ InstallToolchain::InstallToolchain(QWidget* parent) : StandardDialog(parent) {
     channelComboBox->addItem("nightly");
     channelComboBox->addItem("version");
 
-    channelHorizontalLayout->addWidget(channelComboBox);
-
     channelLineEdit = new QLineEdit;
     channelLineEdit->setEnabled(false);
 
+    auto channelHorizontalLayout = new QHBoxLayout;
+    channelHorizontalLayout->setContentsMargins(-1, 0, -1, -1);
+    channelHorizontalLayout->addWidget(channelComboBox);
     channelHorizontalLayout->addWidget(channelLineEdit);
-    gridLayout->addLayout(channelHorizontalLayout, 0, 1, 1, 1);
-    gridLayout->addWidget(new QLabel(tr("Host:")), 2, 0, 1, 1);
 
-    auto hostHorizontalLayout = new QHBoxLayout();
-    hostHorizontalLayout->setContentsMargins(-1, 0, -1, -1);
     hostComboBox = new QComboBox;
-
-    hostHorizontalLayout->addWidget(hostComboBox);
 
     hostLineEdit = new QLineEdit;
     hostLineEdit->setEnabled(false);
 
+    auto hostHorizontalLayout = new QHBoxLayout();
+    hostHorizontalLayout->setContentsMargins(-1, 0, -1, -1);
+    hostHorizontalLayout->addWidget(hostComboBox);
     hostHorizontalLayout->addWidget(hostLineEdit);
-    gridLayout->addLayout(hostHorizontalLayout, 2, 1, 1, 1);
 
-    setContentLayout(gridLayout);
+    auto formLayout = new QFormLayout;
+    formLayout->addRow(tr("Channel:"), channelHorizontalLayout);
+    formLayout->addRow(tr("Date:"), dateLineEdit);
+    formLayout->addRow(tr("Host:"), hostHorizontalLayout);
+
+    setContentLayout(formLayout);
 
     adjustSize();
     resize(530, height());
