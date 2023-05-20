@@ -7,7 +7,6 @@ class FileSystemProxyModel;
 
 class ProjectTree : public QTreeView {
     Q_OBJECT
-
 public:
     explicit ProjectTree(QWidget* parent = nullptr);
     ~ProjectTree();

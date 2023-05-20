@@ -5,7 +5,6 @@ class TextEditor;
 
 class LineNumberArea : public QWidget {
     Q_OBJECT
-
 public:
     LineNumberArea(TextEditor* editor);
 

@@ -2,7 +2,6 @@
 #include <QJsonValue>
 
 class Settings {
-
 public:
     static void init();
     static void flush();

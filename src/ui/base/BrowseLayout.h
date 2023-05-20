@@ -6,7 +6,6 @@ class QLineEdit;
 class BrowseLayout : public QHBoxLayout {
 public:
     BrowseLayout();
-
     QLineEdit* lineEdit() const;
 
 private slots:

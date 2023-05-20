@@ -2,7 +2,6 @@
 #include <QSortFilterProxyModel>
 
 class FileSystemProxyModel : public QSortFilterProxyModel {
-
 public:
     FileSystemProxyModel(QObject* parent = nullptr);
 

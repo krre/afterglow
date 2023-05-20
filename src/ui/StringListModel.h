@@ -3,7 +3,6 @@
 
 class StringListModel : public QAbstractListModel {
     Q_OBJECT
-
 public:
     StringListModel(QObject* parent = nullptr);
     StringListModel(const QStringList& strings = QStringList(), QObject* parent = nullptr);
