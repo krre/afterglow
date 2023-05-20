@@ -391,15 +391,15 @@ void MainWindow::onPreferencesAction() {
 }
 
 void MainWindow::onDocumentationAction() {
-    Utils::runRustupCommand(QStringList() << "doc");
+    Utils::runRustupCommand({ "doc" });
 }
 
 void MainWindow::onStandardLibraryAction() {
-    Utils::runRustupCommand(QStringList() << "doc" << "--std");
+    Utils::runRustupCommand({"doc", "--std" });
 }
 
 void MainWindow::onTheBookAction() {
-    Utils::runRustupCommand(QStringList() << "doc" << "--book");
+    Utils::runRustupCommand({ "doc", "--book" });
 }
 
 void MainWindow::onAboutAction() {

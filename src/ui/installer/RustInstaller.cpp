@@ -152,7 +152,7 @@ void RustInstaller::onCargoHomeLineEditTextChanged(const QString& text) {
 
 void RustInstaller::onRustupDownloadPushButtonClicked() {
 #if defined(Q_OS_LINUX)
-    runCommand("sh", QStringList() << "-c" << "curl https://sh.rustup.rs -sSf | sh -s -- -y", [this] {
+    runCommand("sh", { "-c", "curl https://sh.rustup.rs -sSf | sh -s -- -y" }, [this] {
         loadVersion();
     });
     installDefaultComponents();
@@ -165,13 +165,13 @@ void RustInstaller::onRustupDownloadPushButtonClicked() {
 }
 
 void RustInstaller::onRustupUpdatePushButtonClicked() {
-    runCommand("rustup", QStringList() << "self" << "update", [this] {
+    runCommand("rustup", { "self", "update" }, [this] {
         loadVersion();
     });
 }
 
 void RustInstaller::onRustupUpdateAllPushButtonClicked() {
-    runCommand("rustup", QStringList() << "update", [this] {
+    runCommand("rustup", { "update" }, [this] {
         loadVersion();
     });
 }
@@ -181,7 +181,7 @@ void RustInstaller::onRustupUninstallPushButtonClicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        runCommand("rustup", QStringList() << "self" << "uninstall" << "-y");
+        runCommand("rustup", { "self", "uninstall", "-y" });
     }
 }
 
@@ -192,7 +192,7 @@ void RustInstaller::onToolchainInstallPushButtonClicked() {
     QString toolchain = installToolchain.toolchain();
 
     if (!toolchain.isEmpty()) {
-        runCommand("rustup", QStringList() << "toolchain" << "install" << toolchain, [this] {
+        runCommand("rustup", { "toolchain", "install", toolchain }, [this] {
             loadToolchainList();
         });
     }
@@ -203,7 +203,7 @@ void RustInstaller::onToolchainUninstallPushButtonClicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        runCommand("rustup", QStringList() << "toolchain" << "uninstall"
+        runCommand("rustup", QStringList("toolchain") << "uninstall"
                    << Utils::selectedRowsFromListView(toolchainsListView), [this] {
             loadToolchainList();
         });
@@ -211,11 +211,11 @@ void RustInstaller::onToolchainUninstallPushButtonClicked() {
 }
 
 void RustInstaller::onToolchainUpdatePushButtonClicked() {
-    runCommand("rustup", QStringList() << "update" << Utils::selectedRowsFromListView(toolchainsListView));
+    runCommand("rustup", QStringList("update") << Utils::selectedRowsFromListView(toolchainsListView));
 }
 
 void RustInstaller::onToolchainSetDefaultPushButtonClicked() {
-    runCommand("rustup", QStringList() << "default"
+    runCommand("rustup", QStringList("default")
                << Utils::selectedRowsFromListView(toolchainsListView).at(0), [this] {
         loadToolchainList();
         loadTargetList();
@@ -230,7 +230,7 @@ void RustInstaller::onTargetAddPushButtonAddClicked() {
 
     QStringList targets = addTarget.list();
     if (targets.count()) {
-        runCommand("rustup", QStringList() << "target" << "add" << targets, [this] {
+        runCommand("rustup", QStringList("target") << "add" << targets, [this] {
             loadTargetList();
             loadComponentList();
         });
@@ -242,7 +242,7 @@ void RustInstaller::onTargetRemovePushButtonAddClicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        runCommand("rustup", QStringList() << "target" << "remove"
+        runCommand("rustup", QStringList("target") << "remove"
                    << Utils::selectedRowsFromListView(targetsListView), [this] {
             loadTargetList();
             loadComponentList();
@@ -258,7 +258,7 @@ void RustInstaller::onComponentAddPushButtonAddClicked() {
 
     if (components.count()) {
         cleanupTarget(components);
-        runCommand("rustup", QStringList() << "component" << "add" << components, [this] {
+        runCommand("rustup", QStringList("component") << "add" << components, [this] {
             loadComponentList();
         });
     }
@@ -271,7 +271,7 @@ void RustInstaller::onComponentRemovePushButtonAddClicked() {
     if (button == QMessageBox::Ok) {
         QStringList components = Utils::selectedRowsFromListView(componentsListView);
         cleanupTarget(components);
-        runCommand("rustup", QStringList() << "component" << "remove" << components, [this] {
+        runCommand("rustup", QStringList("component") << "remove" << components, [this] {
             loadComponentList();
         });
     }
@@ -286,7 +286,7 @@ void RustInstaller::onOverrideSetPushButtonSetClicked() {
 
     if (!directory.isEmpty()) {
         process->setWorkingDirectory(directory);
-        runCommand("rustup", QStringList() << "override" << "set" << toolchain, [this] {
+        runCommand("rustup", QStringList("override") << "set" << toolchain, [this] {
             loadOverrideList();
         });
     }
@@ -299,7 +299,7 @@ void RustInstaller::onOverrideUnsetPushButtonSetClicked() {
     if (button == QMessageBox::Ok) {
         QStringList overrides = Utils::selectedRowsFromListView(overridesListView);
         for (const QString& override : overrides) {
-            runCommand("rustup", QStringList() << "override" << "unset" << "--path" << override.split('\t').at(0), [this] {
+            runCommand("rustup", QStringList("override") << "unset" << "--path" << override.split('\t').at(0), [this] {
                 loadOverrideList();
             });
         }
@@ -307,7 +307,7 @@ void RustInstaller::onOverrideUnsetPushButtonSetClicked() {
 }
 
 void RustInstaller::onOverrideCleanupPushButtonSetClicked() {
-    runCommand("rustup", QStringList() << "override" << "unset" << "--nonexistent", [this] {
+    runCommand("rustup", { "override", "unset", "--nonexistent" }, [this] {
         loadOverrideList();
     });
 }
@@ -328,7 +328,7 @@ void RustInstaller::onDownloaded() {
     file.write(fileDownloader->data());
     file.close();
 
-    runCommand(filePath, QStringList() << "-y", [this] {
+    runCommand(filePath, { "-y" }, [this] {
         loadVersion();
     });
     installDefaultComponents();
@@ -538,8 +538,8 @@ void RustInstaller::runFromQueue() {
 }
 
 void RustInstaller::installDefaultComponents() {
-    runCommand("rustup", QStringList() << "component" << "add" << "rls-preview" << "rust-analysis" << "rust-src");
-    runCommand("cargo", QStringList() << "install" << "racer");
+    runCommand("rustup", { "component", "add", "rls-preview", "rust-analysis", "rust-src" });
+    runCommand("cargo", { "install", "racer" });
 }
 
 void RustInstaller::updateRustupButtonsState() {
