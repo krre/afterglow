@@ -1,12 +1,12 @@
 #pragma once
-#include "base/Dialog.h"
+#include "base/StandardDialog.h"
 #include "process/CargoManager.h"
 
 class QLineEdit;
 class QComboBox;
 class BrowseLayout;
 
-class NewProject : public Dialog {
+class NewProject : public StandardDialog {
     Q_OBJECT
 public:
     explicit NewProject(QWidget* parent = nullptr);

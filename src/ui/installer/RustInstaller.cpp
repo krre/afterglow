@@ -13,7 +13,7 @@
 
 using namespace std::placeholders;
 
-RustInstaller::RustInstaller(QWidget* parent) : Dialog(parent) {
+RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Rust Installer"));
 
     tabWidget = new QTabWidget;

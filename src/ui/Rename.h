@@ -1,9 +1,9 @@
 #pragma once
-#include "base/Dialog.h"
+#include "base/StandardDialog.h"
 
 class QLineEdit;
 
-class Rename : public Dialog {
+class Rename : public StandardDialog {
     Q_OBJECT
 public:
     explicit Rename(const QString& name, QWidget* parent = nullptr);

@@ -1,10 +1,10 @@
 #pragma once
-#include "ui/base/Dialog.h"
+#include "ui/base/StandardDialog.h"
 
 class QComboBox;
 class BrowseLayout;
 
-class SetOverride : public Dialog {
+class SetOverride : public StandardDialog {
     Q_OBJECT
 public:
     explicit SetOverride(QWidget* parent = nullptr);

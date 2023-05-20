@@ -1,5 +1,5 @@
 #pragma once
-#include "ui/base/Dialog.h"
+#include "ui/base/StandardDialog.h"
 #include <QTemporaryDir>
 #include <QQueue>
 #include <QProcess>
@@ -15,7 +15,7 @@ class FileDownloader;
 class CommandLine;
 class BrowseLayout;
 
-class RustInstaller : public Dialog {
+class RustInstaller : public StandardDialog {
     Q_OBJECT
 public:
     explicit RustInstaller(QWidget* parent = nullptr);

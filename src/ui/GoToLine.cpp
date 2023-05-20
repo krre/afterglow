@@ -1,7 +1,7 @@
 #include "GoToLine.h"
 #include <QtWidgets>
 
-GoToLine::GoToLine(QWidget* parent) : Dialog(parent) {
+GoToLine::GoToLine(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Go to Line"));
 
     auto label = new QLabel(tr("Line:"));

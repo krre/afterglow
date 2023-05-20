@@ -1,7 +1,7 @@
 #include "Rename.h"
 #include <QtWidgets>
 
-Rename::Rename(const QString& name, QWidget* parent) : Dialog(parent), m_name(name) {
+Rename::Rename(const QString& name, QWidget* parent) : StandardDialog(parent), m_name(name) {
     setWindowTitle(tr("Rename"));
 
     auto label = new QLabel;

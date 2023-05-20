@@ -5,7 +5,7 @@
 #include "core/Settings.h"
 #include <QtWidgets>
 
-Preferences::Preferences(QWidget* parent) : Dialog(parent) {
+Preferences::Preferences(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Preferences"));
 
     workspaceBrowseLayout = new BrowseLayout;

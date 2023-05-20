@@ -1,7 +1,7 @@
 #include "InstallToolchain.h"
 #include <QtWidgets>
 
-InstallToolchain::InstallToolchain(QWidget* parent) : Dialog(parent) {
+InstallToolchain::InstallToolchain(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Install Toolchain"));
 
     auto gridLayout = new QGridLayout;

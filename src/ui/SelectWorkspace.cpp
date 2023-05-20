@@ -4,7 +4,7 @@
 #include "core/Settings.h"
 #include <QtWidgets>
 
-SelectWorkspace::SelectWorkspace(QWidget* parent) : Dialog(parent) {
+SelectWorkspace::SelectWorkspace(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Select Workspace"));
 
     auto verticalLayout = new QVBoxLayout;

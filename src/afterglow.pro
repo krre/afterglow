@@ -36,7 +36,7 @@ SOURCES += \
     ui/IssueModel.cpp \
     ui/IssueListView.cpp \
     ui/base/BrowseLayout.cpp \
-    ui/base/Dialog.cpp \
+    ui/base/StandardDialog.cpp \
     ui/installer/AddComponentOrTarget.cpp \
     ui/installer/InstallToolchain.cpp \
     ui/installer/RustInstaller.cpp \
@@ -73,7 +73,7 @@ HEADERS += \
     ui/IssueModel.h \
     ui/IssueListView.h \
     ui/base/BrowseLayout.h \
-    ui/base/Dialog.h \
+    ui/base/StandardDialog.h \
     ui/installer/AddComponentOrTarget.h \
     ui/installer/InstallToolchain.h \
     ui/installer/RustInstaller.h \

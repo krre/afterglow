@@ -1,9 +1,9 @@
 #pragma once
-#include "ui/base/Dialog.h"
+#include "ui/base/StandardDialog.h"
 
 class QLineEdit;
 
-class GoToLine : public Dialog {
+class GoToLine : public StandardDialog {
     Q_OBJECT
 public:
     explicit GoToLine(QWidget* parent = nullptr);

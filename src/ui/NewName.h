@@ -1,9 +1,9 @@
 #pragma once
-#include "base/Dialog.h"
+#include "base/StandardDialog.h"
 
 class QLineEdit;
 
-class NewName : public Dialog {
+class NewName : public StandardDialog {
     Q_OBJECT
 public:
     explicit NewName(const QString& title, QWidget* parent = nullptr);

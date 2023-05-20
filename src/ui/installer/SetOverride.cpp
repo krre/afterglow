@@ -3,7 +3,7 @@
 #include "ui/base/BrowseLayout.h"
 #include <QtWidgets>
 
-SetOverride::SetOverride(QWidget* parent) : Dialog(parent) {
+SetOverride::SetOverride(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Set Override"));
 
     directoryBrowseLayout = new BrowseLayout;

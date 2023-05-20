@@ -1,7 +1,7 @@
 #include "NewName.h"
 #include <QtWidgets>
 
-NewName::NewName(const QString& title, QWidget* parent) : Dialog(parent) {
+NewName::NewName(const QString& title, QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(title);
 
     lineEdit = new QLineEdit;

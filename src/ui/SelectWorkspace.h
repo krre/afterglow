@@ -1,9 +1,9 @@
 #pragma once
-#include "base/Dialog.h"
+#include "base/StandardDialog.h"
 
 class BrowseLayout;
 
-class SelectWorkspace : public Dialog {
+class SelectWorkspace : public StandardDialog {
     Q_OBJECT
 public:
     explicit SelectWorkspace(QWidget* parent = nullptr);

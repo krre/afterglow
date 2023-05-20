@@ -1,10 +1,10 @@
 #pragma once
-#include "base/Dialog.h"
+#include "base/StandardDialog.h"
 
 class QCheckBox;
 class BrowseLayout;
 
-class Preferences : public Dialog {
+class Preferences : public StandardDialog {
     Q_OBJECT
 public:
     explicit Preferences(QWidget* parent = nullptr);

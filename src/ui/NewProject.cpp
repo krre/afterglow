@@ -4,7 +4,7 @@
 #include "process/CargoManager.h"
 #include <QtWidgets>
 
-NewProject::NewProject(QWidget* parent) : Dialog(parent) {
+NewProject::NewProject(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("New Project"));
 
     nameLineEdit = new QLineEdit;
