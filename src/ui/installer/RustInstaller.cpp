@@ -82,21 +82,21 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
 
     process = new QProcess(this);
 
-    connect(process, &QProcess::readyReadStandardOutput, [=] {
+    connect(process, &QProcess::readyReadStandardOutput, [=, this] {
         QByteArray data = process->readAllStandardOutput();
         auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
         QString output = toUtf16(data);
         showAndScrollMessage(output);
     });
 
-    connect(process, &QProcess::readyReadStandardError, [=] {
+    connect(process, &QProcess::readyReadStandardError, [=, this] {
         QByteArray data = process->readAllStandardError();
         auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
         QString output = toUtf16(data);
         showAndScrollMessage(output);
     });
 
-    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=] (int exitCode, QProcess::ExitStatus exitStatus) {
+    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=, this] (int exitCode, QProcess::ExitStatus exitStatus) {
         Q_UNUSED(exitStatus)
         Q_UNUSED(exitCode)
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished successfully"));
@@ -111,7 +111,7 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
         }
     });
 
-    connect(process, &QProcess::errorOccurred, [=] (QProcess::ProcessError error) {
+    connect(process, &QProcess::errorOccurred, [=, this] (QProcess::ProcessError error) {
         Q_UNUSED(error)
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished with error"));
         showAndScrollMessage(message);
@@ -600,13 +600,13 @@ void RustInstaller::loadToolchainList() {
 }
 
 void RustInstaller::loadTargetList() {
-    loadAndFilterList("rustup target list", targetsListView, [=] (QStringList& list) { defaultInstalledFilter(list); });
+    loadAndFilterList("rustup target list", targetsListView, [=, this] (QStringList& list) { defaultInstalledFilter(list); });
     updateTargetButtonsState();
     defaultTarget = findDefault(targetsListView);
 }
 
 void RustInstaller::loadComponentList() {
-    loadAndFilterList("rustup component list", componentsListView, [=] (QStringList& list) { rustStdFilter(list); });
+    loadAndFilterList("rustup component list", componentsListView, [=, this] (QStringList& list) { rustStdFilter(list); });
     updateComponentButtonsState();
 }
 

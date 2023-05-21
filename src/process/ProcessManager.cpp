@@ -5,22 +5,22 @@
 ProcessManager::ProcessManager(QObject* parent) : QObject(parent) {
     m_process = new QProcess(this);
 
-    connect(m_process, &QProcess::readyReadStandardOutput, [=] {
+    connect(m_process, &QProcess::readyReadStandardOutput, this, [=, this] {
         QByteArray data = m_process->readAllStandardOutput();
         auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
         QString output = toUtf16(data);
         onReadyReadStandardOutput(output);
     });
 
-    connect(m_process, &QProcess::readyReadStandardError, [=] {
+    connect(m_process, &QProcess::readyReadStandardError, this, [=, this] {
         QByteArray data = m_process->readAllStandardError();
         auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
         QString output = toUtf16(data);
         onReadyReadStandardError(output);
     });
 
-    connect(m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-        [=] (int exitCode, QProcess::ExitStatus exitStatus) { onFinished(exitCode, exitStatus); });
+    connect(m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+        [=, this] (int exitCode, QProcess::ExitStatus exitStatus) { onFinished(exitCode, exitStatus); });
 
     connect(m_process, &QProcess::errorOccurred, this, &ProcessManager::onErrorOccurred);
 }

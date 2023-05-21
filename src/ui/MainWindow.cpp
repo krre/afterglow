@@ -384,7 +384,7 @@ void MainWindow::onRustInstallerAction() {
 
 void MainWindow::onPreferencesAction() {
     Preferences preferences(this);
-    connect(&preferences, &Preferences::openPrefs, this, [=] {
+    connect(&preferences, &Preferences::openPrefs, this, [=, this] {
         addSourceTab(Settings::prefsPath());
     });
     preferences.exec();
@@ -680,7 +680,7 @@ void MainWindow::createActions() {
 }
 
 void MainWindow::addRecentFile(const QString& filePath) {
-    addRecentFileOrProject(recentFilesMenu, filePath, [=] {
+    addRecentFileOrProject(recentFilesMenu, filePath, [=, this] {
         addSourceTab(filePath);
     });
 }
@@ -688,7 +688,7 @@ void MainWindow::addRecentFile(const QString& filePath) {
 void MainWindow::addRecentProject(const QString& projectPath) {
     if (!QFileInfo::exists(projectPath + "/Cargo.toml")) return;
 
-    addRecentFileOrProject(recentProjectsMenu, projectPath, [=] {
+    addRecentFileOrProject(recentProjectsMenu, projectPath, [=, this] {
         openProject(projectPath);
     });
 }
