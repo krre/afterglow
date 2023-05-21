@@ -1,6 +1,6 @@
 QT += core gui widgets network
 
-CONFIG += c++17
+CONFIG += c++20
 TARGET = afterglow
 TEMPLATE = app
 
