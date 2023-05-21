@@ -96,11 +96,10 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
         showAndScrollMessage(output);
     });
 
-    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=, this] (int exitCode, QProcess::ExitStatus exitStatus) {
-        Q_UNUSED(exitStatus)
-        Q_UNUSED(exitCode)
+    connect(process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), [=, this] (int, QProcess::ExitStatus) {
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished successfully"));
         showAndScrollMessage(message);
+
         if (commandQueue.count()) {
             Command command = commandQueue.dequeue();
             if (command.postWork) {

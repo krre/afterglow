@@ -19,9 +19,7 @@ ProcessManager::ProcessManager(QObject* parent) : QObject(parent) {
         onReadyReadStandardError(output);
     });
 
-    connect(m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
-        [=, this] (int exitCode, QProcess::ExitStatus exitStatus) { onFinished(exitCode, exitStatus); });
-
+    connect(m_process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, &ProcessManager::onFinished);
     connect(m_process, &QProcess::errorOccurred, this, &ProcessManager::onErrorOccurred);
 }
 
