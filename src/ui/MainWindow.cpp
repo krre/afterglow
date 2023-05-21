@@ -160,7 +160,7 @@ MainWindow::MainWindow() {
     issueModel = new IssueModel(this);
     connect(issueModel, &IssueModel::countChanged, this, &MainWindow::onIssueCountChanged);
     issueListView = new IssueListView(issueModel);
-    connect(issueListView, &IssueListView::doubleClicked, [this] (const QModelIndex& index) {
+    connect(issueListView, &IssueListView::doubleClicked, this, [this] (const QModelIndex& index) {
         QString filename = issueModel->data(index, static_cast<int>(IssueModel::Role::Filename)).toString();
         if (!filename.isEmpty()) {
             QString line = issueModel->data(index, static_cast<int>(IssueModel::Role::Line)).toString();

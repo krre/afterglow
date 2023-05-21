@@ -82,21 +82,21 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
 
     process = new QProcess(this);
 
-    connect(process, &QProcess::readyReadStandardOutput, [=, this] {
+    connect(process, &QProcess::readyReadStandardOutput, this, [=, this] {
         QByteArray data = process->readAllStandardOutput();
         auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
         QString output = toUtf16(data);
         showAndScrollMessage(output);
     });
 
-    connect(process, &QProcess::readyReadStandardError, [=, this] {
+    connect(process, &QProcess::readyReadStandardError, this, [=, this] {
         QByteArray data = process->readAllStandardError();
         auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
         QString output = toUtf16(data);
         showAndScrollMessage(output);
     });
 
-    connect(process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), [=, this] (int, QProcess::ExitStatus) {
+    connect(process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [=, this] (int, QProcess::ExitStatus) {
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished successfully"));
         showAndScrollMessage(message);
 
@@ -110,7 +110,7 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
         }
     });
 
-    connect(process, &QProcess::errorOccurred, [=, this] (QProcess::ProcessError error) {
+    connect(process, &QProcess::errorOccurred, this, [=, this] (QProcess::ProcessError error) {
         Q_UNUSED(error)
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished with error"));
         showAndScrollMessage(message);

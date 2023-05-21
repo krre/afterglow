@@ -30,7 +30,7 @@ ProjectTree::ProjectTree(QWidget* parent) : QTreeView(parent) {
     contextMenu->addMenu(newMenu);
 
     QAction* openAction = contextMenu->addAction(tr("Open"));
-    connect(openAction, &QAction::triggered, [=]() {
+    connect(openAction, &QAction::triggered, this, [=, this] () {
         QModelIndex proxyIndex = selectedIndexes().constFirst();
         QModelIndex sourceIndex = fsProxyModel->mapToSource(proxyIndex);
         if (fsModel->isDir(sourceIndex)) {
