@@ -64,9 +64,7 @@ void RustupTab::setRustupButtonsEnabled(bool enabled) {
 }
 
 void RustupTab::loadVersion() {
-    QStringList list = Utils::runConsoleCommand("rustup show");
-
-    for (const QString& row : list) {
+    for (const QString& row : Utils::runConsoleCommand("rustup show")) {
         if (row.left(5) == "rustc") {
             versionLineEdit->setText(row);
             break;
