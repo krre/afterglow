@@ -6,7 +6,7 @@ public:
     StringListModel(QObject* parent = nullptr);
     StringListModel(const QStringList& strings = QStringList(), QObject* parent = nullptr);
 
-    QString getData(int i) const { return stringList.at(i); }
+    QString getData(int i) const { return m_strings.at(i); }
     int getCount() const { return rowCount(); }
 
     void setStrings(const QStringList& strings);
@@ -26,5 +26,5 @@ protected:
     bool removeRows(int position, int rows, const QModelIndex& index = QModelIndex()) override;
 
 private:
-    QStringList stringList;
+    QStringList m_strings;
 };
