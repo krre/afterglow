@@ -12,7 +12,6 @@ public:
     void setStrings(const QStringList& strings);
     void clear();
 
-protected:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     QVariant data(const QModelIndex& index, int role) const override;
     QVariant headerData(int section, Qt::Orientation orientation,
