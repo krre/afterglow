@@ -40,6 +40,7 @@ SOURCES += \
     ui/installer/AddComponentOrTarget.cpp \
     ui/installer/InstallToolchain.cpp \
     ui/installer/RustInstaller.cpp \
+    ui/installer/RustupTab.cpp \
     ui/installer/SetOverride.cpp
 
 HEADERS += \
@@ -77,6 +78,7 @@ HEADERS += \
     ui/installer/AddComponentOrTarget.h \
     ui/installer/InstallToolchain.h \
     ui/installer/RustInstaller.h \
+    ui/installer/RustupTab.h \
     ui/installer/SetOverride.h
 
 FORMS +=

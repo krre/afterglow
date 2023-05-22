@@ -1,11 +1,10 @@
 #include "RustInstaller.h"
+#include "RustupTab.h"
 #include "AddComponentOrTarget.h"
 #include "SetOverride.h"
 #include "InstallToolchain.h"
-#include "ui/base/BrowseLayout.h"
 #include "ui/StringListModel.h"
 #include "core/Utils.h"
-#include "core/Constants.h"
 #include "core/Settings.h"
 #include "core/FileDownloader.h"
 #include "core/Settings.h"
@@ -16,9 +15,15 @@ using namespace std::placeholders;
 RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Rust Installer"));
 
-    tabWidget = new QTabWidget;
+    rustupTab = new RustupTab;
+    connect(rustupTab, &RustupTab::downloadClicked, this, &RustInstaller::rustupDownload);
+    connect(rustupTab, &RustupTab::updateClicked, this, &RustInstaller::rustupUpdate);
+    connect(rustupTab, &RustupTab::updateAllClicked, this, &RustInstaller::rustupUpdateAll);
+    connect(rustupTab, &RustupTab::uninstallClicked, this, &RustInstaller::rustupUninstall);
 
-    createRustupTab();
+    tabWidget = new QTabWidget;
+    tabWidget->addTab(rustupTab, "Rustup");
+
     createToolchainsTab();
     createTargetsTab();
     createComponentsTab();
@@ -46,11 +51,6 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     componentsListView->setModel(new StringListModel(this));
     overridesListView->setModel(new StringListModel(this));
 
-    connect(rustupDownloadPushButton, &QPushButton::clicked, this, &RustInstaller::onRustupDownloadPushButtonClicked);
-    connect(rustupUpdatePushButton, &QPushButton::clicked, this, &RustInstaller::onRustupUpdatePushButtonClicked);
-    connect(rustupUpdateAllPushButton, &QPushButton::clicked, this, &RustInstaller::onRustupUpdateAllPushButtonClicked);
-    connect(rustupUninstallPushButton, &QPushButton::clicked, this, &RustInstaller::onRustupUninstallPushButtonClicked);
-
     connect(toolchainInstallPushButton, &QPushButton::clicked, this, &RustInstaller::onToolchainInstallPushButtonClicked);
     connect(toolchainUninstallPushButton, &QPushButton::clicked, this, &RustInstaller::onToolchainUninstallPushButtonClicked);
     connect(toolchainUpdatePushButton, &QPushButton::clicked, this, &RustInstaller::onToolchainUpdatePushButtonClicked);
@@ -67,9 +67,6 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     connect(overrideCleanupPushButton, &QPushButton::clicked, this, &RustInstaller::onOverrideCleanupPushButtonSetClicked);
 
     connect(breakPushButton, &QPushButton::clicked, this, &RustInstaller::onBreakPushButtonClicked);
-
-    connect(rustupHomeBrowseLayout->lineEdit(), &QLineEdit::textChanged, this, &RustInstaller::onRustupHomeLineEditTextChanged);
-    connect(cargoHomeBrowseLayout->lineEdit(), &QLineEdit::textChanged, this, &RustInstaller::onCargoHomeLineEditTextChanged);
 
     connect(toolchainsListView, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
     connect(targetsListView, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
@@ -122,7 +119,6 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     fileDownloader = new FileDownloader(this);
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
-    loadVersion();
     loadToolchainList();
     loadTargetList();
     loadComponentList();
@@ -135,25 +131,12 @@ RustInstaller::~RustInstaller() {
     writeSettings();
 }
 
-void RustInstaller::onRustupHomeLineEditTextChanged(const QString& text) {
-    Q_UNUSED(text)
-    if (settingsLoaded) {
-        writeSettings();
-    }
-}
-
-void RustInstaller::onCargoHomeLineEditTextChanged(const QString& text) {
-    Q_UNUSED(text)
-    if (settingsLoaded) {
-        writeSettings();
-    }
-}
-
-void RustInstaller::onRustupDownloadPushButtonClicked() {
+void RustInstaller::rustupDownload() {
 #if defined(Q_OS_LINUX)
     runCommand("sh", { "-c", "curl https://sh.rustup.rs -sSf | sh -s -- -y" }, [this] {
-        loadVersion();
+        rustupTab->loadVersion();
     });
+
     installDefaultComponents();
 #elif defined(Q_OS_WIN)
     QUrl url("https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-gnu/rustup-init.exe");
@@ -163,22 +146,23 @@ void RustInstaller::onRustupDownloadPushButtonClicked() {
 #endif
 }
 
-void RustInstaller::onRustupUpdatePushButtonClicked() {
+void RustInstaller::rustupUpdate() {
     runCommand("rustup", { "self", "update" }, [this] {
-        loadVersion();
+        rustupTab->loadVersion();
     });
 }
 
-void RustInstaller::onRustupUpdateAllPushButtonClicked() {
+void RustInstaller::rustupUpdateAll() {
     runCommand("rustup", { "update" }, [this] {
-        loadVersion();
+        rustupTab->loadVersion();
     });
 }
 
-void RustInstaller::onRustupUninstallPushButtonClicked() {
+void RustInstaller::rustupUninstall() {
     int button = QMessageBox::question(this, tr("Uninstall Rust"), tr("Rust will be uninstalled. Are you sure?"),
-                          QMessageBox::Ok,
-                          QMessageBox::Cancel);
+                                       QMessageBox::Ok,
+                                       QMessageBox::Cancel);
+
     if (button == QMessageBox::Ok) {
         runCommand("rustup", { "self", "uninstall", "-y" });
     }
@@ -219,7 +203,7 @@ void RustInstaller::onToolchainSetDefaultPushButtonClicked() {
         loadToolchainList();
         loadTargetList();
         loadComponentList();
-        loadVersion();
+        rustupTab->loadVersion();
     });
 }
 
@@ -328,7 +312,7 @@ void RustInstaller::onDownloaded() {
     file.close();
 
     runCommand(filePath, { "-y" }, [this] {
-        loadVersion();
+        rustupTab->loadVersion();
     });
     installDefaultComponents();
 }
@@ -349,46 +333,6 @@ void RustInstaller::onProcessStateChainged(QProcess::ProcessState newState) {
     if (newState == QProcess::Running || newState == QProcess::NotRunning) {
         updateAllButtonsState();
     }
-}
-
-void RustInstaller::createRustupTab() {
-    rustupHomeBrowseLayout = new BrowseLayout;
-    cargoHomeBrowseLayout = new BrowseLayout;
-
-    auto envLayout = new QFormLayout;
-    envLayout->addRow(new QLabel("RUSTUP_HOME:"), rustupHomeBrowseLayout);
-    envLayout->addRow(new QLabel("RUSTUP_HOME:"), cargoHomeBrowseLayout);
-
-    auto groupBox = new QGroupBox(tr("Environment Variables"));
-    groupBox->setLayout(envLayout);
-
-    versionLineEdit = new QLineEdit;
-    versionLineEdit->setReadOnly(true);
-
-    auto versionLayout = new QFormLayout;
-    versionLayout->addRow(tr("Version:"), versionLineEdit);
-
-    rustupDownloadPushButton = new QPushButton(tr("Download"));
-    rustupUpdatePushButton = new QPushButton(tr("Update"));
-    rustupUpdateAllPushButton = new QPushButton(tr("Update All"));
-    rustupUninstallPushButton = new QPushButton(tr("Uninstall..."));
-
-    auto horizontalLayout = new QHBoxLayout;
-    horizontalLayout->addWidget(rustupDownloadPushButton);
-    horizontalLayout->addWidget(rustupUpdatePushButton);
-    horizontalLayout->addWidget(rustupUpdateAllPushButton);
-    horizontalLayout->addWidget(rustupUninstallPushButton);
-    horizontalLayout->addStretch();
-
-    auto verticalLayout = new QVBoxLayout;
-    verticalLayout->addWidget(groupBox);
-    verticalLayout->addLayout(versionLayout);
-    verticalLayout->addLayout(horizontalLayout);
-    verticalLayout->addStretch();
-
-    auto rustup = new QWidget();
-    rustup->setLayout(verticalLayout);
-    tabWidget->addTab(rustup, "Rustup");
 }
 
 void RustInstaller::createToolchainsTab() {
@@ -534,10 +478,7 @@ void RustInstaller::installDefaultComponents() {
 
 void RustInstaller::updateRustupButtonsState() {
     bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
-    rustupDownloadPushButton->setEnabled(processesFree);
-    rustupUpdatePushButton->setEnabled(processesFree);
-    rustupUpdateAllPushButton->setEnabled(processesFree);
-    rustupUninstallPushButton->setEnabled(processesFree);
+    rustupTab->setRustupButtonsEnabled(processesFree);
 }
 
 void RustInstaller::updateToolchainButtonsState() {
@@ -579,17 +520,6 @@ void RustInstaller::updateAllButtonsState() {
     updateTargetButtonsState();
     updateComponentButtonsState();
     updateOverrideButtonsState();
-}
-
-void RustInstaller::loadVersion() {
-    QStringList list = Utils::runConsoleCommand("rustup show");
-
-    for (const QString& row : list) {
-        if (row.left(5) == "rustc") {
-            versionLineEdit->setText(row);
-            break;
-        }
-    }
 }
 
 void RustInstaller::loadToolchainList() {
@@ -686,15 +616,11 @@ void RustInstaller::cleanupTarget(QStringList& components) const {
 }
 
 void RustInstaller::readSettings() {
-    rustupHomeBrowseLayout->lineEdit()->setText(qEnvironmentVariable(Const::Environment::RustupHome));
-    cargoHomeBrowseLayout->lineEdit()->setText(qEnvironmentVariable(Const::Environment::CargoHome));
     tabWidget->setCurrentIndex(Settings::value("gui.rustInstaller.currentTab").toInt());
     settingsLoaded = true;
 }
 
 void RustInstaller::writeSettings() {
-    Settings::setValue("environment.rustupHome", rustupHomeBrowseLayout->lineEdit()->text());
-    Settings::setValue("environment.cargoHome", cargoHomeBrowseLayout->lineEdit()->text());
     Settings::setValue("gui.rustInstaller.currentTab", tabWidget->currentIndex());
     Settings::updateRustEnvironmentVariables();
 }

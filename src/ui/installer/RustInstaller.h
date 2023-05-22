@@ -14,6 +14,7 @@ class QMenu;
 class FileDownloader;
 class CommandLine;
 class BrowseLayout;
+class RustupTab;
 
 class RustInstaller : public StandardDialog {
     Q_OBJECT
@@ -22,13 +23,10 @@ public:
     ~RustInstaller();
 
 private slots:
-    void onRustupHomeLineEditTextChanged(const QString& text);
-    void onCargoHomeLineEditTextChanged(const QString& text);
-
-    void onRustupDownloadPushButtonClicked();
-    void onRustupUpdatePushButtonClicked();
-    void onRustupUpdateAllPushButtonClicked();
-    void onRustupUninstallPushButtonClicked();
+    void rustupDownload();
+    void rustupUpdate();
+    void rustupUpdateAll();
+    void rustupUninstall();
 
     void onToolchainInstallPushButtonClicked();
     void onToolchainUninstallPushButtonClicked();
@@ -53,7 +51,6 @@ private slots:
     void onProcessStateChainged(QProcess::ProcessState newState);
 
 private:
-    void createRustupTab();
     void createToolchainsTab();
     void createTargetsTab();
     void createComponentsTab();
@@ -71,7 +68,6 @@ private:
     void updateOverrideButtonsState();
     void updateAllButtonsState();
 
-    void loadVersion();
     void loadToolchainList();
     void loadTargetList();
     void loadComponentList();
@@ -102,20 +98,14 @@ private:
     };
 
     QTabWidget* tabWidget = nullptr;
+    RustupTab* rustupTab = nullptr;
+
     QPlainTextEdit* consolePlainTextEdit = nullptr;
-    BrowseLayout* rustupHomeBrowseLayout = nullptr;
-    BrowseLayout* cargoHomeBrowseLayout = nullptr;
-    QLineEdit* versionLineEdit = nullptr;
 
     QListView* toolchainsListView = nullptr;
     QListView* targetsListView = nullptr;
     QListView* componentsListView = nullptr;
     QListView* overridesListView = nullptr;
-
-    QPushButton* rustupDownloadPushButton = nullptr;
-    QPushButton* rustupUpdatePushButton = nullptr;
-    QPushButton* rustupUpdateAllPushButton = nullptr;
-    QPushButton* rustupUninstallPushButton = nullptr;
 
     QPushButton* toolchainInstallPushButton = nullptr;
     QPushButton* toolchainUninstallPushButton = nullptr;
