@@ -627,7 +627,7 @@ void RustInstaller::loadAndFilterList(const QString& command, QListView* listVie
     }
 
     model->setStrings(list);
-    if (model->getCount()) {
+    if (model->rowCount()) {
         listView->setCurrentIndex(model->index(0, 0));
     }
 }
@@ -677,7 +677,7 @@ QListView* RustInstaller::currentListView() const {
 QString RustInstaller::findDefault(QListView* listView) const {
     StringListModel* model = static_cast<StringListModel*>(listView->model());
 
-    for (int i = 0; i < model->getCount(); i++) {
+    for (int i = 0; i < model->rowCount(); i++) {
         if (model->getData(i).contains("default")) {
             return model->getData(i).replace(" (default)", "");
         }

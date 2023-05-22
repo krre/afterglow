@@ -7,7 +7,6 @@ public:
     StringListModel(const QStringList& strings = QStringList(), QObject* parent = nullptr);
 
     QString getData(int i) const { return m_strings.at(i); }
-    int getCount() const { return rowCount(); }
 
     void setStrings(const QStringList& strings);
     void clear();
