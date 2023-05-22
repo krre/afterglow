@@ -6,13 +6,13 @@ public:
     StringListModel(QObject* parent = nullptr);
     StringListModel(const QStringList& strings = QStringList(), QObject* parent = nullptr);
 
-    QString getData(int i) const { return m_strings.at(i); }
+    std::optional<QString> find(const QString& str) const;
 
     void setStrings(const QStringList& strings);
     void clear();
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex& index, int role) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation,
                         int role = Qt::DisplayRole) const override;
 

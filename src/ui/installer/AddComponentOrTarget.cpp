@@ -50,8 +50,8 @@ void AddComponentOrTarget::accept() {
     QModelIndexList indices = listView->selectionModel()->selectedIndexes();
     StringListModel* model = static_cast<StringListModel*>(listView->model());
 
-    for (int i = 0; i < indices.count(); i++) {
-        m_list.append(model->getData(indices.at(i).row()));
+    for (auto index : indices) {
+        m_list.append(model->data(index).toString());
     }
 
     QDialog::accept();

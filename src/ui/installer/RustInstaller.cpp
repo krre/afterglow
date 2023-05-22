@@ -676,14 +676,8 @@ QListView* RustInstaller::currentListView() const {
 
 QString RustInstaller::findDefault(QListView* listView) const {
     StringListModel* model = static_cast<StringListModel*>(listView->model());
-
-    for (int i = 0; i < model->rowCount(); i++) {
-        if (model->getData(i).contains("default")) {
-            return model->getData(i).replace(" (default)", "");
-        }
-    }
-
-    return QString();
+    auto str = model->find("(default)");
+    return str == std::nullopt ? QString() : str->replace(" (default)", "");
 }
 
 void RustInstaller::cleanupTarget(QStringList& components) const {

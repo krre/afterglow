@@ -7,6 +7,16 @@ StringListModel::StringListModel(QObject* parent) : QAbstractListModel(parent) {
 StringListModel::StringListModel(const QStringList& strings, QObject* parent)
     : QAbstractListModel(parent), m_strings(strings) {}
 
+std::optional<QString> StringListModel::find(const QString& str) const {
+    auto index = m_strings.indexOf(str);
+
+    if (index == -1) {
+        return {};
+    } else {
+        return m_strings[index];
+    }
+}
+
 int StringListModel::rowCount(const QModelIndex& parent) const {
     Q_UNUSED(parent)
     return m_strings.count();
