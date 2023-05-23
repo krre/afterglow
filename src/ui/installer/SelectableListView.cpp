@@ -11,9 +11,8 @@ SelectableListView::SelectableListView() {
 
 QStringList SelectableListView::selectedRows() const {
     QStringList result;
-    QModelIndexList indices = selectionModel()->selectedIndexes();
 
-    for (auto& index : indices) {
+    for (auto& index : selectionModel()->selectedIndexes()) {
         result.append(model()->data(index).toString());
     }
 
@@ -32,7 +31,6 @@ void SelectableListView::onCustomContextMenu(const QPoint& point) {
     connect(copyAction, &QAction::triggered, this, &SelectableListView::onCopyAction);
 
     contextMenu->exec(mapToGlobal(point));
-
 }
 
 void SelectableListView::onCopyAction() {
