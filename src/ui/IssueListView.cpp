@@ -5,7 +5,7 @@
 #include "core/Global.h"
 #include <QtWidgets>
 
-static const int MARGIN = 2;
+auto constexpr MARGIN = 2;
 Q_GLOBAL_STATIC(QFont, issueFont);
 
 IssueDelegate::IssueDelegate(QObject* parent) : QStyledItemDelegate(parent) {
