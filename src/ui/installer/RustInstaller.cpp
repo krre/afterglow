@@ -440,11 +440,6 @@ void RustInstaller::installDefaultComponents() {
     runCommand("cargo", { "install", "racer" });
 }
 
-void RustInstaller::updateRustupButtonsState() {
-    bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
-    rustupTab->setRustupButtonsEnabled(processesFree);
-}
-
 void RustInstaller::updateToolchainButtonsState() {
     bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
     bool enabled = toolchainsListView->selectionModel()->selectedIndexes().count() && processesFree;
@@ -479,7 +474,7 @@ void RustInstaller::updateOverrideButtonsState() {
 void RustInstaller::updateAllButtonsState() {
     bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
     breakPushButton->setEnabled(!processesFree);
-    updateRustupButtonsState();
+    rustupTab->setRustupButtonsEnabled(processesFree);
     updateToolchainButtonsState();
     updateTargetButtonsState();
     updateComponentButtonsState();

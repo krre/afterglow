@@ -61,7 +61,6 @@ private:
     void runFromQueue();
     void installDefaultComponents();
 
-    void updateRustupButtonsState();
     void updateToolchainButtonsState();
     void updateTargetButtonsState();
     void updateComponentButtonsState();
