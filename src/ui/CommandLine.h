@@ -1,6 +1,5 @@
 #pragma once
 #include <QLineEdit>
-#include <QVector>
 
 class CommandLine : public QLineEdit {
     Q_OBJECT
@@ -16,6 +15,6 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
 
 private:
-    QVector<QString> history;
+    QStringList history;
     int counter = 0;
 };
