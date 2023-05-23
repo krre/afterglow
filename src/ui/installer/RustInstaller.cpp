@@ -1,5 +1,5 @@
 #include "RustInstaller.h"
-#include "InstallerListView.h"
+#include "SelectableListView.h"
 #include "RustupTab.h"
 #include "AddComponentOrTarget.h"
 #include "SetOverride.h"
@@ -313,7 +313,7 @@ void RustInstaller::onProcessStateChainged(QProcess::ProcessState newState) {
 
 void RustInstaller::createToolchainsTab() {
     auto horizontalLayout = new QHBoxLayout;
-    toolchainsListView = new InstallerListView;
+    toolchainsListView = new SelectableListView;
 
     horizontalLayout->addWidget(toolchainsListView);
 
@@ -344,7 +344,7 @@ void RustInstaller::createToolchainsTab() {
 
 void RustInstaller::createTargetsTab() {
     auto horizontalLayout = new QHBoxLayout;
-    targetsListView = new InstallerListView;
+    targetsListView = new SelectableListView;
 
     horizontalLayout->addWidget(targetsListView);
 
@@ -365,7 +365,7 @@ void RustInstaller::createTargetsTab() {
 
 void RustInstaller::createComponentsTab() {
     auto horizontalLayout = new QHBoxLayout;
-    componentsListView = new InstallerListView;
+    componentsListView = new SelectableListView;
 
     horizontalLayout->addWidget(componentsListView);
 
@@ -388,7 +388,7 @@ void RustInstaller::createComponentsTab() {
 
 void RustInstaller::createOverridesTab() {
     auto horizontalLayout = new QHBoxLayout;
-    overridesListView = new InstallerListView;
+    overridesListView = new SelectableListView;
 
     horizontalLayout->addWidget(overridesListView);
 

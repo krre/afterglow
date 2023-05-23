@@ -16,7 +16,7 @@ class FileDownloader;
 class CommandLine;
 class BrowseLayout;
 class RustupTab;
-class InstallerListView;
+class SelectableListView;
 
 class RustInstaller : public StandardDialog {
     Q_OBJECT
@@ -102,10 +102,10 @@ private:
 
     QPlainTextEdit* consolePlainTextEdit = nullptr;
 
-    InstallerListView* toolchainsListView = nullptr;
-    InstallerListView* targetsListView = nullptr;
-    InstallerListView* componentsListView = nullptr;
-    InstallerListView* overridesListView = nullptr;
+    SelectableListView* toolchainsListView = nullptr;
+    SelectableListView* targetsListView = nullptr;
+    SelectableListView* componentsListView = nullptr;
+    SelectableListView* overridesListView = nullptr;
 
     QPushButton* toolchainInstallPushButton = nullptr;
     QPushButton* toolchainUninstallPushButton = nullptr;

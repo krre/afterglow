@@ -2,7 +2,7 @@
 #include "ui/base/StandardDialog.h"
 #include <QStringList>
 
-class InstallerListView;
+class SelectableListView;
 
 class AddComponentOrTarget : public StandardDialog {
     Q_OBJECT
@@ -15,5 +15,5 @@ protected slots:
 
 private:
     QStringList m_list;
-    InstallerListView* listView = nullptr;
+    SelectableListView* listView = nullptr;
 };

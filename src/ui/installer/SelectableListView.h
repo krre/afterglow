@@ -1,9 +1,9 @@
 #pragma once
 #include <QListView>
 
-class InstallerListView : public QListView {
+class SelectableListView : public QListView {
 public:
-    InstallerListView();
+    SelectableListView();
     QStringList selectedRows() const;
 
 private slots:

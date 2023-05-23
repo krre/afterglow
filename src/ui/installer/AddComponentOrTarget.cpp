@@ -1,5 +1,5 @@
 #include "AddComponentOrTarget.h"
-#include "InstallerListView.h"
+#include "SelectableListView.h"
 #include "core/Utils.h"
 #include "ui/StringListModel.h"
 #include <QtWidgets>
@@ -8,7 +8,7 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
     setWindowTitle(title);
     resize(400, 300);
 
-    listView = new InstallerListView;
+    listView = new SelectableListView;
     setContentWidget(listView);
 
     QStringList list = Utils::runConsoleCommand(command);
