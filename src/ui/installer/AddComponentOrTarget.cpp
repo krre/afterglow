@@ -1,4 +1,5 @@
 #include "AddComponentOrTarget.h"
+#include "InstallerListView.h"
 #include "core/Utils.h"
 #include "ui/StringListModel.h"
 #include <QtWidgets>
@@ -7,17 +8,8 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
     setWindowTitle(title);
     resize(400, 300);
 
-    listView = new QListView;
-    listView->setContextMenuPolicy(Qt::CustomContextMenu);
-    listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-
+    listView = new InstallerListView;
     setContentWidget(listView);
-
-    contextMenu = new QMenu(this);
-    QAction* copyAction = contextMenu->addAction(tr("Copy"));
-    connect(copyAction, &QAction::triggered, this, &AddComponentOrTarget::onCopyAction);
-
-    connect(listView, &QListView::customContextMenuRequested, this, &AddComponentOrTarget::onCustomContextMenu);
 
     QStringList list = Utils::runConsoleCommand(command);
 
@@ -33,16 +25,6 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
 
     if (model->rowCount()) {
         listView->setCurrentIndex(model->index(0, 0));
-    }
-}
-
-void AddComponentOrTarget::onCopyAction() {
-    Utils::copySelectedRowsFromListViewToClipboard(listView);
-}
-
-void AddComponentOrTarget::onCustomContextMenu(const QPoint& point) {
-    if (listView->indexAt(point).isValid()) {
-        contextMenu->exec(listView->mapToGlobal(point));
     }
 }
 

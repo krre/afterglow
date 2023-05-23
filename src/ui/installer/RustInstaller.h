@@ -11,10 +11,12 @@ class QListView;
 class QLineEdit;
 class QPushButton;
 class QMenu;
+
 class FileDownloader;
 class CommandLine;
 class BrowseLayout;
 class RustupTab;
+class InstallerListView;
 
 class RustInstaller : public StandardDialog {
     Q_OBJECT
@@ -46,8 +48,6 @@ private slots:
     void onBreakPushButtonClicked();
 
     void onDownloaded();
-    void onCustomContextMenu(const QPoint& point);
-    void onCopyAction();
     void onProcessStateChainged(QProcess::ProcessState newState);
 
 private:
@@ -102,10 +102,10 @@ private:
 
     QPlainTextEdit* consolePlainTextEdit = nullptr;
 
-    QListView* toolchainsListView = nullptr;
-    QListView* targetsListView = nullptr;
-    QListView* componentsListView = nullptr;
-    QListView* overridesListView = nullptr;
+    InstallerListView* toolchainsListView = nullptr;
+    InstallerListView* targetsListView = nullptr;
+    InstallerListView* componentsListView = nullptr;
+    InstallerListView* overridesListView = nullptr;
 
     QPushButton* toolchainInstallPushButton = nullptr;
     QPushButton* toolchainUninstallPushButton = nullptr;
@@ -128,7 +128,6 @@ private:
     FileDownloader* fileDownloader = nullptr;
     QTemporaryDir tmpDir;
     QQueue<Command> commandQueue;
-    QMenu* contextMenu = nullptr;
     QString defaultToolchain;
     QString defaultTarget;
     bool settingsLoaded = false;

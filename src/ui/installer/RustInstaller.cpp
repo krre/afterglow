@@ -1,4 +1,5 @@
 #include "RustInstaller.h"
+#include "InstallerListView.h"
 #include "RustupTab.h"
 #include "AddComponentOrTarget.h"
 #include "SetOverride.h"
@@ -67,15 +68,6 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     connect(overrideCleanupPushButton, &QPushButton::clicked, this, &RustInstaller::onOverrideCleanupPushButtonSetClicked);
 
     connect(breakPushButton, &QPushButton::clicked, this, &RustInstaller::onBreakPushButtonClicked);
-
-    connect(toolchainsListView, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
-    connect(targetsListView, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
-    connect(componentsListView, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
-    connect(overridesListView, &QListView::customContextMenuRequested, this, &RustInstaller::onCustomContextMenu);
-
-    contextMenu = new QMenu(this);
-    QAction* copyAction = contextMenu->addAction(tr("Copy"));
-    connect(copyAction, &QAction::triggered, this, &RustInstaller::onCopyAction);
 
     process = new QProcess(this);
 
@@ -186,20 +178,18 @@ void RustInstaller::onToolchainUninstallPushButtonClicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        runCommand("rustup", QStringList("toolchain") << "uninstall"
-                   << Utils::selectedRowsFromListView(toolchainsListView), [this] {
+        runCommand("rustup", QStringList("toolchain") << "uninstall" << toolchainsListView->selectedRows(), [this] {
             loadToolchainList();
         });
     }
 }
 
 void RustInstaller::onToolchainUpdatePushButtonClicked() {
-    runCommand("rustup", QStringList("update") << Utils::selectedRowsFromListView(toolchainsListView));
+    runCommand("rustup", QStringList("update") << toolchainsListView->selectedRows());
 }
 
 void RustInstaller::onToolchainSetDefaultPushButtonClicked() {
-    runCommand("rustup", QStringList("default")
-               << Utils::selectedRowsFromListView(toolchainsListView).at(0), [this] {
+    runCommand("rustup", QStringList("default") << toolchainsListView->selectedRows().first(), [this] {
         loadToolchainList();
         loadTargetList();
         loadComponentList();
@@ -225,8 +215,7 @@ void RustInstaller::onTargetRemovePushButtonAddClicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        runCommand("rustup", QStringList("target") << "remove"
-                   << Utils::selectedRowsFromListView(targetsListView), [this] {
+        runCommand("rustup", QStringList("target") << "remove" << targetsListView->selectedRows(), [this] {
             loadTargetList();
             loadComponentList();
         });
@@ -252,7 +241,7 @@ void RustInstaller::onComponentRemovePushButtonAddClicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        QStringList components = Utils::selectedRowsFromListView(componentsListView);
+        QStringList components = componentsListView->selectedRows();
         cleanupTarget(components);
         runCommand("rustup", QStringList("component") << "remove" << components, [this] {
             loadComponentList();
@@ -280,8 +269,7 @@ void RustInstaller::onOverrideUnsetPushButtonSetClicked() {
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        QStringList overrides = Utils::selectedRowsFromListView(overridesListView);
-        for (const QString& override : overrides) {
+        for (const QString& override : overridesListView->selectedRows()) {
             runCommand("rustup", QStringList("override") << "unset" << "--path" << override.split('\t').at(0), [this] {
                 loadOverrideList();
             });
@@ -317,18 +305,6 @@ void RustInstaller::onDownloaded() {
     installDefaultComponents();
 }
 
-void RustInstaller::onCustomContextMenu(const QPoint& point) {
-    QListView* listView = currentListView();
-
-    if (listView->indexAt(point).isValid()) {
-        contextMenu->exec(listView->mapToGlobal(point));
-    }
-}
-
-void RustInstaller::onCopyAction() {
-    Utils::copySelectedRowsFromListViewToClipboard(currentListView());
-}
-
 void RustInstaller::onProcessStateChainged(QProcess::ProcessState newState) {
     if (newState == QProcess::Running || newState == QProcess::NotRunning) {
         updateAllButtonsState();
@@ -337,10 +313,7 @@ void RustInstaller::onProcessStateChainged(QProcess::ProcessState newState) {
 
 void RustInstaller::createToolchainsTab() {
     auto horizontalLayout = new QHBoxLayout;
-    toolchainsListView = new QListView;
-    toolchainsListView->setContextMenuPolicy(Qt::CustomContextMenu);
-    toolchainsListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    toolchainsListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    toolchainsListView = new InstallerListView;
 
     horizontalLayout->addWidget(toolchainsListView);
 
@@ -371,10 +344,7 @@ void RustInstaller::createToolchainsTab() {
 
 void RustInstaller::createTargetsTab() {
     auto horizontalLayout = new QHBoxLayout;
-    targetsListView = new QListView;
-    targetsListView->setContextMenuPolicy(Qt::CustomContextMenu);
-    targetsListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    targetsListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    targetsListView = new InstallerListView;
 
     horizontalLayout->addWidget(targetsListView);
 
@@ -395,10 +365,7 @@ void RustInstaller::createTargetsTab() {
 
 void RustInstaller::createComponentsTab() {
     auto horizontalLayout = new QHBoxLayout;
-    componentsListView = new QListView;
-    componentsListView->setContextMenuPolicy(Qt::CustomContextMenu);
-    componentsListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    componentsListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    componentsListView = new InstallerListView;
 
     horizontalLayout->addWidget(componentsListView);
 
@@ -421,10 +388,7 @@ void RustInstaller::createComponentsTab() {
 
 void RustInstaller::createOverridesTab() {
     auto horizontalLayout = new QHBoxLayout;
-    overridesListView = new QListView;
-    overridesListView->setContextMenuPolicy(Qt::CustomContextMenu);
-    overridesListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    overridesListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    overridesListView = new InstallerListView;
 
     horizontalLayout->addWidget(overridesListView);
 

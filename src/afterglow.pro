@@ -39,6 +39,7 @@ SOURCES += \
     ui/base/StandardDialog.cpp \
     ui/installer/AddComponentOrTarget.cpp \
     ui/installer/InstallToolchain.cpp \
+    ui/installer/InstallerListView.cpp \
     ui/installer/RustInstaller.cpp \
     ui/installer/RustupTab.cpp \
     ui/installer/SetOverride.cpp
@@ -77,6 +78,7 @@ HEADERS += \
     ui/base/StandardDialog.h \
     ui/installer/AddComponentOrTarget.h \
     ui/installer/InstallToolchain.h \
+    ui/installer/InstallerListView.h \
     ui/installer/RustInstaller.h \
     ui/installer/RustupTab.h \
     ui/installer/SetOverride.h

@@ -25,30 +25,6 @@ QStringList Utils::runConsoleCommand(const QString& command) {
     return result;
 }
 
-QStringList Utils::selectedRowsFromListView(QListView* listView, bool removeDefaultSuffix) {
-    QStringList list;
-    QModelIndexList indices = listView->selectionModel()->selectedIndexes();
-
-    for (int i = 0; i < indices.count(); i++) {
-        list.append(listView->model()->data(indices.at(i), Qt::DisplayRole).toString());
-    }
-
-    if (removeDefaultSuffix) {
-        list.replaceInStrings(" (default)", "");
-    }
-
-    list.replaceInStrings(" ", "");
-
-    return list;
-}
-
-void Utils::copySelectedRowsFromListViewToClipboard(QListView* listView) {
-    QStringList list = Utils::selectedRowsFromListView(listView);
-    list.replaceInStrings(" ", "");
-    QClipboard* clipboard = QGuiApplication::clipboard();
-    clipboard->setText(list.join('\n'));
-}
-
 void Utils::runRustupCommand(const QStringList& arguments) {
     QProcess process;
     process.start("rustup", arguments);

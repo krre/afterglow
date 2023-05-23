@@ -2,8 +2,7 @@
 #include "ui/base/StandardDialog.h"
 #include <QStringList>
 
-class QMenu;
-class QListView;
+class InstallerListView;
 
 class AddComponentOrTarget : public StandardDialog {
     Q_OBJECT
@@ -14,12 +13,7 @@ public:
 protected slots:
     void accept() override;
 
-private slots:
-    void onCopyAction();
-    void onCustomContextMenu(const QPoint& point);
-
 private:
     QStringList m_list;
-    QListView* listView = nullptr;
-    QMenu* contextMenu = nullptr;
+    InstallerListView* listView = nullptr;
 };
