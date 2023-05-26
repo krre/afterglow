@@ -16,6 +16,7 @@ class FileDownloader;
 class CommandLine;
 class BrowseLayout;
 class RustupTab;
+class ToolchainTab;
 class SelectableListView;
 
 class RustInstaller : public StandardDialog {
@@ -24,16 +25,13 @@ public:
     explicit RustInstaller(QWidget* parent = nullptr);
     ~RustInstaller();
 
+    void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr);
+
 private slots:
     void rustupDownload();
     void rustupUpdate();
     void rustupUpdateAll();
     void rustupUninstall();
-
-    void onToolchainInstallPushButtonClicked();
-    void onToolchainUninstallPushButtonClicked();
-    void onToolchainUpdatePushButtonClicked();
-    void onToolchainSetDefaultPushButtonClicked();
 
     void onTargetAddPushButtonAddClicked();
     void onTargetRemovePushButtonAddClicked();
@@ -51,31 +49,25 @@ private slots:
     void onProcessStateChainged(QProcess::ProcessState newState);
 
 private:
-    void createToolchainsTab();
     void createTargetsTab();
     void createComponentsTab();
     void createOverridesTab();
 
-    void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr);
     void showAndScrollMessage(const QString message);
     void runFromQueue();
     void installDefaultComponents();
 
-    void updateToolchainButtonsState();
     void updateTargetButtonsState();
     void updateComponentButtonsState();
     void updateOverrideButtonsState();
     void updateAllButtonsState();
 
-    void loadToolchainList();
     void loadTargetList();
     void loadComponentList();
     void loadOverrideList();
 
-    void loadAndFilterList(const QString& command, QListView* listView, const std::function<void(QStringList&)>& filter = nullptr);
     void defaultInstalledFilter(QStringList& list);
     void rustStdFilter(QStringList& list);
-    QListView* currentListView() const;
     QString findDefault(QListView* listView) const;
     void cleanupTarget(QStringList& components) const;
 
@@ -98,18 +90,13 @@ private:
 
     QTabWidget* tabWidget = nullptr;
     RustupTab* rustupTab = nullptr;
+    ToolchainTab* toolchainTab = nullptr;
 
     QPlainTextEdit* consolePlainTextEdit = nullptr;
 
-    SelectableListView* toolchainsListView = nullptr;
     SelectableListView* targetsListView = nullptr;
     SelectableListView* componentsListView = nullptr;
     SelectableListView* overridesListView = nullptr;
-
-    QPushButton* toolchainInstallPushButton = nullptr;
-    QPushButton* toolchainUninstallPushButton = nullptr;
-    QPushButton* toolchainUpdatePushButton = nullptr;
-    QPushButton* toolchainSetDefaultPushButton = nullptr;
 
     QPushButton* targetAddPushButton = nullptr;
     QPushButton* targetRemovePushButton = nullptr;
@@ -127,7 +114,6 @@ private:
     FileDownloader* fileDownloader = nullptr;
     QTemporaryDir tmpDir;
     QQueue<Command> commandQueue;
-    QString defaultToolchain;
     QString defaultTarget;
     bool settingsLoaded = false;
 };

@@ -1,9 +1,9 @@
 #include "RustInstaller.h"
 #include "SelectableListView.h"
 #include "RustupTab.h"
+#include "ToolchainTab.h"
 #include "AddComponentOrTarget.h"
 #include "SetOverride.h"
-#include "InstallToolchain.h"
 #include "ui/StringListModel.h"
 #include "core/Utils.h"
 #include "core/Settings.h"
@@ -22,10 +22,18 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     connect(rustupTab, &RustupTab::updateAllClicked, this, &RustInstaller::rustupUpdateAll);
     connect(rustupTab, &RustupTab::uninstallClicked, this, &RustInstaller::rustupUninstall);
 
+    toolchainTab = new ToolchainTab(this);
+
+    connect(toolchainTab, &ToolchainTab::defaultSetted, [this] {
+        loadTargetList();
+        loadComponentList();
+        rustupTab->loadVersion();
+    });
+
     tabWidget = new QTabWidget;
     tabWidget->addTab(rustupTab, "Rustup");
+    tabWidget->addTab(toolchainTab, tr("Toolchains"));
 
-    createToolchainsTab();
     createTargetsTab();
     createComponentsTab();
     createOverridesTab();
@@ -47,15 +55,9 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
 
     tabWidget->setCurrentIndex(0);
 
-    toolchainsListView->setModel(new StringListModel(this));
     targetsListView->setModel(new StringListModel(this));
     componentsListView->setModel(new StringListModel(this));
     overridesListView->setModel(new StringListModel(this));
-
-    connect(toolchainInstallPushButton, &QPushButton::clicked, this, &RustInstaller::onToolchainInstallPushButtonClicked);
-    connect(toolchainUninstallPushButton, &QPushButton::clicked, this, &RustInstaller::onToolchainUninstallPushButtonClicked);
-    connect(toolchainUpdatePushButton, &QPushButton::clicked, this, &RustInstaller::onToolchainUpdatePushButtonClicked);
-    connect(toolchainSetDefaultPushButton, &QPushButton::clicked, this, &RustInstaller::onToolchainSetDefaultPushButtonClicked);
 
     connect(targetAddPushButton, &QPushButton::clicked, this, &RustInstaller::onTargetAddPushButtonAddClicked);
     connect(targetRemovePushButton, &QPushButton::clicked, this, &RustInstaller::onTargetRemovePushButtonAddClicked);
@@ -71,14 +73,14 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
 
     process = new QProcess(this);
 
-    connect(process, &QProcess::readyReadStandardOutput, this, [=, this] {
+    connect(process, &QProcess::readyReadStandardOutput, this, [this] {
         QByteArray data = process->readAllStandardOutput();
         auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
         QString output = toUtf16(data);
         showAndScrollMessage(output);
     });
 
-    connect(process, &QProcess::readyReadStandardError, this, [=, this] {
+    connect(process, &QProcess::readyReadStandardError, this, [this] {
         QByteArray data = process->readAllStandardError();
         auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
         QString output = toUtf16(data);
@@ -99,7 +101,7 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
         }
     });
 
-    connect(process, &QProcess::errorOccurred, this, [=, this] (QProcess::ProcessError error) {
+    connect(process, &QProcess::errorOccurred, this, [this] (QProcess::ProcessError error) {
         Q_UNUSED(error)
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished with error"));
         showAndScrollMessage(message);
@@ -111,7 +113,6 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     fileDownloader = new FileDownloader(this);
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
-    loadToolchainList();
     loadTargetList();
     loadComponentList();
     loadOverrideList();
@@ -158,43 +159,6 @@ void RustInstaller::rustupUninstall() {
     if (button == QMessageBox::Ok) {
         runCommand("rustup", { "self", "uninstall", "-y" });
     }
-}
-
-void RustInstaller::onToolchainInstallPushButtonClicked() {
-    InstallToolchain installToolchain(this);
-    if (installToolchain.exec() == QDialog::Rejected) return;;
-
-    QString toolchain = installToolchain.toolchain();
-
-    if (!toolchain.isEmpty()) {
-        runCommand("rustup", { "toolchain", "install", toolchain }, [this] {
-            loadToolchainList();
-        });
-    }
-}
-
-void RustInstaller::onToolchainUninstallPushButtonClicked() {
-    int button = QMessageBox::question(this, tr("Uninstall Toolchain"), tr("Toolchains will be uninstalled. Are you sure?"),
-                          QMessageBox::Ok,
-                          QMessageBox::Cancel);
-    if (button == QMessageBox::Ok) {
-        runCommand("rustup", QStringList("toolchain") << "uninstall" << toolchainsListView->selectedRows(), [this] {
-            loadToolchainList();
-        });
-    }
-}
-
-void RustInstaller::onToolchainUpdatePushButtonClicked() {
-    runCommand("rustup", QStringList("update") << toolchainsListView->selectedRows());
-}
-
-void RustInstaller::onToolchainSetDefaultPushButtonClicked() {
-    runCommand("rustup", QStringList("default") << toolchainsListView->selectedRows().first(), [this] {
-        loadToolchainList();
-        loadTargetList();
-        loadComponentList();
-        rustupTab->loadVersion();
-    });
 }
 
 void RustInstaller::onTargetAddPushButtonAddClicked() {
@@ -311,37 +275,6 @@ void RustInstaller::onProcessStateChainged(QProcess::ProcessState newState) {
     }
 }
 
-void RustInstaller::createToolchainsTab() {
-    auto horizontalLayout = new QHBoxLayout;
-    toolchainsListView = new SelectableListView;
-
-    horizontalLayout->addWidget(toolchainsListView);
-
-    auto verticalLayout = new QVBoxLayout();
-
-    toolchainInstallPushButton = new QPushButton(tr("Install..."));
-    verticalLayout->addWidget(toolchainInstallPushButton);
-
-    toolchainUninstallPushButton = new QPushButton(tr("Uninstall..."));
-    toolchainUninstallPushButton->setEnabled(false);
-    verticalLayout->addWidget(toolchainUninstallPushButton);
-
-    toolchainUpdatePushButton = new QPushButton(tr("Update"));
-    toolchainUpdatePushButton->setEnabled(false);
-    verticalLayout->addWidget(toolchainUpdatePushButton);
-
-    toolchainSetDefaultPushButton = new QPushButton(tr("Set Default"));
-    toolchainSetDefaultPushButton->setEnabled(false);
-    verticalLayout->addWidget(toolchainSetDefaultPushButton);
-
-    verticalLayout->addStretch();
-    horizontalLayout->addLayout(verticalLayout);
-
-    auto toolchains = new QWidget();
-    toolchains->setLayout(horizontalLayout);
-    tabWidget->addTab(toolchains, tr("Toolchains"));
-}
-
 void RustInstaller::createTargetsTab() {
     auto horizontalLayout = new QHBoxLayout;
     targetsListView = new SelectableListView;
@@ -440,15 +373,6 @@ void RustInstaller::installDefaultComponents() {
     runCommand("cargo", { "install", "racer" });
 }
 
-void RustInstaller::updateToolchainButtonsState() {
-    bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
-    bool enabled = toolchainsListView->selectionModel()->selectedIndexes().count() && processesFree;
-    toolchainInstallPushButton->setEnabled(processesFree);
-    toolchainUninstallPushButton->setEnabled(enabled);
-    toolchainUpdatePushButton->setEnabled(enabled);
-    toolchainSetDefaultPushButton->setEnabled(enabled);
-}
-
 void RustInstaller::updateTargetButtonsState() {
     bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
     bool enabled = targetsListView->selectionModel()->selectedIndexes().count() && processesFree;
@@ -474,51 +398,27 @@ void RustInstaller::updateOverrideButtonsState() {
 void RustInstaller::updateAllButtonsState() {
     bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
     breakPushButton->setEnabled(!processesFree);
-    rustupTab->setRustupButtonsEnabled(processesFree);
-    updateToolchainButtonsState();
+    rustupTab->setWidgetsEnabled(processesFree);
+    toolchainTab->setWidgetsEnabled(processesFree);
     updateTargetButtonsState();
     updateComponentButtonsState();
     updateOverrideButtonsState();
 }
 
-void RustInstaller::loadToolchainList() {
-    loadAndFilterList("rustup toolchain list", toolchainsListView);
-    updateToolchainButtonsState();
-    defaultToolchain = findDefault(toolchainsListView);
-}
-
 void RustInstaller::loadTargetList() {
-    loadAndFilterList("rustup target list", targetsListView, [=, this] (QStringList& list) { defaultInstalledFilter(list); });
+    Utils::loadAndFilterList("rustup target list", targetsListView, [=, this] (QStringList& list) { defaultInstalledFilter(list); });
     updateTargetButtonsState();
     defaultTarget = findDefault(targetsListView);
 }
 
 void RustInstaller::loadComponentList() {
-    loadAndFilterList("rustup component list", componentsListView, [=, this] (QStringList& list) { rustStdFilter(list); });
+    Utils::loadAndFilterList("rustup component list", componentsListView, [=, this] (QStringList& list) { rustStdFilter(list); });
     updateComponentButtonsState();
 }
 
 void RustInstaller::loadOverrideList() {
-    loadAndFilterList("rustup override list", overridesListView);
+    Utils::loadAndFilterList("rustup override list", overridesListView);
     updateOverrideButtonsState();
-}
-
-void RustInstaller::loadAndFilterList(const QString& command, QListView* listView, const std::function<void(QStringList&)>& filter) {
-    StringListModel* model = static_cast<StringListModel*>(listView->model());
-    QStringList list = Utils::runConsoleCommand(command);
-
-    if (list.count() == 1 && list.at(0).left(2) == "no") {
-        list.removeFirst();
-    }
-
-    if (filter) {
-        filter(list);
-    }
-
-    model->setStrings(list);
-    if (model->rowCount()) {
-        listView->setCurrentIndex(model->index(0, 0));
-    }
 }
 
 void RustInstaller::defaultInstalledFilter(QStringList& list) {
@@ -542,25 +442,6 @@ void RustInstaller::rustStdFilter(QStringList& list) {
             list.removeAt(i);
         }
     }
-}
-
-QListView* RustInstaller::currentListView() const {
-    QListView* result = nullptr;
-    Tab currentTab = static_cast<Tab>(tabWidget->currentIndex());
-
-    if (currentTab == Tab::Toolchain) {
-        result = toolchainsListView;
-    } else if (currentTab == Tab::Targets) {
-        result = targetsListView;
-    } else if (currentTab == Tab::Components) {
-        result = componentsListView;
-    } else if (currentTab == Tab::Overrides) {
-        result = overridesListView;
-    }
-
-    Q_ASSERT(result != nullptr);
-
-    return result;
 }
 
 QString RustInstaller::findDefault(QListView* listView) const {

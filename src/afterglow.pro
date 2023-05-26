@@ -42,7 +42,8 @@ SOURCES += \
     ui/installer/RustInstaller.cpp \
     ui/installer/RustupTab.cpp \
     ui/installer/SelectableListView.cpp \
-    ui/installer/SetOverride.cpp
+    ui/installer/SetOverride.cpp \
+    ui/installer/ToolchainTab.cpp
 
 HEADERS += \
     core/Constants.h \
@@ -81,7 +82,8 @@ HEADERS += \
     ui/installer/RustInstaller.h \
     ui/installer/RustupTab.h \
     ui/installer/SelectableListView.h \
-    ui/installer/SetOverride.h
+    ui/installer/SetOverride.h \
+    ui/installer/ToolchainTab.h
 
 FORMS +=
 

@@ -10,7 +10,7 @@ class RustupTab : public QWidget {
 public:
     explicit RustupTab(QWidget* parent = nullptr);
 
-    void setRustupButtonsEnabled(bool enabled);
+    void setWidgetsEnabled(bool enabled);
     void loadVersion();
 
 signals:

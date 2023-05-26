@@ -56,7 +56,7 @@ RustupTab::RustupTab(QWidget* parent) : QWidget(parent) {
     loadVersion();
 }
 
-void RustupTab::setRustupButtonsEnabled(bool enabled) {
+void RustupTab::setWidgetsEnabled(bool enabled) {
     downloadButton->setEnabled(enabled);
     updateButton->setEnabled(enabled);
     updateAllButton->setEnabled(enabled);
