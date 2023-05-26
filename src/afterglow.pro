@@ -43,6 +43,7 @@ SOURCES += \
     ui/installer/RustupTab.cpp \
     ui/installer/SelectableListView.cpp \
     ui/installer/SetOverride.cpp \
+    ui/installer/TargetTab.cpp \
     ui/installer/ToolchainTab.cpp
 
 HEADERS += \
@@ -83,6 +84,7 @@ HEADERS += \
     ui/installer/RustupTab.h \
     ui/installer/SelectableListView.h \
     ui/installer/SetOverride.h \
+    ui/installer/TargetTab.h \
     ui/installer/ToolchainTab.h
 
 FORMS +=

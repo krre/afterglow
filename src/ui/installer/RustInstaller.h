@@ -17,6 +17,7 @@ class CommandLine;
 class BrowseLayout;
 class RustupTab;
 class ToolchainTab;
+class TargetTab;
 class SelectableListView;
 
 class RustInstaller : public StandardDialog {
@@ -26,15 +27,13 @@ public:
     ~RustInstaller();
 
     void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr);
+    void loadComponentList();
 
 private slots:
     void rustupDownload();
     void rustupUpdate();
     void rustupUpdateAll();
     void rustupUninstall();
-
-    void onTargetAddPushButtonAddClicked();
-    void onTargetRemovePushButtonAddClicked();
 
     void onComponentAddPushButtonAddClicked();
     void onComponentRemovePushButtonAddClicked();
@@ -49,7 +48,6 @@ private slots:
     void onProcessStateChainged(QProcess::ProcessState newState);
 
 private:
-    void createTargetsTab();
     void createComponentsTab();
     void createOverridesTab();
 
@@ -57,18 +55,13 @@ private:
     void runFromQueue();
     void installDefaultComponents();
 
-    void updateTargetButtonsState();
     void updateComponentButtonsState();
     void updateOverrideButtonsState();
     void updateAllButtonsState();
 
-    void loadTargetList();
-    void loadComponentList();
     void loadOverrideList();
 
-    void defaultInstalledFilter(QStringList& list);
     void rustStdFilter(QStringList& list);
-    QString findDefault(QListView* listView) const;
     void cleanupTarget(QStringList& components) const;
 
     void readSettings();
@@ -89,17 +82,15 @@ private:
     };
 
     QTabWidget* tabWidget = nullptr;
+
     RustupTab* rustupTab = nullptr;
     ToolchainTab* toolchainTab = nullptr;
+    TargetTab* targetTab = nullptr;
 
     QPlainTextEdit* consolePlainTextEdit = nullptr;
 
-    SelectableListView* targetsListView = nullptr;
     SelectableListView* componentsListView = nullptr;
     SelectableListView* overridesListView = nullptr;
-
-    QPushButton* targetAddPushButton = nullptr;
-    QPushButton* targetRemovePushButton = nullptr;
 
     QPushButton* componentAddPushButton = nullptr;
     QPushButton* componentRemovePushButton = nullptr;
@@ -114,6 +105,5 @@ private:
     FileDownloader* fileDownloader = nullptr;
     QTemporaryDir tmpDir;
     QQueue<Command> commandQueue;
-    QString defaultTarget;
     bool settingsLoaded = false;
 };
