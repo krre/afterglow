@@ -50,12 +50,6 @@ void Utils::loadAndFilterList(const QString& command, QListView* listView, const
     }
 }
 
-QString Utils::findDefault(QListView* listView) {
-    StringListModel* model = static_cast<StringListModel*>(listView->model());
-    auto str = model->find("(default)");
-    return str == std::nullopt ? QString() : str->replace(" (default)", "");
-}
-
 void Utils::defaultInstalledFilter(QStringList& list) {
     for (int i = list.count() - 1; i >= 0; i--) {
         if (list.at(i).contains("(default)")) {

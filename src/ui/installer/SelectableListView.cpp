@@ -1,4 +1,5 @@
 #include "SelectableListView.h"
+#include "ui/StringListModel.h"
 #include <QtWidgets>
 
 SelectableListView::SelectableListView() {
@@ -20,6 +21,12 @@ QStringList SelectableListView::selectedRows() const {
     result.replaceInStrings(" ", "");
 
     return result;
+}
+
+QString SelectableListView::findDefault() const {
+    StringListModel* model = static_cast<StringListModel*>(QListView::model());
+    auto str = model->find("(default)");
+    return str == std::nullopt ? QString() : str->replace(" (default)", "");
 }
 
 void SelectableListView::onCustomContextMenu(const QPoint& point) {
