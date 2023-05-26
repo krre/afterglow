@@ -64,7 +64,7 @@ void TargetTab::onRemoveClicked() {
 }
 
 void TargetTab::loadList() {
-    Utils::loadAndFilterList("rustup target list", listView, [] (QStringList& list) { Utils::defaultInstalledFilter(list); });
+    listView->load("rustup target list", [] (QStringList& list) { Utils::defaultInstalledFilter(list); });
     setWidgetsEnabled(true);
     m_defaultTarget = listView->findDefault();
 }

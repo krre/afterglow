@@ -1,5 +1,4 @@
 #include "Utils.h"
-#include "ui/StringListModel.h"
 #include <QtWidgets>
 
 QStringList Utils::runConsoleCommand(const QString& command) {
@@ -30,24 +29,6 @@ void Utils::runRustupCommand(const QStringList& arguments) {
     QProcess process;
     process.start("rustup", arguments);
     process.waitForFinished();
-}
-
-void Utils::loadAndFilterList(const QString& command, QListView* listView, const std::function<void (QStringList&)>& filter) {
-    QStringList list = runConsoleCommand(command);
-
-    if (list.count() == 1 && list.first().left(2) == "no") {
-        list.removeFirst();
-    }
-
-    if (filter) {
-        filter(list);
-    }
-
-    if (list.count()) {
-        StringListModel* model = static_cast<StringListModel*>(listView->model());
-        model->setStrings(list);
-        listView->setCurrentIndex(model->index(0, 0));
-    }
 }
 
 void Utils::defaultInstalledFilter(QStringList& list) {

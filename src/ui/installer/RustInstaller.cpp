@@ -351,12 +351,12 @@ void RustInstaller::updateAllButtonsState() {
 }
 
 void RustInstaller::loadComponentList() {
-    Utils::loadAndFilterList("rustup component list", componentsListView, [=, this] (QStringList& list) { rustStdFilter(list); });
+    componentsListView->load("rustup component list", [this] (QStringList& list) { rustStdFilter(list); });
     updateComponentButtonsState();
 }
 
 void RustInstaller::loadOverrideList() {
-    Utils::loadAndFilterList("rustup override list", overridesListView);
+    overridesListView->load("rustup override list");
     updateOverrideButtonsState();
 }
 

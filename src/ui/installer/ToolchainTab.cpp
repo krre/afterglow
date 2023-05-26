@@ -86,6 +86,6 @@ void ToolchainTab::onSetDefaultClicked() {
 
 void ToolchainTab::loadList() {
     setWidgetsEnabled(false);
-    Utils::loadAndFilterList("rustup toolchain list", listView);
+    listView->load("rustup toolchain list");
     setWidgetsEnabled(true);
 }
