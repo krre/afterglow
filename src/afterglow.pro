@@ -40,6 +40,7 @@ SOURCES += \
     ui/installer/AddComponentOrTarget.cpp \
     ui/installer/ComponentTab.cpp \
     ui/installer/InstallToolchain.cpp \
+    ui/installer/OverrideTab.cpp \
     ui/installer/RustInstaller.cpp \
     ui/installer/RustupTab.cpp \
     ui/installer/SelectableListView.cpp \
@@ -82,6 +83,7 @@ HEADERS += \
     ui/installer/AddComponentOrTarget.h \
     ui/installer/ComponentTab.h \
     ui/installer/InstallToolchain.h \
+    ui/installer/OverrideTab.h \
     ui/installer/RustInstaller.h \
     ui/installer/RustupTab.h \
     ui/installer/SelectableListView.h \

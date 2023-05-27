@@ -19,6 +19,7 @@ class RustupTab;
 class ToolchainTab;
 class TargetTab;
 class ComponentTab;
+class OverrideTab;
 class SelectableListView;
 
 class RustInstaller : public StandardDialog {
@@ -27,7 +28,7 @@ public:
     explicit RustInstaller(QWidget* parent = nullptr);
     ~RustInstaller();
 
-    void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr);
+    void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr, const QString& directory = QString());
     void loadComponents();
     void cleanupTarget(QStringList& components) const;
 
@@ -37,26 +38,16 @@ private slots:
     void rustupUpdateAll();
     void rustupUninstall();
 
-    void onOverrideSetPushButtonSetClicked();
-    void onOverrideUnsetPushButtonSetClicked();
-    void onOverrideCleanupPushButtonSetClicked();
-
     void onBreakPushButtonClicked();
 
     void onDownloaded();
     void onProcessStateChainged(QProcess::ProcessState newState);
 
 private:
-    void createOverridesTab();
-
     void showAndScrollMessage(const QString message);
     void runFromQueue();
     void installDefaultComponents();
-
-    void updateOverrideButtonsState();
     void updateAllButtonsState();
-
-    void loadOverrideList();
 
     void readSettings();
     void writeSettings();
@@ -65,6 +56,7 @@ private:
         QString program;
         QStringList arguments;
         std::function<void()> postWork;
+        QString directory;
     };
 
     QTabWidget* tabWidget = nullptr;
@@ -73,14 +65,9 @@ private:
     ToolchainTab* toolchainTab = nullptr;
     TargetTab* targetTab = nullptr;
     ComponentTab* componentTab = nullptr;
+    OverrideTab* overrideTab = nullptr;
 
     QPlainTextEdit* consolePlainTextEdit = nullptr;
-
-    SelectableListView* overridesListView = nullptr;
-
-    QPushButton* overrideSetPushButton = nullptr;
-    QPushButton* overrideUnsetPushButton = nullptr;
-    QPushButton* overrideCleanupPushButton = nullptr;
 
     QPushButton* breakPushButton = nullptr;
 

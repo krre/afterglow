@@ -1,11 +1,9 @@
 #include "RustInstaller.h"
-#include "SelectableListView.h"
 #include "RustupTab.h"
 #include "ToolchainTab.h"
 #include "TargetTab.h"
 #include "ComponentTab.h"
-#include "SetOverride.h"
-#include "ui/StringListModel.h"
+#include "OverrideTab.h"
 #include "core/Settings.h"
 #include "core/FileDownloader.h"
 #include "core/Settings.h"
@@ -32,14 +30,14 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
 
     targetTab = new TargetTab(this);
     componentTab = new ComponentTab(this);
+    overrideTab = new OverrideTab(this);
 
     tabWidget = new QTabWidget;
     tabWidget->addTab(rustupTab, "Rustup");
     tabWidget->addTab(toolchainTab, tr("Toolchains"));
     tabWidget->addTab(targetTab, tr("Targets"));
     tabWidget->addTab(componentTab, tr("Components"));
-
-    createOverridesTab();
+    tabWidget->addTab(overrideTab, tr("Overrides"));
 
     auto verticalLayout = new QVBoxLayout;
     verticalLayout->addWidget(tabWidget);
@@ -50,6 +48,7 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
 
     breakPushButton = new QPushButton(tr("Break"));
     breakPushButton->setEnabled(false);
+    connect(breakPushButton, &QPushButton::clicked, this, &RustInstaller::onBreakPushButtonClicked);
     verticalLayout->addWidget(breakPushButton, 0, Qt::AlignLeft);
 
     setContentLayout(verticalLayout, false);
@@ -57,14 +56,6 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     buttonBox()->setStandardButtons(QDialogButtonBox::Close);
 
     tabWidget->setCurrentIndex(0);
-
-    overridesListView->setModel(new StringListModel(this));
-
-    connect(overrideSetPushButton, &QPushButton::clicked, this, &RustInstaller::onOverrideSetPushButtonSetClicked);
-    connect(overrideUnsetPushButton, &QPushButton::clicked, this, &RustInstaller::onOverrideUnsetPushButtonSetClicked);
-    connect(overrideCleanupPushButton, &QPushButton::clicked, this, &RustInstaller::onOverrideCleanupPushButtonSetClicked);
-
-    connect(breakPushButton, &QPushButton::clicked, this, &RustInstaller::onBreakPushButtonClicked);
 
     process = new QProcess(this);
 
@@ -107,8 +98,6 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
 
     fileDownloader = new FileDownloader(this);
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
-
-    loadOverrideList();
 
     readSettings();
 }
@@ -154,40 +143,6 @@ void RustInstaller::rustupUninstall() {
     }
 }
 
-void RustInstaller::onOverrideSetPushButtonSetClicked() {
-    SetOverride setOverride(this);
-    if (setOverride.exec() == QDialog::Rejected) return;
-
-    QString directory = setOverride.directory();
-    QString toolchain = setOverride.toolchain();
-
-    if (!directory.isEmpty()) {
-        process->setWorkingDirectory(directory);
-        runCommand("rustup", QStringList("override") << "set" << toolchain, [this] {
-            loadOverrideList();
-        });
-    }
-}
-
-void RustInstaller::onOverrideUnsetPushButtonSetClicked() {
-    int button = QMessageBox::question(this, tr("Unset Override"), tr("Override will be unsetted. Are you sure?"),
-                          QMessageBox::Ok,
-                          QMessageBox::Cancel);
-    if (button == QMessageBox::Ok) {
-        for (const QString& override : overridesListView->selectedRows()) {
-            runCommand("rustup", QStringList("override") << "unset" << "--path" << override.split('\t').at(0), [this] {
-                loadOverrideList();
-            });
-        }
-    }
-}
-
-void RustInstaller::onOverrideCleanupPushButtonSetClicked() {
-    runCommand("rustup", { "override", "unset", "--nonexistent" }, [this] {
-        loadOverrideList();
-    });
-}
-
 void RustInstaller::onBreakPushButtonClicked() {
     commandQueue.clear();
     fileDownloader->abort();
@@ -216,33 +171,8 @@ void RustInstaller::onProcessStateChainged(QProcess::ProcessState newState) {
     }
 }
 
-void RustInstaller::createOverridesTab() {
-    auto horizontalLayout = new QHBoxLayout;
-    overridesListView = new SelectableListView;
-
-    horizontalLayout->addWidget(overridesListView);
-
-    auto verticalLayout = new QVBoxLayout;
-
-    overrideSetPushButton = new QPushButton(tr("Set..."));
-    verticalLayout->addWidget(overrideSetPushButton);
-
-    overrideUnsetPushButton = new QPushButton(tr("Unset..."));
-    verticalLayout->addWidget(overrideUnsetPushButton);
-
-    overrideCleanupPushButton = new QPushButton(tr("Cleanup"));
-    verticalLayout->addWidget(overrideCleanupPushButton);
-
-    verticalLayout->addStretch();
-    horizontalLayout->addLayout(verticalLayout);
-
-    auto overrides = new QWidget;
-    overrides->setLayout(horizontalLayout);
-    tabWidget->addTab(overrides, tr("Overrides"));
-}
-
-void RustInstaller::runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork) {
-    commandQueue.enqueue({ program, arguments, postWork });
+void RustInstaller::runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork, const QString& directory) {
+    commandQueue.enqueue({ program, arguments, postWork, directory });
     runFromQueue();
 }
 
@@ -265,6 +195,7 @@ void RustInstaller::runFromQueue() {
         QString message = QString("<font color=%1>%2</font>: <font color=%3>%4 %5</font>")
                     .arg("#0000FF", tr("Run command"), "#FF0000", command.program, command.arguments.join(" "));
         showAndScrollMessage(message);
+        process->setWorkingDirectory(command.directory);
         process->start(command.program, command.arguments);
     }
 }
@@ -274,14 +205,6 @@ void RustInstaller::installDefaultComponents() {
     runCommand("cargo", { "install", "racer" });
 }
 
-void RustInstaller::updateOverrideButtonsState() {
-    bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
-    bool enabled = overridesListView->selectionModel()->selectedIndexes().count() && processesFree;
-    overrideSetPushButton->setEnabled(processesFree);
-    overrideUnsetPushButton->setEnabled(enabled);
-    overrideCleanupPushButton->setEnabled(enabled);
-}
-
 void RustInstaller::updateAllButtonsState() {
     bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
     breakPushButton->setEnabled(!processesFree);
@@ -289,12 +212,7 @@ void RustInstaller::updateAllButtonsState() {
     toolchainTab->setWidgetsEnabled(processesFree);
     targetTab->setWidgetsEnabled(processesFree);
     componentTab->setWidgetsEnabled(processesFree);
-    updateOverrideButtonsState();
-}
-
-void RustInstaller::loadOverrideList() {
-    overridesListView->load("rustup override list");
-    updateOverrideButtonsState();
+    overrideTab->setWidgetsEnabled(processesFree);
 }
 
 void RustInstaller::cleanupTarget(QStringList& components) const {
