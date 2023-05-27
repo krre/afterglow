@@ -38,6 +38,7 @@ SOURCES += \
     ui/base/BrowseLayout.cpp \
     ui/base/StandardDialog.cpp \
     ui/installer/AddComponentOrTarget.cpp \
+    ui/installer/ComponentTab.cpp \
     ui/installer/InstallToolchain.cpp \
     ui/installer/RustInstaller.cpp \
     ui/installer/RustupTab.cpp \
@@ -79,6 +80,7 @@ HEADERS += \
     ui/base/BrowseLayout.h \
     ui/base/StandardDialog.h \
     ui/installer/AddComponentOrTarget.h \
+    ui/installer/ComponentTab.h \
     ui/installer/InstallToolchain.h \
     ui/installer/RustInstaller.h \
     ui/installer/RustupTab.h \

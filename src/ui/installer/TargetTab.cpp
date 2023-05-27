@@ -46,7 +46,7 @@ void TargetTab::onAddClicked() {
     if (targets.count()) {
         rustupInstaller->runCommand("rustup", QStringList("target") << "add" << targets, [this] {
             loadList();
-            rustupInstaller->loadComponentList();
+            rustupInstaller->loadComponents();
         });
     }
 }
@@ -58,7 +58,7 @@ void TargetTab::onRemoveClicked() {
     if (button == QMessageBox::Ok) {
         rustupInstaller->runCommand("rustup", QStringList("target") << "remove" << listView->selectedRows(), [this] {
             loadList();
-            rustupInstaller->loadComponentList();
+            rustupInstaller->loadComponents();
         });
     }
 }

@@ -18,6 +18,7 @@ class BrowseLayout;
 class RustupTab;
 class ToolchainTab;
 class TargetTab;
+class ComponentTab;
 class SelectableListView;
 
 class RustInstaller : public StandardDialog {
@@ -27,16 +28,14 @@ public:
     ~RustInstaller();
 
     void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr);
-    void loadComponentList();
+    void loadComponents();
+    void cleanupTarget(QStringList& components) const;
 
 private slots:
     void rustupDownload();
     void rustupUpdate();
     void rustupUpdateAll();
     void rustupUninstall();
-
-    void onComponentAddPushButtonAddClicked();
-    void onComponentRemovePushButtonAddClicked();
 
     void onOverrideSetPushButtonSetClicked();
     void onOverrideUnsetPushButtonSetClicked();
@@ -48,21 +47,16 @@ private slots:
     void onProcessStateChainged(QProcess::ProcessState newState);
 
 private:
-    void createComponentsTab();
     void createOverridesTab();
 
     void showAndScrollMessage(const QString message);
     void runFromQueue();
     void installDefaultComponents();
 
-    void updateComponentButtonsState();
     void updateOverrideButtonsState();
     void updateAllButtonsState();
 
     void loadOverrideList();
-
-    void rustStdFilter(QStringList& list);
-    void cleanupTarget(QStringList& components) const;
 
     void readSettings();
     void writeSettings();
@@ -78,14 +72,11 @@ private:
     RustupTab* rustupTab = nullptr;
     ToolchainTab* toolchainTab = nullptr;
     TargetTab* targetTab = nullptr;
+    ComponentTab* componentTab = nullptr;
 
     QPlainTextEdit* consolePlainTextEdit = nullptr;
 
-    SelectableListView* componentsListView = nullptr;
     SelectableListView* overridesListView = nullptr;
-
-    QPushButton* componentAddPushButton = nullptr;
-    QPushButton* componentRemovePushButton = nullptr;
 
     QPushButton* overrideSetPushButton = nullptr;
     QPushButton* overrideUnsetPushButton = nullptr;
