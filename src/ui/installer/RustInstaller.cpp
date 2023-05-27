@@ -198,7 +198,6 @@ void RustInstaller::downloadInstaller() {
 
 void RustInstaller::readSettings() {
     tabWidget->setCurrentIndex(Settings::value("gui.rustInstaller.currentTab").toInt());
-    settingsLoaded = true;
 }
 
 void RustInstaller::writeSettings() {

@@ -71,5 +71,4 @@ private:
     FileDownloader* fileDownloader = nullptr;
     QTemporaryDir tmpDir;
     QQueue<Command> commandQueue;
-    bool settingsLoaded = false;
 };
