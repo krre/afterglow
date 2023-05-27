@@ -14,5 +14,5 @@ private slots:
 
 private:
     QString m_name;
-    QLineEdit* lineEdit = nullptr;
+    QLineEdit* m_lineEdit = nullptr;
 };

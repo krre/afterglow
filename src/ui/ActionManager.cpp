@@ -16,13 +16,13 @@ ActionManager* ActionManager::instance() {
 }
 
 void ActionManager::addAction(const QString& id, QAction* action) {
-    s_instance->actions[id] = action;
+    s_instance->m_actions[id] = action;
 }
 
 QAction* ActionManager::action(const QString& id) {
-    return s_instance->actions.value(id);
+    return s_instance->m_actions.value(id);
 }
 
 void ActionManager::removeAction(const QString& id) {
-    s_instance->actions.remove(id);
+    s_instance->m_actions.remove(id);
 }

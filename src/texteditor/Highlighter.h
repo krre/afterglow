@@ -8,9 +8,9 @@ class QTextDocument;
 class Highlighter : public QSyntaxHighlighter {
 public:
     explicit Highlighter(const QString& fileExt, QTextDocument* parent);
-    const QString& getLangName() const { return langName; }
-    const QString& getLangExt() const { return langExt; }
-    bool isValid() const { return valid; }
+    const QString& getLangName() const { return m_langName; }
+    const QString& getLangExt() const { return m_langExt; }
+    bool isValid() const { return m_valid; }
 
     static bool hasExtension(const QString& ext);
 
@@ -31,15 +31,15 @@ private:
         QTextCharFormat format;
     };
 
-    bool valid = false;
+    bool m_valid = false;
 
-    QString langName;
-    QString langExt;
+    QString m_langName;
+    QString m_langExt;
 
-    QVector<HighlightingRule> highlightingRules;
+    QVector<HighlightingRule> m_highlightingRules;
 
-    QRegularExpression commentStartExpression;
-    QRegularExpression commentEndExpression;
+    QRegularExpression m_commentStartExpression;
+    QRegularExpression m_commentEndExpression;
 
-    QTextCharFormat multiLineCommentFormat;
+    QTextCharFormat m_multiLineCommentFormat;
 };

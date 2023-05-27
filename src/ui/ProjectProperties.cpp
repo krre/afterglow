@@ -7,21 +7,21 @@ ProjectProperties::ProjectProperties(QWidget* parent) : QWidget(parent) {
 
     auto verticalLayout = new QVBoxLayout;
     verticalLayout->addWidget(new QLabel(tr("Target:")));
-
-    targetComboBox = new QComboBox;
-    targetComboBox->addItem(tr("Debug"));
-    targetComboBox->addItem(tr("Release"));
-
-    verticalLayout->addWidget(targetComboBox, 0, Qt::AlignLeft);
+    
+    m_targetComboBox = new QComboBox;
+    m_targetComboBox->addItem(tr("Debug"));
+    m_targetComboBox->addItem(tr("Release"));
+    
+    verticalLayout->addWidget(m_targetComboBox, 0, Qt::AlignLeft);
     verticalLayout->addWidget(new QLabel(tr("Run:")));
-
-    runComboBox = new QComboBox;
-    verticalLayout->addWidget(runComboBox, 0, Qt::AlignLeft);
+    
+    m_runComboBox = new QComboBox;
+    verticalLayout->addWidget(m_runComboBox, 0, Qt::AlignLeft);
 
     verticalLayout->addWidget(new QLabel(tr("Arguments:")));
 
-    argumentsLineEdit = new QLineEdit;
-    verticalLayout->addWidget(argumentsLineEdit);
+    m_argumentsLineEdit = new QLineEdit;
+    verticalLayout->addWidget(m_argumentsLineEdit);
 
     verticalLayout->addStretch();
 
@@ -29,44 +29,44 @@ ProjectProperties::ProjectProperties(QWidget* parent) : QWidget(parent) {
 }
 
 CargoManager::BuildTarget ProjectProperties::buildTarget() const {
-    return static_cast<CargoManager::BuildTarget>(targetComboBox->currentIndex());
+    return static_cast<CargoManager::BuildTarget>(m_targetComboBox->currentIndex());
 }
 
 void ProjectProperties::setBuildTarget(CargoManager::BuildTarget buildTarget) {
-    targetComboBox->setCurrentIndex(static_cast<int>(buildTarget));
+    m_targetComboBox->setCurrentIndex(static_cast<int>(buildTarget));
 }
 
 void ProjectProperties::setProject(const QString& projectPath) {
-    this->projectPath = projectPath;
+    this->m_projectPath = projectPath;
     updateMetadata();
 }
 
 QString ProjectProperties::arguments() const {
-    return argumentsLineEdit->text();
+    return m_argumentsLineEdit->text();
 }
 
 QStringList ProjectProperties::argumentsList() const {
-    return argumentsLineEdit->text().split(' ');
+    return m_argumentsLineEdit->text().split(' ');
 }
 
 void ProjectProperties::setArguments(const QString& arguments) {
-    argumentsLineEdit->setText(arguments);
+    m_argumentsLineEdit->setText(arguments);
 }
 
 const QString ProjectProperties::runTarget() const {
-    return metadata["target_directory"].toString() + "/"
+    return m_metadata["target_directory"].toString() + "/"
             + (buildTarget() == CargoManager::BuildTarget::Debug ? "debug" : "release") + "/"
-            + runComboBox->currentText();
+           + m_runComboBox->currentText();
 }
 
 void ProjectProperties::reset() {
-    targetComboBox->setCurrentIndex(0);
-    projectPath = QString();
-    runComboBox->clear();
+    m_targetComboBox->setCurrentIndex(0);
+    m_projectPath = QString();
+    m_runComboBox->clear();
 }
 
 void ProjectProperties::updateMetadata() {
-    QString manifestPath = projectPath + "/Cargo.toml";
+    QString manifestPath = m_projectPath + "/Cargo.toml";
     QProcess process;
     QStringList arguments;
     arguments << "metadata";
@@ -75,13 +75,13 @@ void ProjectProperties::updateMetadata() {
     arguments << "--no-deps";
     process.start("cargo", arguments);
     process.waitForFinished();
-
-    metadata = QJsonDocument::fromJson(process.readAllStandardOutput()).object();
-    QJsonArray targets = metadata["packages"].toArray().at(0).toObject()["targets"].toArray();
+    
+    m_metadata = QJsonDocument::fromJson(process.readAllStandardOutput()).object();
+    QJsonArray targets = m_metadata["packages"].toArray().at(0).toObject()["targets"].toArray();
 
     for (int i = 0; i < targets.size(); i++) {
         if (targets.at(i).toObject()["kind"].toArray().at(0).toString() == "bin") {
-            runComboBox->addItem(targets.at(i).toObject()["name"].toString());
+            m_runComboBox->addItem(targets.at(i).toObject()["name"].toString());
         }
     }
 }

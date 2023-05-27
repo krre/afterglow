@@ -3,13 +3,13 @@
 
 FileDownloader::FileDownloader(QObject* parent) : QObject(parent) {
     QLoggingCategory::setFilterRules("qt.network.ssl.warning=false");
-    connect(&networkAccessManager, &QNetworkAccessManager::finished, this, &FileDownloader::fileDownloaded);
+    connect(&m_networkAccessManager, &QNetworkAccessManager::finished, this, &FileDownloader::fileDownloaded);
 }
 
 void FileDownloader::load(const QUrl& url) {
     m_isBusy = true;
     QNetworkRequest request(url);
-    m_reply = networkAccessManager.get(request);
+    m_reply = m_networkAccessManager.get(request);
 }
 
 void FileDownloader::fileDownloaded(QNetworkReply* reply) {

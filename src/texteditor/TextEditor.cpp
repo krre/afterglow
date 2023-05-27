@@ -8,7 +8,7 @@
 
 TextEditor::TextEditor(QString filePath, QWidget* parent) :
         QPlainTextEdit(parent),
-        filePath(filePath) {
+    m_filePath(filePath) {
     setFrameShape(QFrame::NoFrame);
 
     const QString& family = Settings::value("editor.font.family").toString();
@@ -17,12 +17,12 @@ TextEditor::TextEditor(QString filePath, QWidget* parent) :
     document()->setDefaultFont(font);
 
     setWordWrapMode(QTextOption::NoWrap);
-
-    lineNumberArea = new LineNumberArea(this);
+    
+    m_lineNumberArea = new LineNumberArea(this);
 
     QFileInfo fi(filePath);
     if (Highlighter::hasExtension(fi.suffix())) {
-        highlighter = new Highlighter(fi.suffix(), document());
+        m_highlighter = new Highlighter(fi.suffix(), document());
     }
 
     connect(this, &TextEditor::blockCountChanged, this, &TextEditor::updateLineNumberAreaWidth);
@@ -40,11 +40,11 @@ TextEditor::TextEditor(QString filePath, QWidget* parent) :
 }
 
 void TextEditor::setFilePath(const QString& filePath) {
-    this->filePath = filePath;
+    this->m_filePath = filePath;
 }
 
 void TextEditor::setAutoCompleter(AutoCompleter* completer) {
-    this->completer = completer;
+    this->m_completer = completer;
     if (completer) {
         completer->setTextEditor(this);
     }
@@ -56,20 +56,20 @@ void TextEditor::saveFile() {
     if (Settings::value("editor.cleanTrailingWhitespaceOnSave").toBool()) {
        cleanTrailingWhitespace();
     }
-
-    QFile file(filePath);
+    
+    QFile file(m_filePath);
     if (file.open(QFile::WriteOnly | QFile::Text)) {
         QTextStream out(&file);
         out << toPlainText();
         document()->setModified(false);
         emit documentModified(this);
     } else {
-        qWarning() << "Failed to open file for writing" << filePath;
+        qWarning() << "Failed to open file for writing" << m_filePath;
     }
 }
 
 QString TextEditor::getModifiedName() const {
-    QFileInfo fi(filePath);
+    QFileInfo fi(m_filePath);
     return fi.fileName() + (document()->isModified() ? "*" : "");
 }
 
@@ -86,7 +86,7 @@ void TextEditor::setCursorPosition(const QPoint& pos) {
 }
 
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event) {
-    QPainter painter(lineNumberArea);
+    QPainter painter(m_lineNumberArea);
     painter.fillRect(event->rect(), QColor(Const::Color::LineNumberArea));
 
     QTextBlock block = firstVisibleBlock();
@@ -98,7 +98,7 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event) {
         if (block.isVisible() && bottom >= event->rect().top()) {
             QString number = QString::number(blockNumber + 1);
             painter.setPen(QColor(Const::Color::LineNumber));
-            painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
+            painter.drawText(0, top, m_lineNumberArea->width(), fontMetrics().height(),
                              Qt::AlignRight, number);
         }
 
@@ -227,7 +227,7 @@ void TextEditor::toggleBlockComment() {
 }
 
 void TextEditor::openAutoCompleter() {
-    completer->open();
+    m_completer->open();
 }
 
 void TextEditor::joinLines() {
@@ -422,7 +422,7 @@ void TextEditor::cleanTrailingWhitespace() {
 }
 
 void TextEditor::keyPressEvent(QKeyEvent* event) {
-    if (completer && completer->popup()->isVisible()) {
+    if (m_completer && m_completer->popup()->isVisible()) {
         // The following keys are forwarded by the completer to the widget
         switch (event->key()) {
            case Qt::Key_Enter:
@@ -451,7 +451,7 @@ void TextEditor::resizeEvent(QResizeEvent* event) {
     QPlainTextEdit::resizeEvent(event);
 
     QRect cr = contentsRect();
-    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), getLineNumberAreaWidth(), cr.height()));
+    m_lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), getLineNumberAreaWidth(), cr.height()));
 }
 
 void TextEditor::focusInEvent(QFocusEvent* event) {
@@ -489,9 +489,9 @@ void TextEditor::highlightCurrentLine() {
 
 void TextEditor::updateLineNumberArea(const QRect& rect, int dy) {
     if (dy) {
-        lineNumberArea->scroll(0, dy);
+        m_lineNumberArea->scroll(0, dy);
     } else {
-        lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+        m_lineNumberArea->update(0, rect.y(), m_lineNumberArea->width(), rect.height());
     }
 
     if (rect.contains(viewport()->rect())) {
@@ -500,11 +500,11 @@ void TextEditor::updateLineNumberArea(const QRect& rect, int dy) {
 }
 
 void TextEditor::readFile() {
-    QFile file(filePath);
+    QFile file(m_filePath);
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         setPlainText(file.readAll());
     } else {
-        qWarning() << "Failed to open file for reading" << filePath;
+        qWarning() << "Failed to open file for reading" << m_filePath;
     }
 }
 

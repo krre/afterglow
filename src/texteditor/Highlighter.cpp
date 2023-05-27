@@ -11,7 +11,7 @@ bool Highlighter::hasExtension(const QString& ext) {
 }
 
 void Highlighter::highlightBlock(const QString& text) {
-    for (const HighlightingRule& rule : qAsConst(highlightingRules)) {
+    for (const HighlightingRule& rule : qAsConst(m_highlightingRules)) {
         QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
         while (matchIterator.hasNext()) {
             QRegularExpressionMatch match = matchIterator.next();
@@ -23,11 +23,11 @@ void Highlighter::highlightBlock(const QString& text) {
 
     int startIndex = 0;
     if (static_cast<BlockState>(previousBlockState()) != BlockState::MultilineCommentEnd) {
-        startIndex = text.indexOf(commentStartExpression);
+        startIndex = text.indexOf(m_commentStartExpression);
     }
 
     while (startIndex >= 0) {
-        QRegularExpressionMatch match = commentEndExpression.match(text, startIndex);
+        QRegularExpressionMatch match = m_commentEndExpression.match(text, startIndex);
         int endIndex = match.capturedStart();
         int commentLength = 0;
         if (endIndex == -1) {
@@ -36,8 +36,8 @@ void Highlighter::highlightBlock(const QString& text) {
         } else {
             commentLength = endIndex - startIndex + match.capturedLength();
         }
-        setFormat(startIndex, commentLength, multiLineCommentFormat);
-        startIndex = text.indexOf(commentStartExpression, startIndex + commentLength);
+        setFormat(startIndex, commentLength, m_multiLineCommentFormat);
+        startIndex = text.indexOf(m_commentStartExpression, startIndex + commentLength);
     }
 }
 
@@ -52,8 +52,8 @@ void Highlighter::loadRules(const QString& fileExt) {
     QJsonArray blocks = obj["blocks"].toArray();
     QJsonObject formats = obj["formats"].toObject();
 
-    langName = lang["name"].toString();
-    langExt = lang["extension"].toString();
+    m_langName = lang["name"].toString();
+    m_langExt = lang["extension"].toString();
 
     for (const auto& r : rules) {
         QJsonObject rule = r.toObject();
@@ -65,12 +65,12 @@ void Highlighter::loadRules(const QString& fileExt) {
 
             for (const auto& word : ruleWords) {
                 highlightingRule.pattern = QRegularExpression(rule["pattern"].toString().arg(word.toString()));
-                highlightingRules.append(highlightingRule);
+                m_highlightingRules.append(highlightingRule);
             }
 
         } else {
             highlightingRule.pattern = QRegularExpression(rule["pattern"].toString());
-            highlightingRules.append(highlightingRule);
+            m_highlightingRules.append(highlightingRule);
         }
 
     }
@@ -78,13 +78,13 @@ void Highlighter::loadRules(const QString& fileExt) {
     for (const auto& b : blocks) {
         QJsonObject block = b.toObject();
         if (block["name"].toString() == "SingleLineComment") {
-            commentStartExpression = QRegularExpression(block["start"].toString());
-            commentEndExpression = QRegularExpression(block["end"].toString());
-            multiLineCommentFormat = jsonToFormat(formats[block["format"].toString()].toObject());
+            m_commentStartExpression = QRegularExpression(block["start"].toString());
+            m_commentEndExpression = QRegularExpression(block["end"].toString());
+            m_multiLineCommentFormat = jsonToFormat(formats[block["format"].toString()].toObject());
         }
     }
-
-    valid = true;
+    
+    m_valid = true;
 }
 
 QTextCharFormat Highlighter::jsonToFormat(const QJsonObject& obj) {

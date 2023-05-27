@@ -16,5 +16,5 @@ public:
     static void removeAction(const QString& id);
 
 private:
-    QMap<QString, QAction*> actions;
+    QMap<QString, QAction*> m_actions;
 };

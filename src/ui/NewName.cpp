@@ -3,22 +3,22 @@
 
 NewName::NewName(const QString& title, QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(title);
-
-    lineEdit = new QLineEdit;
-    connect(lineEdit, &QLineEdit::textChanged, this, &NewName::onTextChanged);
+    
+    m_lineEdit = new QLineEdit;
+    connect(m_lineEdit, &QLineEdit::textChanged, this, &NewName::onTextChanged);
 
     auto formLayout = new QFormLayout;
-    formLayout->addRow(tr("Name:"), lineEdit);
+    formLayout->addRow(tr("Name:"), m_lineEdit);
 
     setContentLayout(formLayout);
     resizeToWidth(400);
 
     buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
-    lineEdit->setFocus();
+    m_lineEdit->setFocus();
 }
 
 QString NewName::name() const {
-    return lineEdit->text();
+    return m_lineEdit->text();
 }
 
 void NewName::onTextChanged(const QString& text) {

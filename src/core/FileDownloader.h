@@ -24,7 +24,7 @@ private slots:
     void fileDownloaded(QNetworkReply* m_reply);
 
 private:
-    QNetworkAccessManager networkAccessManager;
+    QNetworkAccessManager m_networkAccessManager;
     QByteArray m_data;
     bool m_isBusy = false;
     QNetworkReply* m_reply = nullptr;

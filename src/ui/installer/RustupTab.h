@@ -23,12 +23,12 @@ private slots:
     void onUninstallClicked();
 
 private:
-    QLineEdit* rustupHomeLineEdit = nullptr;
-    QLineEdit* cargoHomeLineEdit = nullptr;
-    QLineEdit* versionLineEdit = nullptr;
+    QLineEdit* m_rustupHomeLineEdit = nullptr;
+    QLineEdit* m_cargoHomeLineEdit = nullptr;
+    QLineEdit* m_versionLineEdit = nullptr;
 
-    QPushButton* downloadButton = nullptr;
-    QPushButton* updateButton = nullptr;
-    QPushButton* updateAllButton = nullptr;
-    QPushButton* uninstallButton = nullptr;
+    QPushButton* m_downloadButton = nullptr;
+    QPushButton* m_updateButton = nullptr;
+    QPushButton* m_updateAllButton = nullptr;
+    QPushButton* m_uninstallButton = nullptr;
 };

@@ -18,7 +18,7 @@ private slots:
     void adjustAcceptedButton();
 
 private:
-    QLineEdit* nameLineEdit = nullptr;
-    BrowseLayout* directoryBrowseLayout = nullptr;
-    QComboBox* templateComboBox = nullptr;
+    QLineEdit* m_nameLineEdit = nullptr;
+    BrowseLayout* m_directoryBrowseLayout = nullptr;
+    QComboBox* m_templateComboBox = nullptr;
 };

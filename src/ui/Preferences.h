@@ -20,6 +20,6 @@ private:
     void readSettings();
     void writeSettings();
 
-    BrowseLayout* workspaceBrowseLayout = nullptr;
-    QCheckBox* sessionCheckBox = nullptr;
+    BrowseLayout* m_workspaceBrowseLayout = nullptr;
+    QCheckBox* m_sessionCheckBox = nullptr;
 };

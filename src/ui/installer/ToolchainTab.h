@@ -24,8 +24,8 @@ private slots:
 private:
     SelectableListView* listView = nullptr;
 
-    QPushButton* installButton = nullptr;
-    QPushButton* uninstallButton = nullptr;
-    QPushButton* updateButton = nullptr;
-    QPushButton* setDefaultButton = nullptr;
+    QPushButton* m_installButton = nullptr;
+    QPushButton* m_uninstallButton = nullptr;
+    QPushButton* m_updateButton = nullptr;
+    QPushButton* m_setDefaultButton = nullptr;
 };

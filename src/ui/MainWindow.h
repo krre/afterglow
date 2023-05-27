@@ -141,27 +141,27 @@ private:
     void updateMenuState();
     void prepareBuild();
 
-    QMenu* recentFilesMenu = nullptr;
-    QMenu* recentProjectsMenu = nullptr;
+    QMenu* m_recentFilesMenu = nullptr;
+    QMenu* m_recentProjectsMenu = nullptr;
 
-    QMenu* editMenu = nullptr;
-    QMenu* buildMenu = nullptr;
+    QMenu* m_editMenu = nullptr;
+    QMenu* m_buildMenu = nullptr;
 
-    QSplitter* mainSplitter = nullptr;
-    QSplitter* sideSplitter = nullptr;
+    QSplitter* m_mainSplitter = nullptr;
+    QSplitter* m_sideSplitter = nullptr;
 
-    QTabWidget* sideTabWidget = nullptr;
-    QTabWidget* sourceTabWidget = nullptr;
-    QTabWidget* outputTabWidget = nullptr;
+    QTabWidget* m_sideTabWidget = nullptr;
+    QTabWidget* m_sourceTabWidget = nullptr;
+    QTabWidget* m_outputTabWidget = nullptr;
 
-    QPlainTextEdit* cargoPlainTextEdit = nullptr;
+    QPlainTextEdit* m_cargoPlainTextEdit = nullptr;
 
-    CargoManager* cargoManager = nullptr;
-    ProjectTree* projectTree = nullptr;
-    ProjectProperties* projectProperties = nullptr;
-    QString projectPath;
-    TextEditor* editor = nullptr;
-    AutoCompleter* completer = nullptr;
-    IssueModel* issueModel = nullptr;
-    IssueListView* issueListView = nullptr;
+    CargoManager* m_cargoManager = nullptr;
+    ProjectTree* m_projectTree = nullptr;
+    ProjectProperties* m_projectProperties = nullptr;
+    QString m_projectPath;
+    TextEditor* m_editor = nullptr;
+    AutoCompleter* m_completer = nullptr;
+    IssueModel* m_issueModel = nullptr;
+    IssueListView* m_issueListView = nullptr;
 };

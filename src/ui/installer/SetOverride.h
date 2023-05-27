@@ -16,6 +16,6 @@ private slots:
     void onTextChanged(const QString& text);
 
 private:
-    BrowseLayout* directoryBrowseLayout = nullptr;
-    QComboBox* toolchainComboBox = nullptr;
+    BrowseLayout* m_directoryBrowseLayout = nullptr;
+    QComboBox* m_toolchainComboBox = nullptr;
 };

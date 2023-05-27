@@ -12,64 +12,64 @@
 RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Rust Installer"));
 
-    rustupTab = new RustupTab(this);
-    toolchainTab = new ToolchainTab(this);
+    m_rustupTab = new RustupTab(this);
+    m_toolchainTab = new ToolchainTab(this);
 
-    connect(toolchainTab, &ToolchainTab::defaultSetted, [this] {
-        targetTab->load();
-        componentTab->load();
-        rustupTab->load();
+    connect(m_toolchainTab, &ToolchainTab::defaultSetted, [this] {
+        m_targetTab->load();
+        m_componentTab->load();
+        m_rustupTab->load();
     });
 
-    targetTab = new TargetTab(this);
-    componentTab = new ComponentTab(this);
-    overrideTab = new OverrideTab(this);
+    m_targetTab = new TargetTab(this);
+    m_componentTab = new ComponentTab(this);
+    m_overrideTab = new OverrideTab(this);
 
-    tabWidget = new QTabWidget;
-    tabWidget->addTab(rustupTab, "Rustup");
-    tabWidget->addTab(toolchainTab, tr("Toolchains"));
-    tabWidget->addTab(targetTab, tr("Targets"));
-    tabWidget->addTab(componentTab, tr("Components"));
-    tabWidget->addTab(overrideTab, tr("Overrides"));
+    m_tabWidget = new QTabWidget;
+    m_tabWidget->addTab(m_rustupTab, "Rustup");
+    m_tabWidget->addTab(m_toolchainTab, tr("Toolchains"));
+    m_tabWidget->addTab(m_targetTab, tr("Targets"));
+    m_tabWidget->addTab(m_componentTab, tr("Components"));
+    m_tabWidget->addTab(m_overrideTab, tr("Overrides"));
 
     auto verticalLayout = new QVBoxLayout;
-    verticalLayout->addWidget(tabWidget);
+    verticalLayout->addWidget(m_tabWidget);
 
-    consolePlainTextEdit = new QPlainTextEdit;
-    consolePlainTextEdit->setReadOnly(true);
-    verticalLayout->addWidget(consolePlainTextEdit, 1);
+    m_consolePlainTextEdit = new QPlainTextEdit;
+    m_consolePlainTextEdit->setReadOnly(true);
+    verticalLayout->addWidget(m_consolePlainTextEdit, 1);
 
-    breakPushButton = new QPushButton(tr("Break"));
-    breakPushButton->setEnabled(false);
-    connect(breakPushButton, &QPushButton::clicked, this, &RustInstaller::onBreakPushButtonClicked);
-    verticalLayout->addWidget(breakPushButton, 0, Qt::AlignLeft);
+    m_breakPushButton = new QPushButton(tr("Break"));
+    m_breakPushButton->setEnabled(false);
+    connect(m_breakPushButton, &QPushButton::clicked, this, &RustInstaller::onBreakPushButtonClicked);
+    verticalLayout->addWidget(m_breakPushButton, 0, Qt::AlignLeft);
 
     setContentLayout(verticalLayout, false);
     resizeToWidth(810);
     buttonBox()->setStandardButtons(QDialogButtonBox::Close);
 
-    process = new QProcess(this);
+    m_process = new QProcess(this);
 
-    connect(process, &QProcess::readyReadStandardOutput, this, [this] {
-        QByteArray data = process->readAllStandardOutput();
+    connect(m_process, &QProcess::readyReadStandardOutput, this, [this] {
+        QByteArray data = m_process->readAllStandardOutput();
         auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
         QString output = toUtf16(data);
         showAndScrollMessage(output);
     });
 
-    connect(process, &QProcess::readyReadStandardError, this, [this] {
-        QByteArray data = process->readAllStandardError();
+    connect(m_process, &QProcess::readyReadStandardError, this, [this] {
+        QByteArray data = m_process->readAllStandardError();
         auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
         QString output = toUtf16(data);
         showAndScrollMessage(output);
     });
 
-    connect(process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [=, this] (int, QProcess::ExitStatus) {
+    connect(m_process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [=, this] (int, QProcess::ExitStatus) {
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished successfully"));
         showAndScrollMessage(message);
 
-        if (commandQueue.count()) {
-            Command command = commandQueue.dequeue();
+        if (m_commandQueue.count()) {
+            Command command = m_commandQueue.dequeue();
             if (command.postWork) {
                 command.postWork();
             }
@@ -78,20 +78,20 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
         }
     });
 
-    connect(process, &QProcess::errorOccurred, this, [this] (QProcess::ProcessError error) {
+    connect(m_process, &QProcess::errorOccurred, this, [this] (QProcess::ProcessError error) {
         Q_UNUSED(error)
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished with error"));
         showAndScrollMessage(message);
-        commandQueue.clear();
+        m_commandQueue.clear();
     });
 
-    connect(process, &QProcess::stateChanged, this, &RustInstaller::onProcessStateChanged);
+    connect(m_process, &QProcess::stateChanged, this, &RustInstaller::onProcessStateChanged);
 
-    fileDownloader = new FileDownloader(this);
-    connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
+    m_fileDownloader = new FileDownloader(this);
+    connect(m_fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
-    for (int i = 0; i < tabWidget->count(); i++) {
-        InstallerTab* tab = static_cast<InstallerTab*>(tabWidget->widget(i));
+    for (int i = 0; i < m_tabWidget->count(); i++) {
+        InstallerTab* tab = static_cast<InstallerTab*>(m_tabWidget->widget(i));
         tab->load();
     }
 
@@ -103,23 +103,23 @@ RustInstaller::~RustInstaller() {
 }
 
 void RustInstaller::onBreakPushButtonClicked() {
-    commandQueue.clear();
-    fileDownloader->abort();
-    process->close();
+    m_commandQueue.clear();
+    m_fileDownloader->abort();
+    m_process->close();
 }
 
 void RustInstaller::onDownloaded() {
     updateAllButtonsState();
-    showAndScrollMessage(QString("Downloaded %1 bytes").arg(fileDownloader->data().size()));
+    showAndScrollMessage(QString("Downloaded %1 bytes").arg(m_fileDownloader->data().size()));
 
-    QString filePath = tmpDir.path() + "/" + "rustup-init.exe";
+    QString filePath = m_tmpDir.path() + "/" + "rustup-init.exe";
     QFile file(filePath);
     file.open(QIODevice::WriteOnly);
-    file.write(fileDownloader->data());
+    file.write(m_fileDownloader->data());
     file.close();
 
     runCommand(filePath, { "-y" }, [this] {
-        rustupTab->load();
+        m_rustupTab->load();
     });
 
     installDefaultComponents();
@@ -132,31 +132,31 @@ void RustInstaller::onProcessStateChanged(QProcess::ProcessState newState) {
 }
 
 void RustInstaller::runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork, const QString& directory) {
-    commandQueue.enqueue({ program, arguments, postWork, directory });
+    m_commandQueue.enqueue({ program, arguments, postWork, directory });
     runFromQueue();
 }
 
 void RustInstaller::loadComponents() {
-    componentTab->load();
+    m_componentTab->load();
 }
 
 void RustInstaller::showAndScrollMessage(const QString message) {
-    consolePlainTextEdit->appendHtml(message);
-    consolePlainTextEdit->verticalScrollBar()->setValue(consolePlainTextEdit->verticalScrollBar()->maximum());
+    m_consolePlainTextEdit->appendHtml(message);
+    m_consolePlainTextEdit->verticalScrollBar()->setValue(m_consolePlainTextEdit->verticalScrollBar()->maximum());
 }
 
 void RustInstaller::runFromQueue() {
-    if (!commandQueue.isEmpty() && process->state() == QProcess::NotRunning) {
-        if (consolePlainTextEdit->document()->blockCount() > 1) {
+    if (!m_commandQueue.isEmpty() && m_process->state() == QProcess::NotRunning) {
+        if (m_consolePlainTextEdit->document()->blockCount() > 1) {
             showAndScrollMessage("");
         }
 
-        Command command = commandQueue.head();
+        Command command = m_commandQueue.head();
         QString message = QString("<font color=%1>%2</font>: <font color=%3>%4 %5</font>")
                     .arg("#0000FF", tr("Run command"), "#FF0000", command.program, command.arguments.join(" "));
         showAndScrollMessage(message);
-        process->setWorkingDirectory(command.directory);
-        process->start(command.program, command.arguments);
+        m_process->setWorkingDirectory(command.directory);
+        m_process->start(command.program, command.arguments);
     }
 }
 
@@ -166,18 +166,18 @@ void RustInstaller::installDefaultComponents() {
 }
 
 void RustInstaller::updateAllButtonsState() {
-    bool processesFree = process->state() == QProcess::NotRunning && !fileDownloader->isBusy();
-    breakPushButton->setEnabled(!processesFree);
-    rustupTab->setWidgetsEnabled(processesFree);
-    toolchainTab->setWidgetsEnabled(processesFree);
-    targetTab->setWidgetsEnabled(processesFree);
-    componentTab->setWidgetsEnabled(processesFree);
-    overrideTab->setWidgetsEnabled(processesFree);
+    bool processesFree = m_process->state() == QProcess::NotRunning && !m_fileDownloader->isBusy();
+    m_breakPushButton->setEnabled(!processesFree);
+    m_rustupTab->setWidgetsEnabled(processesFree);
+    m_toolchainTab->setWidgetsEnabled(processesFree);
+    m_targetTab->setWidgetsEnabled(processesFree);
+    m_componentTab->setWidgetsEnabled(processesFree);
+    m_overrideTab->setWidgetsEnabled(processesFree);
 }
 
 void RustInstaller::cleanupTarget(QStringList& components) const {
-    if (!targetTab->defaultTarget().isEmpty()) {
-        QString search = "-" + targetTab->defaultTarget();
+    if (!m_targetTab->defaultTarget().isEmpty()) {
+        QString search = "-" + m_targetTab->defaultTarget();
         components.replaceInStrings(search, "");
     }
 }
@@ -185,7 +185,7 @@ void RustInstaller::cleanupTarget(QStringList& components) const {
 void RustInstaller::downloadInstaller() {
 #if defined(Q_OS_LINUX)
     runCommand("sh", { "-c", "curl https://sh.rustup.rs -sSf | sh -s -- -y" }, [this] {
-        rustupTab->load();
+        m_rustupTab->load();
     });
 
     installDefaultComponents();
@@ -203,6 +203,6 @@ void RustInstaller::readSettings() {
 }
 
 void RustInstaller::writeSettings() {
-    Settings::setValue("gui.rustInstaller.currentTab", tabWidget->currentIndex());
+    Settings::setValue("gui.rustInstaller.currentTab", m_tabWidget->currentIndex());
     Settings::updateRustEnvironmentVariables();
 }

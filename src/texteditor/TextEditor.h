@@ -10,11 +10,11 @@ class TextEditor : public QPlainTextEdit {
 public:
     explicit TextEditor(QString filePath, QWidget* parent = nullptr);
 
-    QString getFilePath() const { return filePath; }
+    QString getFilePath() const { return m_filePath; }
     void setFilePath(const QString& filePath);
 
     void setAutoCompleter(AutoCompleter* completer);
-    AutoCompleter* getAutoCompleter() const { return completer; }
+    AutoCompleter* getAutoCompleter() const { return m_completer; }
 
     void saveFile();
     QString getModifiedName() const;
@@ -62,8 +62,8 @@ private:
     void autoindent();
     void extendSelectionToBeginOfComment();
 
-    QWidget* lineNumberArea = nullptr;
-    Highlighter* highlighter = nullptr;
-    QString filePath;
-    AutoCompleter* completer = nullptr;
+    QWidget* m_lineNumberArea = nullptr;
+    Highlighter* m_highlighter = nullptr;
+    QString m_filePath;
+    AutoCompleter* m_completer = nullptr;
 };

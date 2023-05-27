@@ -12,5 +12,5 @@ protected:
     void paintEvent(QPaintEvent* event) override;
 
 private:
-    TextEditor* editor = nullptr;
+    TextEditor* m_editor = nullptr;
 };

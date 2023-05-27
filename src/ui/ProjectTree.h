@@ -12,7 +12,7 @@ public:
     ~ProjectTree();
 
     void setRootPath(const QString& path);
-    QFileSystemModel* getFsModel() const { return fsModel; }
+    QFileSystemModel* getFsModel() const { return m_fsModel; }
     void selectFile(const QString& filePath);
 
 signals:
@@ -36,7 +36,7 @@ private slots:
 private:
     QString getCurrentDirectory() const;
 
-    QFileSystemModel* fsModel = nullptr;
-    FileSystemProxyModel* fsProxyModel = nullptr;
-    QMenu* contextMenu;
+    QFileSystemModel* m_fsModel = nullptr;
+    FileSystemProxyModel* m_fsProxyModel = nullptr;
+    QMenu* m_contextMenu;
 };

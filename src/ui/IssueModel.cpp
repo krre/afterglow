@@ -19,19 +19,19 @@ void IssueModel::appendMessage(const QJsonObject& message) {
     issue.filename = spanObj["file_name"].toString();
     issue.line = spanObj["line_start"].toInt();
     issue.column = spanObj["column_start"].toInt();
-
-    beginInsertRows(QModelIndex(), issues.count(), issues.count());
-    issues.append(issue);
+    
+    beginInsertRows(QModelIndex(), m_issues.count(), m_issues.count());
+    m_issues.append(issue);
     endInsertRows();
-
-    emit countChanged(issues.count());
+    
+    emit countChanged(m_issues.count());
 }
 
 void IssueModel::clear() {
-    if (issues.isEmpty()) return;
-
-    beginRemoveRows(QModelIndex(), 0, issues.count() - 1);
-    issues.clear();
+    if (m_issues.isEmpty()) return;
+    
+    beginRemoveRows(QModelIndex(), 0, m_issues.count() - 1);
+    m_issues.clear();
     endRemoveRows();
 
     emit countChanged(0);
@@ -46,12 +46,12 @@ QVariant IssueModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid()) return QVariant();
 
     int row = index.row();
-
-    if (row >= issues.count() || row < 0 || !index.isValid()) {
+    
+    if (row >= m_issues.count() || row < 0 || !index.isValid()) {
         return QVariant();
     }
-
-    const Issue& issue = issues.at(row);
+    
+    const Issue& issue = m_issues.at(row);
     Role issueRole = static_cast<Role>(role);
 
     if (issueRole == Role::Level) {
@@ -83,5 +83,5 @@ QModelIndex IssueModel::parent(const QModelIndex& index) const {
 
 int IssueModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent)
-    return issues.count();
+    return m_issues.count();
 }

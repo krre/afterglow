@@ -6,27 +6,27 @@
 
 ToolchainTab::ToolchainTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     listView = new SelectableListView;
-
-    installButton = new QPushButton(tr("Install..."));
-    connect(installButton, &QPushButton::clicked, this, &ToolchainTab::onInstallClicked);
-
-    uninstallButton = new QPushButton(tr("Uninstall..."));
-    uninstallButton->setEnabled(false);
-    connect(uninstallButton, &QPushButton::clicked, this, &ToolchainTab::onUninstallClicked);
-
-    updateButton = new QPushButton(tr("Update"));
-    updateButton->setEnabled(false);
-    connect(updateButton, &QPushButton::clicked, this, &ToolchainTab::onUpdateClicked);
-
-    setDefaultButton = new QPushButton(tr("Set Default"));
-    setDefaultButton->setEnabled(false);
-    connect(setDefaultButton, &QPushButton::clicked, this, &ToolchainTab::onSetDefaultClicked);
+    
+    m_installButton = new QPushButton(tr("Install..."));
+    connect(m_installButton, &QPushButton::clicked, this, &ToolchainTab::onInstallClicked);
+    
+    m_uninstallButton = new QPushButton(tr("Uninstall..."));
+    m_uninstallButton->setEnabled(false);
+    connect(m_uninstallButton, &QPushButton::clicked, this, &ToolchainTab::onUninstallClicked);
+    
+    m_updateButton = new QPushButton(tr("Update"));
+    m_updateButton->setEnabled(false);
+    connect(m_updateButton, &QPushButton::clicked, this, &ToolchainTab::onUpdateClicked);
+    
+    m_setDefaultButton = new QPushButton(tr("Set Default"));
+    m_setDefaultButton->setEnabled(false);
+    connect(m_setDefaultButton, &QPushButton::clicked, this, &ToolchainTab::onSetDefaultClicked);
 
     auto verticalLayout = new QVBoxLayout();
-    verticalLayout->addWidget(installButton);
-    verticalLayout->addWidget(uninstallButton);
-    verticalLayout->addWidget(updateButton);
-    verticalLayout->addWidget(setDefaultButton);
+    verticalLayout->addWidget(m_installButton);
+    verticalLayout->addWidget(m_uninstallButton);
+    verticalLayout->addWidget(m_updateButton);
+    verticalLayout->addWidget(m_setDefaultButton);
     verticalLayout->addStretch();
 
     auto horizontalLayout = new QHBoxLayout;
@@ -38,10 +38,10 @@ ToolchainTab::ToolchainTab(RustInstaller* rustupInstaller, QWidget* parent) : In
 
 void ToolchainTab::setWidgetsEnabled(bool enabled) {
     bool selected = listView->selectionModel()->selectedIndexes().count() && enabled;
-    installButton->setEnabled(enabled);
-    uninstallButton->setEnabled(selected);
-    updateButton->setEnabled(selected);
-    setDefaultButton->setEnabled(selected);
+    m_installButton->setEnabled(enabled);
+    m_uninstallButton->setEnabled(selected);
+    m_updateButton->setEnabled(selected);
+    m_setDefaultButton->setEnabled(selected);
 }
 
 void ToolchainTab::onInstallClicked() {

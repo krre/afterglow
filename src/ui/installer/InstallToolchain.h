@@ -17,11 +17,11 @@ private slots:
 private:
     void loadHosts();
 
-    QLineEdit* dateLineEdit = nullptr;
+    QLineEdit* m_dateLineEdit = nullptr;
 
-    QComboBox* channelComboBox = nullptr;
-    QLineEdit *channelLineEdit = nullptr;
+    QComboBox* m_channelComboBox = nullptr;
+    QLineEdit* m_channelLineEdit = nullptr;
 
-    QComboBox *hostComboBox = nullptr;
-    QLineEdit *hostLineEdit = nullptr;
+    QComboBox* m_hostComboBox = nullptr;
+    QLineEdit* m_hostLineEdit = nullptr;
 };

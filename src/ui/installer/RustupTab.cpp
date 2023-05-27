@@ -8,12 +8,12 @@
 
 RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     auto rustupHomeBrowseLayout = new BrowseLayout;
-    rustupHomeLineEdit = rustupHomeBrowseLayout->lineEdit();
-    rustupHomeLineEdit->setText(qEnvironmentVariable(Const::Environment::RustupHome));
+    m_rustupHomeLineEdit = rustupHomeBrowseLayout->lineEdit();
+    m_rustupHomeLineEdit->setText(qEnvironmentVariable(Const::Environment::RustupHome));
 
     auto cargoHomeBrowseLayout = new BrowseLayout;
-    cargoHomeLineEdit = cargoHomeBrowseLayout->lineEdit();
-    cargoHomeLineEdit->setText(qEnvironmentVariable(Const::Environment::CargoHome));
+    m_cargoHomeLineEdit = cargoHomeBrowseLayout->lineEdit();
+    m_cargoHomeLineEdit->setText(qEnvironmentVariable(Const::Environment::CargoHome));
 
     auto envLayout = new QFormLayout;
     envLayout->addRow(new QLabel(QString(Const::Environment::RustupHome) + ":"), rustupHomeBrowseLayout);
@@ -21,30 +21,30 @@ RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : Installe
 
     auto groupBox = new QGroupBox(tr("Environment Variables"));
     groupBox->setLayout(envLayout);
-
-    versionLineEdit = new QLineEdit;
-    versionLineEdit->setReadOnly(true);
+    
+    m_versionLineEdit = new QLineEdit;
+    m_versionLineEdit->setReadOnly(true);
 
     auto versionLayout = new QFormLayout;
-    versionLayout->addRow(tr("Version:"), versionLineEdit);
-
-    downloadButton = new QPushButton(tr("Download"));
-    connect(downloadButton, &QPushButton::clicked, this, &RustupTab::onDownloadClicked);
-
-    updateButton = new QPushButton(tr("Update"));
-    connect(updateButton, &QPushButton::clicked, this, &RustupTab::onUpdateClicked);
-
-    updateAllButton = new QPushButton(tr("Update All"));
-    connect(updateAllButton, &QPushButton::clicked, this, &RustupTab::onUpdateAllClicked);
-
-    uninstallButton = new QPushButton(tr("Uninstall..."));
-    connect(uninstallButton, &QPushButton::clicked, this, &RustupTab::onUninstallClicked);
+    versionLayout->addRow(tr("Version:"), m_versionLineEdit);
+    
+    m_downloadButton = new QPushButton(tr("Download"));
+    connect(m_downloadButton, &QPushButton::clicked, this, &RustupTab::onDownloadClicked);
+    
+    m_updateButton = new QPushButton(tr("Update"));
+    connect(m_updateButton, &QPushButton::clicked, this, &RustupTab::onUpdateClicked);
+    
+    m_updateAllButton = new QPushButton(tr("Update All"));
+    connect(m_updateAllButton, &QPushButton::clicked, this, &RustupTab::onUpdateAllClicked);
+    
+    m_uninstallButton = new QPushButton(tr("Uninstall..."));
+    connect(m_uninstallButton, &QPushButton::clicked, this, &RustupTab::onUninstallClicked);
 
     auto buttonLayout = new QHBoxLayout;
-    buttonLayout->addWidget(downloadButton);
-    buttonLayout->addWidget(updateButton);
-    buttonLayout->addWidget(updateAllButton);
-    buttonLayout->addWidget(uninstallButton);
+    buttonLayout->addWidget(m_downloadButton);
+    buttonLayout->addWidget(m_updateButton);
+    buttonLayout->addWidget(m_updateAllButton);
+    buttonLayout->addWidget(m_uninstallButton);
     buttonLayout->addStretch();
 
     auto verticalLayout = new QVBoxLayout;
@@ -57,16 +57,16 @@ RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : Installe
 }
 
 void RustupTab::setWidgetsEnabled(bool enabled) {
-    downloadButton->setEnabled(enabled);
-    updateButton->setEnabled(enabled);
-    updateAllButton->setEnabled(enabled);
-    uninstallButton->setEnabled(enabled);
+    m_downloadButton->setEnabled(enabled);
+    m_updateButton->setEnabled(enabled);
+    m_updateAllButton->setEnabled(enabled);
+    m_uninstallButton->setEnabled(enabled);
 }
 
 void RustupTab::load() {
     for (const QString& row : Utils::runConsoleCommand("rustup show")) {
         if (row.left(5) == "rustc") {
-            versionLineEdit->setText(row);
+            m_versionLineEdit->setText(row);
             break;
         }
     }

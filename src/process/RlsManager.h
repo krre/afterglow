@@ -26,7 +26,7 @@ protected slots:
     void onReadyReadStandardError(const QString& data) override;
 
 private:
-    bool showDebug = false;
-    int counter = 0;
-    QMap<int, QString> identifiers;
+    bool m_showDebug = false;
+    int m_counter = 0;
+    QMap<int, QString> m_identifiers;
 };

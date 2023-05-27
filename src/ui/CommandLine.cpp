@@ -6,9 +6,9 @@ CommandLine::CommandLine(QWidget* parent) : QLineEdit(parent) {
 }
 
 void CommandLine::run() {
-    if (history.isEmpty() || history.last() != text()) {
-        history.append(text());
-        counter = history.count();
+    if (m_history.isEmpty() || m_history.last() != text()) {
+        m_history.append(text());
+        m_counter = m_history.count();
     }
     setText("");
 }
@@ -20,13 +20,13 @@ void CommandLine::focusInEvent(QFocusEvent* event) {
 }
 
 void CommandLine::keyPressEvent(QKeyEvent* event) {
-    if (event->key() == Qt::Key_Up && !history.isEmpty()) {
-        counter = qMax(0, counter - 1);
-        setText(history.at(counter));
-    } else if (event->key() == Qt::Key_Down && !history.isEmpty()) {
-        counter = qMin(counter + 1, history.count());
-        if (counter < history.count()) {
-            setText(history.at(counter));
+    if (event->key() == Qt::Key_Up && !m_history.isEmpty()) {
+        m_counter = qMax(0, m_counter - 1);
+        setText(m_history.at(m_counter));
+    } else if (event->key() == Qt::Key_Down && !m_history.isEmpty()) {
+        m_counter = qMin(m_counter + 1, m_history.count());
+        if (m_counter < m_history.count()) {
+            setText(m_history.at(m_counter));
         } else {
             setText("");
         }

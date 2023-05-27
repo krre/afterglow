@@ -55,20 +55,20 @@ private:
         QString directory;
     };
 
-    QTabWidget* tabWidget = nullptr;
+    QTabWidget* m_tabWidget = nullptr;
 
-    RustupTab* rustupTab = nullptr;
-    ToolchainTab* toolchainTab = nullptr;
-    TargetTab* targetTab = nullptr;
-    ComponentTab* componentTab = nullptr;
-    OverrideTab* overrideTab = nullptr;
+    RustupTab* m_rustupTab = nullptr;
+    ToolchainTab* m_toolchainTab = nullptr;
+    TargetTab* m_targetTab = nullptr;
+    ComponentTab* m_componentTab = nullptr;
+    OverrideTab* m_overrideTab = nullptr;
 
-    QPlainTextEdit* consolePlainTextEdit = nullptr;
+    QPlainTextEdit* m_consolePlainTextEdit = nullptr;
 
-    QPushButton* breakPushButton = nullptr;
+    QPushButton* m_breakPushButton = nullptr;
 
-    QProcess* process;
-    FileDownloader* fileDownloader = nullptr;
-    QTemporaryDir tmpDir;
-    QQueue<Command> commandQueue;
+    QProcess* m_process;
+    FileDownloader* m_fileDownloader = nullptr;
+    QTemporaryDir m_tmpDir;
+    QQueue<Command> m_commandQueue;
 };

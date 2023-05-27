@@ -38,5 +38,5 @@ signals:
     void countChanged(int count);
 
 private:
-    QList<Issue> issues;
+    QList<Issue> m_issues;
 };

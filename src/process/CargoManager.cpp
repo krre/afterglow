@@ -6,7 +6,7 @@
 
 CargoManager::CargoManager(ProjectProperties* projectProperties, QObject* parent) :
         ProcessManager(parent),
-        projectProperties(projectProperties) {
+    m_projectProperties(projectProperties) {
 }
 
 CargoManager::~CargoManager() {
@@ -23,7 +23,7 @@ void CargoManager::createProject(ProjectTemplate projectTemplate, const QString&
     }
 
     arguments << path;
-    commandStatus = CommandStatus::New;
+    m_commandStatus = CommandStatus::New;
     prepareAndStart(arguments);
     setProjectPath(path);
 }
@@ -31,14 +31,14 @@ void CargoManager::createProject(ProjectTemplate projectTemplate, const QString&
 void CargoManager::build() {
     QStringList arguments("build");
     addBuildRunArguments(arguments);
-    commandStatus = CommandStatus::Build;
+    m_commandStatus = CommandStatus::Build;
     prepareAndStart(arguments);
 }
 
 void CargoManager::run() {
     QStringList arguments("run");
     addBuildRunArguments(arguments);
-    commandStatus = CommandStatus::Run;
+    m_commandStatus = CommandStatus::Run;
     prepareAndStart(arguments);
 }
 
@@ -51,7 +51,7 @@ void CargoManager::clean() {
 }
 
 void CargoManager::setProjectPath(const QString& path) {
-    projectPath = path;
+    m_projectPath = path;
     process()->setWorkingDirectory(path);
 }
 
@@ -64,7 +64,7 @@ void CargoManager::onReadyReadStandardError(const QString& data) {
 }
 
 void CargoManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
-    switch (commandStatus) {
+    switch (m_commandStatus) {
         case CommandStatus::New:
             emit projectCreated(process()->arguments().last());
             break;
@@ -100,7 +100,7 @@ void CargoManager::addBuildRunArguments(QStringList& arguments) {
         arguments << "json";
     }
 
-    if (projectProperties->buildTarget() == BuildTarget::Release) {
+    if (m_projectProperties->buildTarget() == BuildTarget::Release) {
         arguments << "--release";
     }
 }

@@ -6,24 +6,24 @@ Rename::Rename(const QString& name, QWidget* parent) : StandardDialog(parent), m
 
     auto label = new QLabel;
     label->setText(tr("Rename %1?").arg(name));
-
-    lineEdit = new QLineEdit;
-    lineEdit->setText(name);
+    
+    m_lineEdit = new QLineEdit;
+    m_lineEdit->setText(name);
 
     auto verticalLayout = new QVBoxLayout;
     verticalLayout->addWidget(label);
-    verticalLayout->addWidget(lineEdit);
+    verticalLayout->addWidget(m_lineEdit);
     setContentLayout(verticalLayout);
     resizeToWidth(300);
 
     buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
-    connect(lineEdit, &QLineEdit::textChanged, this, &Rename::onTextChanged);
-
-    lineEdit->setFocus();
+    connect(m_lineEdit, &QLineEdit::textChanged, this, &Rename::onTextChanged);
+    
+    m_lineEdit->setFocus();
 }
 
 QString Rename::name() const {
-    return lineEdit->text();
+    return m_lineEdit->text();
 }
 
 void Rename::onTextChanged(const QString& text) {

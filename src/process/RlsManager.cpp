@@ -40,14 +40,14 @@ void RlsManager::shutdown() {
 }
 
 void RlsManager::setShowDebug(bool showDebug) {
-    s_instance->showDebug = showDebug;
+    s_instance->m_showDebug = showDebug;
 }
 
 // Available methods:
 // https://github.com/rust-lang-nursery/rls/blob/master/clients.md
 void RlsManager::send(const QString& method, const QJsonObject& params) {
-    int id = s_instance->counter++;
-    s_instance->identifiers[id] = method;
+    int id = s_instance->m_counter++;
+    s_instance->m_identifiers[id] = method;
 
     QJsonObject obj = {
         {"jsonrpc", "2.0"},
@@ -63,8 +63,8 @@ void RlsManager::send(const QString& method, const QJsonObject& params) {
     QString message = QString("Content-Length: %1\r\n").arg(jsonrpc.size());
     message += "\r\n";
     message += jsonrpc;
-
-    if (s_instance->showDebug) {
+    
+    if (s_instance->m_showDebug) {
         qDebug() << "RLS Message:" << message;
     }
 
@@ -90,7 +90,7 @@ void RlsManager::completion(const QString& filename, int row, int column) {
 }
 
 void RlsManager::onReadyReadStandardOutput(const QString& data) {
-    if (showDebug) {
+    if (m_showDebug) {
         qDebug() << "RLS Result:" << data;
     }
 
@@ -100,8 +100,8 @@ void RlsManager::onReadyReadStandardOutput(const QString& data) {
 
         if (obj.contains("id")) {
             int id = obj["id"].toInt();
-            if (identifiers.contains(id)) {
-                QString method = identifiers.take(id);
+            if (m_identifiers.contains(id)) {
+                QString method = m_identifiers.take(id);
                 if (method == "textDocument/completion") {
                     emit completionResult(obj["result"].toArray());
                 }
@@ -111,7 +111,7 @@ void RlsManager::onReadyReadStandardOutput(const QString& data) {
 }
 
 void RlsManager::onReadyReadStandardError(const QString& data) {
-    if (showDebug) {
+    if (m_showDebug) {
         qDebug() << "RLS Error:" << data;
     }
 }

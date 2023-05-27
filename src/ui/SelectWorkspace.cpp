@@ -10,18 +10,18 @@ SelectWorkspace::SelectWorkspace(QWidget* parent) : StandardDialog(parent) {
     auto verticalLayout = new QVBoxLayout;
     verticalLayout->addWidget(new QLabel(tr("Select directory for your Rust projects")));
 
-    directoryBrowseLayout = new BrowseLayout;
-    connect(directoryBrowseLayout->lineEdit(), &QLineEdit::textChanged, this, &SelectWorkspace::adjustAcceptedButton);
+    m_directoryBrowseLayout = new BrowseLayout;
+    connect(m_directoryBrowseLayout->lineEdit(), &QLineEdit::textChanged, this, &SelectWorkspace::adjustAcceptedButton);
 
     auto formLayout = new QFormLayout;
-    formLayout->addRow(new QLabel(tr("Workspace:")), directoryBrowseLayout);
+    formLayout->addRow(new QLabel(tr("Workspace:")), m_directoryBrowseLayout);
 
     verticalLayout->addLayout(formLayout);
     setContentLayout(verticalLayout);
     resizeToWidth(430);
 
-    directoryBrowseLayout->lineEdit()->setText(Global::workspacePath());
-    directoryBrowseLayout->lineEdit()->setFocus();
+    m_directoryBrowseLayout->lineEdit()->setText(Global::workspacePath());
+    m_directoryBrowseLayout->lineEdit()->setFocus();
 }
 
 void SelectWorkspace::adjustAcceptedButton(const QString& text) {
@@ -29,6 +29,6 @@ void SelectWorkspace::adjustAcceptedButton(const QString& text) {
 }
 
 void SelectWorkspace::accept() {
-    Settings::setValue("workspace", directoryBrowseLayout->lineEdit()->text());
+    Settings::setValue("workspace", m_directoryBrowseLayout->lineEdit()->text());
     QDialog::accept();
 }

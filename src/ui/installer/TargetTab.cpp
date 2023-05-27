@@ -6,31 +6,31 @@
 #include <QtWidgets>
 
 TargetTab::TargetTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
-    listView = new SelectableListView;
-
-    addButton = new QPushButton(tr("Add..."));
-    connect(addButton, &QPushButton::clicked, this, &TargetTab::onAddClicked);
-
-    removeButton = new QPushButton(tr("Remove..."));
-    connect(removeButton, &QPushButton::clicked, this, &TargetTab::onRemoveClicked);
+    m_listView = new SelectableListView;
+    
+    m_addButton = new QPushButton(tr("Add..."));
+    connect(m_addButton, &QPushButton::clicked, this, &TargetTab::onAddClicked);
+    
+    m_removeButton = new QPushButton(tr("Remove..."));
+    connect(m_removeButton, &QPushButton::clicked, this, &TargetTab::onRemoveClicked);
 
     auto buttonLayout = new QVBoxLayout;
-
-    buttonLayout->addWidget(addButton);
-    buttonLayout->addWidget(removeButton);
+    
+    buttonLayout->addWidget(m_addButton);
+    buttonLayout->addWidget(m_removeButton);
     buttonLayout->addStretch();
 
     auto horizontalLayout = new QHBoxLayout;
-    horizontalLayout->addWidget(listView);
+    horizontalLayout->addWidget(m_listView);
     horizontalLayout->addLayout(buttonLayout);
 
     setLayout(horizontalLayout);
 }
 
 void TargetTab::setWidgetsEnabled(bool enabled) {
-    bool selected = listView->selectionModel()->selectedIndexes().count() && enabled;
-    addButton->setEnabled(enabled);
-    removeButton->setEnabled(selected);
+    bool selected = m_listView->selectionModel()->selectedIndexes().count() && enabled;
+    m_addButton->setEnabled(enabled);
+    m_removeButton->setEnabled(selected);
 }
 
 void TargetTab::onAddClicked() {
@@ -52,7 +52,7 @@ void TargetTab::onRemoveClicked() {
                                        QMessageBox::Ok,
                                        QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        rustupInstaller()->runCommand("rustup", QStringList("target") << "remove" << listView->selectedRows(), [this] {
+        rustupInstaller()->runCommand("rustup", QStringList("target") << "remove" << m_listView->selectedRows(), [this] {
             load();
             rustupInstaller()->loadComponents();
         });
@@ -60,9 +60,9 @@ void TargetTab::onRemoveClicked() {
 }
 
 void TargetTab::load() {
-    listView->load("rustup target list", [] (QStringList& list) { Utils::defaultInstalledFilter(list); });
+    m_listView->load("rustup target list", [] (QStringList& list) { Utils::defaultInstalledFilter(list); });
     setWidgetsEnabled(true);
-    m_defaultTarget = listView->findDefault();
+    m_defaultTarget = m_listView->findDefault();
 }
 
 QString TargetTab::defaultTarget() const {

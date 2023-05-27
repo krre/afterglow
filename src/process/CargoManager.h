@@ -50,7 +50,7 @@ private:
 
     void coloredOutputMessage(const QString& message, bool start = false);
 
-    ProjectProperties* projectProperties = nullptr;
-    CommandStatus commandStatus = CommandStatus::None;
-    QString projectPath;
+    ProjectProperties* m_projectProperties = nullptr;
+    CommandStatus m_commandStatus = CommandStatus::None;
+    QString m_projectPath;
 };

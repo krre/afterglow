@@ -6,35 +6,35 @@
 SetOverride::SetOverride(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Set Override"));
 
-    directoryBrowseLayout = new BrowseLayout;
-    connect(directoryBrowseLayout->lineEdit(), &QLineEdit::textChanged, this, &SetOverride::onTextChanged);
-
-    toolchainComboBox = new QComboBox();
+    m_directoryBrowseLayout = new BrowseLayout;
+    connect(m_directoryBrowseLayout->lineEdit(), &QLineEdit::textChanged, this, &SetOverride::onTextChanged);
+    
+    m_toolchainComboBox = new QComboBox();
 
     auto formLayout = new QFormLayout;
-    formLayout->addRow(new QLabel(tr("Directory:")), directoryBrowseLayout);
-    formLayout->addRow(new QLabel(tr("Toolchain:")), toolchainComboBox);
+    formLayout->addRow(new QLabel(tr("Directory:")), m_directoryBrowseLayout);
+    formLayout->addRow(new QLabel(tr("Toolchain:")), m_toolchainComboBox);
     formLayout->itemAt(1, QFormLayout::FieldRole)->setAlignment(Qt::AlignLeft);
 
     setContentLayout(formLayout);
     resizeToWidth(500);
 
-    directoryBrowseLayout->lineEdit()->setFocus();
+    m_directoryBrowseLayout->lineEdit()->setFocus();
     buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
     
     QStringList list = Utils::runConsoleCommand("rustup toolchain list");
 
     for (const QString& toolchain : list) {
-        toolchainComboBox->addItem(toolchain);
+        m_toolchainComboBox->addItem(toolchain);
     }
 }
 
 QString SetOverride::directory() const {
-    return directoryBrowseLayout->lineEdit()->text();
+    return m_directoryBrowseLayout->lineEdit()->text();
 }
 
 QString SetOverride::toolchain() const {
-    return toolchainComboBox->currentText();
+    return m_toolchainComboBox->currentText();
 }
 
 void SetOverride::onTextChanged(const QString& text) {

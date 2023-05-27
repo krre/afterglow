@@ -15,6 +15,6 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
 
 private:
-    QStringList history;
-    int counter = 0;
+    QStringList m_history;
+    int m_counter = 0;
 };

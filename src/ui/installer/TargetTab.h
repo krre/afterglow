@@ -19,9 +19,9 @@ private slots:
     void onRemoveClicked();
 
 private:
-    SelectableListView* listView = nullptr;
+    SelectableListView* m_listView = nullptr;
     QString m_defaultTarget;
 
-    QPushButton* addButton = nullptr;
-    QPushButton* removeButton = nullptr;
+    QPushButton* m_addButton = nullptr;
+    QPushButton* m_removeButton = nullptr;
 };

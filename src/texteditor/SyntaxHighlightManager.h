@@ -13,8 +13,8 @@ public:
 
     void addSyntaxFile(const QString& path);
     QJsonObject getSyntaxJson(const QString& ext) const;
-    bool hasExtension(const QString& ext) const { return syntaxJsonObjects.contains(ext); }
+    bool hasExtension(const QString& ext) const { return m_syntaxJsonObjects.contains(ext); }
 
 private:
-    QMap<QString, QJsonObject> syntaxJsonObjects;
+    QMap<QString, QJsonObject> m_syntaxJsonObjects;
 };

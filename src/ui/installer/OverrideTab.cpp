@@ -5,39 +5,39 @@
 #include <QtWidgets>
 
 OverrideTab::OverrideTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
-    listView = new SelectableListView;
-
-    setButton = new QPushButton(tr("Set..."));
-    connect(setButton, &QPushButton::clicked, this, &OverrideTab::onSetClicked);
-
-    unsetButton = new QPushButton(tr("Unset..."));
-    connect(unsetButton, &QPushButton::clicked, this, &OverrideTab::onUnsetClicked);
-
-    cleanupButton = new QPushButton(tr("Cleanup"));
-    connect(cleanupButton, &QPushButton::clicked, this, &OverrideTab::onCleanupClicked);
+    m_listView = new SelectableListView;
+    
+    m_setButton = new QPushButton(tr("Set..."));
+    connect(m_setButton, &QPushButton::clicked, this, &OverrideTab::onSetClicked);
+    
+    m_unsetButton = new QPushButton(tr("Unset..."));
+    connect(m_unsetButton, &QPushButton::clicked, this, &OverrideTab::onUnsetClicked);
+    
+    m_cleanupButton = new QPushButton(tr("Cleanup"));
+    connect(m_cleanupButton, &QPushButton::clicked, this, &OverrideTab::onCleanupClicked);
 
     auto verticalLayout = new QVBoxLayout;
-    verticalLayout->addWidget(setButton);
-    verticalLayout->addWidget(unsetButton);
-    verticalLayout->addWidget(cleanupButton);
+    verticalLayout->addWidget(m_setButton);
+    verticalLayout->addWidget(m_unsetButton);
+    verticalLayout->addWidget(m_cleanupButton);
     verticalLayout->addStretch();
 
     auto horizontalLayout = new QHBoxLayout;
-    horizontalLayout->addWidget(listView);
+    horizontalLayout->addWidget(m_listView);
     horizontalLayout->addLayout(verticalLayout);
 
     setLayout(horizontalLayout);
 }
 
 void OverrideTab::setWidgetsEnabled(bool enabled) {
-    bool selected = listView->selectionModel()->selectedIndexes().count() && enabled;
-    setButton->setEnabled(enabled);
-    unsetButton->setEnabled(selected);
-    cleanupButton->setEnabled(selected);
+    bool selected = m_listView->selectionModel()->selectedIndexes().count() && enabled;
+    m_setButton->setEnabled(enabled);
+    m_unsetButton->setEnabled(selected);
+    m_cleanupButton->setEnabled(selected);
 }
 
 void OverrideTab::load() {
-    listView->load("rustup override list");
+    m_listView->load("rustup override list");
     setWidgetsEnabled(true);
 }
 
@@ -60,7 +60,7 @@ void OverrideTab::onUnsetClicked() {
                                        QMessageBox::Ok,
                                        QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        for (const QString& override : listView->selectedRows()) {
+        for (const QString& override : m_listView->selectedRows()) {
             rustupInstaller()->runCommand("rustup", QStringList("override") << "unset" << "--path" << override.split('\t').at(0), [this] {
                 load();
             });

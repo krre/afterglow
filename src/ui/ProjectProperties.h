@@ -25,9 +25,9 @@ public:
     void updateMetadata();
 
 private:
-    QComboBox* targetComboBox = nullptr;
-    QComboBox* runComboBox = nullptr;
-    QLineEdit* argumentsLineEdit = nullptr;
-    QString projectPath;
-    QJsonObject metadata;
+    QComboBox* m_targetComboBox = nullptr;
+    QComboBox* m_runComboBox = nullptr;
+    QLineEdit* m_argumentsLineEdit = nullptr;
+    QString m_projectPath;
+    QJsonObject m_metadata;
 };

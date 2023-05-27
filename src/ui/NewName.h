@@ -13,5 +13,5 @@ private slots:
     void onTextChanged(const QString& text);
 
 private:
-    QLineEdit* lineEdit = nullptr;
+    QLineEdit* m_lineEdit = nullptr;
 };

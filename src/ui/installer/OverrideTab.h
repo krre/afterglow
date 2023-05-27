@@ -19,9 +19,9 @@ private slots:
     void onCleanupClicked();
 
 private:
-    SelectableListView* listView = nullptr;
+    SelectableListView* m_listView = nullptr;
 
-    QPushButton* setButton = nullptr;
-    QPushButton* unsetButton = nullptr;
-    QPushButton* cleanupButton = nullptr;
+    QPushButton* m_setButton = nullptr;
+    QPushButton* m_unsetButton = nullptr;
+    QPushButton* m_cleanupButton = nullptr;
 };

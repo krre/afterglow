@@ -15,5 +15,5 @@ private slots:
     void adjustAcceptedButton(const QString& text);
 
 private:
-    BrowseLayout* directoryBrowseLayout = nullptr;
+    BrowseLayout* m_directoryBrowseLayout = nullptr;
 };

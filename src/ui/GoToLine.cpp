@@ -8,26 +8,26 @@ GoToLine::GoToLine(QWidget* parent) : StandardDialog(parent) {
 
     auto validator = new QIntValidator(this);
     validator->setBottom(0);
-
-    lineEdit = new QLineEdit;
-    lineEdit->setValidator(validator);
+    
+    m_lineEdit = new QLineEdit;
+    m_lineEdit->setValidator(validator);
 
     auto horizontalLayout = new QHBoxLayout();
     horizontalLayout->addWidget(label);
-    horizontalLayout->addWidget(lineEdit);
+    horizontalLayout->addWidget(m_lineEdit);
 
     setContentLayout(horizontalLayout);
 
     setLayoutToFixedSize();
 
     buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
-    connect(lineEdit, &QLineEdit::textChanged, this, &GoToLine::onTextChanged);
-
-    lineEdit->setFocus();
+    connect(m_lineEdit, &QLineEdit::textChanged, this, &GoToLine::onTextChanged);
+    
+    m_lineEdit->setFocus();
 }
 
 int GoToLine::line() const {
-    return lineEdit->text().toInt();
+    return m_lineEdit->text().toInt();
 }
 
 void GoToLine::onTextChanged(const QString& text) {

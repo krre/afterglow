@@ -8,11 +8,11 @@
 Preferences::Preferences(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Preferences"));
 
-    workspaceBrowseLayout = new BrowseLayout;
+    m_workspaceBrowseLayout = new BrowseLayout;
 
     auto workspaceLayout = new QHBoxLayout;
     workspaceLayout->addWidget(new QLabel(tr("Workspace:")));
-    workspaceLayout->addLayout(workspaceBrowseLayout);
+    workspaceLayout->addLayout(m_workspaceBrowseLayout);
 
     auto pathGroupBox = new QGroupBox(tr("Path"));
     pathGroupBox->setLayout(workspaceLayout);
@@ -22,10 +22,10 @@ Preferences::Preferences(QWidget* parent) : StandardDialog(parent) {
 
     auto interfaceGroupBox = new QGroupBox(tr("Interface"));
     auto interfaceVerticalLayout = new QVBoxLayout(interfaceGroupBox);
-
-    sessionCheckBox = new QCheckBox(tr("Restore project session"));
-    sessionCheckBox->setChecked(true);
-    interfaceVerticalLayout->addWidget(sessionCheckBox);
+    
+    m_sessionCheckBox = new QCheckBox(tr("Restore project session"));
+    m_sessionCheckBox->setChecked(true);
+    interfaceVerticalLayout->addWidget(m_sessionCheckBox);
 
     auto openPrefsPushButton = new QPushButton(tr("Open %1").arg(Const::App::PrefsName));
     interfaceVerticalLayout->addWidget(openPrefsPushButton, 0, Qt::AlignLeft);
@@ -60,11 +60,11 @@ void Preferences::onAccepted() {
 }
 
 void Preferences::readSettings() {
-    workspaceBrowseLayout->lineEdit()->setText(Global::workspacePath());
-    sessionCheckBox->setChecked(Settings::value("gui.mainWindow.session.restore").toBool());
+    m_workspaceBrowseLayout->lineEdit()->setText(Global::workspacePath());
+    m_sessionCheckBox->setChecked(Settings::value("gui.mainWindow.session.restore").toBool());
 }
 
 void Preferences::writeSettings() {
-    Settings::setValue("workspace", workspaceBrowseLayout->lineEdit()->text());
-    Settings::setValue("gui.mainWindow.session.restore", sessionCheckBox->isChecked());
+    Settings::setValue("workspace", m_workspaceBrowseLayout->lineEdit()->text());
+    Settings::setValue("gui.mainWindow.session.restore", m_sessionCheckBox->isChecked());
 }

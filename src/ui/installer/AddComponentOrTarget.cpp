@@ -16,18 +16,18 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
             list.removeAt(i);
         }
     }
-
-    listView = new SelectableListView(list);
-    setContentWidget(listView);
+    
+    m_listView = new SelectableListView(list);
+    setContentWidget(m_listView);
 
     if (list.count()) {
-        listView->setCurrentIndex(listView->model()->index(0, 0));
+        m_listView->setCurrentIndex(m_listView->model()->index(0, 0));
     }
 }
 
 void AddComponentOrTarget::accept() {
-    QModelIndexList indices = listView->selectionModel()->selectedIndexes();
-    StringListModel* model = static_cast<StringListModel*>(listView->model());
+    QModelIndexList indices = m_listView->selectionModel()->selectedIndexes();
+    StringListModel* model = static_cast<StringListModel*>(m_listView->model());
 
     for (auto index : indices) {
         m_list.append(model->data(index).toString());

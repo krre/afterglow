@@ -138,18 +138,18 @@ IssueListView::IssueListView(IssueModel* model, QWidget* parent) : QListView(par
     connect(selectionModel(), &QItemSelectionModel::currentChanged, delegate, &IssueDelegate::currentChanged);
 
     connect(this, &QListView::customContextMenuRequested, this, &IssueListView::onCustomContextMenu);
-
-    contextMenu = new QMenu(this);
-    QAction* copyLabelAction = contextMenu->addAction(tr("Copy Label"));
+    
+    m_contextMenu = new QMenu(this);
+    QAction* copyLabelAction = m_contextMenu->addAction(tr("Copy Label"));
     connect(copyLabelAction, &QAction::triggered, this, &IssueListView::onCopyLabelAction);
-
-    QAction* copyDescriptionAction = contextMenu->addAction(tr("Copy Description"));
+    
+    QAction* copyDescriptionAction = m_contextMenu->addAction(tr("Copy Description"));
     connect(copyDescriptionAction, &QAction::triggered, this, &IssueListView::onCopyDescriptionAction);
 }
 
 void IssueListView::onCustomContextMenu(const QPoint& point) {
     if (indexAt(point).isValid()) {
-        contextMenu->exec(mapToGlobal(point));
+        m_contextMenu->exec(mapToGlobal(point));
     }
 }
 

@@ -15,5 +15,5 @@ protected slots:
 
 private:
     QStringList m_list;
-    SelectableListView* listView = nullptr;
+    SelectableListView* m_listView = nullptr;
 };

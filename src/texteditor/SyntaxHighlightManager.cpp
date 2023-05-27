@@ -25,9 +25,9 @@ void SyntaxHighlightManager::addSyntaxFile(const QString& path) {
         return;
     }
 
-    syntaxJsonObjects[syntax["lang"].toObject()["extension"].toString()] = syntax;
+    m_syntaxJsonObjects[syntax["lang"].toObject()["extension"].toString()] = syntax;
 }
 
 QJsonObject SyntaxHighlightManager::getSyntaxJson(const QString& ext) const {
-    return syntaxJsonObjects.contains(ext) ? syntaxJsonObjects[ext] : QJsonObject();
+    return m_syntaxJsonObjects.contains(ext) ? m_syntaxJsonObjects[ext] : QJsonObject();
 }
