@@ -175,8 +175,10 @@ void RustInstaller::updateAllButtonsState() {
 }
 
 void RustInstaller::cleanupTarget(QStringList& components) const {
-    QString search = "-" + targetTab->defaultTarget();
-    components.replaceInStrings(search, "");
+    if (!targetTab->defaultTarget().isEmpty()) {
+        QString search = "-" + targetTab->defaultTarget();
+        components.replaceInStrings(search, "");
+    }
 }
 
 void RustInstaller::downloadInstaller() {
