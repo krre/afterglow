@@ -3,7 +3,6 @@
 #include "SelectableListView.h"
 #include "InstallToolchain.h"
 #include "ui/StringListModel.h"
-#include "core/Utils.h"
 #include <QtWidgets>
 
 ToolchainTab::ToolchainTab(RustInstaller* rustupInstaller, QWidget* parent) : QWidget(parent), rustupInstaller(rustupInstaller) {
