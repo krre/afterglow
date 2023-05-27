@@ -50,8 +50,6 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     resizeToWidth(810);
     buttonBox()->setStandardButtons(QDialogButtonBox::Close);
 
-    tabWidget->setCurrentIndex(0);
-
     process = new QProcess(this);
 
     connect(process, &QProcess::readyReadStandardOutput, this, [this] {
@@ -94,12 +92,12 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     fileDownloader = new FileDownloader(this);
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
-    readSettings();
-
     for (int i = 0; i < tabWidget->count(); i++) {
         InstallerTab* tab = static_cast<InstallerTab*>(tabWidget->widget(i));
         tab->load();
     }
+
+    readSettings();
 }
 
 RustInstaller::~RustInstaller() {
@@ -202,7 +200,8 @@ void RustInstaller::downloadInstaller() {
 }
 
 void RustInstaller::readSettings() {
-    tabWidget->setCurrentIndex(Settings::value("gui.rustInstaller.currentTab").toInt());
+    // TODO: Leads to disappearance tabs in Qt 6.5.1
+//    tabWidget->setCurrentIndex(Settings::value("gui.rustInstaller.currentTab").toInt());
 }
 
 void RustInstaller::writeSettings() {
