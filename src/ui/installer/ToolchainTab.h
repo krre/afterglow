@@ -1,17 +1,16 @@
 #pragma once
-#include <QWidget>
+#include "InstallerTab.h"
 
-class RustInstaller;
 class SelectableListView;
 class QPushButton;
 
-class ToolchainTab : public QWidget {
+class ToolchainTab : public InstallerTab {
     Q_OBJECT
 public:
     explicit ToolchainTab(RustInstaller* rustupInstaller, QWidget* parent = nullptr);
 
-    void setWidgetsEnabled(bool enabled);
-    void loadList();
+    void setWidgetsEnabled(bool enabled) override;
+    void load() override;
 
 signals:
     void defaultSetted();
@@ -23,7 +22,6 @@ private slots:
     void onSetDefaultClicked();
 
 private:
-    RustInstaller* rustupInstaller = nullptr;
     SelectableListView* listView = nullptr;
 
     QPushButton* installButton = nullptr;

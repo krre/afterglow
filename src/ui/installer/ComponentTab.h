@@ -1,24 +1,22 @@
 #pragma once
-#include <QWidget>
+#include "InstallerTab.h"
 
-class RustInstaller;
 class SelectableListView;
 class QPushButton;
 
-class ComponentTab : public QWidget {
+class ComponentTab : public InstallerTab {
     Q_OBJECT
 public:
     explicit ComponentTab(RustInstaller* rustupInstaller, QWidget* parent = nullptr);
 
-    void setWidgetsEnabled(bool enabled);
-    void loadList();
+    void setWidgetsEnabled(bool enabled) override;
+    void load() override;
 
 private slots:
     void onAddClicked();
     void onRemoveClicked();
 
 private:
-    RustInstaller* rustupInstaller = nullptr;
     SelectableListView* listView = nullptr;
 
     QPushButton* addButton = nullptr;

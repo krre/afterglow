@@ -6,7 +6,7 @@
 #include "core/Utils.h"
 #include <QtWidgets>
 
-ComponentTab::ComponentTab(RustInstaller* rustupInstaller, QWidget* parent) : QWidget(parent), rustupInstaller(rustupInstaller) {
+ComponentTab::ComponentTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     listView = new SelectableListView;
     listView->setModel(new StringListModel(this));
 
@@ -27,7 +27,6 @@ ComponentTab::ComponentTab(RustInstaller* rustupInstaller, QWidget* parent) : QW
     horizontalLayout->addLayout(verticalLayout);
 
     setLayout(horizontalLayout);
-    loadList();
 }
 
 void ComponentTab::setWidgetsEnabled(bool enabled) {
@@ -36,7 +35,7 @@ void ComponentTab::setWidgetsEnabled(bool enabled) {
     removeButton->setEnabled(selected);
 }
 
-void ComponentTab::loadList() {
+void ComponentTab::load() {
     listView->load("rustup component list", [] (QStringList& list) {
         Utils::defaultInstalledFilter(list);
 
@@ -46,6 +45,7 @@ void ComponentTab::loadList() {
             }
         }
     });
+
     setWidgetsEnabled(true);
 }
 
@@ -56,9 +56,9 @@ void ComponentTab::onAddClicked() {
     QStringList components = addComponent.list();
 
     if (components.count()) {
-        rustupInstaller->cleanupTarget(components);
-        rustupInstaller->runCommand("rustup", QStringList("component") << "add" << components, [this] {
-            loadList();
+        rustupInstaller()->cleanupTarget(components);
+        rustupInstaller()->runCommand("rustup", QStringList("component") << "add" << components, [this] {
+            load();
         });
     }
 }
@@ -69,9 +69,9 @@ void ComponentTab::onRemoveClicked() {
                                        QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
         QStringList components = listView->selectedRows();
-        rustupInstaller->cleanupTarget(components);
-        rustupInstaller->runCommand("rustup", QStringList("component") << "remove" << components, [this] {
-            loadList();
+        rustupInstaller()->cleanupTarget(components);
+        rustupInstaller()->runCommand("rustup", QStringList("component") << "remove" << components, [this] {
+            load();
         });
     }
 }

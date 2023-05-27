@@ -5,7 +5,7 @@
 #include "ui/StringListModel.h"
 #include <QtWidgets>
 
-ToolchainTab::ToolchainTab(RustInstaller* rustupInstaller, QWidget* parent) : QWidget(parent), rustupInstaller(rustupInstaller) {
+ToolchainTab::ToolchainTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     listView = new SelectableListView;
     listView->setModel(new StringListModel(this));
 
@@ -36,8 +36,6 @@ ToolchainTab::ToolchainTab(RustInstaller* rustupInstaller, QWidget* parent) : QW
     horizontalLayout->addLayout(verticalLayout);
 
     setLayout(horizontalLayout);
-
-    loadList();
 }
 
 void ToolchainTab::setWidgetsEnabled(bool enabled) {
@@ -55,8 +53,8 @@ void ToolchainTab::onInstallClicked() {
     QString toolchain = installToolchain.toolchain();
 
     if (!toolchain.isEmpty()) {
-        rustupInstaller->runCommand("rustup", { "toolchain", "install", toolchain }, [this] {
-            loadList();
+        rustupInstaller()->runCommand("rustup", { "toolchain", "install", toolchain }, [this] {
+            load();
         });
     }
 }
@@ -66,24 +64,24 @@ void ToolchainTab::onUninstallClicked() {
                                        QMessageBox::Ok,
                                        QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        rustupInstaller->runCommand("rustup", QStringList("toolchain") << "uninstall" << listView->selectedRows(), [this] {
-            loadList();
+        rustupInstaller()->runCommand("rustup", QStringList("toolchain") << "uninstall" << listView->selectedRows(), [this] {
+            load();
         });
     }
 }
 
 void ToolchainTab::onUpdateClicked() {
-    rustupInstaller->runCommand("rustup", QStringList("update") << listView->selectedRows());
+    rustupInstaller()->runCommand("rustup", QStringList("update") << listView->selectedRows());
 }
 
 void ToolchainTab::onSetDefaultClicked() {
-    rustupInstaller->runCommand("rustup", QStringList("default") << listView->selectedRows().first(), [this] {
-        loadList();
+    rustupInstaller()->runCommand("rustup", QStringList("default") << listView->selectedRows().first(), [this] {
+        load();
         emit defaultSetted();
     });
 }
 
-void ToolchainTab::loadList() {
+void ToolchainTab::load() {
     setWidgetsEnabled(false);
     listView->load("rustup toolchain list");
     setWidgetsEnabled(true);

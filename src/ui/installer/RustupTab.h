@@ -1,18 +1,17 @@
 #pragma once
-#include <QWidget>
+#include "InstallerTab.h"
 
-class RustInstaller;
 class BrowseLayout;
 class QLineEdit;
 class QPushButton;
 
-class RustupTab : public QWidget {
+class RustupTab : public InstallerTab {
     Q_OBJECT
 public:
     explicit RustupTab(RustInstaller* rustupInstaller, QWidget* parent = nullptr);
 
-    void setWidgetsEnabled(bool enabled);
-    void loadVersion();
+    void setWidgetsEnabled(bool enabled) override;
+    void load() override;
 
 private slots:
     void onRustupHomeChanged(const QString& text);
@@ -24,8 +23,6 @@ private slots:
     void onUninstallClicked();
 
 private:
-    RustInstaller* rustupInstaller = nullptr;
-
     QLineEdit* rustupHomeLineEdit = nullptr;
     QLineEdit* cargoHomeLineEdit = nullptr;
     QLineEdit* versionLineEdit = nullptr;

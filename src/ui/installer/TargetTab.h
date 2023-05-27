@@ -1,18 +1,17 @@
 #pragma once
-#include <QWidget>
+#include "InstallerTab.h"
 
-class RustInstaller;
 class SelectableListView;
 
 class QPushButton;
 
-class TargetTab : public QWidget {
+class TargetTab : public InstallerTab {
     Q_OBJECT
 public:
     explicit TargetTab(RustInstaller* rustupInstaller, QWidget* parent = nullptr);
 
-    void setWidgetsEnabled(bool enabled);
-    void loadList();
+    void setWidgetsEnabled(bool enabled) override;
+    void load() override;
     QString defaultTarget() const;
 
 private slots:
@@ -20,7 +19,6 @@ private slots:
     void onRemoveClicked();
 
 private:
-    RustInstaller* rustupInstaller = nullptr;
     SelectableListView* listView = nullptr;
     QString m_defaultTarget;
 

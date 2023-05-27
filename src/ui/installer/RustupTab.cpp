@@ -6,7 +6,7 @@
 #include "core/Utils.h"
 #include <QtWidgets>
 
-RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : QWidget(parent), rustupInstaller(rustupInstaller) {
+RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     auto rustupHomeBrowseLayout = new BrowseLayout;
     rustupHomeLineEdit = rustupHomeBrowseLayout->lineEdit();
     rustupHomeLineEdit->setText(qEnvironmentVariable(Const::Environment::RustupHome));
@@ -54,7 +54,6 @@ RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : QWidget(
     verticalLayout->addStretch();
 
     setLayout(verticalLayout);
-    loadVersion();
 }
 
 void RustupTab::setWidgetsEnabled(bool enabled) {
@@ -64,7 +63,7 @@ void RustupTab::setWidgetsEnabled(bool enabled) {
     uninstallButton->setEnabled(enabled);
 }
 
-void RustupTab::loadVersion() {
+void RustupTab::load() {
     for (const QString& row : Utils::runConsoleCommand("rustup show")) {
         if (row.left(5) == "rustc") {
             versionLineEdit->setText(row);
@@ -83,18 +82,18 @@ void RustupTab::onCargoHomeChanged(const QString& text) {
 }
 
 void RustupTab::onDownloadClicked() {
-    rustupInstaller->downloadInstaller();
+    rustupInstaller()->downloadInstaller();
 }
 
 void RustupTab::onUpdateClicked() {
-    rustupInstaller->runCommand("rustup", { "self", "update" }, [this] {
-        loadVersion();
+    rustupInstaller()->runCommand("rustup", { "self", "update" }, [this] {
+        load();
     });
 }
 
 void RustupTab::onUpdateAllClicked() {
-    rustupInstaller->runCommand("rustup", { "update" }, [this] {
-        loadVersion();
+    rustupInstaller()->runCommand("rustup", { "update" }, [this] {
+        load();
     });
 }
 
@@ -104,6 +103,6 @@ void RustupTab::onUninstallClicked() {
                                        QMessageBox::Cancel);
 
     if (button == QMessageBox::Ok) {
-        rustupInstaller->runCommand("rustup", { "self", "uninstall", "-y" });
+        rustupInstaller()->runCommand("rustup", { "self", "uninstall", "-y" });
     }
 }

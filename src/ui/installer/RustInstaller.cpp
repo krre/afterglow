@@ -18,9 +18,9 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     toolchainTab = new ToolchainTab(this);
 
     connect(toolchainTab, &ToolchainTab::defaultSetted, [this] {
-        targetTab->loadList();
-        componentTab->loadList();
-        rustupTab->loadVersion();
+        targetTab->load();
+        componentTab->load();
+        rustupTab->load();
     });
 
     targetTab = new TargetTab(this);
@@ -95,6 +95,11 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
     readSettings();
+
+    for (int i = 0; i < tabWidget->count(); i++) {
+        InstallerTab* tab = static_cast<InstallerTab*>(tabWidget->widget(i));
+        tab->load();
+    }
 }
 
 RustInstaller::~RustInstaller() {
@@ -118,7 +123,7 @@ void RustInstaller::onDownloaded() {
     file.close();
 
     runCommand(filePath, { "-y" }, [this] {
-        rustupTab->loadVersion();
+        rustupTab->load();
     });
 
     installDefaultComponents();
@@ -136,7 +141,7 @@ void RustInstaller::runCommand(const QString& program, const QStringList& argume
 }
 
 void RustInstaller::loadComponents() {
-    componentTab->loadList();
+    componentTab->load();
 }
 
 void RustInstaller::showAndScrollMessage(const QString message) {
@@ -184,7 +189,7 @@ void RustInstaller::cleanupTarget(QStringList& components) const {
 void RustInstaller::downloadInstaller() {
 #if defined(Q_OS_LINUX)
     runCommand("sh", { "-c", "curl https://sh.rustup.rs -sSf | sh -s -- -y" }, [this] {
-        rustupTab->loadVersion();
+        rustupTab->load();
     });
 
     installDefaultComponents();

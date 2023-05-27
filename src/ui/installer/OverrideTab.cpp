@@ -5,7 +5,7 @@
 #include "ui/StringListModel.h"
 #include <QtWidgets>
 
-OverrideTab::OverrideTab(RustInstaller* rustupInstaller, QWidget* parent) : QWidget(parent), rustupInstaller(rustupInstaller) {
+OverrideTab::OverrideTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     listView = new SelectableListView;
     listView->setModel(new StringListModel(this));
 
@@ -29,7 +29,6 @@ OverrideTab::OverrideTab(RustInstaller* rustupInstaller, QWidget* parent) : QWid
     horizontalLayout->addLayout(verticalLayout);
 
     setLayout(horizontalLayout);
-    loadList();
 }
 
 void OverrideTab::setWidgetsEnabled(bool enabled) {
@@ -39,7 +38,7 @@ void OverrideTab::setWidgetsEnabled(bool enabled) {
     cleanupButton->setEnabled(selected);
 }
 
-void OverrideTab::loadList() {
+void OverrideTab::load() {
     listView->load("rustup override list");
     setWidgetsEnabled(true);
 }
@@ -52,8 +51,8 @@ void OverrideTab::onSetClicked() {
     QString toolchain = setOverride.toolchain();
 
     if (!directory.isEmpty()) {
-        rustupInstaller->runCommand("rustup", QStringList("override") << "set" << toolchain, [this] {
-            loadList();
+        rustupInstaller()->runCommand("rustup", QStringList("override") << "set" << toolchain, [this] {
+            load();
         }, directory);
     }
 }
@@ -64,15 +63,15 @@ void OverrideTab::onUnsetClicked() {
                                        QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
         for (const QString& override : listView->selectedRows()) {
-            rustupInstaller->runCommand("rustup", QStringList("override") << "unset" << "--path" << override.split('\t').at(0), [this] {
-                           loadList();
+            rustupInstaller()->runCommand("rustup", QStringList("override") << "unset" << "--path" << override.split('\t').at(0), [this] {
+                load();
             });
         }
     }
 }
 
 void OverrideTab::onCleanupClicked() {
-    rustupInstaller->runCommand("rustup", { "override", "unset", "--nonexistent" }, [this] {
-        loadList();
+    rustupInstaller()->runCommand("rustup", { "override", "unset", "--nonexistent" }, [this] {
+        load();
     });
 }

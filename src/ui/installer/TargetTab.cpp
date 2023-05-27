@@ -6,7 +6,7 @@
 #include "core/Utils.h"
 #include <QtWidgets>
 
-TargetTab::TargetTab(RustInstaller* rustupInstaller, QWidget* parent) : QWidget(parent), rustupInstaller(rustupInstaller) {
+TargetTab::TargetTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     listView = new SelectableListView;
     listView->setModel(new StringListModel(this));
 
@@ -27,8 +27,6 @@ TargetTab::TargetTab(RustInstaller* rustupInstaller, QWidget* parent) : QWidget(
     horizontalLayout->addLayout(buttonLayout);
 
     setLayout(horizontalLayout);
-
-    loadList();
 }
 
 void TargetTab::setWidgetsEnabled(bool enabled) {
@@ -44,9 +42,9 @@ void TargetTab::onAddClicked() {
     QStringList targets = addTarget.list();
 
     if (targets.count()) {
-        rustupInstaller->runCommand("rustup", QStringList("target") << "add" << targets, [this] {
-            loadList();
-            rustupInstaller->loadComponents();
+        rustupInstaller()->runCommand("rustup", QStringList("target") << "add" << targets, [this] {
+            load();
+            rustupInstaller()->loadComponents();
         });
     }
 }
@@ -56,14 +54,14 @@ void TargetTab::onRemoveClicked() {
                                        QMessageBox::Ok,
                                        QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        rustupInstaller->runCommand("rustup", QStringList("target") << "remove" << listView->selectedRows(), [this] {
-            loadList();
-            rustupInstaller->loadComponents();
+        rustupInstaller()->runCommand("rustup", QStringList("target") << "remove" << listView->selectedRows(), [this] {
+            load();
+            rustupInstaller()->loadComponents();
         });
     }
 }
 
-void TargetTab::loadList() {
+void TargetTab::load() {
     listView->load("rustup target list", [] (QStringList& list) { Utils::defaultInstalledFilter(list); });
     setWidgetsEnabled(true);
     m_defaultTarget = listView->findDefault();
