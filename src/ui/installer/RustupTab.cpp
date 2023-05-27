@@ -16,8 +16,8 @@ RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : QWidget(
     cargoHomeLineEdit->setText(qEnvironmentVariable(Const::Environment::CargoHome));
 
     auto envLayout = new QFormLayout;
-    envLayout->addRow(new QLabel("RUSTUP_HOME:"), rustupHomeBrowseLayout);
-    envLayout->addRow(new QLabel("RUSTUP_HOME:"), cargoHomeBrowseLayout);
+    envLayout->addRow(new QLabel(QString(Const::Environment::RustupHome) + ":"), rustupHomeBrowseLayout);
+    envLayout->addRow(new QLabel(QString(Const::Environment::CargoHome) + ":"), cargoHomeBrowseLayout);
 
     auto groupBox = new QGroupBox(tr("Environment Variables"));
     groupBox->setLayout(envLayout);
