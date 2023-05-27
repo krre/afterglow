@@ -1,6 +1,7 @@
 #pragma once
 #include <QWidget>
 
+class RustInstaller;
 class BrowseLayout;
 class QLineEdit;
 class QPushButton;
@@ -8,22 +9,23 @@ class QPushButton;
 class RustupTab : public QWidget {
     Q_OBJECT
 public:
-    explicit RustupTab(QWidget* parent = nullptr);
+    explicit RustupTab(RustInstaller* rustupInstaller, QWidget* parent = nullptr);
 
     void setWidgetsEnabled(bool enabled);
     void loadVersion();
-
-signals:
-    void downloadClicked();
-    void updateClicked();
-    void updateAllClicked();
-    void uninstallClicked();
 
 private slots:
     void onRustupHomeChanged(const QString& text);
     void onCargoHomeChanged(const QString& text);
 
+    void onDownloadClicked();
+    void onUpdateClicked();
+    void onUpdateAllClicked();
+    void onUninstallClicked();
+
 private:
+    RustInstaller* rustupInstaller = nullptr;
+
     QLineEdit* rustupHomeLineEdit = nullptr;
     QLineEdit* cargoHomeLineEdit = nullptr;
     QLineEdit* versionLineEdit = nullptr;

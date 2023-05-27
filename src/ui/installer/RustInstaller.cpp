@@ -14,12 +14,7 @@ using namespace std::placeholders;
 RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Rust Installer"));
 
-    rustupTab = new RustupTab;
-    connect(rustupTab, &RustupTab::downloadClicked, this, &RustInstaller::rustupDownload);
-    connect(rustupTab, &RustupTab::updateClicked, this, &RustInstaller::rustupUpdate);
-    connect(rustupTab, &RustupTab::updateAllClicked, this, &RustInstaller::rustupUpdateAll);
-    connect(rustupTab, &RustupTab::uninstallClicked, this, &RustInstaller::rustupUninstall);
-
+    rustupTab = new RustupTab(this);
     toolchainTab = new ToolchainTab(this);
 
     connect(toolchainTab, &ToolchainTab::defaultSetted, [this] {
@@ -106,43 +101,6 @@ RustInstaller::~RustInstaller() {
     writeSettings();
 }
 
-void RustInstaller::rustupDownload() {
-#if defined(Q_OS_LINUX)
-    runCommand("sh", { "-c", "curl https://sh.rustup.rs -sSf | sh -s -- -y" }, [this] {
-        rustupTab->loadVersion();
-    });
-
-    installDefaultComponents();
-#elif defined(Q_OS_WIN)
-    QUrl url("https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-gnu/rustup-init.exe");
-    showAndScrollMessage("Download " + url.toString());
-    fileDownloader->load(url);
-    updateAllButtonsState();
-#endif
-}
-
-void RustInstaller::rustupUpdate() {
-    runCommand("rustup", { "self", "update" }, [this] {
-        rustupTab->loadVersion();
-    });
-}
-
-void RustInstaller::rustupUpdateAll() {
-    runCommand("rustup", { "update" }, [this] {
-        rustupTab->loadVersion();
-    });
-}
-
-void RustInstaller::rustupUninstall() {
-    int button = QMessageBox::question(this, tr("Uninstall Rust"), tr("Rust will be uninstalled. Are you sure?"),
-                                       QMessageBox::Ok,
-                                       QMessageBox::Cancel);
-
-    if (button == QMessageBox::Ok) {
-        runCommand("rustup", { "self", "uninstall", "-y" });
-    }
-}
-
 void RustInstaller::onBreakPushButtonClicked() {
     commandQueue.clear();
     fileDownloader->abort();
@@ -162,6 +120,7 @@ void RustInstaller::onDownloaded() {
     runCommand(filePath, { "-y" }, [this] {
         rustupTab->loadVersion();
     });
+
     installDefaultComponents();
 }
 
@@ -218,6 +177,21 @@ void RustInstaller::updateAllButtonsState() {
 void RustInstaller::cleanupTarget(QStringList& components) const {
     QString search = "-" + targetTab->defaultTarget();
     components.replaceInStrings(search, "");
+}
+
+void RustInstaller::downloadInstaller() {
+#if defined(Q_OS_LINUX)
+    runCommand("sh", { "-c", "curl https://sh.rustup.rs -sSf | sh -s -- -y" }, [this] {
+        rustupTab->loadVersion();
+    });
+
+    installDefaultComponents();
+#elif defined(Q_OS_WIN)
+    QUrl url("https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-gnu/rustup-init.exe");
+    showAndScrollMessage("Download " + url.toString());
+    fileDownloader->load(url);
+    updateAllButtonsState();
+#endif
 }
 
 void RustInstaller::readSettings() {

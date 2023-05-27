@@ -1,11 +1,12 @@
 #include "RustupTab.h"
+#include "RustInstaller.h"
 #include "ui/base/BrowseLayout.h"
 #include "core/Constants.h"
 #include "core/Settings.h"
 #include "core/Utils.h"
 #include <QtWidgets>
 
-RustupTab::RustupTab(QWidget* parent) : QWidget(parent) {
+RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : QWidget(parent), rustupInstaller(rustupInstaller) {
     auto rustupHomeBrowseLayout = new BrowseLayout;
     rustupHomeLineEdit = rustupHomeBrowseLayout->lineEdit();
     rustupHomeLineEdit->setText(qEnvironmentVariable(Const::Environment::RustupHome));
@@ -28,16 +29,16 @@ RustupTab::RustupTab(QWidget* parent) : QWidget(parent) {
     versionLayout->addRow(tr("Version:"), versionLineEdit);
 
     downloadButton = new QPushButton(tr("Download"));
-    connect(downloadButton, &QPushButton::clicked, this, &RustupTab::downloadClicked);
+    connect(downloadButton, &QPushButton::clicked, this, &RustupTab::onDownloadClicked);
 
     updateButton = new QPushButton(tr("Update"));
-    connect(updateButton, &QPushButton::clicked, this, &RustupTab::updateClicked);
+    connect(updateButton, &QPushButton::clicked, this, &RustupTab::onUpdateClicked);
 
     updateAllButton = new QPushButton(tr("Update All"));
-    connect(updateAllButton, &QPushButton::clicked, this, &RustupTab::updateAllClicked);
+    connect(updateAllButton, &QPushButton::clicked, this, &RustupTab::onUpdateAllClicked);
 
     uninstallButton = new QPushButton(tr("Uninstall..."));
-    connect(uninstallButton, &QPushButton::clicked, this, &RustupTab::uninstallClicked);
+    connect(uninstallButton, &QPushButton::clicked, this, &RustupTab::onUninstallClicked);
 
     auto buttonLayout = new QHBoxLayout;
     buttonLayout->addWidget(downloadButton);
@@ -79,4 +80,30 @@ void RustupTab::onRustupHomeChanged(const QString& text) {
 
 void RustupTab::onCargoHomeChanged(const QString& text) {
     Settings::setValue("environment.cargoHome", text);
+}
+
+void RustupTab::onDownloadClicked() {
+    rustupInstaller->downloadInstaller();
+}
+
+void RustupTab::onUpdateClicked() {
+    rustupInstaller->runCommand("rustup", { "self", "update" }, [this] {
+        loadVersion();
+    });
+}
+
+void RustupTab::onUpdateAllClicked() {
+    rustupInstaller->runCommand("rustup", { "update" }, [this] {
+        loadVersion();
+    });
+}
+
+void RustupTab::onUninstallClicked() {
+    int button = QMessageBox::question(this, tr("Uninstall Rust"), tr("Rust will be uninstalled. Are you sure?"),
+                                       QMessageBox::Ok,
+                                       QMessageBox::Cancel);
+
+    if (button == QMessageBox::Ok) {
+        rustupInstaller->runCommand("rustup", { "self", "uninstall", "-y" });
+    }
 }

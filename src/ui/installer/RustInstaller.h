@@ -31,13 +31,9 @@ public:
     void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr, const QString& directory = QString());
     void loadComponents();
     void cleanupTarget(QStringList& components) const;
+    void downloadInstaller();
 
 private slots:
-    void rustupDownload();
-    void rustupUpdate();
-    void rustupUpdateAll();
-    void rustupUninstall();
-
     void onBreakPushButtonClicked();
 
     void onDownloaded();
