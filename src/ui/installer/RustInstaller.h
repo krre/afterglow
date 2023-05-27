@@ -73,14 +73,6 @@ private:
         std::function<void()> postWork;
     };
 
-    enum class Tab {
-        Rustup,
-        Toolchain,
-        Targets,
-        Components,
-        Overrides
-    };
-
     QTabWidget* tabWidget = nullptr;
 
     RustupTab* rustupTab = nullptr;
