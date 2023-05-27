@@ -37,7 +37,7 @@ private slots:
     void onBreakPushButtonClicked();
 
     void onDownloaded();
-    void onProcessStateChainged(QProcess::ProcessState newState);
+    void onProcessStateChanged(QProcess::ProcessState newState);
 
 private:
     void showAndScrollMessage(const QString message);

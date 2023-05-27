@@ -85,7 +85,7 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
         commandQueue.clear();
     });
 
-    connect(process, &QProcess::stateChanged, this, &RustInstaller::onProcessStateChainged);
+    connect(process, &QProcess::stateChanged, this, &RustInstaller::onProcessStateChanged);
 
     fileDownloader = new FileDownloader(this);
     connect(fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
@@ -125,7 +125,7 @@ void RustInstaller::onDownloaded() {
     installDefaultComponents();
 }
 
-void RustInstaller::onProcessStateChainged(QProcess::ProcessState newState) {
+void RustInstaller::onProcessStateChanged(QProcess::ProcessState newState) {
     if (newState == QProcess::Running || newState == QProcess::NotRunning) {
         updateAllButtonsState();
     }
