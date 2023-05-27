@@ -9,8 +9,6 @@
 #include "core/Settings.h"
 #include <QtWidgets>
 
-using namespace std::placeholders;
-
 RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Rust Installer"));
 
