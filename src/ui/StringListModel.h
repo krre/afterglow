@@ -3,12 +3,12 @@
 
 class StringListModel : public QAbstractListModel {
 public:
+    StringListModel(const QStringList& rows = QStringList(), QObject* parent = nullptr);
     StringListModel(QObject* parent = nullptr);
-    StringListModel(const QStringList& strings = QStringList(), QObject* parent = nullptr);
 
     std::optional<QString> find(const QString& str) const;
 
-    void setStrings(const QStringList& strings);
+    void setRows(const QStringList& rows);
     void clear();
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -24,5 +24,5 @@ public:
     bool removeRows(int position, int rows, const QModelIndex& index = QModelIndex()) override;
 
 private:
-    QStringList m_strings;
+    QStringList m_rows;
 };

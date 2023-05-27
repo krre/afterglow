@@ -3,10 +3,11 @@
 #include "core/Utils.h"
 #include <QtWidgets>
 
-SelectableListView::SelectableListView() {
+SelectableListView::SelectableListView(const QStringList& rows) {
     setContextMenuPolicy(Qt::CustomContextMenu);
     setEditTriggers(QAbstractItemView::NoEditTriggers);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setModel(new StringListModel(rows, this));
 
     connect(this, &QListView::customContextMenuRequested, this, &SelectableListView::onCustomContextMenu);
 }
@@ -43,7 +44,7 @@ void SelectableListView::load(const QString& command, const std::function<void (
 
     if (list.count()) {
         StringListModel* model = static_cast<StringListModel*>(QListView::model());
-        model->setStrings(list);
+        model->setRows(list);
         setCurrentIndex(model->index(0, 0));
     }
 }

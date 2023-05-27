@@ -2,13 +2,11 @@
 #include "RustInstaller.h"
 #include "SelectableListView.h"
 #include "AddComponentOrTarget.h"
-#include "ui/StringListModel.h"
 #include "core/Utils.h"
 #include <QtWidgets>
 
 ComponentTab::ComponentTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     listView = new SelectableListView;
-    listView->setModel(new StringListModel(this));
 
     addButton = new QPushButton(tr("Add..."));
     connect(addButton, &QPushButton::clicked, this, &ComponentTab::onAddClicked);

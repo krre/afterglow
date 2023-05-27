@@ -8,9 +8,6 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
     setWindowTitle(title);
     resize(400, 300);
 
-    listView = new SelectableListView;
-    setContentWidget(listView);
-
     QStringList list = Utils::runConsoleCommand(command);
 
     for (int i = list.count() - 1; i >= 0; i--) {
@@ -20,11 +17,11 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
         }
     }
 
-    QAbstractItemModel* model = new StringListModel(list, this);
-    listView->setModel(model);
+    listView = new SelectableListView(list);
+    setContentWidget(listView);
 
-    if (model->rowCount()) {
-        listView->setCurrentIndex(model->index(0, 0));
+    if (list.count()) {
+        listView->setCurrentIndex(listView->model()->index(0, 0));
     }
 }
 

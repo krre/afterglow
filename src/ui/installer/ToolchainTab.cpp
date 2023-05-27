@@ -2,12 +2,10 @@
 #include "RustInstaller.h"
 #include "SelectableListView.h"
 #include "InstallToolchain.h"
-#include "ui/StringListModel.h"
 #include <QtWidgets>
 
 ToolchainTab::ToolchainTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     listView = new SelectableListView;
-    listView->setModel(new StringListModel(this));
 
     installButton = new QPushButton(tr("Install..."));
     connect(installButton, &QPushButton::clicked, this, &ToolchainTab::onInstallClicked);

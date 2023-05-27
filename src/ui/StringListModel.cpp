@@ -1,25 +1,26 @@
 #include "StringListModel.h"
 
+StringListModel::StringListModel(const QStringList& rows, QObject* parent) : QAbstractListModel(parent), m_rows(rows) {
+
+}
+
 StringListModel::StringListModel(QObject* parent) : QAbstractListModel(parent) {
 
 }
 
-StringListModel::StringListModel(const QStringList& strings, QObject* parent)
-    : QAbstractListModel(parent), m_strings(strings) {}
-
 std::optional<QString> StringListModel::find(const QString& str) const {
-    auto index = m_strings.indexOf(str);
+    auto index = m_rows.indexOf(str);
 
     if (index == -1) {
         return {};
     } else {
-        return m_strings[index];
+        return m_rows[index];
     }
 }
 
 int StringListModel::rowCount(const QModelIndex& parent) const {
     Q_UNUSED(parent)
-    return m_strings.count();
+    return m_rows.count();
 }
 
 QVariant StringListModel::data(const QModelIndex& index, int role) const {
@@ -27,12 +28,12 @@ QVariant StringListModel::data(const QModelIndex& index, int role) const {
         return QVariant();
     }
 
-    if (index.row() >= m_strings.size()) {
+    if (index.row() >= m_rows.size()) {
         return QVariant();
     }
 
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
-        return m_strings.at(index.row());
+        return m_rows.at(index.row());
     } else {
         return QVariant();
     }
@@ -60,7 +61,7 @@ Qt::ItemFlags StringListModel::flags(const QModelIndex& index) const {
 
 bool StringListModel::setData(const QModelIndex& index, const QVariant& value, int role) {
     if (index.isValid() && role == Qt::EditRole) {
-        m_strings.replace(index.row(), value.toString());
+        m_rows.replace(index.row(), value.toString());
         emit dataChanged(index, index);
         return true;
     }
@@ -74,7 +75,7 @@ bool StringListModel::insertRows(int position, int rows, const QModelIndex& pare
     beginInsertRows(QModelIndex(), position, position + rows - 1);
 
     for (int row = 0; row < rows; ++row) {
-        m_strings.insert(position, "");
+        m_rows.insert(position, "");
     }
 
     endInsertRows();
@@ -87,21 +88,21 @@ bool StringListModel::removeRows(int position, int rows, const QModelIndex& pare
     beginRemoveRows(QModelIndex(), position, position + rows - 1);
 
     for (int row = 0; row < rows; ++row) {
-        m_strings.removeAt(position);
+        m_rows.removeAt(position);
     }
 
     endRemoveRows();
     return true;
 }
 
-void StringListModel::setStrings(const QStringList& strings) {
+void StringListModel::setRows(const QStringList& strings) {
     beginResetModel();
-    m_strings = strings;
+    m_rows = strings;
     endResetModel();
 }
 
 void StringListModel::clear() {
     beginResetModel();
-    m_strings.clear();
+    m_rows.clear();
     endResetModel();
 }

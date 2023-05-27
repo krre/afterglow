@@ -2,12 +2,10 @@
 #include "RustInstaller.h"
 #include "SetOverride.h"
 #include "SelectableListView.h"
-#include "ui/StringListModel.h"
 #include <QtWidgets>
 
 OverrideTab::OverrideTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     listView = new SelectableListView;
-    listView->setModel(new StringListModel(this));
 
     setButton = new QPushButton(tr("Set..."));
     connect(setButton, &QPushButton::clicked, this, &OverrideTab::onSetClicked);
