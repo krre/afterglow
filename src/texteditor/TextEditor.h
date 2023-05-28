@@ -11,20 +11,20 @@ class TextEditor : public QPlainTextEdit {
 public:
     explicit TextEditor(QString filePath, SyntaxHighlightManager* syntaxHighlightManager, QWidget* parent = nullptr);
 
-    QString getFilePath() const { return m_filePath; }
+    QString filePath() const { return m_filePath; }
     void setFilePath(const QString& filePath);
 
     void setAutoCompleter(AutoCompleter* completer);
-    AutoCompleter* getAutoCompleter() const { return m_completer; }
+    AutoCompleter* autoCompleter() const { return m_completer; }
 
     void saveFile();
-    QString getModifiedName() const;
+    QString modifiedName() const;
 
-    QPoint getCursorPosition();
+    QPoint cursorPosition();
     void setCursorPosition(const QPoint& pos);
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
-    int getLineNumberAreaWidth();
+    int lineNumberAreaWidth();
 
     QString textUnderCursor() const;
     int leftMargin() const;

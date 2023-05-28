@@ -206,9 +206,9 @@ void MainWindow::onCloseProjectAction() {
 }
 
 void MainWindow::onSaveAsAction() {
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Save File"), m_editor->getFilePath(), "Rust (*.rs);;All Files(*.*)");
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Save File"), m_editor->filePath(), "Rust (*.rs);;All Files(*.*)");
     if (!filePath.isEmpty()) {
-        bool result = QFile::copy(m_editor->getFilePath(), filePath);
+        bool result = QFile::copy(m_editor->filePath(), filePath);
         if (result) {
             addSourceTab(filePath);
         } else {
@@ -424,7 +424,7 @@ void MainWindow::onSourceTabCurrentChanged(int index) {
         m_editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(index));
         m_editor->setAutoCompleter(m_completer);
         m_editor->setFocus();
-        QString filePath = m_editor->getFilePath();
+        QString filePath = m_editor->filePath();
         m_projectTree->selectFile(filePath);
         changeWindowTitle(filePath);
     } else {
@@ -511,7 +511,7 @@ void MainWindow::onFileRemoved(const QString& filePath) {
     QVector<int> indices;
     for (int i = 0; i < m_sourceTabWidget->count(); i++) {
         TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
-        if (editor->getFilePath().contains(filePath)) {
+        if (editor->filePath().contains(filePath)) {
             indices.append(i);
         }
     }
@@ -525,10 +525,10 @@ void MainWindow::onFileRemoved(const QString& filePath) {
 void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
     for (int i = 0; i < m_sourceTabWidget->count(); i++) {
         TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
-        if (editor->getFilePath().contains(oldPath)) {
+        if (editor->filePath().contains(oldPath)) {
             QFileInfo fi(newPath);
             if (fi.isDir()) {
-                editor->setFilePath(editor->getFilePath().replace(oldPath, newPath));
+                editor->setFilePath(editor->filePath().replace(oldPath, newPath));
             } else {
                 editor->setFilePath(newPath);
                 onDocumentModified(editor);
@@ -569,7 +569,7 @@ void MainWindow::addNewFile(const QString& filePath) {
 }
 
 void MainWindow::onDocumentModified(TextEditor* editor) {
-    m_sourceTabWidget->setTabText(m_sourceTabWidget->indexOf(editor), editor->getModifiedName());
+    m_sourceTabWidget->setTabText(m_sourceTabWidget->indexOf(editor), editor->modifiedName());
 }
 
 void MainWindow::onIssueCountChanged(int count) {
@@ -934,10 +934,10 @@ void MainWindow::saveSession() {
         TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
 
         QJsonObject obj;
-        obj["path"] = editor->getFilePath();
+        obj["path"] = editor->filePath();
 
         QJsonArray cursorPosArray;
-        QPoint pos = editor->getCursorPosition();
+        QPoint pos = editor->cursorPosition();
         cursorPosArray.append(pos.x());
         cursorPosArray.append(pos.y());
         obj["cursor"] = cursorPosArray;
@@ -1058,7 +1058,7 @@ void MainWindow::changeWindowTitle(const QString& filePath) {
 int MainWindow::findSource(const QString& filePath) {
     for (int i = 0; i < m_sourceTabWidget->count(); i++) {
         TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
-        if (editor->getFilePath() == filePath) {
+        if (editor->filePath() == filePath) {
             return i;
         }
     }

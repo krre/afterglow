@@ -10,7 +10,7 @@ public:
     explicit SyntaxHighlightManager(QObject* parent = nullptr);
 
     void addSyntaxFile(const QString& path);
-    QJsonObject getSyntaxJson(const QString& ext) const;
+    QJsonObject syntaxJson(const QString& ext) const;
     bool hasExtension(const QString& ext) const { return m_syntaxJsonObjects.contains(ext); }
 
 private:

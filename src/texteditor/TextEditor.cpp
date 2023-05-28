@@ -69,12 +69,12 @@ void TextEditor::saveFile() {
     }
 }
 
-QString TextEditor::getModifiedName() const {
+QString TextEditor::modifiedName() const {
     QFileInfo fi(m_filePath);
     return fi.fileName() + (document()->isModified() ? "*" : "");
 }
 
-QPoint TextEditor::getCursorPosition() {
+QPoint TextEditor::cursorPosition() {
     QTextCursor cursor = textCursor();
     return QPoint(cursor.positionInBlock(), cursor.blockNumber());
 }
@@ -110,7 +110,7 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event) {
     }
 }
 
-int TextEditor::getLineNumberAreaWidth() {
+int TextEditor::lineNumberAreaWidth() {
     int digits = 1;
     int max = qMax(1, blockCount());
     while (max >= 10) {
@@ -452,7 +452,7 @@ void TextEditor::resizeEvent(QResizeEvent* event) {
     QPlainTextEdit::resizeEvent(event);
 
     QRect cr = contentsRect();
-    m_lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), getLineNumberAreaWidth(), cr.height()));
+    m_lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
 }
 
 void TextEditor::focusInEvent(QFocusEvent* event) {
@@ -467,7 +467,7 @@ void TextEditor::focusOutEvent(QFocusEvent* event) {
 
 void TextEditor::updateLineNumberAreaWidth(int newBlockCount) {
     Q_UNUSED(newBlockCount)
-    setViewportMargins(getLineNumberAreaWidth(), 0, 0, 0);
+    setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
 }
 
 void TextEditor::highlightCurrentLine() {

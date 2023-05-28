@@ -41,7 +41,7 @@ void Highlighter::highlightBlock(const QString& text) {
 void Highlighter::loadRules(const QString& fileExt) {
     if (!m_syntaxHighlightManager->hasExtension(fileExt)) return;
 
-    QJsonObject obj = m_syntaxHighlightManager->getSyntaxJson(fileExt);
+    QJsonObject obj = m_syntaxHighlightManager->syntaxJson(fileExt);
 
     QJsonObject lang = obj["lang"].toObject();
     QJsonObject words = obj["words"].toObject();

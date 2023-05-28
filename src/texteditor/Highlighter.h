@@ -10,8 +10,8 @@ class Highlighter : public QSyntaxHighlighter {
 public:
     explicit Highlighter(const QString& fileExt, QTextDocument* parent, SyntaxHighlightManager* syntaxHighlightManager);
 
-    const QString& getLangName() const { return m_langName; }
-    const QString& getLangExt() const { return m_langExt; }
+    const QString& langName() const { return m_langName; }
+    const QString& langExt() const { return m_langExt; }
     bool isValid() const { return m_valid; }
 
 protected:
