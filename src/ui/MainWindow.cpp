@@ -23,35 +23,35 @@
 #include <QtWidgets>
 
 MainWindow::MainWindow() {
-    new SyntaxHighlightManager(this);
+    m_syntaxHighlightManager = new SyntaxHighlightManager(this);
     new ActionManager(this);
 
     resize(1040, 620);
-    
+
     m_mainSplitter = new QSplitter;
     m_mainSplitter->setOrientation(Qt::Horizontal);
     m_mainSplitter->setHandleWidth(0);
     m_mainSplitter->setChildrenCollapsible(false);
-    
+
     setCentralWidget(m_mainSplitter);
-    
+
     m_sideTabWidget = new QTabWidget(m_mainSplitter);
     m_sideTabWidget->setMinimumSize(QSize(50, 0));
     m_sideTabWidget->setBaseSize(QSize(200, 0));
     m_sideTabWidget->setTabPosition(QTabWidget::West);
     m_mainSplitter->addWidget(m_sideTabWidget);
-    
+
     m_sideSplitter = new QSplitter(m_mainSplitter);
     m_sideSplitter->setOrientation(Qt::Vertical);
     m_sideSplitter->setHandleWidth(0);
     m_sideSplitter->setChildrenCollapsible(false);
-    
+
     m_sourceTabWidget = new QTabWidget(m_sideSplitter);
     m_sourceTabWidget->setMinimumSize(QSize(0, 50));
     m_sourceTabWidget->setTabsClosable(true);
     m_sourceTabWidget->setMovable(true);
     m_sideSplitter->addWidget(m_sourceTabWidget);
-    
+
     connect(m_sourceTabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::onSourceTabClose);
     connect(m_sourceTabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::onSourceTabCurrentChanged);
 
@@ -102,11 +102,11 @@ MainWindow::MainWindow() {
     connect(clearToolButtonCargo, &QToolButton::clicked, this, &MainWindow::onCargoClear);
 
     cargoHorizontalLayout->addLayout(cargoVerticalLayout);
-    
+
     m_cargoPlainTextEdit = new QPlainTextEdit(cargoTab);
     m_cargoPlainTextEdit->setFocusPolicy(Qt::StrongFocus);
     m_cargoPlainTextEdit->setReadOnly(true);
-    
+
     cargoHorizontalLayout->addWidget(m_cargoPlainTextEdit);
 
     m_outputTabWidget->addTab(cargoTab, tr("Cargo"));
@@ -138,25 +138,25 @@ MainWindow::MainWindow() {
 
     m_sideSplitter->addWidget(m_outputTabWidget);
     m_mainSplitter->addWidget(m_sideSplitter);
-    
+
     m_sideTabWidget->setCurrentIndex(-1);
     m_outputTabWidget->setCurrentIndex(0);
 
     m_projectProperties = new ProjectProperties;
-    
+
     m_cargoManager = new CargoManager(m_projectProperties, this);
     connect(m_cargoManager, &CargoManager::projectCreated, this, &MainWindow::onProjectCreated);
     connect(m_cargoManager, &CargoManager::consoleMessage, this, &MainWindow::onCargoMessage);
-    
+
     m_projectTree = new ProjectTree;
     connect(m_projectTree, &ProjectTree::openActivated, this, &MainWindow::addSourceTab);
     connect(m_projectTree, &ProjectTree::newFileActivated, this, &MainWindow::onFileCreated);
     connect(m_projectTree, &ProjectTree::removeActivated, this, &MainWindow::onFileRemoved);
     connect(m_projectTree, &ProjectTree::renameActivated, this, &MainWindow::onFileRenamed);
-    
+
     m_sideTabWidget->addTab(m_projectTree, tr("Project"));
     m_sideTabWidget->addTab(m_projectProperties, tr("Properties"));
-    
+
     m_issueModel = new IssueModel(this);
     connect(m_issueModel, &IssueModel::countChanged, this, &MainWindow::onIssueCountChanged);
     m_issueListView = new IssueListView(m_issueModel);
@@ -168,13 +168,13 @@ MainWindow::MainWindow() {
             m_editor->goToLine(line.toInt());
         }
     });
-    
+
     issueHorizontalLayout->addWidget(m_issueListView);
 
     new RlsManager(this);
     RlsManager::setShowDebug(Settings::value("debug.dump.rlsMessages").toBool());
 //    RlsManager::start();
-    
+
     m_completer = new AutoCompleter(this);
     m_completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     m_completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -252,7 +252,7 @@ void MainWindow::onCloseAllAction() {
 
 void MainWindow::onCloseOtherAction() {
     int i = 0;
-    
+
     while (m_sourceTabWidget->count() > 1) {
         if (i != m_sourceTabWidget->currentIndex()) {
             onSourceTabClose(i);
@@ -499,7 +499,7 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
     } else {
         m_cargoPlainTextEdit->insertPlainText(message);
     }
-    
+
     m_cargoPlainTextEdit->verticalScrollBar()->setValue(m_cargoPlainTextEdit->verticalScrollBar()->maximum());
 }
 
@@ -544,7 +544,7 @@ int MainWindow::addSourceTab(const QString& filePath) {
         return tabIndex;
     } else {
         QFileInfo fi(filePath);
-        m_editor = new TextEditor(filePath);
+        m_editor = new TextEditor(filePath, m_syntaxHighlightManager);
         connect(m_editor, &TextEditor::documentModified, this, &MainWindow::onDocumentModified);
         int index = m_sourceTabWidget->addTab(m_editor, fi.fileName());
         m_sourceTabWidget->setTabToolTip(index, filePath);
@@ -592,11 +592,11 @@ void MainWindow::createActions() {
 
     ActionManager::addAction(Const::Action::Open, fileMenu->addAction(tr("Open..."), Qt::CTRL | Qt::Key_O, this, &MainWindow::onOpenAction));
     ActionManager::addAction(Const::Action::CloseProject, fileMenu->addAction(tr("Close Project"), this, &MainWindow::onCloseProjectAction));
-    
+
     m_recentFilesMenu = fileMenu->addMenu(tr("Recent Files"));
     m_recentFilesMenu->addSeparator();
     m_recentFilesMenu->addAction(tr("Clear Menu"), this, &MainWindow::onClearMenuRecentFilesAction);
-    
+
     m_recentProjectsMenu = fileMenu->addMenu(tr("Recent Projects"));
     m_recentProjectsMenu->addSeparator();
     m_recentProjectsMenu->addAction(tr("Clear Menu"), this, &MainWindow::onClearMenuRecentProjectsAction);
@@ -619,7 +619,7 @@ void MainWindow::createActions() {
 
     fileMenu->addSeparator();
     fileMenu->addAction(tr("Exit"), Qt::CTRL | Qt::Key_Q, this, &MainWindow::close);
-    
+
     m_editMenu = menuBar()->addMenu(tr("Edit"));
     m_editMenu->addAction(tr("Undo"), Qt::CTRL | Qt::Key_Z, this, &MainWindow::onUndoAction);
     m_editMenu->addAction(tr("Redo"), Qt::CTRL | Qt::SHIFT | Qt::Key_N, this, &MainWindow::onRedoAction);
@@ -630,25 +630,25 @@ void MainWindow::createActions() {
     m_editMenu->addSeparator();
     m_editMenu->addAction(tr("Select All"), Qt::CTRL | Qt::Key_A, this, &MainWindow::onSelectAllAction);
     m_editMenu->addSeparator();
-    
+
     QMenu* lineMenu = m_editMenu->addMenu(tr("Line"));
     lineMenu->addAction(tr("Duplicate Line"), Qt::CTRL | Qt::Key_D, this, &MainWindow::onDuplicateLineAction);
     lineMenu->addAction(tr("Join Lines"), Qt::CTRL | Qt::Key_J, this, &MainWindow::onJoinLinesAction);
     lineMenu->addAction(tr("Cut Line"), Qt::CTRL | Qt::Key_Delete, this, &MainWindow::onCutLineAction);
-    
+
     QMenu* indentMenu = m_editMenu->addMenu(tr("Indent"));
     indentMenu->addAction(tr("Increase Indent"), Qt::Key_Tab, this, &MainWindow::onIncreaseIndentAction);
     indentMenu->addAction(tr("Decrease Indent"), Qt::SHIFT | Qt::Key_Tab, this, &MainWindow::onDecreaseIndentAction);
-    
+
     QMenu* commentMenu = m_editMenu->addMenu(tr("Comment"));
     commentMenu->addAction(tr("Toggle Single Line Comment"), Qt::CTRL | Qt::Key_Slash, this, &MainWindow::onToggleSingleLineCommentAction);
     commentMenu->addAction(tr("Toggle Block Comment"), Qt::CTRL | Qt::SHIFT | Qt::Key_Slash, this, &MainWindow::onToggleBlockCommentAction);
-    
+
     m_editMenu->addAction(tr("Auto-Completer"), Qt::CTRL | Qt::Key_Space, this, &MainWindow::onAutoCompleterAction);
     m_editMenu->addAction(tr("Clean Trailing Whitespace"), this, &MainWindow::onCleanTrailingWhitespaceAction);
     m_editMenu->addSeparator();
     m_editMenu->addAction(tr("Go to Line..."), Qt::CTRL | Qt::Key_G, this, &MainWindow::onGoToLineAction);
-    
+
     m_buildMenu = menuBar()->addMenu(tr("Build"));
     ActionManager::addAction(Const::Action::Build, m_buildMenu->addAction(tr("Build"), Qt::CTRL | Qt::Key_B, this, &MainWindow::onBuildAction));
     ActionManager::addAction(Const::Action::Run, m_buildMenu->addAction(tr("Run"), Qt::CTRL | Qt::Key_R, this, &MainWindow::onRunAction));
@@ -660,7 +660,7 @@ void MainWindow::createActions() {
     toolsMenu->addAction(tr("Rust Installer..."), this, &MainWindow::onRustInstallerAction);
 
     QMenu* viewMenu = menuBar()->addMenu(tr("View"));
-    
+
     QAction* showSidebarAction = viewMenu->addAction(tr("Show Sidebar"), m_sideTabWidget, &QTableWidget::setVisible);
     showSidebarAction->setCheckable(true);
     showSidebarAction->setChecked(true);
@@ -687,7 +687,7 @@ void MainWindow::addRecentFile(const QString& filePath) {
 
 void MainWindow::addRecentProject(const QString& projectPath) {
     if (!QFileInfo::exists(projectPath + "/Cargo.toml")) return;
-    
+
     addRecentFileOrProject(m_recentProjectsMenu, projectPath, [=, this] {
         openProject(projectPath);
     });
@@ -715,7 +715,7 @@ void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, co
 
 void MainWindow::saveProjectProperties() {
     if (m_projectPath.isEmpty()) return;
-    
+
     QString path = m_projectPath + "/" + Const::Project::DataDir + "/" + Const::Project::PropertyFile;
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly)) {
@@ -732,12 +732,12 @@ void MainWindow::saveProjectProperties() {
 
 void MainWindow::loadProjectProperties() {
     if (m_projectPath.isEmpty()) return;
-    
+
     QString path = m_projectPath + "/" + Const::Project::DataDir + "/" + Const::Project::PropertyFile;
     if (!QFileInfo::exists(path)) {
         return;
     }
-    
+
     m_projectProperties->setProject(m_projectPath);
 
     QFile file(path);
@@ -782,7 +782,7 @@ void MainWindow::loadSettings() {
     for (const auto& size : sizesArray) {
         sizes.append(size.toInt());
     }
-    
+
     m_mainSplitter->setSizes(sizes);
 
     sizesArray = Settings::value("gui.mainWindow.splitters.side").toArray();
@@ -877,7 +877,7 @@ void MainWindow::saveSettings() {
 
     // Recent projects
     QJsonArray recentProjects;
-    
+
     for (int i = 0; i < m_recentProjectsMenu->actions().size() - Const::Window::SeparatorAndMenuClearCount; ++i) {
         recentProjects.append(m_recentProjectsMenu->actions().at(i)->text());
     }
@@ -886,7 +886,7 @@ void MainWindow::saveSettings() {
 
     // Recent files
     QJsonArray recentFiles;
-    
+
     for (int i = 0; i < m_recentFilesMenu->actions().size() - Const::Window::SeparatorAndMenuClearCount; ++i) {
         recentFiles.append(m_recentFilesMenu->actions().at(i)->text());
     }
@@ -903,7 +903,7 @@ void MainWindow::saveSession() {
     if (!Settings::value("gui.mainWindow.session.restore").toBool() || m_projectPath.isEmpty()) {
         return;
     }
-    
+
     QDir dir(m_projectPath);
     bool result = dir.mkdir(Const::Project::DataDir);
 #ifdef Q_OS_WIN
@@ -921,7 +921,7 @@ void MainWindow::saveSession() {
 #else
     Q_UNUSED(result)
 #endif
-    
+
     QString path = m_projectPath + "/" + Const::Project::DataDir + "/" + Const::Project::SessionFile;
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly)) {
@@ -956,7 +956,7 @@ void MainWindow::loadSession() {
     if (!Settings::value("gui.mainWindow.session.restore").toBool() || m_projectPath.isEmpty()) {
         return;
     }
-    
+
     QString path = m_projectPath + "/" + Const::Project::DataDir + "/" + Const::Project::SessionFile;
     if (!QFileInfo::exists(path)) {
         return;
@@ -991,7 +991,7 @@ void MainWindow::loadSession() {
 
 void MainWindow::openProject(const QString& path, bool isNew) {
     closeProject();
-    
+
     m_projectPath = path;
     m_projectTree->setRootPath(path);
     m_cargoManager->setProjectPath(path);
@@ -1012,7 +1012,7 @@ void MainWindow::openProject(const QString& path, bool isNew) {
         loadProjectProperties();
         loadSession();
     }
-    
+
     if (!m_sourceTabWidget->count()) {
         changeWindowTitle();
     }
@@ -1041,7 +1041,7 @@ void MainWindow::closeProject() {
 
 void MainWindow::changeWindowTitle(const QString& filePath) {
     QString title = QApplication::applicationName();
-    
+
     if (!m_projectPath.isEmpty()) {
         QFileInfo fi(m_projectPath);
         title = fi.baseName() + " - " + title;
@@ -1069,7 +1069,7 @@ int MainWindow::findSource(const QString& filePath) {
 void MainWindow::updateMenuState() {
     m_editMenu->menuAction()->setVisible(!m_projectPath.isNull());
     m_buildMenu->menuAction()->setVisible(!m_projectPath.isNull());
-    
+
     int index = m_sourceTabWidget->currentIndex();
 
     ActionManager::action(Const::Action::Save)->setEnabled(index >= 0);
@@ -1079,10 +1079,10 @@ void MainWindow::updateMenuState() {
     ActionManager::action(Const::Action::Close)->setEnabled(index >= 0);
     ActionManager::action(Const::Action::CloseAll)->setEnabled(index >= 0);
     ActionManager::action(Const::Action::CloseOther)->setEnabled(index >= 0);
-    
+
     m_recentProjectsMenu->menuAction()->setEnabled(m_recentProjectsMenu->actions().size() > Const::Window::SeparatorAndMenuClearCount);
     m_recentFilesMenu->menuAction()->setEnabled(m_recentFilesMenu->actions().size() > Const::Window::SeparatorAndMenuClearCount);
-    
+
     m_editMenu->menuAction()->setEnabled(index >= 0);
 }
 

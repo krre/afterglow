@@ -2,13 +2,14 @@
 #include <QPlainTextEdit>
 #include <QPoint>
 
+class SyntaxHighlightManager;
 class Highlighter;
 class AutoCompleter;
 
 class TextEditor : public QPlainTextEdit {
     Q_OBJECT
 public:
-    explicit TextEditor(QString filePath, QWidget* parent = nullptr);
+    explicit TextEditor(QString filePath, SyntaxHighlightManager* syntaxHighlightManager, QWidget* parent = nullptr);
 
     QString getFilePath() const { return m_filePath; }
     void setFilePath(const QString& filePath);
@@ -62,6 +63,7 @@ private:
     void autoindent();
     void extendSelectionToBeginOfComment();
 
+    SyntaxHighlightManager* m_syntaxHighlightManager = nullptr;
     QWidget* m_lineNumberArea = nullptr;
     Highlighter* m_highlighter = nullptr;
     QString m_filePath;

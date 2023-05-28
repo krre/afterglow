@@ -3,16 +3,16 @@
 #include <QTextCharFormat>
 #include <QRegularExpression>
 
+class SyntaxHighlightManager;
 class QTextDocument;
 
 class Highlighter : public QSyntaxHighlighter {
 public:
-    explicit Highlighter(const QString& fileExt, QTextDocument* parent);
+    explicit Highlighter(const QString& fileExt, QTextDocument* parent, SyntaxHighlightManager* syntaxHighlightManager);
+
     const QString& getLangName() const { return m_langName; }
     const QString& getLangExt() const { return m_langExt; }
     bool isValid() const { return m_valid; }
-
-    static bool hasExtension(const QString& ext);
 
 protected:
     void highlightBlock(const QString& text) override;
@@ -36,6 +36,7 @@ private:
     QString m_langName;
     QString m_langExt;
 
+    SyntaxHighlightManager* m_syntaxHighlightManager = nullptr;
     QVector<HighlightingRule> m_highlightingRules;
 
     QRegularExpression m_commentStartExpression;

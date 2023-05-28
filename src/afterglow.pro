@@ -64,7 +64,6 @@ HEADERS += \
     ui/FileSystemProxyModel.h \
     ui/ProjectTree.h \
     core/Settings.h \
-    core/Singleton.h \
     process/ProcessManager.h \
     process/CargoManager.h \
     texteditor/AutoCompleter.h \

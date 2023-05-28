@@ -5,10 +5,6 @@ SyntaxHighlightManager::SyntaxHighlightManager(QObject* parent) : QObject(parent
     addSyntaxFile(":/resources/highlighting/rust.json");
 }
 
-SyntaxHighlightManager::~SyntaxHighlightManager() {
-
-}
-
 void SyntaxHighlightManager::addSyntaxFile(const QString& path) {
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {

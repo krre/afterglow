@@ -1,4 +1,5 @@
 #include "TextEditor.h"
+#include "SyntaxHighlightManager.h"
 #include "LineNumberArea.h"
 #include "Highlighter.h"
 #include "AutoCompleter.h"
@@ -6,9 +7,8 @@
 #include "core/Constants.h"
 #include <QtWidgets>
 
-TextEditor::TextEditor(QString filePath, QWidget* parent) :
-        QPlainTextEdit(parent),
-    m_filePath(filePath) {
+TextEditor::TextEditor(QString filePath, SyntaxHighlightManager* syntaxHighlightManager, QWidget* parent) :
+    QPlainTextEdit(parent), m_syntaxHighlightManager(syntaxHighlightManager), m_filePath(filePath) {
     setFrameShape(QFrame::NoFrame);
 
     const QString& family = Settings::value("editor.font.family").toString();
@@ -17,12 +17,13 @@ TextEditor::TextEditor(QString filePath, QWidget* parent) :
     document()->setDefaultFont(font);
 
     setWordWrapMode(QTextOption::NoWrap);
-    
+
     m_lineNumberArea = new LineNumberArea(this);
 
     QFileInfo fi(filePath);
-    if (Highlighter::hasExtension(fi.suffix())) {
-        m_highlighter = new Highlighter(fi.suffix(), document());
+
+    if (m_syntaxHighlightManager->hasExtension(fi.suffix())) {
+        m_highlighter = new Highlighter(fi.suffix(), document(), m_syntaxHighlightManager);
     }
 
     connect(this, &TextEditor::blockCountChanged, this, &TextEditor::updateLineNumberAreaWidth);
@@ -56,7 +57,7 @@ void TextEditor::saveFile() {
     if (Settings::value("editor.cleanTrailingWhitespaceOnSave").toBool()) {
        cleanTrailingWhitespace();
     }
-    
+
     QFile file(m_filePath);
     if (file.open(QFile::WriteOnly | QFile::Text)) {
         QTextStream out(&file);

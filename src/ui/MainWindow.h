@@ -5,6 +5,7 @@
 class QSplitter;
 class QPlainTextEdit;
 
+class SyntaxHighlightManager;
 class CargoManager;
 class ProjectTree;
 class ProjectProperties;
@@ -156,6 +157,7 @@ private:
 
     QPlainTextEdit* m_cargoPlainTextEdit = nullptr;
 
+    SyntaxHighlightManager* m_syntaxHighlightManager = nullptr;
     CargoManager* m_cargoManager = nullptr;
     ProjectTree* m_projectTree = nullptr;
     ProjectProperties* m_projectProperties = nullptr;

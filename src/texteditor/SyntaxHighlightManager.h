@@ -1,15 +1,13 @@
 #pragma once
-#include "core/Singleton.h"
 #include <QObject>
 #include <QMap>
 #include <QJsonObject>
 
 class Highlighter;
 
-class SyntaxHighlightManager : public QObject, public Singleton<SyntaxHighlightManager> {
+class SyntaxHighlightManager : public QObject {
 public:
     explicit SyntaxHighlightManager(QObject* parent = nullptr);
-    ~SyntaxHighlightManager();
 
     void addSyntaxFile(const QString& path);
     QJsonObject getSyntaxJson(const QString& ext) const;

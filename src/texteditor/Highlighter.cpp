@@ -2,12 +2,9 @@
 #include "SyntaxHighlightManager.h"
 #include <QtCore>
 
-Highlighter::Highlighter(const QString& fileExt, QTextDocument* parent) : QSyntaxHighlighter(parent) {
+Highlighter::Highlighter(const QString& fileExt, QTextDocument* parent, SyntaxHighlightManager* syntaxHighlightManager) :
+    QSyntaxHighlighter(parent), m_syntaxHighlightManager(syntaxHighlightManager) {
     loadRules(fileExt);
-}
-
-bool Highlighter::hasExtension(const QString& ext) {
-    return SyntaxHighlightManager::instance()->hasExtension(ext);
 }
 
 void Highlighter::highlightBlock(const QString& text) {
@@ -42,9 +39,9 @@ void Highlighter::highlightBlock(const QString& text) {
 }
 
 void Highlighter::loadRules(const QString& fileExt) {
-    if (!SyntaxHighlightManager::instance()->hasExtension(fileExt)) return;
+    if (!m_syntaxHighlightManager->hasExtension(fileExt)) return;
 
-    QJsonObject obj = SyntaxHighlightManager::instance()->getSyntaxJson(fileExt);
+    QJsonObject obj = m_syntaxHighlightManager->getSyntaxJson(fileExt);
 
     QJsonObject lang = obj["lang"].toObject();
     QJsonObject words = obj["words"].toObject();
@@ -83,7 +80,7 @@ void Highlighter::loadRules(const QString& fileExt) {
             m_multiLineCommentFormat = jsonToFormat(formats[block["format"].toString()].toObject());
         }
     }
-    
+
     m_valid = true;
 }
 
