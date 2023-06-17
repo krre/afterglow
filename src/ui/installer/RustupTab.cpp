@@ -5,6 +5,7 @@
 #include "core/Settings.h"
 #include "core/Utils.h"
 #include <QtWidgets>
+#include <coroutine>
 
 RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     auto rustupHomeBrowseLayout = new BrowseLayout;
@@ -21,22 +22,22 @@ RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : Installe
 
     auto groupBox = new QGroupBox(tr("Environment Variables"));
     groupBox->setLayout(envLayout);
-    
+
     m_versionLineEdit = new QLineEdit;
     m_versionLineEdit->setReadOnly(true);
 
     auto versionLayout = new QFormLayout;
     versionLayout->addRow(tr("Version:"), m_versionLineEdit);
-    
+
     m_downloadButton = new QPushButton(tr("Download"));
     connect(m_downloadButton, &QPushButton::clicked, this, &RustupTab::onDownloadClicked);
-    
+
     m_updateButton = new QPushButton(tr("Update"));
     connect(m_updateButton, &QPushButton::clicked, this, &RustupTab::onUpdateClicked);
-    
+
     m_updateAllButton = new QPushButton(tr("Update All"));
     connect(m_updateAllButton, &QPushButton::clicked, this, &RustupTab::onUpdateAllClicked);
-    
+
     m_uninstallButton = new QPushButton(tr("Uninstall..."));
     connect(m_uninstallButton, &QPushButton::clicked, this, &RustupTab::onUninstallClicked);
 
@@ -85,16 +86,14 @@ void RustupTab::onDownloadClicked() {
     rustupInstaller()->downloadInstaller();
 }
 
-void RustupTab::onUpdateClicked() {
-    rustupInstaller()->runCommand("rustup", { "self", "update" }, [this] {
-        load();
-    });
+CoTask RustupTab::onUpdateClicked() {
+    co_await rustupInstaller()->runCommand("rustup", QStringList("self") << "update");
+    load();
 }
 
-void RustupTab::onUpdateAllClicked() {
-    rustupInstaller()->runCommand("rustup", { "update" }, [this] {
-        load();
-    });
+CoTask RustupTab::onUpdateAllClicked() {
+    co_await rustupInstaller()->runCommand("rustup", QStringList("update"));
+    load();
 }
 
 void RustupTab::onUninstallClicked() {

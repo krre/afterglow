@@ -7,10 +7,10 @@
 
 ComponentTab::ComponentTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     m_listView = new SelectableListView;
-    
+
     m_addButton = new QPushButton(tr("Add..."));
     connect(m_addButton, &QPushButton::clicked, this, &ComponentTab::onAddClicked);
-    
+
     m_removeButton = new QPushButton(tr("Remove..."));
     connect(m_removeButton, &QPushButton::clicked, this, &ComponentTab::onRemoveClicked);
 
@@ -47,7 +47,7 @@ void ComponentTab::load() {
     setWidgetsEnabled(true);
 }
 
-void ComponentTab::onAddClicked() {
+CoTask ComponentTab::onAddClicked() {
     AddComponentOrTarget addComponent(tr("Add Component"), "rustup component list", this);
     addComponent.exec();
 
@@ -55,21 +55,19 @@ void ComponentTab::onAddClicked() {
 
     if (components.count()) {
         rustupInstaller()->cleanupTarget(components);
-        rustupInstaller()->runCommand("rustup", QStringList("component") << "add" << components, [this] {
-            load();
-        });
+        co_await rustupInstaller()->runCommand("rustup", QStringList("component") << "add" << components);
+        load();
     }
 }
 
-void ComponentTab::onRemoveClicked() {
+CoTask ComponentTab::onRemoveClicked() {
     int button = QMessageBox::question(this, tr("Remove Components"), tr("Components will be removed. Are you sure?"),
                                        QMessageBox::Ok,
                                        QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
         QStringList components = m_listView->selectedRows();
         rustupInstaller()->cleanupTarget(components);
-        rustupInstaller()->runCommand("rustup", QStringList("component") << "remove" << components, [this] {
-            load();
-        });
+        co_await rustupInstaller()->runCommand("rustup", QStringList("component") << "remove" << components);
+        load();
     }
 }

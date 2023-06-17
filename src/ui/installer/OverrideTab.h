@@ -14,9 +14,9 @@ public:
     void load() override;
 
 private slots:
-    void onSetClicked();
-    void onUnsetClicked();
-    void onCleanupClicked();
+    CoTask onSetClicked();
+    CoTask onUnsetClicked();
+    CoTask onCleanupClicked();
 
 private:
     SelectableListView* m_listView = nullptr;

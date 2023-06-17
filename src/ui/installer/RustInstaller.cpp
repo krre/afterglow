@@ -7,6 +7,7 @@
 #include "core/Settings.h"
 #include "core/FileDownloader.h"
 #include "core/Settings.h"
+#include "core/async/CoProcess.h"
 #include <QtWidgets>
 
 RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
@@ -48,45 +49,6 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     resizeToWidth(810);
     buttonBox()->setStandardButtons(QDialogButtonBox::Close);
 
-    m_process = new QProcess(this);
-
-    connect(m_process, &QProcess::readyReadStandardOutput, this, [this] {
-        QByteArray data = m_process->readAllStandardOutput();
-        auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
-        QString output = toUtf16(data);
-        showAndScrollMessage(output);
-    });
-
-    connect(m_process, &QProcess::readyReadStandardError, this, [this] {
-        QByteArray data = m_process->readAllStandardError();
-        auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
-        QString output = toUtf16(data);
-        showAndScrollMessage(output);
-    });
-
-    connect(m_process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [=, this] (int, QProcess::ExitStatus) {
-        QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished successfully"));
-        showAndScrollMessage(message);
-
-        if (m_commandQueue.count()) {
-            Command command = m_commandQueue.dequeue();
-            if (command.postWork) {
-                command.postWork();
-            }
-
-            runFromQueue();
-        }
-    });
-
-    connect(m_process, &QProcess::errorOccurred, this, [this] (QProcess::ProcessError error) {
-        Q_UNUSED(error)
-        QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished with error"));
-        showAndScrollMessage(message);
-        m_commandQueue.clear();
-    });
-
-    connect(m_process, &QProcess::stateChanged, this, &RustInstaller::onProcessStateChanged);
-
     m_fileDownloader = new FileDownloader(this);
     connect(m_fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
@@ -103,12 +65,11 @@ RustInstaller::~RustInstaller() {
 }
 
 void RustInstaller::onBreakPushButtonClicked() {
-    m_commandQueue.clear();
     m_fileDownloader->abort();
-    m_process->close();
+    emit breakPressed();
 }
 
-void RustInstaller::onDownloaded() {
+CoTask RustInstaller::onDownloaded() {
     updateAllButtonsState();
     showAndScrollMessage(QString("Downloaded %1 bytes").arg(m_fileDownloader->data().size()));
 
@@ -118,22 +79,57 @@ void RustInstaller::onDownloaded() {
     file.write(m_fileDownloader->data());
     file.close();
 
-    runCommand(filePath, { "-y" }, [this] {
-        m_rustupTab->load();
-    });
+    co_await runCommand(filePath, QStringList( "-y"));
+    m_rustupTab->load();
 
     installDefaultComponents();
 }
 
-void RustInstaller::onProcessStateChanged(QProcess::ProcessState newState) {
-    if (newState == QProcess::Running || newState == QProcess::NotRunning) {
-        updateAllButtonsState();
-    }
-}
+CoTask RustInstaller::runCommand(const QString& program, const QStringList& arguments, const QString& directory) {
+    QString message = QString("<font color=%1>%2</font>: <font color=%3>%4 %5</font>")
+                          .arg("#0000FF", tr("Run command"), "#FF0000", program, arguments.join(" "));
+    showAndScrollMessage(message);
 
-void RustInstaller::runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork, const QString& directory) {
-    m_commandQueue.enqueue({ program, arguments, postWork, directory });
-    runFromQueue();
+    CoProcess process;
+    process.setWorkingDirectory(directory);
+
+    connect(this, &RustInstaller::breakPressed, [&] { process.close(); });
+
+    CoAwaiter awaiter{};
+
+    connect(&process, &QProcess::readyReadStandardOutput, this, [&, this] {
+        QByteArray data = process.readAllStandardOutput();
+        auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
+        QString output = toUtf16(data);
+        showAndScrollMessage(output);
+    });
+
+    connect(&process, &QProcess::readyReadStandardError, this, [&, this] {
+        QByteArray data = process.readAllStandardError();
+        auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
+        QString output = toUtf16(data);
+        showAndScrollMessage(output);
+    });
+
+    connect(&process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [&, this] (int, QProcess::ExitStatus) {
+        QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished successfully"));
+        showAndScrollMessage(message);
+        awaiter.resume();
+    });
+
+    connect(&process, &QProcess::errorOccurred, this, [&, this] (QProcess::ProcessError error) {
+        Q_UNUSED(error)
+        QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished with error"));
+        showAndScrollMessage(message);
+        awaiter.resume();
+    });
+
+    connect(&process, &QProcess::stateChanged, this, [this] (QProcess::ProcessState newState) {
+        updateAllButtonsState(newState == QProcess::Running);
+    });
+
+    co_await process.startAsync(program, arguments);
+    co_await awaiter;
 }
 
 void RustInstaller::loadComponents() {
@@ -145,28 +141,13 @@ void RustInstaller::showAndScrollMessage(const QString message) {
     m_consolePlainTextEdit->verticalScrollBar()->setValue(m_consolePlainTextEdit->verticalScrollBar()->maximum());
 }
 
-void RustInstaller::runFromQueue() {
-    if (!m_commandQueue.isEmpty() && m_process->state() == QProcess::NotRunning) {
-        if (m_consolePlainTextEdit->document()->blockCount() > 1) {
-            showAndScrollMessage("");
-        }
-
-        Command command = m_commandQueue.head();
-        QString message = QString("<font color=%1>%2</font>: <font color=%3>%4 %5</font>")
-                    .arg("#0000FF", tr("Run command"), "#FF0000", command.program, command.arguments.join(" "));
-        showAndScrollMessage(message);
-        m_process->setWorkingDirectory(command.directory);
-        m_process->start(command.program, command.arguments);
-    }
+CoTask RustInstaller::installDefaultComponents() {
+    co_await runCommand("rustup", QStringList("component") << "add" << "rls-preview" << "rust-analysis" << "rust-src");
+    co_await runCommand("cargo", QStringList("install") << "racer");
 }
 
-void RustInstaller::installDefaultComponents() {
-    runCommand("rustup", { "component", "add", "rls-preview", "rust-analysis", "rust-src" });
-    runCommand("cargo", { "install", "racer" });
-}
-
-void RustInstaller::updateAllButtonsState() {
-    bool processesFree = m_process->state() == QProcess::NotRunning && !m_fileDownloader->isBusy();
+void RustInstaller::updateAllButtonsState(bool isProcessRunning) {
+    bool processesFree = !isProcessRunning && !m_fileDownloader->isBusy();
     m_breakPushButton->setEnabled(!processesFree);
     m_rustupTab->setWidgetsEnabled(processesFree);
     m_toolchainTab->setWidgetsEnabled(processesFree);
@@ -182,11 +163,10 @@ void RustInstaller::cleanupTarget(QStringList& components) const {
     }
 }
 
-void RustInstaller::downloadInstaller() {
+CoTask RustInstaller::downloadInstaller() {
 #if defined(Q_OS_LINUX)
-    runCommand("sh", { "-c", "curl https://sh.rustup.rs -sSf | sh -s -- -y" }, [this] {
-        m_rustupTab->load();
-    });
+    co_await runCommand("sh", QStringList("-c") << "curl https://sh.rustup.rs -sSf | sh -s -- -y");
+    m_rustupTab->load();
 
     installDefaultComponents();
 #elif defined(Q_OS_WIN)

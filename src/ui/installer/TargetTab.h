@@ -15,8 +15,8 @@ public:
     QString defaultTarget() const;
 
 private slots:
-    void onAddClicked();
-    void onRemoveClicked();
+    CoTask onAddClicked();
+    CoTask onRemoveClicked();
 
 private:
     SelectableListView* m_listView = nullptr;

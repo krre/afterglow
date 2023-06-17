@@ -6,18 +6,18 @@
 
 ToolchainTab::ToolchainTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     listView = new SelectableListView;
-    
+
     m_installButton = new QPushButton(tr("Install..."));
     connect(m_installButton, &QPushButton::clicked, this, &ToolchainTab::onInstallClicked);
-    
+
     m_uninstallButton = new QPushButton(tr("Uninstall..."));
     m_uninstallButton->setEnabled(false);
     connect(m_uninstallButton, &QPushButton::clicked, this, &ToolchainTab::onUninstallClicked);
-    
+
     m_updateButton = new QPushButton(tr("Update"));
     m_updateButton->setEnabled(false);
     connect(m_updateButton, &QPushButton::clicked, this, &ToolchainTab::onUpdateClicked);
-    
+
     m_setDefaultButton = new QPushButton(tr("Set Default"));
     m_setDefaultButton->setEnabled(false);
     connect(m_setDefaultButton, &QPushButton::clicked, this, &ToolchainTab::onSetDefaultClicked);
@@ -44,27 +44,25 @@ void ToolchainTab::setWidgetsEnabled(bool enabled) {
     m_setDefaultButton->setEnabled(selected);
 }
 
-void ToolchainTab::onInstallClicked() {
+CoTask ToolchainTab::onInstallClicked() {
     InstallToolchain installToolchain(this);
-    if (installToolchain.exec() == QDialog::Rejected) return;;
+    if (installToolchain.exec() == QDialog::Rejected) co_return;;
 
     QString toolchain = installToolchain.toolchain();
 
     if (!toolchain.isEmpty()) {
-        rustupInstaller()->runCommand("rustup", { "toolchain", "install", toolchain }, [this] {
-            load();
-        });
+        co_await rustupInstaller()->runCommand("rustup", QStringList("toolchain") <<  "install" << toolchain);
+        load();
     }
 }
 
-void ToolchainTab::onUninstallClicked() {
+CoTask ToolchainTab::onUninstallClicked() {
     int button = QMessageBox::question(this, tr("Uninstall Toolchain"), tr("Toolchains will be uninstalled. Are you sure?"),
                                        QMessageBox::Ok,
                                        QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        rustupInstaller()->runCommand("rustup", QStringList("toolchain") << "uninstall" << listView->selectedRows(), [this] {
-            load();
-        });
+        co_await rustupInstaller()->runCommand("rustup", QStringList("toolchain") << "uninstall" << listView->selectedRows());
+        load();
     }
 }
 
@@ -72,11 +70,10 @@ void ToolchainTab::onUpdateClicked() {
     rustupInstaller()->runCommand("rustup", QStringList("update") << listView->selectedRows());
 }
 
-void ToolchainTab::onSetDefaultClicked() {
-    rustupInstaller()->runCommand("rustup", QStringList("default") << listView->selectedRows().first(), [this] {
-        load();
-        emit defaultSetted();
-    });
+CoTask ToolchainTab::onSetDefaultClicked() {
+    co_await rustupInstaller()->runCommand("rustup", QStringList("default") << listView->selectedRows().first());
+    load();
+    emit defaultSetted();
 }
 
 void ToolchainTab::load() {

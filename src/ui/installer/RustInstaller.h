@@ -1,8 +1,8 @@
 #pragma once
+#include "core/async/CoTask.h"
 #include "ui/base/StandardDialog.h"
 #include <QTemporaryDir>
 #include <QQueue>
-#include <QProcess>
 #include <functional>
 
 class QTabWidget;
@@ -28,22 +28,23 @@ public:
     explicit RustInstaller(QWidget* parent = nullptr);
     ~RustInstaller();
 
-    void runCommand(const QString& program, const QStringList& arguments, const std::function<void()>& postWork = nullptr, const QString& directory = QString());
+    CoTask runCommand(const QString& program, const QStringList& arguments, const QString& directory = QString());
+
     void loadComponents();
     void cleanupTarget(QStringList& components) const;
-    void downloadInstaller();
+    CoTask downloadInstaller();
+
+signals:
+    void breakPressed();
 
 private slots:
     void onBreakPushButtonClicked();
-
-    void onDownloaded();
-    void onProcessStateChanged(QProcess::ProcessState newState);
+    CoTask onDownloaded();
 
 private:
     void showAndScrollMessage(const QString message);
-    void runFromQueue();
-    void installDefaultComponents();
-    void updateAllButtonsState();
+    CoTask installDefaultComponents();
+    void updateAllButtonsState(bool isProcessRunning = true);
 
     void readSettings();
     void writeSettings();
@@ -67,8 +68,6 @@ private:
 
     QPushButton* m_breakPushButton = nullptr;
 
-    QProcess* m_process;
     FileDownloader* m_fileDownloader = nullptr;
     QTemporaryDir m_tmpDir;
-    QQueue<Command> m_commandQueue;
 };

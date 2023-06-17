@@ -6,13 +6,13 @@
 
 OverrideTab::OverrideTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     m_listView = new SelectableListView;
-    
+
     m_setButton = new QPushButton(tr("Set..."));
     connect(m_setButton, &QPushButton::clicked, this, &OverrideTab::onSetClicked);
-    
+
     m_unsetButton = new QPushButton(tr("Unset..."));
     connect(m_unsetButton, &QPushButton::clicked, this, &OverrideTab::onUnsetClicked);
-    
+
     m_cleanupButton = new QPushButton(tr("Cleanup"));
     connect(m_cleanupButton, &QPushButton::clicked, this, &OverrideTab::onCleanupClicked);
 
@@ -41,35 +41,32 @@ void OverrideTab::load() {
     setWidgetsEnabled(true);
 }
 
-void OverrideTab::onSetClicked() {
+CoTask OverrideTab::onSetClicked() {
     SetOverride setOverride(this);
-    if (setOverride.exec() == QDialog::Rejected) return;
+    if (setOverride.exec() == QDialog::Rejected) co_return;
 
     QString directory = setOverride.directory();
     QString toolchain = setOverride.toolchain();
 
     if (!directory.isEmpty()) {
-        rustupInstaller()->runCommand("rustup", QStringList("override") << "set" << toolchain, [this] {
-            load();
-        }, directory);
+        co_await rustupInstaller()->runCommand("rustup", QStringList("override") << "set" << toolchain, directory);
+        load();
     }
 }
 
-void OverrideTab::onUnsetClicked() {
+CoTask OverrideTab::onUnsetClicked() {
     int button = QMessageBox::question(this, tr("Unset Override"), tr("Override will be unsetted. Are you sure?"),
                                        QMessageBox::Ok,
                                        QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
         for (const QString& override : m_listView->selectedRows()) {
-            rustupInstaller()->runCommand("rustup", QStringList("override") << "unset" << "--path" << override.split('\t').at(0), [this] {
-                load();
-            });
+            co_await rustupInstaller()->runCommand("rustup", QStringList("override") << "unset" << "--path" << override.split('\t').at(0));
+            load();
         }
     }
 }
 
-void OverrideTab::onCleanupClicked() {
-    rustupInstaller()->runCommand("rustup", { "override", "unset", "--nonexistent" }, [this] {
-        load();
-    });
+CoTask OverrideTab::onCleanupClicked() {
+    co_await rustupInstaller()->runCommand("rustup", QStringList("override") << "unset" << "--nonexistent");
+    load();
 }

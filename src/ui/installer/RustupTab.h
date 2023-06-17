@@ -1,5 +1,6 @@
 #pragma once
 #include "InstallerTab.h"
+#include "core/async/CoTask.h"
 
 class BrowseLayout;
 class QLineEdit;
@@ -18,8 +19,8 @@ private slots:
     void onCargoHomeChanged(const QString& text);
 
     void onDownloadClicked();
-    void onUpdateClicked();
-    void onUpdateAllClicked();
+    CoTask onUpdateClicked();
+    CoTask onUpdateAllClicked();
     void onUninstallClicked();
 
 private:

@@ -13,8 +13,8 @@ public:
     void load() override;
 
 private slots:
-    void onAddClicked();
-    void onRemoveClicked();
+    CoTask onAddClicked();
+    CoTask onRemoveClicked();
 
 private:
     SelectableListView* m_listView = nullptr;

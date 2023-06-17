@@ -16,10 +16,10 @@ signals:
     void defaultSetted();
 
 private slots:
-    void onInstallClicked();
-    void onUninstallClicked();
+    CoTask onInstallClicked();
+    CoTask onUninstallClicked();
     void onUpdateClicked();
-    void onSetDefaultClicked();
+    CoTask onSetDefaultClicked();
 
 private:
     SelectableListView* listView = nullptr;
