@@ -8,7 +8,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     core/async/CoProcess.cpp \
-    core/async/CoTask.cpp \
         main.cpp \
     ui/MainWindow.cpp \
     core/Global.cpp \
