@@ -25,7 +25,7 @@ QByteArray FileDownloader::data() const {
 }
 
 void FileDownloader::checkSSLSupport() {
-    qDebug() << "Support SSL: " << QSslSocket::supportsSsl()
+    qInfo() << "Support SSL: " << QSslSocket::supportsSsl()
             << "\nLib Version Number: " << QSslSocket::sslLibraryVersionNumber()
             << "\nLib Version String: " << QSslSocket::sslLibraryVersionString()
             << "\nLib Build Version Number: " << QSslSocket::sslLibraryBuildVersionNumber()

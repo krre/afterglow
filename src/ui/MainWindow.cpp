@@ -479,13 +479,10 @@ void MainWindow::onCargoMessage(const QString& message, bool html, bool start) {
             if (!doc.isNull() && doc.isObject()) {
                 isJson = true;
                 QJsonObject obj = doc.object();
+
                 if (obj.contains("reason")) {
                     if (obj["reason"].toString() == "compiler-message") {
                         m_issueModel->appendMessage(obj);
-                    }
-
-                    if (Settings::value("debug.dump.compilerMessages").toBool()) {
-                        qDebug() << block;
                     }
                 }
             }

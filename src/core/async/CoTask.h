@@ -1,6 +1,5 @@
 #pragma once
 #include <coroutine>
-#include <QDebug>
 
 struct CoAwaiter {
     CoAwaiter(std::coroutine_handle<> handle) : m_handle(handle) {}

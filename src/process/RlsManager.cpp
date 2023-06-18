@@ -63,9 +63,9 @@ void RlsManager::send(const QString& method, const QJsonObject& params) {
     QString message = QString("Content-Length: %1\r\n").arg(jsonrpc.size());
     message += "\r\n";
     message += jsonrpc;
-    
+
     if (s_instance->m_showDebug) {
-        qDebug() << "RLS Message:" << message;
+        qInfo() << "RLS Message:" << message;
     }
 
     s_instance->process()->write(message.toUtf8());
@@ -91,7 +91,7 @@ void RlsManager::completion(const QString& filename, int row, int column) {
 
 void RlsManager::onReadyReadStandardOutput(const QString& data) {
     if (m_showDebug) {
-        qDebug() << "RLS Result:" << data;
+        qInfo() << "RLS Result:" << data;
     }
 
     QStringList rows = data.split("\r\n");
@@ -112,6 +112,6 @@ void RlsManager::onReadyReadStandardOutput(const QString& data) {
 
 void RlsManager::onReadyReadStandardError(const QString& data) {
     if (m_showDebug) {
-        qDebug() << "RLS Error:" << data;
+        qInfo() << "RLS Error:" << data;
     }
 }

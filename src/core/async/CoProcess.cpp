@@ -1,5 +1,4 @@
 #include "CoProcess.h"
-#include <QDebug>
 
 CoProcess::CoProcess() {
 
