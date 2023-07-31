@@ -8,20 +8,21 @@ SetOverride::SetOverride(QWidget* parent) : StandardDialog(parent) {
 
     m_directoryBrowseLayout = new BrowseLayout;
     connect(m_directoryBrowseLayout->lineEdit(), &QLineEdit::textChanged, this, &SetOverride::onTextChanged);
-    
+
     m_toolchainComboBox = new QComboBox();
 
     auto formLayout = new QFormLayout;
     formLayout->addRow(new QLabel(tr("Directory:")), m_directoryBrowseLayout);
     formLayout->addRow(new QLabel(tr("Toolchain:")), m_toolchainComboBox);
-    formLayout->itemAt(1, QFormLayout::FieldRole)->setAlignment(Qt::AlignLeft);
+
+    formLayout->itemAt(formLayout->indexOf(m_toolchainComboBox))->setAlignment(Qt::AlignLeft);
 
     setContentLayout(formLayout);
     resizeToWidth(500);
 
     m_directoryBrowseLayout->lineEdit()->setFocus();
     buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
-    
+
     QStringList list = Utils::runConsoleCommand("rustup toolchain list");
 
     for (const QString& toolchain : list) {
