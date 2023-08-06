@@ -117,8 +117,7 @@ CoTask RustInstaller::runCommand(const QString& program, const QStringList& argu
         awaiter.resume();
     });
 
-    connect(&process, &QProcess::errorOccurred, this, [&, this] (QProcess::ProcessError error) {
-        Q_UNUSED(error)
+    connect(&process, &QProcess::errorOccurred, this, [&, this] (QProcess::ProcessError error [[maybe_unused]]) {
         QString message = QString("<font color=%1>%2</font>").arg("#0000FF", tr("Command finished with error"));
         showAndScrollMessage(message);
         awaiter.resume();

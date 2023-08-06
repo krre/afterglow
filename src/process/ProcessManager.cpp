@@ -30,21 +30,20 @@ void ProcessManager::stop() {
     m_process->close();
 }
 
-void ProcessManager::onReadyReadStandardOutput(const QString& data) {
-    Q_UNUSED(data)
+void ProcessManager::onReadyReadStandardOutput(const QString& data [[maybe_unused]]) {
+
 }
 
-void ProcessManager::onReadyReadStandardError(const QString& data) {
-    Q_UNUSED(data)
+void ProcessManager::onReadyReadStandardError(const QString& data [[maybe_unused]]) {
+
 }
 
-void ProcessManager::onFinished(int exitCode, QProcess::ExitStatus exitStatus) {
-    Q_UNUSED(exitCode)
-    Q_UNUSED(exitStatus)
+void ProcessManager::onFinished(int exitCode [[maybe_unused]], QProcess::ExitStatus exitStatus [[maybe_unused]]) {
+
 }
 
-void ProcessManager::onErrorOccurred(QProcess::ProcessError error) {
-    Q_UNUSED(error)
+void ProcessManager::onErrorOccurred(QProcess::ProcessError error [[maybe_unused]]) {
+
 }
 
 QString ProcessManager::errorToString(QProcess::ProcessError error) {

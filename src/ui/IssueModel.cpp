@@ -19,17 +19,17 @@ void IssueModel::appendMessage(const QJsonObject& message) {
     issue.filename = spanObj["file_name"].toString();
     issue.line = spanObj["line_start"].toInt();
     issue.column = spanObj["column_start"].toInt();
-    
+
     beginInsertRows(QModelIndex(), m_issues.count(), m_issues.count());
     m_issues.append(issue);
     endInsertRows();
-    
+
     emit countChanged(m_issues.count());
 }
 
 void IssueModel::clear() {
     if (m_issues.isEmpty()) return;
-    
+
     beginRemoveRows(QModelIndex(), 0, m_issues.count() - 1);
     m_issues.clear();
     endRemoveRows();
@@ -37,8 +37,7 @@ void IssueModel::clear() {
     emit countChanged(0);
 }
 
-int IssueModel::columnCount(const QModelIndex& parent) const {
-    Q_UNUSED(parent)
+int IssueModel::columnCount(const QModelIndex& parent [[maybe_unused]]) const {
     return 1;
 }
 
@@ -46,11 +45,11 @@ QVariant IssueModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid()) return QVariant();
 
     int row = index.row();
-    
+
     if (row >= m_issues.count() || row < 0 || !index.isValid()) {
         return QVariant();
     }
-    
+
     const Issue& issue = m_issues.at(row);
     Role issueRole = static_cast<Role>(role);
 
@@ -71,17 +70,14 @@ QVariant IssueModel::data(const QModelIndex& index, int role) const {
     return QVariant();
 }
 
-QModelIndex IssueModel::index(int row, int column, const QModelIndex& parent) const {
-    Q_UNUSED(parent)
+QModelIndex IssueModel::index(int row, int column, const QModelIndex& parent [[maybe_unused]]) const {
     return createIndex(row, column);
 }
 
-QModelIndex IssueModel::parent(const QModelIndex& index) const {
-    Q_UNUSED(index)
+QModelIndex IssueModel::parent(const QModelIndex& index [[maybe_unused]]) const {
     return QModelIndex();
 }
 
-int IssueModel::rowCount(const QModelIndex &parent) const {
-    Q_UNUSED(parent)
+int IssueModel::rowCount(const QModelIndex& parent [[maybe_unused]]) const {
     return m_issues.count();
 }

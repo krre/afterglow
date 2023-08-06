@@ -13,8 +13,7 @@ void CommandLine::run() {
     setText("");
 }
 
-void CommandLine::focusInEvent(QFocusEvent* event) {
-    Q_UNUSED(event)
+void CommandLine::focusInEvent(QFocusEvent* event [[maybe_unused]]) {
     emit focusReceived();
     QLineEdit::focusInEvent(event);
 }

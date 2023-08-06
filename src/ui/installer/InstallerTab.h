@@ -9,7 +9,7 @@ public:
     InstallerTab(RustInstaller* rustInstaller, QWidget* parent = nullptr);
 
     virtual void load() = 0;
-    virtual void setWidgetsEnabled(bool enabled) { Q_UNUSED(enabled) }
+    virtual void setWidgetsEnabled(bool enabled [[maybe_unused]]) {}
 
 protected:
     RustInstaller* rustupInstaller() const;

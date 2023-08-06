@@ -465,8 +465,7 @@ void TextEditor::focusOutEvent(QFocusEvent* event) {
     QPlainTextEdit::focusInEvent(event);
 }
 
-void TextEditor::updateLineNumberAreaWidth(int newBlockCount) {
-    Q_UNUSED(newBlockCount)
+void TextEditor::updateLineNumberAreaWidth(int newBlockCount [[maybe_unused]]) {
     setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
 }
 

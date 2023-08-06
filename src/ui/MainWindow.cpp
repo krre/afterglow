@@ -901,9 +901,10 @@ void MainWindow::saveSession() {
         return;
     }
 
+#ifdef Q_OS_WIN
     QDir dir(m_projectPath);
     bool result = dir.mkdir(Const::Project::DataDir);
-#ifdef Q_OS_WIN
+
     // Set hidden attribute on created directory (need only for Windows).
     if (result) {
         QString directory = projectPath + "/" + Const::Project::DataDir;
@@ -915,8 +916,6 @@ void MainWindow::saveSession() {
             SetFileAttributes(charText, attr | FILE_ATTRIBUTE_HIDDEN);
          }
     }
-#else
-    Q_UNUSED(result)
 #endif
 
     QString path = m_projectPath + "/" + Const::Project::DataDir + "/" + Const::Project::SessionFile;
