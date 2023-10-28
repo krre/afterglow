@@ -33,12 +33,6 @@ struct CoTask {
         std::suspend_never final_suspend() noexcept { return {}; }
         void return_void() {}
         void unhandled_exception() {}
-
-        void setAwaitingHandle(CoHandle handle) {
-            m_awatingHandle = handle;
-        }
-
-        CoHandle m_awatingHandle;
     };
 
     struct TaskCoAwaiter {
@@ -47,10 +41,8 @@ struct CoTask {
         TaskCoAwaiter() {}
 
         bool await_ready() { return false; }
-        std::coroutine_handle<> await_suspend(CoHandle awatingHandle) {
-            m_handle.promise().setAwaitingHandle(awatingHandle);
-            return m_handle;
-        }
+        void await_suspend(CoHandle handle [[maybe_unused]]) {}
+
         void await_resume() {
             if (m_handle && !m_handle.done()) {
                 m_handle.resume();
