@@ -27,25 +27,10 @@ struct CoTask {
     struct promise_type;
     using CoHandle = std::coroutine_handle<promise_type>;
 
-    struct CoFinalAwaiter {
-        bool await_ready() const noexcept { return false; }
-        std::coroutine_handle<> await_suspend(CoHandle handle) noexcept {
-            auto& promise = handle.promise();
-
-            if (promise.m_awatingHandle != nullptr) {
-                return promise.m_awatingHandle;
-            } else {
-                return std::noop_coroutine();
-            }
-        }
-        void await_resume() noexcept {
-        }
-    };
-
     struct promise_type {
         auto get_return_object() { return CoHandle::from_promise(*this); }
         std::suspend_never initial_suspend() { return {}; }
-        auto final_suspend() noexcept { return CoFinalAwaiter{}; }
+        std::suspend_never final_suspend() noexcept { return {}; }
         void return_void() {}
         void unhandled_exception() {}
 
