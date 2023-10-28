@@ -7,7 +7,6 @@
 #include "core/Settings.h"
 #include "core/FileDownloader.h"
 #include "core/Settings.h"
-#include "core/async/CoProcess.h"
 #include <QtWidgets>
 
 RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
@@ -90,7 +89,7 @@ CoTask RustInstaller::runCommand(const QString& program, const QStringList& argu
                           .arg("#0000FF", tr("Run command"), "#FF0000", program, arguments.join(" "));
     showAndScrollMessage(message);
 
-    CoProcess process;
+    QProcess process;
     process.setWorkingDirectory(directory);
 
     connect(this, &RustInstaller::breakPressed, [&] { process.close(); });
@@ -127,7 +126,8 @@ CoTask RustInstaller::runCommand(const QString& program, const QStringList& argu
         updateAllButtonsState(newState == QProcess::Running);
     });
 
-    co_await process.startAsync(program, arguments);
+    process.start(program, arguments);
+    co_await CoAwaiter{};
     co_await awaiter;
 }
 

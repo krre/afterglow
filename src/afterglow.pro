@@ -7,7 +7,6 @@ TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-    core/async/CoProcess.cpp \
         main.cpp \
     ui/MainWindow.cpp \
     core/Global.cpp \
@@ -52,7 +51,6 @@ SOURCES += \
 
 HEADERS += \
     core/Constants.h \
-    core/async/CoProcess.h \
     core/async/CoTask.h \
     ui/MainWindow.h \
     core/Global.h \
