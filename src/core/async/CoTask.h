@@ -11,11 +11,7 @@ struct CoAwaiter {
         m_handle = handle;
     }
 
-    void await_resume() {
-        if (m_handle && !m_handle.done()) {
-            m_handle.resume();
-        }
-    }
+    void await_resume() {}
 
     void resume() {
         if (m_handle && !m_handle.done()) {

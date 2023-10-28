@@ -127,8 +127,8 @@ CoTask RustInstaller::runCommand(const QString& program, const QStringList& argu
     });
 
     process.start(program, arguments);
-    co_await CoAwaiter{};
     co_await awaiter;
+    co_return;
 }
 
 void RustInstaller::loadComponents() {
