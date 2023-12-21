@@ -46,6 +46,7 @@ add_library(common STATIC
     ui/Rename.cpp ui/Rename.h
     ui/SelectWorkspace.cpp ui/SelectWorkspace.h
     ui/StringListModel.cpp ui/StringListModel.h
+    core/Application.h core/Application.cpp
 )
 
 target_link_libraries(common PRIVATE Qt6::Widgets Qt6::Network)
