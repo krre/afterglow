@@ -16,7 +16,7 @@ namespace App {
     constexpr auto Status = "Preview Alpha";
     constexpr auto Url = "https://github.com/krre/afterglow";
     constexpr auto PrefsName = "prefs.json";
-    constexpr auto Copyright = "Copyright © 2018-2023, Vladimir Zarypov";
+    constexpr auto Copyright = "Copyright © 2018-2024, Vladimir Zarypov";
 }
 
 namespace Window {
