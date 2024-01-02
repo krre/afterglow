@@ -1,6 +1,7 @@
 #include "Settings.h"
 #include "Constants.h"
 #include "Global.h"
+#include "core/Application.h"
 #include <QtCore>
 
 Q_GLOBAL_STATIC(QJsonObject, storage);
@@ -16,7 +17,7 @@ void Settings::init() {
     QString prefsDir = QFileInfo(QSettings().fileName()).absolutePath();
     QDir().mkpath(prefsDir);
 
-    *s_prefsPath = prefsDir + "/" + Const::App::PrefsName;
+    *s_prefsPath = prefsDir + "/" + Application::PrefsName;
     QFile resPrefsFile(":/resources/prefs.json");
 
     if (!resPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {

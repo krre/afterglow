@@ -12,6 +12,7 @@
 #include "texteditor/TextEditor.h"
 #include "texteditor/AutoCompleter.h"
 #include "texteditor/SyntaxHighlightManager.h"
+#include "core/Application.h"
 #include "core/Global.h"
 #include "core/Constants.h"
 #include "core/Settings.h"
@@ -403,14 +404,14 @@ void MainWindow::onTheBookAction() {
 }
 
 void MainWindow::onAboutAction() {
-    QMessageBox::about(this, tr("About %1").arg(Const::App::Name),
+    QMessageBox::about(this, tr("About %1").arg(Application::Name),
         tr("<h3>%1 %2 %3</h3>\
            IDE for Rust programming language<br><br> \
            Based on Qt %4<br> \
-           Build on %5<br><br> \
-           <a href=%6>%6</a><br><br>%7")
-            .arg(Const::App::Name, Const::App::Version, Const::App::Status,
-                 QT_VERSION_STR, __DATE__, Const::App::Url, Const::App::Copyright));
+           Build on %5 %6<br><br> \
+           <a href=%7>%7</a><br><br>%8")
+            .arg(Application::Name, Application::Version, Application::Status,
+            QT_VERSION_STR, Application::BuildDate, Application::BuildTime, Application::Url, Application::Copyright));
 }
 
 void MainWindow::onSourceTabClose(int index) {

@@ -1,6 +1,6 @@
 #include "Preferences.h"
 #include "base/BrowseLayout.h"
-#include "core/Constants.h"
+#include "core/Application.h"
 #include "core/Global.h"
 #include "core/Settings.h"
 #include <QtWidgets>
@@ -22,12 +22,12 @@ Preferences::Preferences(QWidget* parent) : StandardDialog(parent) {
 
     auto interfaceGroupBox = new QGroupBox(tr("Interface"));
     auto interfaceVerticalLayout = new QVBoxLayout(interfaceGroupBox);
-    
+
     m_sessionCheckBox = new QCheckBox(tr("Restore project session"));
     m_sessionCheckBox->setChecked(true);
     interfaceVerticalLayout->addWidget(m_sessionCheckBox);
 
-    auto openPrefsPushButton = new QPushButton(tr("Open %1").arg(Const::App::PrefsName));
+    auto openPrefsPushButton = new QPushButton(tr("Open %1").arg(Application::PrefsName));
     interfaceVerticalLayout->addWidget(openPrefsPushButton, 0, Qt::AlignLeft);
 
     auto resetSettingsPushButton = new QPushButton(tr("Reset Settings"));

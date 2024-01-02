@@ -9,16 +9,6 @@ namespace Environment {
     constexpr auto Path = "PATH";
 }
 
-namespace App {
-    constexpr auto Organization = "Afterglow";
-    constexpr auto Name = "Afterglow";
-    constexpr auto Version = "0.2.0";
-    constexpr auto Status = "Preview Alpha";
-    constexpr auto Url = "https://github.com/krre/afterglow";
-    constexpr auto PrefsName = "prefs.json";
-    constexpr auto Copyright = "Copyright © 2018-2024, Vladimir Zarypov";
-}
-
 namespace Window {
     constexpr auto WorkspaceDir = "RustProjects";
     constexpr int MaxRecentFiles = 10;
