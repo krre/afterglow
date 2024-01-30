@@ -15,3 +15,8 @@ add_subdirectory(app)
 add_subdirectory(src)
 add_subdirectory(tests)
 
+# For visibility in IDE (e.g., Qt Creator)
+add_custom_target(other
+    SOURCES
+    README.md
+)
