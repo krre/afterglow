@@ -19,4 +19,5 @@ add_subdirectory(tests)
 add_custom_target(other
     SOURCES
     README.md
+    config.h.in
 )
