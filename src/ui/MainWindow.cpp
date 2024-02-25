@@ -195,7 +195,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 void MainWindow::onNewProjectAction() {
     NewProject newCargoProject(this);
     if (newCargoProject.exec() == QDialog::Rejected) return;
-    m_cargoManager->createProject(newCargoProject.projectTemplate(), newCargoProject.path());
+    m_cargoManager->createProject(newCargoProject.target(), newCargoProject.path());
 }
 
 void MainWindow::onNewRustFileAction() {

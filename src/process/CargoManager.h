@@ -7,7 +7,7 @@ class ProjectProperties;
 class CargoManager : public ProcessManager {
     Q_OBJECT
 public:
-    enum class ProjectTemplate {
+    enum class Target {
         Binary,
         Library
     };
@@ -20,7 +20,7 @@ public:
     explicit CargoManager(ProjectProperties* projectProperties, QObject* parent = nullptr);
     ~CargoManager();
 
-    void createProject(ProjectTemplate projectTemplate, const QString& path);
+    void createProject(Target target, const QString& path);
     void build();
     void run();
     void check();

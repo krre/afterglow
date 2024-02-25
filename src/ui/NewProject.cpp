@@ -12,16 +12,16 @@ NewProject::NewProject(QWidget* parent) : StandardDialog(parent) {
     m_directoryBrowseLayout = new BrowseLayout;
     m_directoryBrowseLayout->lineEdit()->setText(Global::workspacePath());
 
-    m_templateComboBox = new QComboBox;
-    m_templateComboBox->addItem(tr("Binary"));
-    m_templateComboBox->addItem(tr("Library"));
+    m_targetComboBox = new QComboBox;
+    m_targetComboBox->addItem(tr("Binary"));
+    m_targetComboBox->addItem(tr("Library"));
 
     auto formLayout = new QFormLayout;
     formLayout->addRow(new QLabel(tr("Name:")), m_nameLineEdit);
     formLayout->addRow(new QLabel(tr("Directory:")), m_directoryBrowseLayout);
-    formLayout->addRow(new QLabel(tr("Template:")), m_templateComboBox);
+    formLayout->addRow(new QLabel(tr("Target:")), m_targetComboBox);
 
-    formLayout->itemAt(formLayout->indexOf(m_templateComboBox))->setAlignment(Qt::AlignLeft);
+    formLayout->itemAt(formLayout->indexOf(m_targetComboBox))->setAlignment(Qt::AlignLeft);
 
     setContentLayout(formLayout);
     resizeToWidth(400);
@@ -37,8 +37,8 @@ QString NewProject::path() const {
     return m_directoryBrowseLayout->lineEdit()->text() + "/" + m_nameLineEdit->text();
 }
 
-CargoManager::ProjectTemplate NewProject::projectTemplate() const {
-    return static_cast<CargoManager::ProjectTemplate>(m_templateComboBox->currentIndex());
+CargoManager::Target NewProject::target() const {
+    return static_cast<CargoManager::Target>(m_targetComboBox->currentIndex());
 }
 
 void NewProject::adjustAcceptedButton() {

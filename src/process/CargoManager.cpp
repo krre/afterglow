@@ -13,12 +13,12 @@ CargoManager::~CargoManager() {
 
 }
 
-void CargoManager::createProject(ProjectTemplate projectTemplate, const QString& path) {
+void CargoManager::createProject(Target target, const QString& path) {
     QStringList arguments("new");
 
-    if (projectTemplate == ProjectTemplate::Binary) {
+    if (target == Target::Binary) {
         arguments << "--bin";
-    } else if (projectTemplate == ProjectTemplate::Library) {
+    } else if (target == Target::Library) {
         arguments << "--lib";
     }
 

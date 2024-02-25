@@ -12,7 +12,7 @@ public:
     explicit NewProject(QWidget* parent = nullptr);
 
     QString path() const;
-    CargoManager::ProjectTemplate projectTemplate() const;
+    CargoManager::Target target() const;
 
 private slots:
     void adjustAcceptedButton();
@@ -20,5 +20,5 @@ private slots:
 private:
     QLineEdit* m_nameLineEdit = nullptr;
     BrowseLayout* m_directoryBrowseLayout = nullptr;
-    QComboBox* m_templateComboBox = nullptr;
+    QComboBox* m_targetComboBox = nullptr;
 };
