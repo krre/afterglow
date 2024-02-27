@@ -22,13 +22,9 @@ void RlsManager::start() {
 void RlsManager::initialize(const QString& projectPath) {
     start(); // TODO: Do not restart process on changing project
 
-    QJsonObject capabilities = {
-        {}
-    };
-
     QJsonObject params = {
         { "rootUri", "file://" + projectPath },
-        { "capabilities", capabilities }
+        { "capabilities", {} }
     };
 
     s_instance->send("initialize", params);
