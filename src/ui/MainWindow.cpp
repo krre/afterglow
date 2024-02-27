@@ -63,7 +63,7 @@ MainWindow::MainWindow() {
 
     QHBoxLayout* cargoHorizontalLayout = new QHBoxLayout(cargoTab);
     cargoHorizontalLayout->setSpacing(0);
-    cargoHorizontalLayout->setContentsMargins(0, 0, 0, 0);
+    cargoHorizontalLayout->setContentsMargins(QMargins());
 
     QVBoxLayout* cargoVerticalLayout = new QVBoxLayout();
     cargoVerticalLayout->setSpacing(0);
@@ -115,7 +115,7 @@ MainWindow::MainWindow() {
     QWidget* issuesTab = new QWidget();
     auto issueHorizontalLayout = new QHBoxLayout(issuesTab);
     issueHorizontalLayout->setSpacing(0);
-    issueHorizontalLayout->setContentsMargins(0, 0, 0, 0);
+    issueHorizontalLayout->setContentsMargins(QMargins());
 
     auto issueVerticalLayout = new QVBoxLayout();
     issueVerticalLayout->setSpacing(0);
