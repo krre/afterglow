@@ -43,11 +43,11 @@ void CargoManager::run() {
 }
 
 void CargoManager::check() {
-    prepareAndStart(QStringList("check"));
+    prepareAndStart({ "check" });
 }
 
 void CargoManager::clean() {
-    prepareAndStart(QStringList("clean"));
+    prepareAndStart({ "clean" });
 }
 
 void CargoManager::setProjectPath(const QString& path) {
