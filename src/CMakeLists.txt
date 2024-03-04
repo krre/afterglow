@@ -1,5 +1,7 @@
 find_package(Qt6 REQUIRED COMPONENTS Network)
 
+configure_file(config.h.in config.h @ONLY)
+
 add_library(common STATIC
     core/Constants.h
     core/async/CoTask.h
@@ -47,6 +49,12 @@ add_library(common STATIC
     ui/SelectWorkspace.cpp ui/SelectWorkspace.h
     ui/StringListModel.cpp ui/StringListModel.h
     core/Application.h core/Application.cpp
+)
+
+# For visibility in IDE (e.g., Qt Creator)
+add_custom_target(custom
+    SOURCES
+    config.h.in
 )
 
 target_link_libraries(common PRIVATE Qt6::Widgets Qt6::Network)

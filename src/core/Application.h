@@ -1,5 +1,5 @@
 #pragma once
-#include "config.h"
+#include "src/config.h"
 #include <QApplication>
 
 class Application : public QApplication {
