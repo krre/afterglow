@@ -2,7 +2,7 @@
 IDE for Rust language
 
 ## Dependencies
-- Qt 6.5
+- Qt 6.7
 
 ## Status
 Early stage of development.
