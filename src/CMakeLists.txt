@@ -1,5 +1,3 @@
-find_package(Qt6 REQUIRED COMPONENTS Network)
-
 configure_file(config.h.in config.h @ONLY)
 
 add_library(common STATIC
