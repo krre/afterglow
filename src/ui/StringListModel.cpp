@@ -1,7 +1,7 @@
 #include "StringListModel.h"
 
-StringListModel::StringListModel(const QStringList& rows, QObject* parent) : QAbstractListModel(parent), m_rows(rows) {
-
+StringListModel::StringListModel(const QStringList& rows, QObject* parent)
+    : QAbstractListModel(parent), m_rows(rows) {
 }
 
 StringListModel::StringListModel(QObject* parent) : QAbstractListModel(parent) {

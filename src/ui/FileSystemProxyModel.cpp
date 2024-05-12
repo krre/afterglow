@@ -1,8 +1,7 @@
 #include "FileSystemProxyModel.h"
 #include <QFileSystemModel>
 
-FileSystemProxyModel::FileSystemProxyModel(QObject* parent) :
-    QSortFilterProxyModel(parent) {
+FileSystemProxyModel::FileSystemProxyModel(QObject* parent) : QSortFilterProxyModel(parent) {
 }
 
 bool FileSystemProxyModel::lessThan(const QModelIndex& left, const QModelIndex& right) const {

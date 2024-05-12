@@ -2,8 +2,8 @@
 #include "SyntaxHighlightManager.h"
 #include <QtCore>
 
-Highlighter::Highlighter(const QString& fileExt, QTextDocument* parent, SyntaxHighlightManager* syntaxHighlightManager) :
-    QSyntaxHighlighter(parent), m_syntaxHighlightManager(syntaxHighlightManager) {
+Highlighter::Highlighter(const QString& fileExt, QTextDocument* parent, SyntaxHighlightManager* syntaxHighlightManager)
+    : QSyntaxHighlighter(parent), m_syntaxHighlightManager(syntaxHighlightManager) {
     loadRules(fileExt);
 }
 
