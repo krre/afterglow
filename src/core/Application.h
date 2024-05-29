@@ -10,7 +10,7 @@ public:
     static constexpr auto Status = "Preview Alpha";
     static constexpr auto Url = "https://github.com/krre/afterglow";
     static constexpr auto PrefsName = "prefs.json";
-    static constexpr auto Copyright = "Copyright © 2018-2024, Vladimir Zarypov";
+    static constexpr auto Years = "2018-2024";
     static constexpr auto BuildDate = __DATE__;
     static constexpr auto BuildTime = __TIME__;
 
