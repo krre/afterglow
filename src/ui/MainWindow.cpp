@@ -396,7 +396,7 @@ void MainWindow::onDocumentationAction() {
 }
 
 void MainWindow::onStandardLibraryAction() {
-    Utils::runRustupCommand({"doc", "--std" });
+    Utils::runRustupCommand({ "doc", "--std" });
 }
 
 void MainWindow::onTheBookAction() {
