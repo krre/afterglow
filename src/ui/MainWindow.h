@@ -13,6 +13,7 @@ class TextEditor;
 class AutoCompleter;
 class IssueModel;
 class IssueListView;
+class SourceTabWidget;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -36,11 +37,6 @@ private slots:
 
     void onSaveAction();
     void onSaveAsAction();
-    void onSaveAllAction();
-
-    void onCloseAction();
-    void onCloseAllAction();
-    void onCloseOtherAction();
 
     // Edit
     void onUndoAction();
@@ -84,7 +80,6 @@ private slots:
     void onAboutAction();
 
     // TabWidet
-    void onSourceTabClose(int index);
     void onSourceTabCurrentChanged(int index);
 
     void onCargoBuild();
@@ -100,7 +95,6 @@ private slots:
 
     // ProjectTree
     void onFileCreated(const QString& filePath);
-    void onFileRemoved(const QString& filePath);
     void onFileRenamed(const QString& oldPath, const QString& newPath);
 
     int addSourceTab(const QString& filePath);
@@ -138,7 +132,6 @@ private:
     void closeProject();
 
     void changeWindowTitle(const QString& filePath = QString());
-    int findSource(const QString& filePath);
     void updateMenuState();
     void prepareBuild();
 
@@ -152,7 +145,7 @@ private:
     QSplitter* m_sideSplitter = nullptr;
 
     QTabWidget* m_sideTabWidget = nullptr;
-    QTabWidget* m_sourceTabWidget = nullptr;
+    SourceTabWidget* m_sourceTabWidget = nullptr;
     QTabWidget* m_outputTabWidget = nullptr;
 
     QPlainTextEdit* m_cargoPlainTextEdit = nullptr;

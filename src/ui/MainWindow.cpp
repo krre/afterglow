@@ -7,6 +7,7 @@
 #include "IssueListView.h"
 #include "IssueModel.h"
 #include "ActionManager.h"
+#include "SourceTabWidget.h"
 #include "installer/RustInstaller.h"
 #include "process/CargoManager.h"
 #include "texteditor/TextEditor.h"
@@ -47,13 +48,9 @@ MainWindow::MainWindow() {
     m_sideSplitter->setHandleWidth(0);
     m_sideSplitter->setChildrenCollapsible(false);
 
-    m_sourceTabWidget = new QTabWidget(m_sideSplitter);
-    m_sourceTabWidget->setMinimumSize(QSize(0, 50));
-    m_sourceTabWidget->setTabsClosable(true);
-    m_sourceTabWidget->setMovable(true);
+    m_sourceTabWidget = new SourceTabWidget(m_sideSplitter);
     m_sideSplitter->addWidget(m_sourceTabWidget);
 
-    connect(m_sourceTabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::onSourceTabClose);
     connect(m_sourceTabWidget, &QTabWidget::tabBarClicked, this, &MainWindow::onSourceTabCurrentChanged);
 
     m_outputTabWidget = new QTabWidget(m_sideSplitter);
@@ -152,7 +149,7 @@ MainWindow::MainWindow() {
     m_projectTree = new ProjectTree;
     connect(m_projectTree, &ProjectTree::openActivated, this, &MainWindow::addSourceTab);
     connect(m_projectTree, &ProjectTree::newFileActivated, this, &MainWindow::onFileCreated);
-    connect(m_projectTree, &ProjectTree::removeActivated, this, &MainWindow::onFileRemoved);
+    connect(m_projectTree, &ProjectTree::removeActivated, m_sourceTabWidget, &SourceTabWidget::closeFile);
     connect(m_projectTree, &ProjectTree::renameActivated, this, &MainWindow::onFileRenamed);
 
     m_sideTabWidget->addTab(m_projectTree, tr("Project"));
@@ -218,13 +215,6 @@ void MainWindow::onSaveAsAction() {
     }
 }
 
-void MainWindow::onSaveAllAction() {
-    for (int i = 0; i < m_sourceTabWidget->count(); i++) {
-        TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
-        editor->saveFile();
-    }
-}
-
 void MainWindow::onClearMenuRecentFilesAction() {
     for (int i = m_recentFilesMenu->actions().size() - Const::Window::SeparatorAndMenuClearCount - 1; i >= 0; i--) {
         m_recentFilesMenu->removeAction(m_recentFilesMenu->actions().at(i));
@@ -239,28 +229,6 @@ void MainWindow::onClearMenuRecentProjectsAction() {
     }
 
     updateMenuState();
-}
-
-void MainWindow::onCloseAction() {
-    onSourceTabClose(m_sourceTabWidget->currentIndex());
-}
-
-void MainWindow::onCloseAllAction() {
-    while (m_sourceTabWidget->count()) {
-        onSourceTabClose(0);
-    }
-}
-
-void MainWindow::onCloseOtherAction() {
-    int i = 0;
-
-    while (m_sourceTabWidget->count() > 1) {
-        if (i != m_sourceTabWidget->currentIndex()) {
-            onSourceTabClose(i);
-        } else {
-            i++;
-        }
-    }
 }
 
 void MainWindow::onNewFileAction() {
@@ -415,12 +383,6 @@ void MainWindow::onAboutAction() {
             QT_VERSION_STR, Application::BuildDate, Application::BuildTime, Application::Url, Application::Years));
 }
 
-void MainWindow::onSourceTabClose(int index) {
-    QWidget* widget = m_sourceTabWidget->widget(index);
-    m_sourceTabWidget->removeTab(index);
-    delete widget;
-}
-
 void MainWindow::onSourceTabCurrentChanged(int index) {
     if (index >= 0) {
         m_editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(index));
@@ -506,21 +468,6 @@ void MainWindow::onFileCreated(const QString& filePath) {
     addNewFile(filePath);
 }
 
-void MainWindow::onFileRemoved(const QString& filePath) {
-    QVector<int> indices;
-    for (int i = 0; i < m_sourceTabWidget->count(); i++) {
-        TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
-        if (editor->filePath().contains(filePath)) {
-            indices.append(i);
-        }
-    }
-
-    // Remove tabs in reverse order
-    for (int i = indices.count() - 1; i >= 0; i--) {
-        onSourceTabClose(indices.at(i));
-    }
-}
-
 void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
     for (int i = 0; i < m_sourceTabWidget->count(); i++) {
         TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
@@ -537,7 +484,7 @@ void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
 }
 
 int MainWindow::addSourceTab(const QString& filePath) {
-    int tabIndex = findSource(filePath);
+    int tabIndex = m_sourceTabWidget->findTab(filePath);
     if (tabIndex != -1) {
         m_sourceTabWidget->setCurrentIndex(tabIndex);
         return tabIndex;
@@ -604,13 +551,13 @@ void MainWindow::createActions() {
 
     ActionManager::addAction(Const::Action::Save, fileMenu->addAction(tr("Save"), Qt::CTRL | Qt::Key_S, this, &MainWindow::onSaveAction));
     ActionManager::addAction(Const::Action::SaveAs, fileMenu->addAction(tr("Save As..."), this, &MainWindow::onSaveAsAction));
-    ActionManager::addAction(Const::Action::SaveAll, fileMenu->addAction(tr("Save All"), Qt::CTRL | Qt::SHIFT | Qt::Key_S, this, &MainWindow::onSaveAllAction));
+    ActionManager::addAction(Const::Action::SaveAll, fileMenu->addAction(tr("Save All"), Qt::CTRL | Qt::SHIFT | Qt::Key_S, m_sourceTabWidget, &SourceTabWidget::saveAll));
 
     fileMenu->addSeparator();
 
-    ActionManager::addAction(Const::Action::Close, fileMenu->addAction(tr("Close"), Qt::CTRL | Qt::Key_W, this, &MainWindow::onCloseAction));
-    ActionManager::addAction(Const::Action::CloseAll, fileMenu->addAction(tr("Close All"), Qt::CTRL | Qt::SHIFT | Qt::Key_W, this, &MainWindow::onCloseAllAction));
-    ActionManager::addAction(Const::Action::CloseOther, fileMenu->addAction(tr("Close Other"), this, &MainWindow::onCloseOtherAction));
+    ActionManager::addAction(Const::Action::Close, fileMenu->addAction(tr("Close"), Qt::CTRL | Qt::Key_W, m_sourceTabWidget, &SourceTabWidget::closeCurrentTab));
+    ActionManager::addAction(Const::Action::CloseAll, fileMenu->addAction(tr("Close All"), Qt::CTRL | Qt::SHIFT | Qt::Key_W, m_sourceTabWidget, &SourceTabWidget::closeAll));
+    ActionManager::addAction(Const::Action::CloseOther, fileMenu->addAction(tr("Close Other"), m_sourceTabWidget, &SourceTabWidget::closeOthers));
 
     fileMenu->addSeparator();
 
@@ -982,7 +929,7 @@ void MainWindow::loadSession() {
         }
     }
 
-    int index = findSource(selectedFilePath);
+    int index = m_sourceTabWidget->findTab(selectedFilePath);
     m_sourceTabWidget->setCurrentIndex(index);
     onSourceTabCurrentChanged(index);
 }
@@ -1027,7 +974,7 @@ void MainWindow::closeProject() {
     saveSession();
     saveProjectProperties();
 
-    onCloseAllAction();
+    m_sourceTabWidget->closeAll();
 
     m_projectProperties->reset();
     m_projectTree->setRootPath(QString());
@@ -1053,17 +1000,6 @@ void MainWindow::changeWindowTitle(const QString& filePath) {
     setWindowTitle(title);
 }
 
-int MainWindow::findSource(const QString& filePath) {
-    for (int i = 0; i < m_sourceTabWidget->count(); i++) {
-        TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
-        if (editor->filePath() == filePath) {
-            return i;
-        }
-    }
-
-    return -1;
-}
-
 void MainWindow::updateMenuState() {
     m_editMenu->menuAction()->setVisible(!m_projectPath.isNull());
     m_buildMenu->menuAction()->setVisible(!m_projectPath.isNull());
@@ -1085,7 +1021,7 @@ void MainWindow::updateMenuState() {
 }
 
 void MainWindow::prepareBuild() {
-    onSaveAllAction();
+    m_sourceTabWidget->saveAll();
     int index = static_cast<int>(OutputPane::Cargo);
     m_outputTabWidget->setCurrentIndex(index);
     m_issueModel->clear();

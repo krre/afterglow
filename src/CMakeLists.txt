@@ -47,6 +47,7 @@ add_library(common STATIC
     ui/SelectWorkspace.cpp ui/SelectWorkspace.h
     ui/StringListModel.cpp ui/StringListModel.h
     core/Application.h core/Application.cpp
+    ui/SourceTabWidget.h ui/SourceTabWidget.cpp
 )
 
 # For visibility in IDE (e.g., Qt Creator)
