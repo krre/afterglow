@@ -63,6 +63,7 @@ namespace Action {
     constexpr auto Check = "Check";
     constexpr auto Stop = "Stop";
     constexpr auto Clean = "Clean";
+    constexpr auto Doc = "Doc";
 
     constexpr auto ShowSidebar = "ShowSidebar";
     constexpr auto ShowOutput = "ShowOutput";

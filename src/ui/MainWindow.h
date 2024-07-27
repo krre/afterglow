@@ -68,6 +68,7 @@ private slots:
     void onCheckAction();
     void onStopAction();
     void onCleanAction();
+    void onDocAction();
 
     // Tools
     void onRustInstallerAction();

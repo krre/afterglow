@@ -25,8 +25,10 @@ public:
     void run();
     void check();
     void clean();
+    void doc();
 
     void setProjectPath(const QString& path);
+    QString projectPath() const;
 
 signals:
     void consoleMessage(const QString& message, bool html = false, bool start = false);

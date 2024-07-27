@@ -346,6 +346,10 @@ void MainWindow::onCleanAction() {
     m_cargoManager->clean();
 }
 
+void MainWindow::onDocAction() {
+    m_cargoManager->doc();
+}
+
 void MainWindow::onRustInstallerAction() {
     RustInstaller installer(this);
     installer.exec();
@@ -601,6 +605,7 @@ void MainWindow::createActions() {
     ActionManager::addAction(Const::Action::Check, m_buildMenu->addAction(tr("Check"), Qt::CTRL | Qt::Key_K, this, &MainWindow::onCheckAction));
     ActionManager::addAction(Const::Action::Stop, m_buildMenu->addAction(tr("Stop"), this, &MainWindow::onStopAction));
     ActionManager::addAction(Const::Action::Clean, m_buildMenu->addAction(tr("Clean"), this, &MainWindow::onCleanAction));
+    ActionManager::addAction(Const::Action::Doc, m_buildMenu->addAction(tr("Doc"), this, &MainWindow::onDocAction));
 
     QMenu* toolsMenu = menuBar()->addMenu(tr("Tools"));
     toolsMenu->addAction(tr("Rust Installer..."), this, &MainWindow::onRustInstallerAction);

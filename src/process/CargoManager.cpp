@@ -49,9 +49,17 @@ void CargoManager::clean() {
     prepareAndStart({ "clean" });
 }
 
+void CargoManager::doc() {
+    prepareAndStart({ "doc", "--open" });
+}
+
 void CargoManager::setProjectPath(const QString& path) {
     m_projectPath = path;
     process()->setWorkingDirectory(path);
+}
+
+QString CargoManager::projectPath() const {
+    return m_projectPath;
 }
 
 void CargoManager::onReadyReadStandardOutput(const QString& data) {
