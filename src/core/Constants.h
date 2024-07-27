@@ -12,7 +12,6 @@ namespace Environment {
 namespace Window {
     constexpr auto WorkspaceDir = "RustProjects";
     constexpr int MaxRecentFiles = 10;
-    constexpr int SeparatorAndMenuClearCount = 2;
 }
 
 namespace Project {

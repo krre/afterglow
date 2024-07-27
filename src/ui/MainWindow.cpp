@@ -24,6 +24,8 @@
 #endif
 #include <QtWidgets>
 
+constexpr int SeparatorAndMenuClearCount = 2;
+
 MainWindow::MainWindow() {
     m_syntaxHighlightManager = new SyntaxHighlightManager(this);
     new ActionManager(this);
@@ -216,7 +218,7 @@ void MainWindow::onSaveAsAction() {
 }
 
 void MainWindow::onClearMenuRecentFilesAction() {
-    for (int i = m_recentFilesMenu->actions().size() - Const::Window::SeparatorAndMenuClearCount - 1; i >= 0; i--) {
+    for (int i = m_recentFilesMenu->actions().size() - SeparatorAndMenuClearCount - 1; i >= 0; i--) {
         m_recentFilesMenu->removeAction(m_recentFilesMenu->actions().at(i));
     }
 
@@ -224,7 +226,7 @@ void MainWindow::onClearMenuRecentFilesAction() {
 }
 
 void MainWindow::onClearMenuRecentProjectsAction() {
-    for (int i = m_recentProjectsMenu->actions().size() - Const::Window::SeparatorAndMenuClearCount - 1; i >= 0; i--) {
+    for (int i = m_recentProjectsMenu->actions().size() - SeparatorAndMenuClearCount - 1; i >= 0; i--) {
         m_recentProjectsMenu->removeAction(m_recentProjectsMenu->actions().at(i));
     }
 
@@ -657,8 +659,8 @@ void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, co
     connect(fileAction, &QAction::triggered, callback);
     menu->insertAction(menu->actions().constFirst(), fileAction);
 
-    if (menu->actions().size() > Const::Window::MaxRecentFiles + Const::Window::SeparatorAndMenuClearCount) {
-        menu->removeAction(menu->actions().at(menu->actions().size() - Const::Window::SeparatorAndMenuClearCount - 1));
+    if (menu->actions().size() > Const::Window::MaxRecentFiles + SeparatorAndMenuClearCount) {
+        menu->removeAction(menu->actions().at(menu->actions().size() - SeparatorAndMenuClearCount - 1));
     }
 
     updateMenuState();
@@ -829,7 +831,7 @@ void MainWindow::saveSettings() {
     // Recent projects
     QJsonArray recentProjects;
 
-    for (int i = 0; i < m_recentProjectsMenu->actions().size() - Const::Window::SeparatorAndMenuClearCount; ++i) {
+    for (int i = 0; i < m_recentProjectsMenu->actions().size() - SeparatorAndMenuClearCount; ++i) {
         recentProjects.append(m_recentProjectsMenu->actions().at(i)->text());
     }
 
@@ -838,7 +840,7 @@ void MainWindow::saveSettings() {
     // Recent files
     QJsonArray recentFiles;
 
-    for (int i = 0; i < m_recentFilesMenu->actions().size() - Const::Window::SeparatorAndMenuClearCount; ++i) {
+    for (int i = 0; i < m_recentFilesMenu->actions().size() - SeparatorAndMenuClearCount; ++i) {
         recentFiles.append(m_recentFilesMenu->actions().at(i)->text());
     }
 
@@ -1019,8 +1021,8 @@ void MainWindow::updateMenuState() {
     ActionManager::action(Const::Action::CloseAll)->setEnabled(index >= 0);
     ActionManager::action(Const::Action::CloseOther)->setEnabled(index >= 0);
 
-    m_recentProjectsMenu->menuAction()->setEnabled(m_recentProjectsMenu->actions().size() > Const::Window::SeparatorAndMenuClearCount);
-    m_recentFilesMenu->menuAction()->setEnabled(m_recentFilesMenu->actions().size() > Const::Window::SeparatorAndMenuClearCount);
+    m_recentProjectsMenu->menuAction()->setEnabled(m_recentProjectsMenu->actions().size() > SeparatorAndMenuClearCount);
+    m_recentFilesMenu->menuAction()->setEnabled(m_recentFilesMenu->actions().size() > SeparatorAndMenuClearCount);
 
     m_editMenu->menuAction()->setEnabled(index >= 0);
 }
