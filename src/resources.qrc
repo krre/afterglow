@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>resources/highlighting/rust.json</file>
-        <file>resources/prefs.json</file>
-        <file>resources/font/fontawesome/Font-Awesome-5-Free-Solid-900.otf</file>
-        <file>resources/font/fontawesome/LICENSE.txt</file>
-        <file>resources/font/fontawesome/README.md</file>
-    </qresource>
-</RCC>
