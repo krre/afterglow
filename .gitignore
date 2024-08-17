@@ -1,0 +1,4 @@
+# Qt Creator
+build*
+*.user
+*.autosave

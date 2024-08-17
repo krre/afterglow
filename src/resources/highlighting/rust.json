@@ -1,0 +1,255 @@
+{
+    "lang": {
+        "name": "Rust",
+        "theme": "light",
+        "version": "1.0.0",
+        "extension": "rs"
+    },
+
+    "words": {
+        "keywords": [
+            "as",
+            "box",
+            "break",
+            "const",
+            "continue",
+            "crate",
+            "else",
+            "enum",
+            "extern",
+            "fn",
+            "for",
+            "if",
+            "impl",
+            "in",
+            "let",
+            "loop",
+            "match",
+            "mod",
+            "move",
+            "mut",
+            "pub",
+            "ref",
+            "return",
+            "self",
+            "static",
+            "struct",
+            "super",
+            "trait",
+            "type",
+            "unsafe",
+            "use",
+            "virtual",
+            "where",
+            "while"
+        ],
+        "traits": [
+            "AsSlice",
+            "CharExt",
+            "Clone",
+            "Copy",
+            "Debug",
+            "Decodable",
+            "Default",
+            "Display",
+            "DoubleEndedIterator",
+            "Drop",
+            "Encodable",
+            "Eq",
+            "Default",
+            "Extend",
+            "Fn",
+            "FnMut",
+            "FnOnce",
+            "FromPrimitive",
+            "Hash",
+            "Iterator",
+            "IteratorExt",
+            "MutPtrExt",
+            "Ord",
+            "PartialEq",
+            "PartialOrd",
+            "PtrExt",
+            "Rand",
+            "Send",
+            "Sized",
+            "SliceConcatExt",
+            "SliceExt",
+            "Str",
+            "StrExt",
+            "Sync",
+            "ToString"
+        ],
+        "types": [
+            "bool",
+            "int",
+            "isize",
+            "uint",
+            "usize",
+            "i8",
+            "i16",
+            "i32",
+            "i64",
+            "u8",
+            "u16",
+            "u32",
+            "u64",
+            "f32",
+            "f64",
+            "float",
+            "char",
+            "str",
+            "Option",
+            "Result",
+            "Self",
+            "Box",
+            "Vec",
+            "String"
+        ],
+        "ctypes": [
+            "c_float",
+            "c_double",
+            "c_void",
+            "FILE",
+            "fpos_t",
+            "DIR",
+            "dirent",
+            "c_char",
+            "c_schar",
+            "c_uchar",
+            "c_short",
+            "c_ushort",
+            "c_int",
+            "c_uint",
+            "c_long",
+            "c_ulong",
+            "size_t",
+            "ptrdiff_t",
+            "clock_t",
+            "time_t",
+            "c_longlong",
+            "c_ulonglong",
+            "intptr_t",
+            "uintptr_t",
+            "off_t",
+            "dev_t",
+            "ino_t",
+            "pid_t",
+            "mode_t",
+            "ssize_t"
+        ],
+        "constants": [
+            "true",
+            "false",
+            "Some",
+            "None",
+            "Ok",
+            "Err",
+            "Success",
+            "Failure",
+            "Cons",
+            "Nil"
+        ],
+        "cconstants": [
+            "EXIT_FAILURE",
+            "EXIT_SUCCESS",
+            "RAND_MAX",
+            "EOF",
+            "SEEK_SET",
+            "SEEK_CUR",
+            "SEEK_END",
+            "_IOFBF",
+            "_IONBF",
+            "_IOLBF",
+            "BUFSIZ",
+            "FOPEN_MAX",
+            "FILENAME_MAX",
+            "L_tmpnam",
+            "TMP_MAX",
+            "O_RDONLY",
+            "O_WRONLY",
+            "O_RDWR",
+            "O_APPEND",
+            "O_CREAT",
+            "O_EXCL",
+            "O_TRUNC",
+            "S_IFIFO",
+            "S_IFCHR",
+            "S_IFBLK",
+            "S_IFDIR",
+            "S_IFREG",
+            "S_IFMT",
+            "S_IEXEC",
+            "S_IWRITE",
+            "S_IREAD",
+            "S_IRWXU",
+            "S_IXUSR",
+            "S_IWUSR",
+            "S_IRUSR",
+            "F_OK",
+            "R_OK",
+            "W_OK",
+            "X_OK",
+            "STDIN_FILENO",
+            "STDOUT_FILENO",
+            "STDERR_FILENO"
+        ]
+    },
+
+    "rules": [
+        {
+            "pattern": "\\b%1\\b",
+            "format": "keyword",
+            "words": "keywords"
+        },
+        {
+            "pattern": "\\b%1\\b",
+            "format": "type",
+            "words": "types"
+        },
+        {
+            "pattern": "\\b%1\\b",
+            "format": "constant",
+            "words": "constants"
+        },
+        {
+            "pattern": "\".*\"",
+            "format": "quotation"
+        },
+        {
+            "pattern": "//[^\n]*",
+            "format": "comment"
+        }
+    ],
+
+    "blocks": [
+        {
+            "name": "SingleLineComment",
+            "start": "/\\*",
+            "end": "\\*/",
+            "format": "comment"
+        }
+    ],
+
+    "formats": {
+        "normal": {},
+        "comment": {
+            "foreground": "#858585"
+        },
+        "keyword": {
+            "foreground": "#000080",
+            "bold": true
+        },
+        "type": {
+            "foreground": "#dc3636",
+            "bold": true
+        },
+        "constant": {
+            "foreground": "#c88d00",
+            "bold": true
+        },
+        "quotation": {
+            "foreground": "#008000"
+        }
+    }
+}
