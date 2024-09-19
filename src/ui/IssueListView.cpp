@@ -51,7 +51,6 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     if (level == "error") {
         levelIcon = Const::FontAwesome::TimesCircle;
         levelColor = QColor(Const::Color::ErrorIssueIcon);
-
     } else if (level == "warning") {
         levelIcon = Const::FontAwesome::ExclamationTriangle;
         levelColor = QColor(Const::Color::WarningIssueIcon);
@@ -63,6 +62,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     // Text color
     QColor textColor;
+
     if (selected) {
         textColor = opt.palette.highlightedText().color();
     } else {
@@ -86,6 +86,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     // Filename
     QString filename = index.data(static_cast<int>(IssueModel::Role::Filename)).toString();
+
     if (!filename.isEmpty()) {
         QString line = index.data(static_cast<int>(IssueModel::Role::Line)).toString();
         QString column = index.data(static_cast<int>(IssueModel::Role::Column)).toString();
@@ -138,11 +139,11 @@ IssueListView::IssueListView(IssueModel* model, QWidget* parent) : QListView(par
     connect(selectionModel(), &QItemSelectionModel::currentChanged, delegate, &IssueDelegate::currentChanged);
 
     connect(this, &QListView::customContextMenuRequested, this, &IssueListView::onCustomContextMenu);
-    
+
     m_contextMenu = new QMenu(this);
     QAction* copyLabelAction = m_contextMenu->addAction(tr("Copy Label"));
     connect(copyLabelAction, &QAction::triggered, this, &IssueListView::onCopyLabelAction);
-    
+
     QAction* copyDescriptionAction = m_contextMenu->addAction(tr("Copy Description"));
     connect(copyDescriptionAction, &QAction::triggered, this, &IssueListView::onCopyDescriptionAction);
 }

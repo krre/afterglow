@@ -7,6 +7,7 @@ SyntaxHighlightManager::SyntaxHighlightManager(QObject* parent) : QObject(parent
 
 void SyntaxHighlightManager::addSyntaxFile(const QString& path) {
     QFile file(path);
+
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Failed to open file" << file.fileName();
         return;

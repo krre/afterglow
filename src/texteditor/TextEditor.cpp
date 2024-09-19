@@ -46,6 +46,7 @@ void TextEditor::setFilePath(const QString& filePath) {
 
 void TextEditor::setAutoCompleter(AutoCompleter* completer) {
     this->m_completer = completer;
+
     if (completer) {
         completer->setTextEditor(this);
     }
@@ -59,6 +60,7 @@ void TextEditor::saveFile() {
     }
 
     QFile file(m_filePath);
+
     if (file.open(QFile::WriteOnly | QFile::Text)) {
         QTextStream out(&file);
         out << toPlainText();
@@ -113,6 +115,7 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event) {
 int TextEditor::lineNumberAreaWidth() {
     int digits = 1;
     int max = qMax(1, blockCount());
+
     while (max >= 10) {
         max /= 10;
         ++digits;
@@ -135,6 +138,7 @@ void TextEditor::toggleSingleLineComment() {
     if (cursor.hasSelection()) {
         startRow = document()->findBlock(cursor.selectionStart()).blockNumber();
         endRow = document()->findBlock(cursor.selectionEnd()).blockNumber();
+
         if (cursor.selectionStart() == cursor.block().position()) {
             selectionFromBeginOfBlock = true;
         }
@@ -148,6 +152,7 @@ void TextEditor::toggleSingleLineComment() {
         if (!block.text().size())  continue;
 
         int pos = 0;
+
         while (block.text().at(pos) == ' ') {
             pos++;
         };
@@ -193,6 +198,7 @@ void TextEditor::toggleBlockComment() {
     bool alreadyCommented = false;
 
     int size = cursor.selectedText().size();
+
     if (size >= 4 && cursor.selectedText().left(2) == "/*" &&
             cursor.selectedText().right(2) == "*/") {
         alreadyCommented = true;
@@ -294,9 +300,11 @@ void TextEditor::cutLine() {
 void TextEditor::autoindent() {
     QTextCursor cursor = textCursor();
     int row = cursor.blockNumber();
+
     if (row > 0) {
         QTextBlock block = document()->findBlockByLineNumber(row - 1);
         int count = 0;
+
         for (; count < block.text().size(); count++) {
             if (block.text().at(count) != ' ') {
                 break;
@@ -334,6 +342,7 @@ void TextEditor::increaseIndent() {
 
     for (int row = startRow; row <= endRow; row++) {
         QTextBlock block = document()->findBlockByLineNumber(row);
+
         if (block.blockNumber() == blockCount() - 1 && !block.text().size()) {
             // Last line
             break;
@@ -343,6 +352,7 @@ void TextEditor::increaseIndent() {
 
         int charPos = cursor.position() - block.position();
         int addSpaces = charPos % indent;
+
         if (addSpaces) {
             addSpaces = indent - addSpaces;
         } else {
@@ -376,6 +386,7 @@ void TextEditor::decreaseIndent() {
         cursor.setPosition(block.position());
 
         int count = 0;
+
         for (; count < block.text().size(); count++) {
             if (block.text().at(count) != ' ') {
                 break;
@@ -414,6 +425,7 @@ void TextEditor::cleanTrailingWhitespace() {
         if (!size) continue;
 
         int pos = size - 1;
+
         while (pos >= 0 && block.text().at(pos) == ' ') {
             cursor.setPosition(block.position() + pos);
             cursor.deleteChar();
@@ -501,6 +513,7 @@ void TextEditor::updateLineNumberArea(const QRect& rect, int dy) {
 
 void TextEditor::readFile() {
     QFile file(m_filePath);
+
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         setPlainText(file.readAll());
     } else {

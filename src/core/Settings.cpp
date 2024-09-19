@@ -115,6 +115,7 @@ void Settings::updateRustEnvironmentVariables() {
     }
 
     QString cargoHome = value("environment.cargoHome").toString();
+
     if (!cargoHome.isEmpty()) {
         qputenv(Const::Environment::CargoHome, cargoHome.toUtf8());
     } else if (Global::systemCargoHome().isEmpty()) {

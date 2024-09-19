@@ -8,12 +8,12 @@ ProjectTree::ProjectTree(QWidget* parent) : QTreeView(parent) {
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, &QTreeView::customContextMenuRequested, this, &ProjectTree::onCustomContextMenu);
     connect(this, &QTreeView::doubleClicked, this, &ProjectTree::onDoubleClicked);
-    
+
     m_fsModel = new QFileSystemModel(this);
     m_fsProxyModel = new FileSystemProxyModel(this);
     m_fsProxyModel->setSourceModel(m_fsModel);
     m_fsProxyModel->sort(0, Qt::AscendingOrder);
-    
+
     m_contextMenu = new QMenu(this);
 
     QMenu* newMenu = new QMenu(tr("New"), this);
@@ -26,23 +26,25 @@ ProjectTree::ProjectTree(QWidget* parent) : QTreeView(parent) {
 
     QAction* newDirectoryAction = newMenu->addAction(tr("Directory..."));
     connect(newDirectoryAction, &QAction::triggered, this, &ProjectTree::onNewDirectory);
-    
+
     m_contextMenu->addMenu(newMenu);
-    
+
     QAction* openAction = m_contextMenu->addAction(tr("Open"));
+
     connect(openAction, &QAction::triggered, this, [=, this] () {
         QModelIndex proxyIndex = selectedIndexes().constFirst();
         QModelIndex sourceIndex = m_fsProxyModel->mapToSource(proxyIndex);
+
         if (m_fsModel->isDir(sourceIndex)) {
             setExpanded(proxyIndex, true);
         } else {
             emit openActivated(m_fsModel->filePath(sourceIndex));
         }
     });
-    
+
     QAction* removeAction = m_contextMenu->addAction(tr("Remove..."));
     connect(removeAction, &QAction::triggered, this, &ProjectTree::onFileRemove);
-    
+
     QAction* renameAction = m_contextMenu->addAction(tr("Rename..."));
     connect(renameAction, &QAction::triggered, this, &ProjectTree::onFileRename);
 
@@ -104,7 +106,7 @@ void ProjectTree::onNewFile() {
 void ProjectTree::onNewDirectory() {
     NewName newName(tr("New Directory"));
     if (newName.exec() == QDialog::Rejected) return;
-    
+
     QModelIndex sourceIndex = m_fsProxyModel->mapToSource(selectedIndexes().constFirst());
     QModelIndex index = m_fsModel->mkdir(m_fsModel->isDir(sourceIndex) ? sourceIndex : m_fsModel->parent(sourceIndex), newName.name());
     setCurrentIndex(index);
@@ -116,10 +118,12 @@ void ProjectTree::onFileRemove() {
     QString text = QString("Remove %1 \"%2\"?")
                        .arg(isDir ? tr("directory") : tr("file"), m_fsModel->fileName(index));
     int result = QMessageBox::question(this, tr("Remove"), text);
+
     if (result == QMessageBox::Yes) {
         QString path = m_fsModel->filePath(index);
         QDir dir(path);
         bool success = false;
+
         if (isDir) {
             success = dir.removeRecursively();
         } else {

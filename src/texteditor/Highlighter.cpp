@@ -10,6 +10,7 @@ Highlighter::Highlighter(const QString& fileExt, QTextDocument* parent, SyntaxHi
 void Highlighter::highlightBlock(const QString& text) {
     for (const HighlightingRule& rule : std::as_const(m_highlightingRules)) {
         QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
+
         while (matchIterator.hasNext()) {
             QRegularExpressionMatch match = matchIterator.next();
             setFormat(match.capturedStart(), match.capturedLength(), rule.format);
@@ -19,6 +20,7 @@ void Highlighter::highlightBlock(const QString& text) {
     setCurrentBlockState(static_cast<int>(BlockState::MultilineCommentBegin));
 
     int startIndex = 0;
+
     if (static_cast<BlockState>(previousBlockState()) != BlockState::MultilineCommentEnd) {
         startIndex = text.indexOf(m_commentStartExpression);
     }
@@ -27,12 +29,14 @@ void Highlighter::highlightBlock(const QString& text) {
         QRegularExpressionMatch match = m_commentEndExpression.match(text, startIndex);
         int endIndex = match.capturedStart();
         int commentLength = 0;
+
         if (endIndex == -1) {
             setCurrentBlockState(static_cast<int>(BlockState::MultilineCommentEnd));
             commentLength = text.length() - startIndex;
         } else {
             commentLength = endIndex - startIndex + match.capturedLength();
         }
+
         setFormat(startIndex, commentLength, m_multiLineCommentFormat);
         startIndex = text.indexOf(m_commentStartExpression, startIndex + commentLength);
     }
@@ -64,16 +68,15 @@ void Highlighter::loadRules(const QString& fileExt) {
                 highlightingRule.pattern = QRegularExpression(rule["pattern"].toString().arg(word.toString()));
                 m_highlightingRules.append(highlightingRule);
             }
-
         } else {
             highlightingRule.pattern = QRegularExpression(rule["pattern"].toString());
             m_highlightingRules.append(highlightingRule);
         }
-
     }
 
     for (const auto& b : blocks) {
         QJsonObject block = b.toObject();
+
         if (block["name"].toString() == "SingleLineComment") {
             m_commentStartExpression = QRegularExpression(block["start"].toString());
             m_commentEndExpression = QRegularExpression(block["end"].toString());

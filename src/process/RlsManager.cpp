@@ -96,8 +96,10 @@ void RlsManager::onReadyReadStandardOutput(const QString& data) {
 
         if (obj.contains("id")) {
             int id = obj["id"].toInt();
+
             if (m_identifiers.contains(id)) {
                 QString method = m_identifiers.take(id);
+
                 if (method == "textDocument/completion") {
                     emit completionResult(obj["result"].toArray());
                 }

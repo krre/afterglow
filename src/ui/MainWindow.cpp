@@ -160,8 +160,10 @@ MainWindow::MainWindow() {
     m_issueModel = new IssueModel(this);
     connect(m_issueModel, &IssueModel::countChanged, this, &MainWindow::onIssueCountChanged);
     m_issueListView = new IssueListView(m_issueModel);
+
     connect(m_issueListView, &IssueListView::doubleClicked, this, [this] (const QModelIndex& index) {
         QString filename = m_issueModel->data(index, static_cast<int>(IssueModel::Role::Filename)).toString();
+
         if (!filename.isEmpty()) {
             QString line = m_issueModel->data(index, static_cast<int>(IssueModel::Role::Line)).toString();
             addSourceTab(m_projectPath + "/" + filename);
@@ -207,8 +209,10 @@ void MainWindow::onCloseProjectAction() {
 
 void MainWindow::onSaveAsAction() {
     QString filePath = QFileDialog::getSaveFileName(this, tr("Save File"), m_editor->filePath(), "Rust (*.rs);;All Files(*.*)");
+
     if (!filePath.isEmpty()) {
         bool result = QFile::copy(m_editor->filePath(), filePath);
+
         if (result) {
             addSourceTab(filePath);
         } else {
@@ -247,6 +251,7 @@ void MainWindow::onOpenAction() {
     if (filePath.isEmpty()) return;
 
     QFileInfo fi(filePath);
+
     if (fi.fileName() == "Cargo.toml") {
         QFileInfo fi(filePath);
         openProject(fi.absolutePath());
@@ -359,9 +364,11 @@ void MainWindow::onRustInstallerAction() {
 
 void MainWindow::onPreferencesAction() {
     Preferences preferences(this);
+
     connect(&preferences, &Preferences::openPrefs, this, [=, this] {
         addSourceTab(Settings::prefsPath());
     });
+
     preferences.exec();
 }
 
@@ -477,8 +484,10 @@ void MainWindow::onFileCreated(const QString& filePath) {
 void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
     for (int i = 0; i < m_sourceTabWidget->count(); i++) {
         TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
+
         if (editor->filePath().contains(oldPath)) {
             QFileInfo fi(newPath);
+
             if (fi.isDir()) {
                 editor->setFilePath(editor->filePath().replace(oldPath, newPath));
             } else {
@@ -491,6 +500,7 @@ void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
 
 int MainWindow::addSourceTab(const QString& filePath) {
     int tabIndex = m_sourceTabWidget->findTab(filePath);
+
     if (tabIndex != -1) {
         m_sourceTabWidget->setCurrentIndex(tabIndex);
         return tabIndex;
@@ -511,10 +521,12 @@ int MainWindow::addSourceTab(const QString& filePath) {
 void MainWindow::addNewFile(const QString& filePath) {
     if (!filePath.isEmpty()) {
         QFile file(filePath);
+
         if (!file.open(QIODevice::WriteOnly)) {
             qWarning() << "Failed to open session file for writing" << filePath;
             return;
         }
+
         file.write("");
         addSourceTab(filePath);
     }
@@ -526,6 +538,7 @@ void MainWindow::onDocumentModified(TextEditor* editor) {
 
 void MainWindow::onIssueCountChanged(int count) {
     QString title = tr("Issues");
+
     if (count) {
         title += QString(" (%1)").arg(count);
     }
@@ -671,6 +684,7 @@ void MainWindow::saveProjectProperties() {
 
     QString path = m_projectPath + "/" + Const::Project::DataDir + "/" + Const::Project::PropertyFile;
     QFile file(path);
+
     if (!file.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open project properties file for writing" << path;
         return;
@@ -687,6 +701,7 @@ void MainWindow::loadProjectProperties() {
     if (m_projectPath.isEmpty()) return;
 
     QString path = m_projectPath + "/" + Const::Project::DataDir + "/" + Const::Project::PropertyFile;
+
     if (!QFileInfo::exists(path)) {
         return;
     }
@@ -694,6 +709,7 @@ void MainWindow::loadProjectProperties() {
     m_projectProperties->setProject(m_projectPath);
 
     QFile file(path);
+
     if (!file.open(QIODevice::ReadOnly)) {
         qWarning() << "Failed to open project properties file for reading" << path;
         return;
@@ -807,6 +823,7 @@ void MainWindow::saveSettings() {
         for (int size : sizes) {
             sizesArray.append(QJsonValue(size));
         }
+
         Settings::setValue("gui.mainWindow.splitters.main", sizesArray);
     }
 
@@ -817,6 +834,7 @@ void MainWindow::saveSettings() {
         for (int size : sizes) {
             sizesArray.append(QJsonValue(size));
         }
+
         Settings::setValue("gui.mainWindow.splitters.side", sizesArray);
     }
 
@@ -868,20 +886,23 @@ void MainWindow::saveSession() {
         directory.toWCharArray(charText);
         charText[directory.length()] = 0; // append null terminator
         int attr = GetFileAttributes(charText);
+
         if ((attr & FILE_ATTRIBUTE_HIDDEN) == 0) {
             SetFileAttributes(charText, attr | FILE_ATTRIBUTE_HIDDEN);
-         }
+        }
     }
 #endif
 
     QString path = m_projectPath + "/" + Const::Project::DataDir + "/" + Const::Project::SessionFile;
     QFile file(path);
+
     if (!file.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open session file for writing" << path;
         return;
     }
 
     QJsonArray openFiles;
+
     for (int i = 0; i < m_sourceTabWidget->count(); i++) {
         TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
 
@@ -910,11 +931,13 @@ void MainWindow::loadSession() {
     }
 
     QString path = m_projectPath + "/" + Const::Project::DataDir + "/" + Const::Project::SessionFile;
+
     if (!QFileInfo::exists(path)) {
         return;
     }
 
     QFile file(path);
+
     if (!file.open(QIODevice::ReadOnly)) {
         qWarning() << "Failed to open session file for reading" << path;
         return;
@@ -928,6 +951,7 @@ void MainWindow::loadSession() {
     for (int i = 0; i < array.count(); i++) {
         QJsonObject obj = array.at(i).toObject();
         QString filePath = obj["path"].toString();
+
         if (QFileInfo::exists(filePath)) {
             int index = addSourceTab(filePath);
             QJsonArray cursorPosArray = obj["cursor"].toArray();
@@ -951,10 +975,12 @@ void MainWindow::openProject(const QString& path, bool isNew) {
 
     if (isNew) {
         QString filePath = m_projectPath + "/src/main.rs";
+
         if (QFileInfo::exists(filePath)) {
             addSourceTab(filePath);
         } else {
             filePath = m_projectPath + "/src/lib.rs";
+
             if (QFileInfo::exists(filePath)) {
                 addSourceTab(filePath);
             }

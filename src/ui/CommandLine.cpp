@@ -10,6 +10,7 @@ void CommandLine::run() {
         m_history.append(text());
         m_counter = m_history.count();
     }
+
     setText("");
 }
 
@@ -24,6 +25,7 @@ void CommandLine::keyPressEvent(QKeyEvent* event) {
         setText(m_history.at(m_counter));
     } else if (event->key() == Qt::Key_Down && !m_history.isEmpty()) {
         m_counter = qMin(m_counter + 1, m_history.count());
+
         if (m_counter < m_history.count()) {
             setText(m_history.at(m_counter));
         } else {

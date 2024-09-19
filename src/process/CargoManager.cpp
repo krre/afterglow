@@ -91,6 +91,7 @@ void CargoManager::prepareAndStart(const QStringList& arguments) {
     process()->setArguments(arguments);
 
     QString message = process()->program();
+
     for (const auto& argument : arguments) {
         message += " " + argument;
     }
