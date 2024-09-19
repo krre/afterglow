@@ -2,7 +2,7 @@
 #include "TextEditor.h"
 
 LineNumberArea::LineNumberArea(TextEditor* editor) : QWidget(editor) {
-    this->m_editor = editor;
+    m_editor = editor;
 }
 
 QSize LineNumberArea::sizeHint() const {

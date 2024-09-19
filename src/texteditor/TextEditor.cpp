@@ -41,11 +41,11 @@ TextEditor::TextEditor(QString filePath, SyntaxHighlightManager* syntaxHighlight
 }
 
 void TextEditor::setFilePath(const QString& filePath) {
-    this->m_filePath = filePath;
+    m_filePath = filePath;
 }
 
 void TextEditor::setAutoCompleter(AutoCompleter* completer) {
-    this->m_completer = completer;
+    m_completer = completer;
 
     if (completer) {
         completer->setTextEditor(this);

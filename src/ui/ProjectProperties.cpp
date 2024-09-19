@@ -7,14 +7,14 @@ ProjectProperties::ProjectProperties(QWidget* parent) : QWidget(parent) {
 
     auto verticalLayout = new QVBoxLayout;
     verticalLayout->addWidget(new QLabel(tr("Target:")));
-    
+
     m_targetComboBox = new QComboBox;
     m_targetComboBox->addItem(tr("Debug"));
     m_targetComboBox->addItem(tr("Release"));
-    
+
     verticalLayout->addWidget(m_targetComboBox, 0, Qt::AlignLeft);
     verticalLayout->addWidget(new QLabel(tr("Run:")));
-    
+
     m_runComboBox = new QComboBox;
     verticalLayout->addWidget(m_runComboBox, 0, Qt::AlignLeft);
 
@@ -37,7 +37,7 @@ void ProjectProperties::setBuildTarget(CargoManager::BuildTarget buildTarget) {
 }
 
 void ProjectProperties::setProject(const QString& projectPath) {
-    this->m_projectPath = projectPath;
+    m_projectPath = projectPath;
     updateMetadata();
 }
 
@@ -75,7 +75,7 @@ void ProjectProperties::updateMetadata() {
     arguments << "--no-deps";
     process.start("cargo", arguments);
     process.waitForFinished();
-    
+
     m_metadata = QJsonDocument::fromJson(process.readAllStandardOutput()).object();
     QJsonArray targets = m_metadata["packages"].toArray().at(0).toObject()["targets"].toArray();
 

@@ -6,7 +6,7 @@
 AutoCompleter::AutoCompleter(QObject* parent) : QCompleter(parent) {
     setCompletionMode(QCompleter::UnfilteredPopupCompletion);
     setCaseSensitivity(Qt::CaseInsensitive);
-    
+
     m_listModel = new QStringListModel(this);
     setModel(m_listModel);
 
@@ -18,7 +18,7 @@ AutoCompleter::AutoCompleter(QObject* parent) : QCompleter(parent) {
 }
 
 void AutoCompleter::setTextEditor(TextEditor* editor) {
-    this->m_editor = editor;
+    m_editor = editor;
     setWidget(editor);
 }
 
@@ -27,10 +27,10 @@ void AutoCompleter::open() {
         qWarning() << "Failed to open temporary Racer file" << m_tmpPath;
         return;
     }
-    
+
     m_tmpFile.write(m_editor->document()->toPlainText().toUtf8());
     m_tmpFile.close();
-    
+
     QTextCursor cursor = m_editor->textCursor();
     int row = cursor.blockNumber();
     int column = cursor.columnNumber();
@@ -43,7 +43,7 @@ void AutoCompleter::onActivate(const QString& completion) {
     if (widget() != m_editor) {
         return;
     }
-    
+
     QTextCursor cursor = m_editor->textCursor();
     int extra = completion.length() - completionPrefix().length();
     cursor.movePosition(QTextCursor::Left);
@@ -60,17 +60,17 @@ void AutoCompleter::onCompletionResult(const QJsonArray& result) {
     for (const QJsonValue& value : result) {
         words << value.toObject()["label"].toString();
     }
-    
+
     m_listModel->setStringList(words);
     m_listModel->sort(0);
-    
+
     QString prefix = m_editor->textUnderCursor();
 
     if (prefix != completionPrefix()) {
         setCompletionPrefix(prefix);
         popup()->setCurrentIndex(completionModel()->index(0, 0));
     }
-    
+
     QRect cr = m_editor->cursorRect();
     cr.setX(cr.x() + m_editor->leftMargin());
     cr.setWidth(popup()->sizeHintForColumn(0) + popup()->verticalScrollBar()->sizeHint().width());
