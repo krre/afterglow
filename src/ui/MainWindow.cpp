@@ -726,8 +726,8 @@ void MainWindow::loadSettings() {
     int width = Settings::value("window.geometry.width").toInt();
     int height = Settings::value("window.geometry.height").toInt();
 
-    QJsonValue x = Settings::value("window.geometry.x");
-    QJsonValue y = Settings::value("window.geometry.y");
+    QVariant x = Settings::value("window.geometry.x");
+    QVariant y = Settings::value("window.geometry.y");
 
     if (x.isNull() || y.isNull()) {
         // Center window in screen.
@@ -746,7 +746,7 @@ void MainWindow::loadSettings() {
 
     // Splitter sizes
     QList<int> sizes;
-    QJsonArray sizesArray = Settings::value("gui.mainWindow.splitters.main").toArray();
+    QVariantList sizesArray = Settings::value("gui.mainWindow.splitters.main").toList();
 
     for (const auto& size : sizesArray) {
         sizes.append(size.toInt());
@@ -754,7 +754,7 @@ void MainWindow::loadSettings() {
 
     m_mainSplitter->setSizes(sizes);
 
-    sizesArray = Settings::value("gui.mainWindow.splitters.side").toArray();
+    sizesArray = Settings::value("gui.mainWindow.splitters.side").toList();
     sizes.clear();
 
     for (const auto& size : std::as_const(sizesArray)) {
@@ -777,7 +777,7 @@ void MainWindow::loadSettings() {
     m_cargoPlainTextEdit->document()->setDefaultFont(font);
 
     // Recent projects
-    QJsonArray recentProjects = Settings::value("gui.mainWindow.recent.projects").toArray();
+    QVariantList recentProjects = Settings::value("gui.mainWindow.recent.projects").toList();
 
     for (int i = recentProjects.size() - 1; i >= 0; --i) {
         QString projectPath = recentProjects.at(i).toString();
@@ -785,7 +785,7 @@ void MainWindow::loadSettings() {
     }
 
     // Recent files
-    QJsonArray recentFiles = Settings::value("gui.mainWindow.recent.files").toArray();
+    QVariantList recentFiles = Settings::value("gui.mainWindow.recent.files").toList();
 
     for (int i = recentFiles.size() - 1; i >= 0; --i) {
         QString filePath = recentFiles.at(i).toString();

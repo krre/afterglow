@@ -4,7 +4,7 @@
 #include "core/Application.h"
 #include <QtCore>
 
-Q_GLOBAL_STATIC(QJsonObject, storage);
+Q_GLOBAL_STATIC(QVariantMap, storage);
 Q_GLOBAL_STATIC(QString, s_prefsPath);
 static bool reseted = false;
 
@@ -26,7 +26,7 @@ void Settings::init() {
     }
 
     QJsonParseError err;
-    QJsonObject prefs = QJsonDocument::fromJson(resPrefsFile.readAll(), &err).object();
+    QVariantMap prefs = QJsonDocument::fromJson(resPrefsFile.readAll(), &err).object().toVariantMap();
 
     if (err.error != QJsonParseError::NoError) {
         qWarning() << "Failed to parse JSON file" << resPrefsFile.fileName();
@@ -43,7 +43,7 @@ void Settings::init() {
         }
 
         QJsonParseError err;
-        *storage = QJsonDocument::fromJson(workPrefsFile.readAll(), &err).object();
+        *storage = QJsonDocument::fromJson(workPrefsFile.readAll(), &err).object().toVariantMap();
 
         if (err.error != QJsonParseError::NoError) {
             qWarning() << "Failed to parse JSON file" << workPrefsFile.fileName();
@@ -52,7 +52,7 @@ void Settings::init() {
         }
 
         // Update preferences.
-        QJsonObject src = prefs;
+        QVariantMap src = prefs;
         cleanupDeprecated(src, *storage);
         appendNew(src, *storage);
     } else {
@@ -77,23 +77,23 @@ void Settings::flush() {
         return;
     }
 
-    file.write(QJsonDocument(*storage).toJson());
+    file.write(QJsonDocument::fromVariant(*storage).toJson());
 }
 
 // Using:
 // Settings::setValue("window.width", 42);
-void Settings::setValue(const QString& path, const QJsonValue& value) {
-    modifyJsonValue(*storage, path, value);
+void Settings::setValue(const QString& path, const QVariant& value) {
+    modifyValue(*storage, path, value);
 }
 
 // Using:
 // int width = Settings::value("window.width").toInt();
-QJsonValue Settings::value(const QString& path) {
+QVariant Settings::value(const QString& path) {
     QStringList keys = path.split('.');
-    QJsonObject obj = *storage;
+    QVariantMap obj = *storage;
 
     for (int i = 0; i < keys.count() - 1; i++) {
-        obj = obj[keys.at(i)].toObject();
+        obj = obj[keys.at(i)].toMap();
     }
 
     return obj[keys.last()];
@@ -137,12 +137,12 @@ void Settings::reset() {
     reseted = true;
 }
 
-void Settings::cleanupDeprecated(QJsonObject& src, QJsonObject& dst) {
+void Settings::cleanupDeprecated(QVariantMap& src, QVariantMap& dst) {
     for (auto it = dst.begin(); it != dst.end(); it++) {
         if (src.contains(it.key())) {
-            if (it.value().isObject()) {
-                QJsonObject srcObj = src[it.key()].toObject();
-                QJsonObject dstObj = it.value().toObject();
+            if (it.value().canConvert<QVariantMap>()) {
+                QVariantMap srcObj = src[it.key()].toMap();
+                QVariantMap dstObj = it.value().toMap();
                 cleanupDeprecated(srcObj, dstObj);
                 it.value() = dstObj;
             }
@@ -152,12 +152,12 @@ void Settings::cleanupDeprecated(QJsonObject& src, QJsonObject& dst) {
     }
 }
 
-void Settings::appendNew(QJsonObject& src, QJsonObject& dst) {
+void Settings::appendNew(QVariantMap& src, QVariantMap& dst) {
     for (auto it = src.begin(); it != src.end(); it++) {
         if (dst.contains(it.key())) {
-            if (it.value().isObject()) {
-                QJsonObject srcObj = it.value().toObject();
-                QJsonObject dstObj = dst[it.key()].toObject();
+            if (it.value().canConvert<QVariantMap>()) {
+                QVariantMap srcObj = it.value().toMap();
+                QVariantMap dstObj = dst[it.key()].toMap();
                 appendNew(srcObj, dstObj);
                 dst[it.key()] = dstObj;
             }
@@ -167,18 +167,18 @@ void Settings::appendNew(QJsonObject& src, QJsonObject& dst) {
     }
 }
 
-void Settings::modifyJsonValue(QJsonObject& obj, const QString& path, const QJsonValue& newValue) {
+void Settings::modifyValue(QVariantMap& obj, const QString& path, const QVariant& newValue) {
     const int indexOfDot = path.indexOf('.');
     const QString propertyName = path.left(indexOfDot);
     const QString subPath = indexOfDot > 0 ? path.mid(indexOfDot + 1) : QString();
 
-    QJsonValue subValue = obj[propertyName];
+    QVariant subValue = obj[propertyName];
 
     if (subPath.isEmpty()) {
         subValue = newValue;
     } else {
-        QJsonObject obj = subValue.toObject();
-        modifyJsonValue(obj, subPath, newValue);
+        QVariantMap obj = subValue.toMap();
+        modifyValue(obj, subPath, newValue);
         subValue = obj;
     }
 
