@@ -36,7 +36,6 @@ void AutoCompleter::open() {
     int column = cursor.columnNumber();
 
     RlsManager::completion(m_tmpPath, row, column);
-//    RlsManager::completion(editor->getFilePath(), row, column);
 }
 
 void AutoCompleter::onActivate(const QString& completion) {
