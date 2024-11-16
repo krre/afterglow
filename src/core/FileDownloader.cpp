@@ -25,11 +25,11 @@ QByteArray FileDownloader::data() const {
 }
 
 void FileDownloader::checkSSLSupport() {
-    qInfo() << "Support SSL: " << QSslSocket::supportsSsl()
-            << "\nLib Version Number: " << QSslSocket::sslLibraryVersionNumber()
-            << "\nLib Version String: " << QSslSocket::sslLibraryVersionString()
-            << "\nLib Build Version Number: " << QSslSocket::sslLibraryBuildVersionNumber()
-            << "\nLib Build Version String: " << QSslSocket::sslLibraryBuildVersionString();
+    qInfo() << "Support SSL: " << QSslSocket::supportsSsl();
+    qInfo() << "Lib Version Number: " << QSslSocket::sslLibraryVersionNumber();
+    qInfo() << "Lib Version String: " << QSslSocket::sslLibraryVersionString();
+    qInfo() << "Lib Build Version Number: " << QSslSocket::sslLibraryBuildVersionNumber();
+    qInfo() << "Lib Build Version String: " << QSslSocket::sslLibraryBuildVersionString();
 }
 
 void FileDownloader::abort() {
