@@ -9,7 +9,7 @@ public:
     static void setValue(const QString& path, const QVariant& value);
     static QVariant value(const QString& path);
 
-    static const QString& prefsPath();
+    static QString prefsPath();
     static void updateRustEnvironmentVariables();
     static void reset();
 

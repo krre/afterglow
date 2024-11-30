@@ -99,7 +99,7 @@ QVariant Settings::value(const QString& path) {
     return obj[keys.last()];
 }
 
-const QString& Settings::prefsPath() {
+QString Settings::prefsPath() {
     return *s_prefsPath;
 }
 
