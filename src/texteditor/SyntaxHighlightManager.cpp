@@ -1,5 +1,6 @@
 #include "SyntaxHighlightManager.h"
-#include <QtCore>
+#include <QFile>
+#include <QJsonDocument>
 
 SyntaxHighlightManager::SyntaxHighlightManager(QObject* parent) : QObject(parent) {
     addSyntaxFile(":/resources/highlighting/rust.json");

@@ -19,10 +19,21 @@
 #include "core/Settings.h"
 #include "core/Utils.h"
 #include "process/RlsManager.h"
+#include <QSplitter>
+#include <QToolButton>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QMenuBar>
+#include <QScrollBar>
+#include <QTableWidget>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QJsonArray>
+#include <QJsonParseError>
+
 #ifdef Q_OS_WIN
-    #include <windows.h>
+#include <windows.h>
 #endif
-#include <QtWidgets>
 
 constexpr int SeparatorAndMenuClearCount = 2;
 

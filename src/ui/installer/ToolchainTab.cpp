@@ -2,7 +2,9 @@
 #include "RustInstaller.h"
 #include "SelectableListView.h"
 #include "InstallToolchain.h"
-#include <QtWidgets>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QVBoxLayout>
 
 ToolchainTab::ToolchainTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     listView = new SelectableListView;

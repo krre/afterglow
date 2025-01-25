@@ -1,7 +1,8 @@
 #include "Global.h"
 #include "Constants.h"
 #include "Settings.h"
-#include <QtGui>
+#include <QFontDatabase>
+#include <QDir>
 
 Q_GLOBAL_STATIC(QString, s_systemRustupHome)
 Q_GLOBAL_STATIC(QString, s_systemCargoHome)

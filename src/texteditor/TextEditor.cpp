@@ -5,7 +5,9 @@
 #include "AutoCompleter.h"
 #include "core/Settings.h"
 #include "core/Constants.h"
-#include <QtWidgets>
+#include <QAbstractItemView>
+#include <QFileInfo>
+#include <QPainter>
 
 TextEditor::TextEditor(QString filePath, SyntaxHighlightManager* syntaxHighlightManager, QWidget* parent) :
     QPlainTextEdit(parent), m_syntaxHighlightManager(syntaxHighlightManager), m_filePath(filePath) {

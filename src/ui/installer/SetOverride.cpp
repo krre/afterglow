@@ -1,7 +1,12 @@
 #include "SetOverride.h"
 #include "core/Utils.h"
 #include "ui/base/BrowseLayout.h"
-#include <QtWidgets>
+#include <QLineEdit>
+#include <QLabel>
+#include <QComboBox>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QFormLayout>
 
 SetOverride::SetOverride(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Set Override"));

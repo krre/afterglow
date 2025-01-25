@@ -2,7 +2,10 @@
 #include "RustInstaller.h"
 #include "SetOverride.h"
 #include "SelectableListView.h"
-#include <QtWidgets>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 OverrideTab::OverrideTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     m_listView = new SelectableListView;

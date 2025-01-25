@@ -3,7 +3,10 @@
 #include "core/Constants.h"
 #include "core/Settings.h"
 #include "core/Global.h"
-#include <QtWidgets>
+#include <QPainter>
+#include <QMenu>
+#include <QGuiApplication>
+#include <QClipboard>
 
 auto constexpr MARGIN = 2;
 Q_GLOBAL_STATIC(QFont, issueFont);

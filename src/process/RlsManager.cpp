@@ -1,5 +1,7 @@
 #include "RlsManager.h"
-#include <QtCore>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 static RlsManager* s_instance = nullptr;
 

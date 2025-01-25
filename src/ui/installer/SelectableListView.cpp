@@ -1,7 +1,9 @@
 #include "SelectableListView.h"
 #include "ui/StringListModel.h"
 #include "core/Utils.h"
-#include <QtWidgets>
+#include <QMenu>
+#include <QGuiApplication>
+#include <QClipboard>
 
 SelectableListView::SelectableListView(const QStringList& rows) {
     setContextMenuPolicy(Qt::CustomContextMenu);

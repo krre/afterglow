@@ -1,5 +1,5 @@
 #include "Utils.h"
-#include <QtWidgets>
+#include <QProcess>
 
 QStringList Utils::runConsoleCommand(const QString& command) {
     QProcess process;

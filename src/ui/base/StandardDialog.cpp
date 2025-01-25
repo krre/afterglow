@@ -1,5 +1,6 @@
 #include "StandardDialog.h"
-#include <QtWidgets>
+#include <QDialogButtonBox>
+#include <QVBoxLayout>
 
 StandardDialog::StandardDialog(QWidget* parent, Qt::WindowFlags f) : QDialog(parent, f) {
     m_buttonBox = new QDialogButtonBox;

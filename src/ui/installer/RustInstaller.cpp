@@ -7,7 +7,13 @@
 #include "core/Settings.h"
 #include "core/FileDownloader.h"
 #include "core/Settings.h"
-#include <QtWidgets>
+#include <QTabWidget>
+#include <QPlainTextEdit>
+#include <QPushButton>
+#include <QDialogButtonBox>
+#include <QScrollBar>
+#include <QVBoxLayout>
+#include <QProcess>
 
 RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Rust Installer"));

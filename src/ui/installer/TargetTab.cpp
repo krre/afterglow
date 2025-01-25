@@ -3,7 +3,10 @@
 #include "SelectableListView.h"
 #include "AddComponentOrTarget.h"
 #include "core/Utils.h"
-#include <QtWidgets>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 TargetTab::TargetTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     m_listView = new SelectableListView;

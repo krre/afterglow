@@ -2,7 +2,6 @@
 #include "ui/ProjectProperties.h"
 #include "core/Settings.h"
 #include "core/Constants.h"
-#include <QtCore>
 
 CargoManager::CargoManager(ProjectProperties* projectProperties, QObject* parent)
     : ProcessManager(parent), m_projectProperties(projectProperties) {

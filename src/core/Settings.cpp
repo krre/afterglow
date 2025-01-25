@@ -2,7 +2,11 @@
 #include "Constants.h"
 #include "Global.h"
 #include "core/Application.h"
-#include <QtCore>
+#include <QSettings>
+#include <QFileInfo>
+#include <QDir>
+#include <QJsonParseError>
+#include <QJsonObject>
 
 Q_GLOBAL_STATIC(QVariantMap, storage);
 Q_GLOBAL_STATIC(QString, s_prefsPath);

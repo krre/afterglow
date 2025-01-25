@@ -4,7 +4,12 @@
 #include "core/Constants.h"
 #include "core/Settings.h"
 #include "core/Utils.h"
-#include <QtWidgets>
+#include <QLineEdit>
+#include <QLabel>
+#include <QGroupBox>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QFormLayout>
 #include <coroutine>
 
 RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {

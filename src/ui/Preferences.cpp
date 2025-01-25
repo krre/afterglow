@@ -3,7 +3,12 @@
 #include "core/Application.h"
 #include "core/Global.h"
 #include "core/Settings.h"
-#include <QtWidgets>
+#include <QLabel>
+#include <QGroupBox>
+#include <QCheckBox>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QLineEdit>
 
 Preferences::Preferences(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Preferences"));

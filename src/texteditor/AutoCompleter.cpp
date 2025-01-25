@@ -1,7 +1,11 @@
 #include "AutoCompleter.h"
 #include "TextEditor.h"
 #include "process/RlsManager.h"
-#include <QtWidgets>
+#include <QStringListModel>
+#include <QAbstractItemView>
+#include <QScrollBar>
+#include <QDir>
+#include <QJsonArray>
 
 AutoCompleter::AutoCompleter(QObject* parent) : QCompleter(parent) {
     setCompletionMode(QCompleter::UnfilteredPopupCompletion);

@@ -2,7 +2,8 @@
 #include "FileSystemProxyModel.h"
 #include "NewName.h"
 #include "Rename.h"
-#include <QtWidgets>
+#include <QMenu>
+#include <QMessageBox>
 
 ProjectTree::ProjectTree(QWidget* parent) : QTreeView(parent) {
     setContextMenuPolicy(Qt::CustomContextMenu);

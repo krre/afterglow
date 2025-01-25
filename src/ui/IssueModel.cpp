@@ -1,5 +1,6 @@
 #include "IssueModel.h"
-#include <QtCore>
+#include <QJsonObject>
+#include <QJsonArray>
 
 IssueModel::IssueModel(QObject* parent) : QAbstractItemModel(parent) {
 }

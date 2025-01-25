@@ -1,17 +1,20 @@
 #include "InstallToolchain.h"
-#include <QtWidgets>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QHBoxLayout>
+#include <QFormLayout>
 
 InstallToolchain::InstallToolchain(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Install Toolchain"));
-    
+
     m_dateLineEdit = new QLineEdit;
-    
+
     m_channelComboBox = new QComboBox;
     m_channelComboBox->addItem("stable");
     m_channelComboBox->addItem("beta");
     m_channelComboBox->addItem("nightly");
     m_channelComboBox->addItem("version");
-    
+
     m_channelLineEdit = new QLineEdit;
     m_channelLineEdit->setEnabled(false);
 
@@ -21,7 +24,7 @@ InstallToolchain::InstallToolchain(QWidget* parent) : StandardDialog(parent) {
     channelHorizontalLayout->addWidget(m_channelLineEdit);
 
     m_hostComboBox = new QComboBox;
-    
+
     m_hostLineEdit = new QLineEdit;
     m_hostLineEdit->setEnabled(false);
 
@@ -39,7 +42,7 @@ InstallToolchain::InstallToolchain(QWidget* parent) : StandardDialog(parent) {
 
     adjustSize();
     resize(530, height());
-    
+
     connect(m_channelComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, qOverload<int>(&InstallToolchain::onChannelCurrentIndexChanged));
     connect(m_hostComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, qOverload<int>(&InstallToolchain::onHostCurrentIndexChanged));
 
@@ -48,11 +51,11 @@ InstallToolchain::InstallToolchain(QWidget* parent) : StandardDialog(parent) {
 
 QString InstallToolchain::toolchain() const {
     QString channel = m_channelComboBox->currentText();
-    
+
     if (m_channelComboBox->currentIndex() == m_channelComboBox->count() - 1) {
         channel = m_channelLineEdit->text();
     }
-    
+
     QString date = m_dateLineEdit->text();
     QString host = m_hostComboBox->currentText();
 
@@ -65,7 +68,7 @@ QString InstallToolchain::toolchain() const {
 
 void InstallToolchain::onChannelCurrentIndexChanged(int index) {
     m_channelLineEdit->setEnabled(index == m_channelComboBox->count() - 1);
-    
+
     if (m_channelLineEdit->isEnabled()) {
         m_channelLineEdit->setFocus();
     }
@@ -73,7 +76,7 @@ void InstallToolchain::onChannelCurrentIndexChanged(int index) {
 
 void InstallToolchain::onHostCurrentIndexChanged(int index) {
     m_hostLineEdit->setEnabled(index == m_hostComboBox->count() - 1);
-    
+
     if (m_hostLineEdit->isEnabled()) {
         m_hostLineEdit->setFocus();
     }

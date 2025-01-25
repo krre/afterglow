@@ -2,7 +2,11 @@
 #include "base/BrowseLayout.h"
 #include "core/Global.h"
 #include "core/Settings.h"
-#include <QtWidgets>
+#include <QLineEdit>
+#include <QLabel>
+#include <QPushButton>
+#include <QDialogButtonBox>
+#include <QFormLayout>
 
 SelectWorkspace::SelectWorkspace(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Select Workspace"));

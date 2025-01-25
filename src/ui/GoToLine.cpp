@@ -1,5 +1,10 @@
 #include "GoToLine.h"
-#include <QtWidgets>
+#include <QLabel>
+#include <QLineEdit>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QIntValidator>
 
 GoToLine::GoToLine(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("Go to Line"));
@@ -8,7 +13,7 @@ GoToLine::GoToLine(QWidget* parent) : StandardDialog(parent) {
 
     auto validator = new QIntValidator(this);
     validator->setBottom(0);
-    
+
     m_lineEdit = new QLineEdit;
     m_lineEdit->setValidator(validator);
 
@@ -22,7 +27,7 @@ GoToLine::GoToLine(QWidget* parent) : StandardDialog(parent) {
 
     buttonBox()->button(QDialogButtonBox::Ok)->setEnabled(false);
     connect(m_lineEdit, &QLineEdit::textChanged, this, &GoToLine::onTextChanged);
-    
+
     m_lineEdit->setFocus();
 }
 

@@ -1,5 +1,4 @@
 #include "ActionManager.h"
-#include <QtWidgets>
 
 static ActionManager* s_instance = nullptr;
 

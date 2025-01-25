@@ -1,5 +1,5 @@
 #include "CommandLine.h"
-#include <QtWidgets>
+#include <QKeyEvent>
 
 CommandLine::CommandLine(QWidget* parent) : QLineEdit(parent) {
 

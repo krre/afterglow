@@ -1,5 +1,10 @@
 #include "ProjectProperties.h"
-#include <QtWidgets>
+#include <QLabel>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QVBoxLayout>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 ProjectProperties::ProjectProperties(QWidget* parent) : QWidget(parent) {
     setWindowTitle(tr("ProjectProperties"));

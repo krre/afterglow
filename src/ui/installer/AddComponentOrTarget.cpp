@@ -2,7 +2,6 @@
 #include "SelectableListView.h"
 #include "core/Utils.h"
 #include "ui/StringListModel.h"
-#include <QtWidgets>
 
 AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& command, QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(title);
@@ -16,7 +15,7 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
             list.removeAt(i);
         }
     }
-    
+
     m_listView = new SelectableListView(list);
     setContentWidget(m_listView);
 

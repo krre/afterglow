@@ -2,7 +2,12 @@
 #include "base/BrowseLayout.h"
 #include "core/Global.h"
 #include "process/CargoManager.h"
-#include <QtWidgets>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QLabel>
+#include <QPushButton>
+#include <QDialogButtonBox>
+#include <QFormLayout>
 
 NewProject::NewProject(QWidget* parent) : StandardDialog(parent) {
     setWindowTitle(tr("New Project"));
