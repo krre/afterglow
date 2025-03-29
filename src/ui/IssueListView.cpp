@@ -8,7 +8,7 @@
 #include <QGuiApplication>
 #include <QClipboard>
 
-auto constexpr MARGIN = 2;
+auto constexpr Margin = 2;
 Q_GLOBAL_STATIC(QFont, issueFont);
 
 IssueDelegate::IssueDelegate(QObject* parent) : QStyledItemDelegate(parent) {
@@ -41,7 +41,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     // Icon
     QFont fontIcon = Global::fontAwesomeFont();
-    int iconHeight = fmText.height() - MARGIN * 2;
+    int iconHeight = fmText.height() - Margin * 2;
     int iconWidth = iconHeight;
     fontIcon.setPixelSize(iconHeight);
     painter->setFont(fontIcon);
@@ -61,7 +61,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     painter->setPen(levelColor);
     painter->setClipRect(opt.rect);
-    painter->drawText(MARGIN, y + iconHeight, levelIcon);
+    painter->drawText(Margin, y + iconHeight, levelIcon);
 
     // Text color
     QColor textColor;
@@ -79,11 +79,11 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     if (!selected) {
         painter->setClipRect(opt.rect);
         QString message = index.data(static_cast<int>(IssueModel::Role::Message)).toString();
-        painter->drawText(iconWidth + MARGIN * 3, fmText.ascent() + y, message);
+        painter->drawText(iconWidth + Margin * 3, fmText.ascent() + y, message);
     } else {
         painter->setClipRect(opt.rect);
         QString rendered = index.data(static_cast<int>(IssueModel::Role::Rendered)).toString();
-        QRect rect = QRect(iconWidth + MARGIN * 3, y, opt.rect.width(), opt.rect.height());
+        QRect rect = QRect(iconWidth + Margin * 3, y, opt.rect.width(), opt.rect.height());
         painter->drawText(rect, Qt::AlignLeft, rendered);
     }
 
@@ -94,7 +94,7 @@ void IssueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
         QString line = index.data(static_cast<int>(IssueModel::Role::Line)).toString();
         QString column = index.data(static_cast<int>(IssueModel::Role::Column)).toString();
         QString filenameWithPos = QString("%1 %2:%3").arg(filename, line, column);
-        painter->drawText(opt.rect.width() - fmText.horizontalAdvance(filenameWithPos) - MARGIN, fmText.ascent() + y, filenameWithPos);
+        painter->drawText(opt.rect.width() - fmText.horizontalAdvance(filenameWithPos) - Margin, fmText.ascent() + y, filenameWithPos);
     }
 
     // Separator lines
