@@ -590,10 +590,6 @@ void MainWindow::createActions() {
     ActionManager::addAction(Const::Action::CloseOther, fileMenu->addAction(tr("Close Other"), m_sourceTabWidget, &SourceTabWidget::closeOthers));
 
     fileMenu->addSeparator();
-
-    fileMenu->addAction(tr("Preferences..."), this, &MainWindow::onPreferencesAction);
-
-    fileMenu->addSeparator();
     fileMenu->addAction(tr("Exit"), Qt::CTRL | Qt::Key_Q, this, &MainWindow::close);
 
     m_editMenu = menuBar()->addMenu(tr("Edit"));
@@ -624,6 +620,9 @@ void MainWindow::createActions() {
     m_editMenu->addAction(tr("Clean Trailing Whitespace"), this, &MainWindow::onCleanTrailingWhitespaceAction);
     m_editMenu->addSeparator();
     m_editMenu->addAction(tr("Go to Line..."), Qt::CTRL | Qt::Key_G, this, &MainWindow::onGoToLineAction);
+
+    m_editMenu->addSeparator();
+    m_editMenu->addAction(tr("Preferences..."), this, &MainWindow::onPreferencesAction);
 
     m_buildMenu = menuBar()->addMenu(tr("Build"));
     ActionManager::addAction(Const::Action::Build, m_buildMenu->addAction(tr("Build"), Qt::CTRL | Qt::Key_B, this, &MainWindow::onBuildAction));
