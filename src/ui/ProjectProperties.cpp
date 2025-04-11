@@ -84,7 +84,7 @@ void ProjectProperties::updateMetadata() {
     m_metadata = QJsonDocument::fromJson(process.readAllStandardOutput()).object();
     QJsonArray targets = m_metadata["packages"].toArray().at(0).toObject()["targets"].toArray();
 
-    for (int i = 0; i < targets.size(); i++) {
+    for (int i = 0; i < targets.size(); ++i) {
         if (targets.at(i).toObject()["kind"].toArray().at(0).toString() == "bin") {
             m_runComboBox->addItem(targets.at(i).toObject()["name"].toString());
         }

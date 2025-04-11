@@ -57,7 +57,7 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     m_fileDownloader = new FileDownloader(this);
     connect(m_fileDownloader, &FileDownloader::downloaded, this, &RustInstaller::onDownloaded);
 
-    for (int i = 0; i < m_tabWidget->count(); i++) {
+    for (int i = 0; i < m_tabWidget->count(); ++i) {
         InstallerTab* tab = static_cast<InstallerTab*>(m_tabWidget->widget(i));
         tab->load();
     }

@@ -493,7 +493,7 @@ void MainWindow::onFileCreated(const QString& filePath) {
 }
 
 void MainWindow::onFileRenamed(const QString& oldPath, const QString& newPath) {
-    for (int i = 0; i < m_sourceTabWidget->count(); i++) {
+    for (int i = 0; i < m_sourceTabWidget->count(); ++i) {
         TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
 
         if (editor->filePath().contains(oldPath)) {
@@ -913,7 +913,7 @@ void MainWindow::saveSession() {
 
     QJsonArray openFiles;
 
-    for (int i = 0; i < m_sourceTabWidget->count(); i++) {
+    for (int i = 0; i < m_sourceTabWidget->count(); ++i) {
         TextEditor* editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(i));
 
         QJsonObject obj;
@@ -958,7 +958,7 @@ void MainWindow::loadSession() {
     int selectedTab = session["selectedTab"].toInt();
     QString selectedFilePath = array.at(selectedTab).toObject()["path"].toString();
 
-    for (int i = 0; i < array.count(); i++) {
+    for (int i = 0; i < array.count(); ++i) {
         QJsonObject obj = array.at(i).toObject();
         QString filePath = obj["path"].toString();
 

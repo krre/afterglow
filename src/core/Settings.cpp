@@ -96,7 +96,7 @@ QVariant Settings::value(const QString& path) {
     QStringList keys = path.split('.');
     QVariantMap obj = *storage;
 
-    for (int i = 0; i < keys.count() - 1; i++) {
+    for (int i = 0; i < keys.count() - 1; ++i) {
         obj = obj[keys.at(i)].toMap();
     }
 
@@ -142,7 +142,7 @@ void Settings::reset() {
 }
 
 void Settings::cleanupDeprecated(QVariantMap& src, QVariantMap& dst) {
-    for (auto it = dst.begin(); it != dst.end(); it++) {
+    for (auto it = dst.begin(); it != dst.end(); ++it) {
         if (src.contains(it.key())) {
             if (it.value().canConvert<QVariantMap>()) {
                 QVariantMap srcObj = src[it.key()].toMap();
@@ -157,7 +157,7 @@ void Settings::cleanupDeprecated(QVariantMap& src, QVariantMap& dst) {
 }
 
 void Settings::appendNew(QVariantMap& src, QVariantMap& dst) {
-    for (auto it = src.begin(); it != src.end(); it++) {
+    for (auto it = src.begin(); it != src.end(); ++it) {
         if (dst.contains(it.key())) {
             if (it.value().canConvert<QVariantMap>()) {
                 QVariantMap srcObj = it.value().toMap();

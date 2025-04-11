@@ -10,7 +10,7 @@ SourceTabWidget::SourceTabWidget(QWidget* parent) : QTabWidget(parent) {
 }
 
 int SourceTabWidget::findTab(const QString& filePath) {
-    for (int i = 0; i < count(); i++) {
+    for (int i = 0; i < count(); ++i) {
         if (static_cast<TextEditor*>(widget(i))->filePath() == filePath) {
             return i;
         }
@@ -20,7 +20,7 @@ int SourceTabWidget::findTab(const QString& filePath) {
 }
 
 void SourceTabWidget::saveAll() {
-    for (int i = 0; i < count(); i++) {
+    for (int i = 0; i < count(); ++i) {
         static_cast<TextEditor*>(widget(i))->saveFile();
     }
 }
@@ -28,7 +28,7 @@ void SourceTabWidget::saveAll() {
 void SourceTabWidget::closeFile(const QString& filePath) {
     QVector<int> indices;
 
-    for (int i = 0; i < count(); i++) {
+    for (int i = 0; i < count(); ++i) {
         if (static_cast<TextEditor*>(widget(i))->filePath().contains(filePath)) {
             indices.append(i);
         }
@@ -63,7 +63,7 @@ void SourceTabWidget::closeOthers() {
         if (i != currentIndex()) {
             closeTab(i);
         } else {
-            i++;
+            ++i;
         }
     }
 }

@@ -149,7 +149,7 @@ void TextEditor::toggleSingleLineComment() {
     QVector<int> commentPositions(endRow - startRow + 1, -1);
 
     // Find commented lines and set add or remove comment mode.
-    for (int row = startRow, i = 0; row <= endRow; row++, i++) {
+    for (int row = startRow, i = 0; row <= endRow; row++, ++i) {
         QTextBlock block = document()->findBlockByLineNumber(row);
         if (!block.text().size())  continue;
 
@@ -168,7 +168,7 @@ void TextEditor::toggleSingleLineComment() {
 
     cursor.beginEditBlock();
 
-    for (int row = startRow, i = 0; row <= endRow; row++, i++) {
+    for (int row = startRow, i = 0; row <= endRow; row++, ++i) {
         QTextBlock block = document()->findBlockByLineNumber(row);
         if (!block.text().size()) continue;
 
@@ -421,7 +421,7 @@ void TextEditor::goToLine(int line) {
 void TextEditor::cleanTrailingWhitespace() {
     QTextCursor cursor = textCursor();
 
-    for (int i = 0; i < blockCount(); i++) {
+    for (int i = 0; i < blockCount(); ++i) {
         QTextBlock block = document()->findBlockByNumber(i);
         int size = block.text().size();
         if (!size) continue;
