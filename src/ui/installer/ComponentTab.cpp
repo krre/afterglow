@@ -39,7 +39,7 @@ void ComponentTab::load() {
     m_listView->load("rustup component list", [] (QStringList& list) {
         Utils::defaultInstalledFilter(list);
 
-        for (int i = list.count() - 1; i >= 0; i--) {
+        for (int i = list.count() - 1; i >= 0; --i) {
             if (list.at(i).left(8) == "rust-std") {
                 list.removeAt(i);
             }

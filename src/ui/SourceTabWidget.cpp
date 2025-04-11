@@ -35,7 +35,7 @@ void SourceTabWidget::closeFile(const QString& filePath) {
     }
 
     // Remove tabs in reverse order
-    for (int i = indices.count() - 1; i >= 0; i--) {
+    for (int i = indices.count() - 1; i >= 0; --i) {
         closeTab(indices.at(i));
     }
 }

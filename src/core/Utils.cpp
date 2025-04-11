@@ -32,7 +32,7 @@ void Utils::runRustupCommand(const QStringList& arguments) {
 }
 
 void Utils::defaultInstalledFilter(QStringList& list) {
-    for (int i = list.count() - 1; i >= 0; i--) {
+    for (int i = list.count() - 1; i >= 0; --i) {
         if (list.at(i).contains("(default)")) {
             continue;
         } else if (list.at(i).contains("(installed)")) {

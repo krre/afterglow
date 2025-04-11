@@ -233,7 +233,7 @@ void MainWindow::onSaveAsAction() {
 }
 
 void MainWindow::onClearMenuRecentFilesAction() {
-    for (int i = m_recentFilesMenu->actions().size() - SeparatorAndMenuClearCount - 1; i >= 0; i--) {
+    for (int i = m_recentFilesMenu->actions().size() - SeparatorAndMenuClearCount - 1; i >= 0; --i) {
         m_recentFilesMenu->removeAction(m_recentFilesMenu->actions().at(i));
     }
 
@@ -241,7 +241,7 @@ void MainWindow::onClearMenuRecentFilesAction() {
 }
 
 void MainWindow::onClearMenuRecentProjectsAction() {
-    for (int i = m_recentProjectsMenu->actions().size() - SeparatorAndMenuClearCount - 1; i >= 0; i--) {
+    for (int i = m_recentProjectsMenu->actions().size() - SeparatorAndMenuClearCount - 1; i >= 0; --i) {
         m_recentProjectsMenu->removeAction(m_recentProjectsMenu->actions().at(i));
     }
 
