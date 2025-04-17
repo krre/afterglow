@@ -22,7 +22,7 @@ void Settings::init() {
     QDir().mkpath(prefsDir);
 
     *s_prefsPath = prefsDir + "/" + Application::PrefsName;
-    QFile resPrefsFile(":/resources/prefs.json");
+    QFile resPrefsFile(":/assets/prefs.json");
 
     if (!resPrefsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Failed to open file" << resPrefsFile.fileName();

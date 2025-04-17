@@ -11,8 +11,6 @@ add_library(common STATIC
     process/CargoManager.cpp process/CargoManager.h
     process/ProcessManager.cpp process/ProcessManager.h
     process/RlsManager.cpp process/RlsManager.h
-    resources/highlighting/rust.json
-    resources/prefs.json
     texteditor/AutoCompleter.cpp texteditor/AutoCompleter.h
     texteditor/Highlighter.cpp texteditor/Highlighter.h
     texteditor/LineNumberArea.cpp texteditor/LineNumberArea.h

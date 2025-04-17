@@ -12,7 +12,7 @@ void Global::init() {
     *s_systemRustupHome = qEnvironmentVariable(Const::Environment::RustupHome);
     *s_systemCargoHome = qEnvironmentVariable(Const::Environment::CargoHome);
 
-    int id = QFontDatabase::addApplicationFont(":/resources/font/fontawesome/Font-Awesome-5-Free-Solid-900.otf");
+    int id = QFontDatabase::addApplicationFont(":/assets/font/fontawesome/Font-Awesome-5-Free-Solid-900.otf");
 
     if (id < 0) {
         qWarning() << "Failed to load FontAwesome!";

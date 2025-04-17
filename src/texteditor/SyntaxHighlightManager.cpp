@@ -3,7 +3,7 @@
 #include <QJsonDocument>
 
 SyntaxHighlightManager::SyntaxHighlightManager(QObject* parent) : QObject(parent) {
-    addSyntaxFile(":/resources/highlighting/rust.json");
+    addSyntaxFile(":/assets/highlighting/rust.json");
 }
 
 void SyntaxHighlightManager::addSyntaxFile(const QString& path) {
