@@ -16,4 +16,4 @@ https://github.com/krre/afterglow/releases
 3. Create Rust project by ```File -> New -> Project``` dialog.
 
 ## Screenshots
-![Screenshot](/images/screenshot-1.png?raw=true)
+![Screenshot](/assets/screenshots/screenshot-1.png?raw=true)
