@@ -61,7 +61,7 @@ void AutoCompleter::onCompletionResult(const QJsonArray& result) {
     QStringList words;
 
     for (const QJsonValue& value : result) {
-        words << value.toObject()["label"].toString();
+        words << value.toObject().value("label").toString();
     }
 
     m_listModel->setStringList(words);
