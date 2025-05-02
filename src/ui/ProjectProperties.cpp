@@ -73,12 +73,7 @@ void ProjectProperties::reset() {
 void ProjectProperties::updateMetadata() {
     QString manifestPath = m_projectPath + "/Cargo.toml";
     QProcess process;
-    QStringList arguments;
-    arguments << "metadata";
-    arguments << "--format-version" << "1";
-    arguments << "--manifest-path" << manifestPath;
-    arguments << "--no-deps";
-    process.start("cargo", arguments);
+    process.start("cargo", { "metadata", "--format-version", "1", "--manifest-path", manifestPath, "--no-deps" });
     process.waitForFinished();
 
     m_metadata = QJsonDocument::fromJson(process.readAllStandardOutput()).object();
