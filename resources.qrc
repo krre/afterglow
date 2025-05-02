@@ -2,6 +2,6 @@
     <qresource prefix="/">
         <file>assets/highlighting/rust.json</file>
         <file>assets/prefs.json</file>
-        <file>assets/font/fontawesome/Font-Awesome-5-Free-Solid-900.otf</file>
+        <file>assets/font/fontawesome/Font Awesome 6 Free-Solid-900.otf</file>
     </qresource>
 </RCC>
