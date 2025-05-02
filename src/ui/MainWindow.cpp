@@ -81,28 +81,34 @@ MainWindow::MainWindow() {
 
     QFont font = Global::fontAwesomeFont();
 
+    constexpr auto ButtonWidth = 30;
+
     auto buildToolButtonCargo = new QToolButton(cargoTab);
     buildToolButtonCargo->setToolTip(tr("Build"));
     buildToolButtonCargo->setFont(font);
     buildToolButtonCargo->setText(Const::FontAwesome::Hammer);
+    buildToolButtonCargo->setFixedWidth(ButtonWidth);
     cargoVerticalLayout->addWidget(buildToolButtonCargo);
 
     auto runToolButtonCargo = new QToolButton(cargoTab);
     runToolButtonCargo->setToolTip(tr("Run"));
     runToolButtonCargo->setFont(font);
     runToolButtonCargo->setText(Const::FontAwesome::Play);
+    runToolButtonCargo->setFixedWidth(ButtonWidth);
     cargoVerticalLayout->addWidget(runToolButtonCargo);
 
     auto stopToolButtonCargo = new QToolButton(cargoTab);
     stopToolButtonCargo->setToolTip(tr("Stop"));
     stopToolButtonCargo->setFont(font);
     stopToolButtonCargo->setText(Const::FontAwesome::Stop);
+    stopToolButtonCargo->setFixedWidth(ButtonWidth);
     cargoVerticalLayout->addWidget(stopToolButtonCargo);
 
     auto clearToolButtonCargo = new QToolButton(cargoTab);
     clearToolButtonCargo->setToolTip(tr("Clear"));
     clearToolButtonCargo->setFont(font);
     clearToolButtonCargo->setText(Const::FontAwesome::TrashAlt);
+    clearToolButtonCargo->setFixedWidth(ButtonWidth);
     cargoVerticalLayout->addWidget(clearToolButtonCargo);
 
     cargoVerticalLayout->addStretch();
