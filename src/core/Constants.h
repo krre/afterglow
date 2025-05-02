@@ -38,7 +38,6 @@ namespace Color {
     constexpr auto IssueSeparator = "#969696";
     constexpr auto WarningIssueIcon = "#ffd800";
     constexpr auto ErrorIssueIcon = "#ff3600";
-
 }
 
 namespace Action {
