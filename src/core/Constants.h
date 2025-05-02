@@ -27,6 +27,7 @@ namespace FontAwesome {
     constexpr auto Play = QChar(0xf04b);
     constexpr auto ExclamationTriangle = QChar(0xf071);
     constexpr auto TimesCircle = QChar(0xf057);
+    constexpr auto Hammer = QChar(0xf6e3);
 }
 
 namespace Color {

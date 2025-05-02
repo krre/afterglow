@@ -81,10 +81,10 @@ MainWindow::MainWindow() {
 
     QFont font = Global::fontAwesomeFont();
 
-    auto buildToolButtonCargo = new QToolButton();
+    auto buildToolButtonCargo = new QToolButton(cargoTab);
     buildToolButtonCargo->setToolTip(tr("Build"));
     buildToolButtonCargo->setFont(font);
-    buildToolButtonCargo->setText(Const::FontAwesome::Cog);
+    buildToolButtonCargo->setText(Const::FontAwesome::Hammer);
     cargoVerticalLayout->addWidget(buildToolButtonCargo);
 
     auto runToolButtonCargo = new QToolButton(cargoTab);
