@@ -1,5 +1,7 @@
 #include "FileDownloader.h"
 #include <QLoggingCategory>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
 FileDownloader::FileDownloader(QObject* parent) : QObject(parent) {
     QLoggingCategory::setFilterRules("qt.network.ssl.warning=false");

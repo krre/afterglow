@@ -1,9 +1,5 @@
 #pragma once
-#include <QObject>
-#include <QByteArray>
 #include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
 
 class FileDownloader : public QObject {
     Q_OBJECT
