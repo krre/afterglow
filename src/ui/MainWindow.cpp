@@ -18,6 +18,7 @@
 #include "core/Constants.h"
 #include "core/Settings.h"
 #include "core/Utils.h"
+#include "base/IconToolButton.h"
 #include "process/RlsManager.h"
 #include <QSplitter>
 #include <QToolButton>
@@ -79,36 +80,24 @@ MainWindow::MainWindow() {
     cargoVerticalLayout->setSpacing(0);
     cargoVerticalLayout->setContentsMargins(1, 1, 1, 1);
 
-    QFont font = Global::fontAwesomeFont();
-
-    constexpr auto ButtonWidth = 30;
-
-    auto buildToolButtonCargo = new QToolButton(cargoTab);
+    auto buildToolButtonCargo = new IconToolButton;
     buildToolButtonCargo->setToolTip(tr("Build"));
-    buildToolButtonCargo->setFont(font);
     buildToolButtonCargo->setText(Const::FontAwesome::Hammer);
-    buildToolButtonCargo->setFixedWidth(ButtonWidth);
     cargoVerticalLayout->addWidget(buildToolButtonCargo);
 
-    auto runToolButtonCargo = new QToolButton(cargoTab);
+    auto runToolButtonCargo = new IconToolButton;
     runToolButtonCargo->setToolTip(tr("Run"));
-    runToolButtonCargo->setFont(font);
     runToolButtonCargo->setText(Const::FontAwesome::Play);
-    runToolButtonCargo->setFixedWidth(ButtonWidth);
     cargoVerticalLayout->addWidget(runToolButtonCargo);
 
-    auto stopToolButtonCargo = new QToolButton(cargoTab);
+    auto stopToolButtonCargo = new IconToolButton;
     stopToolButtonCargo->setToolTip(tr("Stop"));
-    stopToolButtonCargo->setFont(font);
     stopToolButtonCargo->setText(Const::FontAwesome::Stop);
-    stopToolButtonCargo->setFixedWidth(ButtonWidth);
     cargoVerticalLayout->addWidget(stopToolButtonCargo);
 
-    auto clearToolButtonCargo = new QToolButton(cargoTab);
+    auto clearToolButtonCargo = new IconToolButton;
     clearToolButtonCargo->setToolTip(tr("Clear"));
-    clearToolButtonCargo->setFont(font);
     clearToolButtonCargo->setText(Const::FontAwesome::TrashAlt);
-    clearToolButtonCargo->setFixedWidth(ButtonWidth);
     cargoVerticalLayout->addWidget(clearToolButtonCargo);
 
     cargoVerticalLayout->addStretch();
@@ -136,9 +125,8 @@ MainWindow::MainWindow() {
     auto issueVerticalLayout = new QVBoxLayout();
     issueVerticalLayout->setSpacing(0);
 
-    auto clearToolButtonIssues = new QToolButton(issuesTab);
+    auto clearToolButtonIssues = new IconToolButton;
     clearToolButtonIssues->setToolTip(tr("Clear"));
-    clearToolButtonIssues->setFont(font);
     clearToolButtonIssues->setText(Const::FontAwesome::TrashAlt);
     issueVerticalLayout->addWidget(clearToolButtonIssues);
 

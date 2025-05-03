@@ -1,6 +1,7 @@
 configure_file(config.h.in config.h @ONLY)
 
 add_library(common STATIC
+    core/Application.h core/Application.cpp
     core/Constants.h
     core/async/CoTask.h
     core/Constants.h
@@ -44,8 +45,8 @@ add_library(common STATIC
     ui/Rename.cpp ui/Rename.h
     ui/SelectWorkspace.cpp ui/SelectWorkspace.h
     ui/StringListModel.cpp ui/StringListModel.h
-    core/Application.h core/Application.cpp
     ui/SourceTabWidget.h ui/SourceTabWidget.cpp
+    ui/base/IconToolButton.h ui/base/IconToolButton.cpp
 )
 
 # For visibility in IDE (e.g., Qt Creator)
