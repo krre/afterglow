@@ -201,6 +201,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 void MainWindow::onNewProjectAction() {
     NewProject newCargoProject(this);
     if (newCargoProject.exec() == QDialog::Rejected) return;
+
     m_cargoManager->createProject(newCargoProject.target(), newCargoProject.path());
 }
 
@@ -328,6 +329,7 @@ void MainWindow::onDecreaseIndentAction() {
 void MainWindow::onGoToLineAction() {
     GoToLine goToLine(this);
     if (goToLine.exec() == QDialog::Rejected) return;
+
     m_editor->goToLine(goToLine.line());
 }
 
@@ -989,6 +991,7 @@ void MainWindow::openProject(const QString& path, bool isNew) {
                 addSourceTab(filePath);
             }
         }
+
         m_projectProperties->setProject(m_projectPath);
     } else {
         loadProjectProperties();
