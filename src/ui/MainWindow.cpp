@@ -19,6 +19,7 @@
 #include "core/Settings.h"
 #include "core/Utils.h"
 #include "base/IconToolButton.h"
+#include "base/RecentMenu.h"
 #include "process/RlsManager.h"
 #include <QSplitter>
 #include <QToolButton>
@@ -35,8 +36,6 @@
 #ifdef Q_OS_WIN
 #include <windows.h>
 #endif
-
-constexpr int SeparatorAndMenuClearCount = 2;
 
 MainWindow::MainWindow() {
     m_syntaxHighlightManager = new SyntaxHighlightManager(this);
@@ -225,22 +224,6 @@ void MainWindow::onSaveAsAction() {
             QMessageBox::critical(this, tr("Duplicate"), tr("Error creating copy of file"));
         }
     }
-}
-
-void MainWindow::onClearMenuRecentFilesAction() {
-    for (int i = m_recentFilesMenu->actions().size() - SeparatorAndMenuClearCount - 1; i >= 0; --i) {
-        m_recentFilesMenu->removeAction(m_recentFilesMenu->actions().at(i));
-    }
-
-    updateMenuState();
-}
-
-void MainWindow::onClearMenuRecentProjectsAction() {
-    for (int i = m_recentProjectsMenu->actions().size() - SeparatorAndMenuClearCount - 1; i >= 0; --i) {
-        m_recentProjectsMenu->removeAction(m_recentProjectsMenu->actions().at(i));
-    }
-
-    updateMenuState();
 }
 
 void MainWindow::onNewFileAction() {
@@ -519,7 +502,7 @@ int MainWindow::addSourceTab(const QString& filePath) {
         m_sourceTabWidget->setTabToolTip(index, filePath);
         m_sourceTabWidget->setCurrentIndex(index);
 
-        addRecentFile(filePath);
+        m_recentFilesMenu->addRecent(filePath);
 
         return index;
     }
@@ -565,13 +548,13 @@ void MainWindow::createActions() {
     ActionManager::addAction(Const::Action::Open, fileMenu->addAction(tr("Open..."), Qt::CTRL | Qt::Key_O, this, &MainWindow::onOpenAction));
     ActionManager::addAction(Const::Action::CloseProject, fileMenu->addAction(tr("Close Project"), this, &MainWindow::onCloseProjectAction));
 
-    m_recentFilesMenu = fileMenu->addMenu(tr("Recent Files"));
-    m_recentFilesMenu->addSeparator();
-    m_recentFilesMenu->addAction(tr("Clear Menu"), this, &MainWindow::onClearMenuRecentFilesAction);
+    m_recentFilesMenu = new RecentMenu(tr("Recent Files"), fileMenu);
+    fileMenu->addMenu(m_recentFilesMenu);
+    connect(m_recentFilesMenu, &RecentMenu::activated, this, &MainWindow::addSourceTab);
 
-    m_recentProjectsMenu = fileMenu->addMenu(tr("Recent Projects"));
-    m_recentProjectsMenu->addSeparator();
-    m_recentProjectsMenu->addAction(tr("Clear Menu"), this, &MainWindow::onClearMenuRecentProjectsAction);
+    m_recentProjectsMenu = new RecentMenu("Recent Projects", fileMenu);
+    fileMenu->addMenu(m_recentProjectsMenu);
+    connect(m_recentProjectsMenu, &RecentMenu::activated, this, [this] (const QString& recent) { openProject(recent); });
 
     fileMenu->addSeparator();
 
@@ -649,40 +632,6 @@ void MainWindow::createActions() {
     helpMenu->addAction(tr("The Book"), this, &MainWindow::onTheBookAction);
     helpMenu->addSeparator();
     helpMenu->addAction(tr("About..."), this, &MainWindow::onAboutAction);
-}
-
-void MainWindow::addRecentFile(const QString& filePath) {
-    addRecentFileOrProject(m_recentFilesMenu, filePath, [=, this] {
-        addSourceTab(filePath);
-    });
-}
-
-void MainWindow::addRecentProject(const QString& projectPath) {
-    if (!QFileInfo::exists(projectPath + "/Cargo.toml")) return;
-
-    addRecentFileOrProject(m_recentProjectsMenu, projectPath, [=, this] {
-        openProject(projectPath);
-    });
-}
-
-void MainWindow::addRecentFileOrProject(QMenu* menu, const QString& filePath, const std::function<void()>& callback) {
-    const auto actions = menu->actions();
-
-    for (QAction* action : actions) {
-        if (action->text() == filePath) {
-            menu->removeAction(action);
-        }
-    }
-
-    QAction* fileAction = new QAction(filePath);
-    connect(fileAction, &QAction::triggered, callback);
-    menu->insertAction(menu->actions().constFirst(), fileAction);
-
-    if (menu->actions().size() > Const::Window::MaxRecentFiles + SeparatorAndMenuClearCount) {
-        menu->removeAction(menu->actions().at(menu->actions().size() - SeparatorAndMenuClearCount - 1));
-    }
-
-    updateMenuState();
 }
 
 void MainWindow::saveProjectProperties() {
@@ -786,16 +735,14 @@ void MainWindow::loadSettings() {
     QVariantList recentProjects = Settings::value("gui.mainWindow.recent.projects").toList();
 
     for (int i = recentProjects.size() - 1; i >= 0; --i) {
-        QString projectPath = recentProjects.at(i).toString();
-        addRecentProject(projectPath);
+        m_recentProjectsMenu->addRecent(recentProjects.at(i).toString());
     }
 
     // Recent files
     QVariantList recentFiles = Settings::value("gui.mainWindow.recent.files").toList();
 
     for (int i = recentFiles.size() - 1; i >= 0; --i) {
-        QString filePath = recentFiles.at(i).toString();
-        addRecentFile(filePath);
+        m_recentFilesMenu->addRecent(recentFiles.at(i).toString());
     }
 
     // Last project
@@ -852,23 +799,9 @@ void MainWindow::saveSettings() {
     Settings::setValue("gui.mainWindow.output.visible", showOutputAction->isChecked());
     Settings::setValue("gui.mainWindow.output.tab", m_outputTabWidget->currentIndex());
 
-    // Recent projects
-    QJsonArray recentProjects;
-
-    for (int i = 0; i < m_recentProjectsMenu->actions().size() - SeparatorAndMenuClearCount; ++i) {
-        recentProjects.append(m_recentProjectsMenu->actions().at(i)->text());
-    }
-
-    Settings::setValue("gui.mainWindow.recent.projects", recentProjects);
-
-    // Recent files
-    QJsonArray recentFiles;
-
-    for (int i = 0; i < m_recentFilesMenu->actions().size() - SeparatorAndMenuClearCount; ++i) {
-        recentFiles.append(m_recentFilesMenu->actions().at(i)->text());
-    }
-
-    Settings::setValue("gui.mainWindow.recent.files", recentFiles);
+    // Recents
+    Settings::setValue("gui.mainWindow.recent.projects", m_recentProjectsMenu->recents());
+    Settings::setValue("gui.mainWindow.recent.files", m_recentFilesMenu->recents());
 
     // Last project
     Settings::setValue("gui.mainWindow.session.project", m_projectPath);
@@ -1003,7 +936,7 @@ void MainWindow::openProject(const QString& path, bool isNew) {
     }
 
     updateMenuState();
-    addRecentProject(path);
+    m_recentProjectsMenu->addRecent(path);
 }
 
 void MainWindow::closeProject() {
@@ -1054,8 +987,8 @@ void MainWindow::updateMenuState() {
     ActionManager::action(Const::Action::CloseAll)->setEnabled(index >= 0);
     ActionManager::action(Const::Action::CloseOther)->setEnabled(index >= 0);
 
-    m_recentProjectsMenu->menuAction()->setEnabled(m_recentProjectsMenu->actions().size() > SeparatorAndMenuClearCount);
-    m_recentFilesMenu->menuAction()->setEnabled(m_recentFilesMenu->actions().size() > SeparatorAndMenuClearCount);
+    m_recentProjectsMenu->updateState();
+    m_recentFilesMenu->updateState();
 
     m_editMenu->menuAction()->setEnabled(index >= 0);
 }

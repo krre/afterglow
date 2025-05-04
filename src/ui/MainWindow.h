@@ -14,6 +14,7 @@ class AutoCompleter;
 class IssueModel;
 class IssueListView;
 class SourceTabWidget;
+class RecentMenu;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -32,8 +33,6 @@ private slots:
 
     void onOpenAction();
     void onCloseProjectAction();
-    void onClearMenuRecentFilesAction();
-    void onClearMenuRecentProjectsAction();
 
     void onSaveAction();
     void onSaveAsAction();
@@ -116,10 +115,6 @@ private:
 
     void createActions();
 
-    void addRecentFile(const QString& filePath);
-    void addRecentProject(const QString& projectPath);
-    void addRecentFileOrProject(QMenu* menu, const QString& filePath, const std::function<void()>& callback);
-
     void saveProjectProperties();
     void loadProjectProperties();
 
@@ -136,8 +131,8 @@ private:
     void updateMenuState();
     void prepareBuild();
 
-    QMenu* m_recentFilesMenu = nullptr;
-    QMenu* m_recentProjectsMenu = nullptr;
+    RecentMenu* m_recentFilesMenu = nullptr;
+    RecentMenu* m_recentProjectsMenu = nullptr;
 
     QMenu* m_editMenu = nullptr;
     QMenu* m_buildMenu = nullptr;

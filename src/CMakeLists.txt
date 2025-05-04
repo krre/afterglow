@@ -47,6 +47,7 @@ add_library(common STATIC
     ui/StringListModel.cpp ui/StringListModel.h
     ui/SourceTabWidget.h ui/SourceTabWidget.cpp
     ui/base/IconToolButton.h ui/base/IconToolButton.cpp
+    ui/base/RecentMenu.h ui/base/RecentMenu.cpp
 )
 
 # For visibility in IDE (e.g., Qt Creator)
