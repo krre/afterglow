@@ -1,5 +1,5 @@
 #include "Preferences.h"
-#include "base/BrowseLayout.h"
+#include "widgets/BrowseLayout.h"
 #include "core/Application.h"
 #include "core/Global.h"
 #include "core/Settings.h"

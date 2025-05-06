@@ -17,8 +17,8 @@ add_library(common STATIC
     texteditor/LineNumberArea.cpp texteditor/LineNumberArea.h
     texteditor/SyntaxHighlightManager.cpp texteditor/SyntaxHighlightManager.h
     texteditor/TextEditor.cpp texteditor/TextEditor.h
-    ui/base/BrowseLayout.cpp ui/base/BrowseLayout.h
-    ui/base/StandardDialog.cpp ui/base/StandardDialog.h
+    ui/widgets/BrowseLayout.cpp ui/widgets/BrowseLayout.h
+    ui/widgets/StandardDialog.cpp ui/widgets/StandardDialog.h
     ui/installer/AddComponentOrTarget.cpp ui/installer/AddComponentOrTarget.h
     ui/installer/ComponentTab.cpp ui/installer/ComponentTab.h
     ui/installer/InstallerTab.cpp ui/installer/InstallerTab.h
@@ -46,8 +46,8 @@ add_library(common STATIC
     ui/SelectWorkspace.cpp ui/SelectWorkspace.h
     ui/StringListModel.cpp ui/StringListModel.h
     ui/SourceTabWidget.h ui/SourceTabWidget.cpp
-    ui/base/IconToolButton.h ui/base/IconToolButton.cpp
-    ui/base/RecentMenu.h ui/base/RecentMenu.cpp
+    ui/widgets/IconToolButton.h ui/widgets/IconToolButton.cpp
+    ui/widgets/RecentMenu.h ui/widgets/RecentMenu.cpp
 )
 
 # For visibility in IDE (e.g., Qt Creator)

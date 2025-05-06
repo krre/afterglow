@@ -1,5 +1,5 @@
 #include "NewProject.h"
-#include "base/BrowseLayout.h"
+#include "widgets/BrowseLayout.h"
 #include "core/Global.h"
 #include "process/CargoManager.h"
 #include <QLineEdit>

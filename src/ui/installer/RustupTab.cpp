@@ -1,6 +1,6 @@
 #include "RustupTab.h"
 #include "RustInstaller.h"
-#include "ui/base/BrowseLayout.h"
+#include "ui/widgets/BrowseLayout.h"
 #include "core/Constants.h"
 #include "core/Settings.h"
 #include "core/Utils.h"

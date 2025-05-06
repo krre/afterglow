@@ -1,5 +1,5 @@
 #pragma once
-#include "ui/base/StandardDialog.h"
+#include "ui/widgets/StandardDialog.h"
 #include <QStringList>
 
 class SelectableListView;

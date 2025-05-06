@@ -1,6 +1,6 @@
 #include "SetOverride.h"
 #include "core/Utils.h"
-#include "ui/base/BrowseLayout.h"
+#include "ui/widgets/BrowseLayout.h"
 #include <QLineEdit>
 #include <QLabel>
 #include <QComboBox>

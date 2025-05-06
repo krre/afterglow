@@ -18,8 +18,8 @@
 #include "core/Constants.h"
 #include "core/Settings.h"
 #include "core/Utils.h"
-#include "base/IconToolButton.h"
-#include "base/RecentMenu.h"
+#include "widgets/IconToolButton.h"
+#include "widgets/RecentMenu.h"
 #include "process/RlsManager.h"
 #include <QSplitter>
 #include <QToolButton>

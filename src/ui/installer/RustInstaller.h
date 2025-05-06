@@ -1,6 +1,6 @@
 #pragma once
 #include "core/async/CoTask.h"
-#include "ui/base/StandardDialog.h"
+#include "ui/widgets/StandardDialog.h"
 #include <QTemporaryDir>
 #include <QQueue>
 #include <functional>

@@ -1,5 +1,5 @@
 #include "SelectWorkspace.h"
-#include "base/BrowseLayout.h"
+#include "widgets/BrowseLayout.h"
 #include "core/Global.h"
 #include "core/Settings.h"
 #include <QLineEdit>

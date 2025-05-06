@@ -1,5 +1,5 @@
 #pragma once
-#include "base/StandardDialog.h"
+#include "widgets/StandardDialog.h"
 #include "process/CargoManager.h"
 
 class QLineEdit;
