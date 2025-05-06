@@ -12,11 +12,11 @@ add_library(common STATIC
     process/CargoManager.cpp process/CargoManager.h
     process/ProcessManager.cpp process/ProcessManager.h
     process/RlsManager.cpp process/RlsManager.h
-    texteditor/AutoCompleter.cpp texteditor/AutoCompleter.h
-    texteditor/Highlighter.cpp texteditor/Highlighter.h
-    texteditor/LineNumberArea.cpp texteditor/LineNumberArea.h
-    texteditor/SyntaxHighlightManager.cpp texteditor/SyntaxHighlightManager.h
-    texteditor/TextEditor.cpp texteditor/TextEditor.h
+    ui/texteditor/AutoCompleter.cpp ui/texteditor/AutoCompleter.h
+    ui/texteditor/Highlighter.cpp ui/texteditor/Highlighter.h
+    ui/texteditor/LineNumberArea.cpp ui/texteditor/LineNumberArea.h
+    ui/texteditor/SyntaxHighlightManager.cpp ui/texteditor/SyntaxHighlightManager.h
+    ui/texteditor/TextEditor.cpp ui/texteditor/TextEditor.h
     ui/widgets/BrowseLayout.cpp ui/widgets/BrowseLayout.h
     ui/widgets/StandardDialog.cpp ui/widgets/StandardDialog.h
     ui/installer/AddComponentOrTarget.cpp ui/installer/AddComponentOrTarget.h
