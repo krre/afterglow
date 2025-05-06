@@ -69,13 +69,13 @@ MainWindow::MainWindow() {
     m_outputTabWidget = new QTabWidget(m_sideSplitter);
     m_outputTabWidget->setMinimumSize(QSize(0, 50));
 
-    QWidget* cargoTab = new QWidget();
+    auto cargoTab = new QWidget();
 
-    QHBoxLayout* cargoHorizontalLayout = new QHBoxLayout(cargoTab);
+    auto cargoHorizontalLayout = new QHBoxLayout(cargoTab);
     cargoHorizontalLayout->setSpacing(0);
     cargoHorizontalLayout->setContentsMargins(QMargins());
 
-    QVBoxLayout* cargoVerticalLayout = new QVBoxLayout();
+    auto cargoVerticalLayout = new QVBoxLayout();
     cargoVerticalLayout->setSpacing(0);
     cargoVerticalLayout->setContentsMargins(1, 1, 1, 1);
 
@@ -116,7 +116,7 @@ MainWindow::MainWindow() {
 
     m_outputTabWidget->addTab(cargoTab, tr("Cargo"));
 
-    QWidget* issuesTab = new QWidget();
+    auto issuesTab = new QWidget();
     auto issueHorizontalLayout = new QHBoxLayout(issuesTab);
     issueHorizontalLayout->setSpacing(0);
     issueHorizontalLayout->setContentsMargins(QMargins());
@@ -537,8 +537,8 @@ void MainWindow::onIssueCountChanged(int count) {
 }
 
 void MainWindow::createActions() {
-    QMenu* fileMenu = menuBar()->addMenu(tr("File"));
-    QMenu* newFileMenu = fileMenu->addMenu(tr("New"));
+    auto fileMenu = menuBar()->addMenu(tr("File"));
+    auto newFileMenu = fileMenu->addMenu(tr("New"));
 
     ActionManager::addAction(Const::Action::NewProject, newFileMenu->addAction(tr("Project..."), this, &MainWindow::onNewProjectAction));
     ActionManager::addAction(Const::Action::NewRustFile, newFileMenu->addAction(tr("Rust File..."), Qt::CTRL | Qt::Key_N, this, &MainWindow::onNewRustFileAction));
@@ -582,16 +582,16 @@ void MainWindow::createActions() {
     m_editMenu->addAction(tr("Select All"), Qt::CTRL | Qt::Key_A, this, &MainWindow::onSelectAllAction);
     m_editMenu->addSeparator();
 
-    QMenu* lineMenu = m_editMenu->addMenu(tr("Line"));
+    auto lineMenu = m_editMenu->addMenu(tr("Line"));
     lineMenu->addAction(tr("Duplicate Line"), Qt::CTRL | Qt::Key_D, this, &MainWindow::onDuplicateLineAction);
     lineMenu->addAction(tr("Join Lines"), Qt::CTRL | Qt::Key_J, this, &MainWindow::onJoinLinesAction);
     lineMenu->addAction(tr("Cut Line"), Qt::CTRL | Qt::Key_Delete, this, &MainWindow::onCutLineAction);
 
-    QMenu* indentMenu = m_editMenu->addMenu(tr("Indent"));
+    auto indentMenu = m_editMenu->addMenu(tr("Indent"));
     indentMenu->addAction(tr("Increase Indent"), Qt::Key_Tab, this, &MainWindow::onIncreaseIndentAction);
     indentMenu->addAction(tr("Decrease Indent"), Qt::SHIFT | Qt::Key_Tab, this, &MainWindow::onDecreaseIndentAction);
 
-    QMenu* commentMenu = m_editMenu->addMenu(tr("Comment"));
+    auto commentMenu = m_editMenu->addMenu(tr("Comment"));
     commentMenu->addAction(tr("Toggle Single Line Comment"), Qt::CTRL | Qt::Key_Slash, this, &MainWindow::onToggleSingleLineCommentAction);
     commentMenu->addAction(tr("Toggle Block Comment"), Qt::CTRL | Qt::SHIFT | Qt::Key_Slash, this, &MainWindow::onToggleBlockCommentAction);
 
@@ -611,22 +611,22 @@ void MainWindow::createActions() {
     ActionManager::addAction(Const::Action::Clean, m_buildMenu->addAction(tr("Clean"), this, &MainWindow::onCleanAction));
     ActionManager::addAction(Const::Action::Doc, m_buildMenu->addAction(tr("Doc"), this, &MainWindow::onDocAction));
 
-    QMenu* toolsMenu = menuBar()->addMenu(tr("Tools"));
+    auto toolsMenu = menuBar()->addMenu(tr("Tools"));
     toolsMenu->addAction(tr("Rust Installer..."), this, &MainWindow::onRustInstallerAction);
 
-    QMenu* viewMenu = menuBar()->addMenu(tr("View"));
+    auto viewMenu = menuBar()->addMenu(tr("View"));
 
-    QAction* showSidebarAction = viewMenu->addAction(tr("Show Sidebar"), m_sideTabWidget, &QTableWidget::setVisible);
+    auto showSidebarAction = viewMenu->addAction(tr("Show Sidebar"), m_sideTabWidget, &QTableWidget::setVisible);
     showSidebarAction->setCheckable(true);
     showSidebarAction->setChecked(true);
     ActionManager::addAction(Const::Action::ShowSidebar, showSidebarAction);
 
-    QAction* showOutputAction = viewMenu->addAction(tr("Show Output"), m_outputTabWidget, &QTableWidget::setVisible);
+    auto showOutputAction = viewMenu->addAction(tr("Show Output"), m_outputTabWidget, &QTableWidget::setVisible);
     showOutputAction->setCheckable(true);
     showOutputAction->setChecked(true);
     ActionManager::addAction(Const::Action::ShowOutput, showOutputAction);
 
-    QMenu* helpMenu = menuBar()->addMenu(tr("Help"));
+    auto helpMenu = menuBar()->addMenu(tr("Help"));
     helpMenu->addAction(tr("Documentation"), this, &MainWindow::onDocumentationAction);
     helpMenu->addAction(tr("Standard Library"), this, &MainWindow::onStandardLibraryAction);
     helpMenu->addAction(tr("The Book"), this, &MainWindow::onTheBookAction);
