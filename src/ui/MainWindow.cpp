@@ -365,6 +365,21 @@ void MainWindow::onAboutAction() {
 void MainWindow::onSourceTabCurrentChanged(int index) {
     if (index >= 0) {
         m_editor = static_cast<TextEditor*>(m_sourceTabWidget->widget(index));
+
+        QObject::disconnect(m_undoAction);
+        QObject::disconnect(m_redoAction);
+        QObject::disconnect(m_cutAction);
+        QObject::disconnect(m_copyAction);
+        QObject::disconnect(m_pasteAction);
+        QObject::disconnect(m_selectAllAction);
+
+        connect(m_undoAction, &QAction::triggered, m_editor, &QPlainTextEdit::undo);
+        connect(m_redoAction, &QAction::triggered, m_editor, &QPlainTextEdit::redo);
+        connect(m_cutAction, &QAction::triggered, m_editor, &QPlainTextEdit::cut);
+        connect(m_copyAction, &QAction::triggered, m_editor, &QPlainTextEdit::copy);
+        connect(m_pasteAction, &QAction::triggered, m_editor, &QPlainTextEdit::paste);
+        connect(m_selectAllAction, &QAction::triggered, m_editor, &QPlainTextEdit::selectAll);
+
         m_editor->setAutoCompleter(m_completer);
         m_editor->setFocus();
         QString filePath = m_editor->filePath();
@@ -548,14 +563,14 @@ void MainWindow::createActions() {
     fileMenu->addAction(tr("Exit"), Qt::CTRL | Qt::Key_Q, this, &MainWindow::close);
 
     m_editMenu = menuBar()->addMenu(tr("Edit"));
-    m_editMenu->addAction(tr("Undo"), Qt::CTRL | Qt::Key_Z, m_editor, &QPlainTextEdit::undo);
-    m_editMenu->addAction(tr("Redo"), Qt::CTRL | Qt::SHIFT | Qt::Key_N, m_editor, &QPlainTextEdit::redo);
+    m_undoAction = m_editMenu->addAction(tr("Undo"), Qt::CTRL | Qt::Key_Z);
+    m_redoAction = m_editMenu->addAction(tr("Redo"), Qt::CTRL | Qt::SHIFT | Qt::Key_N);
     m_editMenu->addSeparator();
-    m_editMenu->addAction(tr("Cut"), Qt::CTRL | Qt::Key_X, m_editor, &QPlainTextEdit::cut);
-    m_editMenu->addAction(tr("Copy"), Qt::CTRL | Qt::Key_C, m_editor, &QPlainTextEdit::copy);
-    m_editMenu->addAction(tr("Paste"), Qt::CTRL | Qt::Key_V, m_editor, &QPlainTextEdit::paste);
+    m_cutAction = m_editMenu->addAction(tr("Cut"), Qt::CTRL | Qt::Key_X);
+    m_copyAction = m_editMenu->addAction(tr("Copy"), Qt::CTRL | Qt::Key_C);
+    m_pasteAction = m_editMenu->addAction(tr("Paste"), Qt::CTRL | Qt::Key_V);
     m_editMenu->addSeparator();
-    m_editMenu->addAction(tr("Select All"), Qt::CTRL | Qt::Key_A, m_editor, &QPlainTextEdit::selectAll);
+    m_selectAllAction = m_editMenu->addAction(tr("Select All"), Qt::CTRL | Qt::Key_A);
     m_editMenu->addSeparator();
 
     auto lineMenu = m_editMenu->addMenu(tr("Line"));

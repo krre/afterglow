@@ -128,6 +128,13 @@ private:
     QMenu* m_editMenu = nullptr;
     QMenu* m_buildMenu = nullptr;
 
+    QAction* m_undoAction = nullptr;
+    QAction* m_redoAction = nullptr;
+    QAction* m_cutAction = nullptr;
+    QAction* m_copyAction = nullptr;
+    QAction* m_pasteAction = nullptr;
+    QAction* m_selectAllAction = nullptr;
+
     QSplitter* m_mainSplitter = nullptr;
     QSplitter* m_sideSplitter = nullptr;
 
