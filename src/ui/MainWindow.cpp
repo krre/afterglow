@@ -971,7 +971,6 @@ void MainWindow::updateMenuState() {
 
 void MainWindow::prepareBuild() {
     m_sourceTabWidget->saveAll();
-    int index = static_cast<int>(OutputPane::Cargo);
-    m_outputTabWidget->setCurrentIndex(index);
+    m_outputTabWidget->setCurrentIndex(static_cast<int>(OutputPane::Cargo));
     m_issueModel->clear();
 }
