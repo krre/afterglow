@@ -253,30 +253,6 @@ void MainWindow::onSaveAction() {
     m_editor->saveFile();
 }
 
-void MainWindow::onUndoAction() {
-    m_editor->undo();
-}
-
-void MainWindow::onRedoAction() {
-    m_editor->redo();
-}
-
-void MainWindow::onCutAction() {
-    m_editor->cut();
-}
-
-void MainWindow::onCopyAction() {
-    m_editor->copy();
-}
-
-void MainWindow::onPasteAction() {
-    m_editor->paste();
-}
-
-void MainWindow::onSelectAllAction() {
-    m_editor->selectAll();
-}
-
 void MainWindow::onToggleSingleLineCommentAction() {
     m_editor->toggleSingleLineComment();
 }
@@ -572,14 +548,14 @@ void MainWindow::createActions() {
     fileMenu->addAction(tr("Exit"), Qt::CTRL | Qt::Key_Q, this, &MainWindow::close);
 
     m_editMenu = menuBar()->addMenu(tr("Edit"));
-    m_editMenu->addAction(tr("Undo"), Qt::CTRL | Qt::Key_Z, this, &MainWindow::onUndoAction);
-    m_editMenu->addAction(tr("Redo"), Qt::CTRL | Qt::SHIFT | Qt::Key_N, this, &MainWindow::onRedoAction);
+    m_editMenu->addAction(tr("Undo"), Qt::CTRL | Qt::Key_Z, m_editor, &QPlainTextEdit::undo);
+    m_editMenu->addAction(tr("Redo"), Qt::CTRL | Qt::SHIFT | Qt::Key_N, m_editor, &QPlainTextEdit::redo);
     m_editMenu->addSeparator();
-    m_editMenu->addAction(tr("Cut"), Qt::CTRL | Qt::Key_X, this, &MainWindow::onCutAction);
-    m_editMenu->addAction(tr("Copy"), Qt::CTRL | Qt::Key_C, this, &MainWindow::onCopyAction);
-    m_editMenu->addAction(tr("Paste"), Qt::CTRL | Qt::Key_V, this, &MainWindow::onPasteAction);
+    m_editMenu->addAction(tr("Cut"), Qt::CTRL | Qt::Key_X, m_editor, &QPlainTextEdit::cut);
+    m_editMenu->addAction(tr("Copy"), Qt::CTRL | Qt::Key_C, m_editor, &QPlainTextEdit::copy);
+    m_editMenu->addAction(tr("Paste"), Qt::CTRL | Qt::Key_V, m_editor, &QPlainTextEdit::paste);
     m_editMenu->addSeparator();
-    m_editMenu->addAction(tr("Select All"), Qt::CTRL | Qt::Key_A, this, &MainWindow::onSelectAllAction);
+    m_editMenu->addAction(tr("Select All"), Qt::CTRL | Qt::Key_A, m_editor, &QPlainTextEdit::selectAll);
     m_editMenu->addSeparator();
 
     auto lineMenu = m_editMenu->addMenu(tr("Line"));

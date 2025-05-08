@@ -38,15 +38,6 @@ private slots:
     void onSaveAsAction();
 
     // Edit
-    void onUndoAction();
-    void onRedoAction();
-
-    void onCutAction();
-    void onCopyAction();
-    void onPasteAction();
-
-    void onSelectAllAction();
-
     void onJoinLinesAction();
     void onDuplicateLineAction();
     void onCutLineAction();
