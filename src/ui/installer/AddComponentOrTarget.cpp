@@ -25,11 +25,10 @@ AddComponentOrTarget::AddComponentOrTarget(const QString& title, const QString& 
 }
 
 void AddComponentOrTarget::accept() {
-    QModelIndexList indices = m_listView->selectionModel()->selectedIndexes();
-    StringListModel* model = static_cast<StringListModel*>(m_listView->model());
+    const QModelIndexList indices = m_listView->selectionModel()->selectedIndexes();
 
-    for (auto index : indices) {
-        m_list.append(model->data(index).toString());
+    for (const auto& index : indices) {
+        m_list.append(static_cast<StringListModel*>(m_listView->model())->data(index).toString());
     }
 
     QDialog::accept();
