@@ -19,7 +19,7 @@ class RecentMenu;
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    explicit MainWindow();
+    MainWindow();
 
 protected:
     void closeEvent(QCloseEvent* event) override;
