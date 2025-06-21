@@ -352,14 +352,14 @@ void MainWindow::onTheBookAction() {
 
 void MainWindow::onAboutAction() {
     QMessageBox::about(this, tr("About %1").arg(Application::Name),
-        tr("<h3>%1 %2 %3</h3> \
-            IDE for Rust programming language<br><br> \
-            Based on Qt %4<br> \
-            Build on %5 %6<br><br> \
-            <a href=%7>%7</a><br><br> \
-            Copyright © %8, Vladimir Zarypov"
-        ).arg(Application::Name, Application::Version, Application::Status,
-            QT_VERSION_STR, Application::BuildDate, Application::BuildTime, Application::Url, Application::Years));
+tr(R"(<h3>%1 %2 %3</h3>
+IDE for Rust programming language<br><br>
+Based on Qt %4<br>
+Build on %5 %6<br><br>
+<a href=%7>%7</a><br><br>
+Copyright © %8, Vladimir Zarypov)")
+        .arg(Application::Name, Application::Version, Application::Status,
+        QT_VERSION_STR, Application::BuildDate, Application::BuildTime, Application::Url, Application::Years));
 }
 
 void MainWindow::onSourceTabCurrentChanged(int index) {
