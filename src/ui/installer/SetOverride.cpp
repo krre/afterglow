@@ -17,8 +17,8 @@ SetOverride::SetOverride(QWidget* parent) : StandardDialog(parent) {
     m_toolchainComboBox = new QComboBox();
 
     auto formLayout = new QFormLayout;
-    formLayout->addRow(new QLabel(tr("Directory:")), m_directoryBrowseLayout);
-    formLayout->addRow(new QLabel(tr("Toolchain:")), m_toolchainComboBox);
+    formLayout->addRow(tr("Directory:"), m_directoryBrowseLayout);
+    formLayout->addRow(tr("Toolchain:"), m_toolchainComboBox);
 
     formLayout->itemAt(formLayout->indexOf(m_toolchainComboBox))->setAlignment(Qt::AlignLeft);
 

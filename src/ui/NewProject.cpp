@@ -22,9 +22,9 @@ NewProject::NewProject(QWidget* parent) : StandardDialog(parent) {
     m_targetComboBox->addItem(tr("Library"));
 
     auto formLayout = new QFormLayout;
-    formLayout->addRow(new QLabel(tr("Name:")), m_nameLineEdit);
-    formLayout->addRow(new QLabel(tr("Directory:")), m_directoryBrowseLayout);
-    formLayout->addRow(new QLabel(tr("Target:")), m_targetComboBox);
+    formLayout->addRow(tr("Name:"), m_nameLineEdit);
+    formLayout->addRow(tr("Directory:"), m_directoryBrowseLayout);
+    formLayout->addRow(tr("Target:"), m_targetComboBox);
 
     formLayout->itemAt(formLayout->indexOf(m_targetComboBox))->setAlignment(Qt::AlignLeft);
 

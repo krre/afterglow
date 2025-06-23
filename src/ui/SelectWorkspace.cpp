@@ -18,7 +18,7 @@ SelectWorkspace::SelectWorkspace(QWidget* parent) : StandardDialog(parent) {
     connect(m_directoryBrowseLayout->lineEdit(), &QLineEdit::textChanged, this, &SelectWorkspace::adjustAcceptedButton);
 
     auto formLayout = new QFormLayout;
-    formLayout->addRow(new QLabel(tr("Workspace:")), m_directoryBrowseLayout);
+    formLayout->addRow(tr("Workspace:"), m_directoryBrowseLayout);
 
     verticalLayout->addLayout(formLayout);
     setContentLayout(verticalLayout);
