@@ -669,17 +669,17 @@ void MainWindow::loadProjectProperties() {
 
 void MainWindow::loadSettings() {
     // Window geometry
-    int width = Settings::value("window.geometry.width").toInt();
-    int height = Settings::value("window.geometry.height").toInt();
-
     QVariant x = Settings::value("window.geometry.x");
     QVariant y = Settings::value("window.geometry.y");
 
     if (x.isNull() || y.isNull()) {
-        // Center window in screen.
-        resize(width, height);
-        setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QGuiApplication::screens().at(0)->availableGeometry()));
+        QSize screenSize = screen()->size();
+        constexpr auto scale = 0.75;
+        resize(screenSize.width() * scale, screenSize.height() * scale);
+        move((screenSize.width() - width()) / 2, (screenSize.height() - height()) / 2);
     } else {
+        int width = Settings::value("window.geometry.width").toInt();
+        int height = Settings::value("window.geometry.height").toInt();
         setGeometry(x.toInt(), y.toInt(), width, height);
     }
 
