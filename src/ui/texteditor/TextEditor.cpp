@@ -254,7 +254,8 @@ void TextEditor::joinLines() {
     QString cutLine = cursor.selectedText();
 
     // Collapse leading whitespaces to one or insert whitespace
-    cutLine.replace(QRegularExpression(QLatin1String("^\\s*")), QLatin1String(" "));
+    static auto regexp = QRegularExpression(QLatin1String("^\\s*"));
+    cutLine.replace(regexp, QLatin1String(" "));
     cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor);
     cursor.removeSelectedText();
 

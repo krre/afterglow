@@ -694,7 +694,7 @@ void MainWindow::loadSettings() {
     QList<int> sizes;
     QVariantList sizesArray = Settings::value("gui.mainWindow.splitters.main").toList();
 
-    for (const auto& size : sizesArray) {
+    for (const auto& size : std::as_const(sizesArray)) {
         sizes.append(size.toInt());
     }
 

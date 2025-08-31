@@ -73,7 +73,7 @@ void ToolchainTab::onUpdateClicked() {
 }
 
 CoTask ToolchainTab::onSetDefaultClicked() {
-    co_await rustupInstaller()->runCommand("rustup", QStringList("default") << listView->selectedRows().first());
+    co_await rustupInstaller()->runCommand("rustup", QStringList("default") << listView->selectedRows().constFirst());
     load();
     emit defaultSetted();
 }

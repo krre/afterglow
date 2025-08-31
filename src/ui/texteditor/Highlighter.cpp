@@ -56,7 +56,7 @@ void Highlighter::loadRules(const QString& fileExt) {
     m_langName = lang["name"].toString();
     m_langExt = lang["extension"].toString();
 
-    for (const auto& r : rules) {
+    for (const auto& r : std::as_const(rules)) {
         QJsonObject rule = r.toObject();
         HighlightingRule highlightingRule;
         highlightingRule.format = jsonToFormat(formats[rule["format"].toString()].toObject());
@@ -74,7 +74,7 @@ void Highlighter::loadRules(const QString& fileExt) {
         }
     }
 
-    for (const auto& b : blocks) {
+    for (const auto& b : std::as_const(blocks)) {
         QJsonObject block = b.toObject();
 
         if (block["name"].toString() == "SingleLineComment") {

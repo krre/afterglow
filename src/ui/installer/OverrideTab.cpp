@@ -62,7 +62,9 @@ CoTask OverrideTab::onUnsetClicked() {
                                        QMessageBox::Ok,
                                        QMessageBox::Cancel);
     if (button == QMessageBox::Ok) {
-        for (const QString& override : m_listView->selectedRows()) {
+        const auto rows = m_listView->selectedRows();
+
+        for (const QString& override : rows) {
             co_await rustupInstaller()->runCommand("rustup", QStringList("override") << "unset" << "--path" << override.split('\t').at(0));
             load();
         }

@@ -21,7 +21,7 @@ RustInstaller::RustInstaller(QWidget* parent) : StandardDialog(parent) {
     m_rustupTab = new RustupTab(this);
     m_toolchainTab = new ToolchainTab(this);
 
-    connect(m_toolchainTab, &ToolchainTab::defaultSetted, [this] {
+    connect(m_toolchainTab, &ToolchainTab::defaultSetted, this, [this] {
         m_targetTab->load();
         m_componentTab->load();
         m_rustupTab->load();
@@ -98,7 +98,7 @@ CoTask RustInstaller::runCommand(const QString& program, const QStringList& argu
     QProcess process;
     process.setWorkingDirectory(directory);
 
-    connect(this, &RustInstaller::breakPressed, [&] { process.close(); });
+    connect(this, &RustInstaller::breakPressed, this, [&] { process.close(); });
 
     CoAwaiter awaiter{};
 
