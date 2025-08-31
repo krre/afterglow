@@ -10,7 +10,6 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QFormLayout>
-#include <coroutine>
 
 RustupTab::RustupTab(RustInstaller* rustupInstaller, QWidget* parent) : InstallerTab(rustupInstaller, parent) {
     auto rustupHomeBrowseLayout = new BrowseLayout;
