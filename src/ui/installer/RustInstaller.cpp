@@ -80,7 +80,12 @@ CoTask RustInstaller::onDownloaded() {
 
     QString filePath = m_tmpDir.path() + "/" + "rustup-init.exe";
     QFile file(filePath);
-    file.open(QIODevice::WriteOnly);
+
+    if (!file.open(QIODevice::WriteOnly)) {
+        qCritical().noquote() << "Path not found:" << filePath;
+        co_return;
+    }
+
     file.write(m_fileDownloader->data());
     file.close();
 
