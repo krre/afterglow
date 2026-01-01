@@ -70,10 +70,10 @@ void RustupTab::setWidgetsEnabled(bool enabled) {
 }
 
 void RustupTab::load() {
-    const auto rows = Utils::runConsoleCommand("rustup show");
+    const auto rows = Utils::runConsoleCommand("rustup -V");
 
     for (const QString& row : rows) {
-        if (row.left(5) == "rustc") {
+        if (row.left(6) == "rustup") {
             m_versionLineEdit->setText(row);
             break;
         }
