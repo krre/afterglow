@@ -1,5 +1,5 @@
 # Afterglow
-IDE for Rust language
+IDE for Rust language.
 
 ## Dependencies
 - Qt 6.7
