@@ -5,12 +5,16 @@ project(afterglow VERSION 0.3.0)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS
+set(REQUIRED_QT_VERSION 6.11.0)
+
+find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS
     Widgets
     Network
 )
 
-qt_standard_project_setup()
+qt_standard_project_setup(
+    REQUIRES ${REQUIRED_QT_VERSION}
+)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
