@@ -2,6 +2,7 @@
 #include "Constants.h"
 #include "Settings.h"
 #include <QFontDatabase>
+#include <QStandardPaths>
 #include <QDir>
 
 Q_GLOBAL_STATIC(QString, s_systemRustupHome)
@@ -23,8 +24,9 @@ void Global::init() {
 }
 
 QString Global::workspacePath() {
-    QString workspace = Settings::value("workspace").toString();
-    return workspace.isEmpty() ? QDir::homePath() + "/" + Const::Window::WorkspaceDir : workspace;
+    const QString documentsPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    const QString workspace = Settings::value("workspace").toString();
+    return workspace.isEmpty() ? documentsPath + "/" + Const::Window::WorkspaceDir : workspace;
 }
 
 QString Global::systemRustupHome() {
