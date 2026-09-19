@@ -186,7 +186,7 @@ MainWindow::MainWindow() {
     m_completer->setCaseSensitivity(Qt::CaseInsensitive);
     m_completer->setWrapAround(false);
 
-    createActions();
+    createMenus();
     loadSettings();
     updateMenuState();
 }
@@ -527,7 +527,16 @@ void MainWindow::onIssueCountChanged(int count) {
     m_outputTabWidget->setTabText(static_cast<int>(OutputPane::Issues), title);
 }
 
-void MainWindow::createActions() {
+void MainWindow::createMenus() {
+    createFileActions();
+    createEditActions();
+    createBuildActions();
+    createToolsActions();
+    createViewActions();
+    createHelpActions();
+}
+
+void MainWindow::createFileActions() {
     auto fileMenu = menuBar()->addMenu(tr("File"));
     auto newFileMenu = fileMenu->addMenu(tr("New"));
 
@@ -561,7 +570,9 @@ void MainWindow::createActions() {
 
     fileMenu->addSeparator();
     fileMenu->addAction(tr("Exit"), Qt::CTRL | Qt::Key_Q, this, &MainWindow::close);
+}
 
+void MainWindow::createEditActions() {
     m_editMenu = menuBar()->addMenu(tr("Edit"));
     m_undoAction = m_editMenu->addAction(tr("Undo"), Qt::CTRL | Qt::Key_Z);
     m_redoAction = m_editMenu->addAction(tr("Redo"), Qt::CTRL | Qt::SHIFT | Qt::Key_N);
@@ -593,7 +604,9 @@ void MainWindow::createActions() {
 
     m_editMenu->addSeparator();
     m_editMenu->addAction(tr("Preferences..."), this, &MainWindow::onPreferencesAction);
+}
 
+void MainWindow::createBuildActions() {
     m_buildMenu = menuBar()->addMenu(tr("Build"));
     ActionManager::addAction(Const::Action::Build, m_buildMenu->addAction(tr("Build"), Qt::CTRL | Qt::Key_B, this, &MainWindow::onBuildAction));
     ActionManager::addAction(Const::Action::Run, m_buildMenu->addAction(tr("Run"), Qt::CTRL | Qt::Key_R, this, &MainWindow::onRunAction));
@@ -601,10 +614,14 @@ void MainWindow::createActions() {
     ActionManager::addAction(Const::Action::Stop, m_buildMenu->addAction(tr("Stop"), this, &MainWindow::onStopAction));
     ActionManager::addAction(Const::Action::Clean, m_buildMenu->addAction(tr("Clean"), this, &MainWindow::onCleanAction));
     ActionManager::addAction(Const::Action::Doc, m_buildMenu->addAction(tr("Doc"), this, &MainWindow::onDocAction));
+}
 
+void MainWindow::createToolsActions() {
     auto toolsMenu = menuBar()->addMenu(tr("Tools"));
     toolsMenu->addAction(tr("Rust Installer..."), this, &MainWindow::onRustInstallerAction);
+}
 
+void MainWindow::createViewActions() {
     auto viewMenu = menuBar()->addMenu(tr("View"));
 
     auto showSidebarAction = viewMenu->addAction(tr("Show Sidebar"), m_sideTabWidget, &QTableWidget::setVisible);
@@ -616,7 +633,9 @@ void MainWindow::createActions() {
     showOutputAction->setCheckable(true);
     showOutputAction->setChecked(true);
     ActionManager::addAction(Const::Action::ShowOutput, showOutputAction);
+}
 
+void MainWindow::createHelpActions() {
     auto helpMenu = menuBar()->addMenu(tr("Help"));
     helpMenu->addAction(tr("Documentation"), this, &MainWindow::onDocumentationAction);
     helpMenu->addAction(tr("Standard Library"), this, &MainWindow::onStandardLibraryAction);

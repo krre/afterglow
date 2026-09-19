@@ -104,7 +104,14 @@ private:
         Search
     };
 
-    void createActions();
+    void createMenus();
+
+    void createFileActions();
+    void createEditActions();
+    void createBuildActions();
+    void createToolsActions();
+    void createViewActions();
+    void createHelpActions();
 
     void saveProjectProperties();
     void loadProjectProperties();
