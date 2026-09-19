@@ -65,9 +65,6 @@ private slots:
     void onPreferencesAction();
 
     // Help
-    void onDocumentationAction();
-    void onStandardLibraryAction();
-    void onTheBookAction();
     void onAboutAction();
 
     // TabWidet
@@ -111,6 +108,7 @@ private:
     void createBuildActions();
     void createToolsActions();
     void createViewActions();
+    void createDocActions();
     void createHelpActions();
 
     void saveProjectProperties();

@@ -338,18 +338,6 @@ void MainWindow::onPreferencesAction() {
     preferences.exec();
 }
 
-void MainWindow::onDocumentationAction() {
-    Utils::runRustupCommand({ "doc" });
-}
-
-void MainWindow::onStandardLibraryAction() {
-    Utils::runRustupCommand({ "doc", "--std" });
-}
-
-void MainWindow::onTheBookAction() {
-    Utils::runRustupCommand({ "doc", "--book" });
-}
-
 void MainWindow::onAboutAction() {
     QMessageBox::about(this, tr("About %1").arg(Application::Name),
 tr(R"(<h3>%1 %2 %3</h3>
@@ -533,6 +521,7 @@ void MainWindow::createMenus() {
     createBuildActions();
     createToolsActions();
     createViewActions();
+    createDocActions();
     createHelpActions();
 }
 
@@ -635,12 +624,37 @@ void MainWindow::createViewActions() {
     ActionManager::addAction(Const::Action::ShowOutput, showOutputAction);
 }
 
+void MainWindow::createDocActions() {
+    struct ActionPropeprty {
+        QString title;
+        QString arg;
+    };
+
+    const QVector<ActionPropeprty> props = {
+        { tr("Rust Documentation"), "--" },
+        { tr("The Rust Standard Library"), "--std" },
+        { tr("The Book"), "--book" },
+        { tr("Rust by Example"), "--rust-by-example" },
+        { tr("The Cargo Book"), "--cargo" },
+        { tr("The Rustonomicon"), "--nomicon" },
+        { tr("The Rust Edition Guide"), "--edition-guide" },
+        { tr("The Rust Reference"), "--reference" },
+        { tr("The Embedded Rust Book"), "--embedded-book" },
+        { tr("The Unstable Book"), "--unstable-book" },
+        { tr("Clippy Documentation"), "--clippy" },
+    };
+
+    auto docMenu = menuBar()->addMenu(tr("Doc"));
+
+    for (const auto& prop : props) {
+        docMenu->addAction(prop.title, this, [=] {
+            Utils::runRustupCommand({ "doc", prop.arg });
+        });
+    }
+}
+
 void MainWindow::createHelpActions() {
     auto helpMenu = menuBar()->addMenu(tr("Help"));
-    helpMenu->addAction(tr("Documentation"), this, &MainWindow::onDocumentationAction);
-    helpMenu->addAction(tr("Standard Library"), this, &MainWindow::onStandardLibraryAction);
-    helpMenu->addAction(tr("The Book"), this, &MainWindow::onTheBookAction);
-    helpMenu->addSeparator();
     helpMenu->addAction(tr("About..."), this, &MainWindow::onAboutAction);
 }
 
