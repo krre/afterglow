@@ -28,6 +28,7 @@
 #include <QMenuBar>
 #include <QScrollBar>
 #include <QTableWidget>
+#include <QDesktopServices>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QJsonArray>
@@ -655,6 +656,8 @@ void MainWindow::createDocActions() {
 
 void MainWindow::createHelpActions() {
     auto helpMenu = menuBar()->addMenu(tr("Help"));
+    helpMenu->addAction(tr("Open download page"), this, [] { QDesktopServices::openUrl(QUrl(Application::ReleasesUrl)); });
+    helpMenu->addSeparator();
     helpMenu->addAction(tr("About..."), this, &MainWindow::onAboutAction);
 }
 
