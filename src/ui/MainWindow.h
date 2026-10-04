@@ -1,6 +1,5 @@
 #pragma once
 #include <QMainWindow>
-#include <functional>
 
 class QSplitter;
 class QPlainTextEdit;
