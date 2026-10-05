@@ -15,5 +15,5 @@ protected:
     RustInstaller* rustupInstaller() const;
 
 private:
-    RustInstaller* m_rustInstaller;
+    RustInstaller* m_rustInstaller = nullptr;
 };
