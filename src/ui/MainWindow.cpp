@@ -709,10 +709,8 @@ void MainWindow::loadSettings() {
     QVariant y = Settings::value("window.geometry.y");
 
     if (x.isNull() || y.isNull()) {
-        QSize screenSize = screen()->size();
-        constexpr auto scale = 0.75;
-        resize(screenSize.width() * scale, screenSize.height() * scale);
-        move((screenSize.width() - width()) / 2, (screenSize.height() - height()) / 2);
+        resize(screen()->size() * 0.75);
+        move(screen()->availableGeometry().center() - rect().center());
     } else {
         int width = Settings::value("window.geometry.width").toInt();
         int height = Settings::value("window.geometry.height").toInt();
