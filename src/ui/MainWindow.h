@@ -97,7 +97,6 @@ private:
     enum class OutputPane {
         Cargo,
         Issues,
-        Search
     };
 
     void createMenus();
